@@ -9,9 +9,9 @@
 
 // ---- Database (from cPanel > MySQL Databases) ----
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'your_db_name');      // e.g. cpaneluser_hob
-define('DB_USER', 'your_db_user');      // e.g. cpaneluser_admin
-define('DB_PASS', 'your_db_password');
+define('DB_NAME', 'creaeina_houseofbungalow');
+define('DB_USER', 'creaeina_houseofbungalowadmin');
+define('DB_PASS', '{X?m8V!fGrCG3esl');
 
 // ---- Site ----
 define('SITE_NAME', 'House of Bungalow');
