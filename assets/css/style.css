@@ -97,10 +97,19 @@ a{color:inherit;text-decoration:none;}
 /* Hero                                                               */
 /* ------------------------------------------------------------------ */
 .hero{
+  position:relative;
   height:720px;
   background-position:center 30%;
   background-size:cover;
   background-repeat:no-repeat;
+}
+.hero::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:320px;
+  background:linear-gradient(to bottom, rgba(0,0,0,.7), rgba(0,0,0,0));
+  pointer-events:none;
 }
 
 /* ------------------------------------------------------------------ */
