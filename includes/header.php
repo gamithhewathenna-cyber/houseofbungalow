@@ -41,8 +41,8 @@ if (setting('maintenance_mode', '0') === '1') {
 <?php if (setting('seo_visible', '1') !== '1'): ?>
 <meta name="robots" content="noindex,nofollow">
 <?php endif; ?>
-<title><?= e(setting('intro_heading', SITE_NAME)) ?> — <?= e(SITE_NAME) ?></title>
-<meta name="description" content="<?= e(setting('intro_p1')) ?>">
+<title><?= e($page_meta_title ?? setting('intro_heading', SITE_NAME)) ?> — <?= e(SITE_NAME) ?></title>
+<meta name="description" content="<?= e($page_meta_description ?? setting('intro_p1')) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="<?= e(asset('assets/css/style.css')) ?>">
@@ -76,8 +76,8 @@ if (setting('maintenance_mode', '0') === '1') {
 
 <nav class="mobile-menu" id="mobileMenu" aria-hidden="true">
   <div class="mobile-menu-links">
-    <a href="#">HOME</a>
-    <a href="#">RESTAURANT &amp; MENUS</a>
+    <a href="<?= e(url('index.php')) ?>">HOME</a>
+    <a href="<?= e(url('restaurant.php')) ?>">RESTAURANT &amp; MENUS</a>
     <a href="#">BELOW</a>
     <a href="#">WHAT'S ON</a>
     <a href="#">BRUNCH</a>
@@ -112,16 +112,3 @@ if (setting('maintenance_mode', '0') === '1') {
   });
 })();
 </script>
-
-<?php
-$hero_image_path = asset(setting('hero_image', 'assets/img/hero.jpg'));
-$hero_video_path = setting('hero_video');
-$hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'video/quicktime'][strtolower(pathinfo($hero_video_path, PATHINFO_EXTENSION))] ?? 'video/mp4';
-?>
-<section class="hero"<?php if (!$hero_video_path): ?> style="background-image:url('<?= e($hero_image_path) ?>');"<?php endif; ?>>
-  <?php if ($hero_video_path): ?>
-    <video class="hero-video" autoplay muted loop playsinline preload="auto">
-      <source src="<?= e(asset($hero_video_path)) ?>" type="<?= e($hero_video_mime) ?>">
-    </video>
-  <?php endif; ?>
-</section>

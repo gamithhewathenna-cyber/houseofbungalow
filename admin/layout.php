@@ -13,9 +13,10 @@ $page_title = $page_title ?? 'Admin';
 $current    = basename($_SERVER['PHP_SELF']);
 
 $mainNav = [
-    ['href' => 'index.php',       'label' => 'Dashboard',   'icon' => 'grid'],
-    ['href' => 'homepage.php',    'label' => 'Home Page',   'icon' => 'home'],
-    ['href' => 'subscribers.php', 'label' => 'Subscribers', 'icon' => 'mail'],
+    ['href' => 'index.php',       'label' => 'Dashboard',          'icon' => 'grid'],
+    ['href' => 'homepage.php',    'label' => 'Home Page',          'icon' => 'home'],
+    ['href' => 'restaurant.php',  'label' => 'Restaurant & Menus', 'icon' => 'fork'],
+    ['href' => 'subscribers.php', 'label' => 'Subscribers',        'icon' => 'mail'],
 ];
 $systemNav = [
     ['href' => 'section.php?s=website', 'label' => 'Website Settings', 'icon' => 'gear'],
@@ -32,6 +33,7 @@ function nav_icon(string $key): void
         'gear'  => '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',
         'users' => '<circle cx="8.5" cy="8" r="3"/><path d="M2.5 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M14.5 20c.3-2.6 2.2-4.6 4.7-4.9"/>',
         'user'  => '<circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/>',
+        'fork'  => '<path d="M6 2v8a2 2 0 0 0 4 0V2M8 2v20M18 2c-2 1.5-2 4-2 6 0 2.5 1 3 2 3.5V22"/>',
     ];
     echo '<svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' . ($icons[$key] ?? '') . '</svg>';
 }
