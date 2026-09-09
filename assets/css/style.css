@@ -378,12 +378,12 @@ body.menu-open-lock{overflow:hidden;}
 .brands .brand{
   font-family:var(--serif);
   color:#9a938c;
-  font-size:25px;
+  font-size:29px;
   letter-spacing:1px;
   opacity:.85;
   filter:grayscale(1);
 }
-.brands img{max-height:34px;width:auto;opacity:.6;filter:grayscale(1);}
+.brands img{max-height:46px;width:auto;opacity:.6;filter:grayscale(1);}
 
 .footer-logo{margin:0 auto 26px;}
 .footer-logo img{height:66px;width:auto;margin:0 auto;}
