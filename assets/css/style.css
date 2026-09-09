@@ -527,7 +527,7 @@ body.menu-open-lock{overflow:hidden;}
 }
 .chef-copy .chef-name{
   font-family:var(--serif);font-weight:400;font-size:46px;letter-spacing:.5px;
-  text-transform:uppercase;color:var(--maroon);margin:0 0 24px;
+  text-transform:uppercase;color:var(--ink);margin:0 0 24px;
 }
 .chef-copy p{text-align:right;}
 
