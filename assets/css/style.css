@@ -383,7 +383,7 @@ body.menu-open-lock{overflow:hidden;}
   opacity:.85;
   filter:grayscale(1);
 }
-.brands img{max-height:80px;width:auto;opacity:.6;filter:grayscale(1);}
+.brands img{max-height:100px;width:auto;opacity:.6;filter:grayscale(1);}
 
 .footer-logo{margin:0 auto 26px;}
 .footer-logo img{height:66px;width:auto;margin:0 auto;}
