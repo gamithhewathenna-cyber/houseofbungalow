@@ -277,7 +277,7 @@ body.menu-open-lock{overflow:hidden;}
   line-height:1.5;
   color:var(--ink-soft);
   margin:0 auto 8px;
-  max-width:760px;
+  max-width:1200px;
 }
 .section .btn-wrap{margin-top:40px;}
 
@@ -296,7 +296,7 @@ body.menu-open-lock{overflow:hidden;}
 .spaces h2{margin:0 0 18px;}
 .spaces .subheading{
   font-family:var(--sans);font-weight:300;font-size:18px;
-  color:var(--ink-soft);margin:0 auto 44px;max-width:720px;line-height:1.5;
+  color:var(--ink-soft);margin:0 auto 44px;max-width:1200px;line-height:1.5;
 }
 .cards{
   display:grid;
@@ -335,7 +335,7 @@ body.menu-open-lock{overflow:hidden;}
 .textblock h2{margin:0 0 26px;}
 .textblock p{
   font-family:var(--sans);font-weight:300;font-size:18px;line-height:1.5;
-  color:var(--ink-soft);margin:0 auto 10px;max-width:800px;
+  color:var(--ink-soft);margin:0 auto 10px;max-width:1200px;
 }
 .textblock .btn-wrap{margin-top:40px;}
 
@@ -360,7 +360,7 @@ body.menu-open-lock{overflow:hidden;}
   letter-spacing:.6px;
   color:var(--ink);
   margin:0 auto 26px;
-  max-width:900px;
+  max-width:1200px;
   line-height:2;
 }
 .footer-nav a{padding:0 9px;position:relative;white-space:nowrap;}
