@@ -174,7 +174,8 @@ INSERT INTO `blocks` (`block_type`,`title`,`image`,`sort`,`active`) VALUES
 -- Restaurant & Menus page
 -- =====================================================================
 INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) VALUES
-('rest_hero_image','assets/img/restaurant.jpg','restaurant','Hero image','image',1),
+('rest_hero_image','assets/img/restaurant.jpg','restaurant','Hero image (poster/fallback)','image',1),
+('rest_hero_video','','restaurant','Hero video (mp4/webm, ideally 1280×720)','video',1),
 ('rest_heading','Restaurant','restaurant','Heading','text',2),
 ('rest_subheading','Spanish Inspired. Asian Influenced. Sydney Energy.','restaurant','Subheading','text',3),
 ('rest_lede','The ground-floor Restaurant is the dining heart of House of Bungalow — elevated without feeling formal, social without losing the detail.','restaurant','Lede paragraph (italic)','textarea',4),

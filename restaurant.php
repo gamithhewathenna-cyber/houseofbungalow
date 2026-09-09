@@ -7,6 +7,8 @@ $page_meta_description = setting('rest_lede');
 include __DIR__ . '/includes/header.php';
 
 $rest_hero_image = asset(setting('rest_hero_image', 'assets/img/restaurant.jpg'));
+$rest_hero_video = setting('rest_hero_video');
+$rest_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'video/quicktime'][strtolower(pathinfo($rest_hero_video, PATHINFO_EXTENSION))] ?? 'video/mp4';
 
 $menu_tabs = [
     'brunch'    => 'Brunch',
@@ -24,7 +26,13 @@ $gallery = blocks('rest_gallery');
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
-<section class="hero" style="height:620px;background-image:url('<?= e($rest_hero_image) ?>');"></section>
+<section class="hero" style="height:620px;<?php if (!$rest_hero_video): ?>background-image:url('<?= e($rest_hero_image) ?>');<?php endif; ?>">
+  <?php if ($rest_hero_video): ?>
+    <video class="hero-video" autoplay muted loop playsinline preload="auto">
+      <source src="<?= e(asset($rest_hero_video)) ?>" type="<?= e($rest_hero_video_mime) ?>">
+    </video>
+  <?php endif; ?>
+</section>
 
 <!-- Intro ------------------------------------------------------------- -->
 <section class="page-hero-intro reveal">
