@@ -29,6 +29,19 @@ include __DIR__ . '/layout.php';
   <a href="homepage.php?tab=brands">Brand Logos</a>
 </div>
 
+<h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">Edit Restaurant &amp; Menus</h2>
+<div class="dash-links">
+  <a href="restaurant.php?tab=hero">Hero &amp; Intro</a>
+  <a href="restaurant.php?tab=food">The Food</a>
+  <a href="restaurant.php?tab=menu">Menu</a>
+  <a href="restaurant.php?tab=room">The Room</a>
+  <a href="restaurant.php?tab=fridaysat">Friday &amp; Saturday</a>
+  <a href="restaurant.php?tab=happyhour">Happy Hour</a>
+  <a href="restaurant.php?tab=chef">The Chef</a>
+  <a href="restaurant.php?tab=hours">Restaurant Hours</a>
+  <a href="restaurant.php?tab=gallery">Gallery</a>
+</div>
+
 <h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">System</h2>
 <div class="dash-links">
   <a href="section.php?s=website">Website Settings</a>
