@@ -247,10 +247,9 @@ body.menu-open-lock{overflow:hidden;}
   text-align:center;
 }
 .building img{
-  margin:0 auto;
-  max-width:760px;
+  margin:0 0 0 auto;
+  max-width:1000px;
   width:100%;
-  mix-blend-mode:multiply;
 }
 
 /* ------------------------------------------------------------------ */
