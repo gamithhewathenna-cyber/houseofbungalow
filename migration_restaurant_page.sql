@@ -22,7 +22,7 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('rest_food_p1','Expect shareable plates, seafood, char, spice, acidity and sauces with real depth. The menu moves from smaller plates into larger dishes built to sit in the middle of the table.','restaurant','Food — paragraph 1','textarea',11),
 ('rest_food_p2','It is generous, expressive food rather than a formal tasting experience, joined by a considered wine list and cocktails designed to carry the Restaurant from afternoon into night.','restaurant','Food — paragraph 2','textarea',12),
 ('rest_food_image','assets/img/restaurant.jpg','restaurant','Food — image','image',13),
-('rest_menu_heading','Brunch Specials','restaurant','Menu — heading','text',14),
+('rest_menu_heading','Discover Our Menus','restaurant','Menu — heading','text',14),
 ('rest_menu_lede','Lorem ipsum dolor sit amet consectetur. Mattis elementum hac maecenas euismod purus at. Fringilla lacus enim ut semper pretor vitae ultrices. Sit nunc eu urna dolor ac convallis vel. Nec.','restaurant','Menu — subheading','textarea',15),
 ('rest_room_eyebrow','The Room','restaurant','Room — eyebrow label','text',16),
 ('rest_room_heading','A ROOM THAT BUILDS WITH THE NIGHT.','restaurant','Room — heading','text',17),

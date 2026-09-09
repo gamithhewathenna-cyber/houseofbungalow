@@ -80,10 +80,12 @@ while ($i < count($gallery)) {
 <!-- Menu --------------------------------------------------------------- -->
 <section class="menu-section reveal">
   <div class="container">
-    <h2 id="menuHeading"><?= e(setting('rest_menu_heading', 'Menu')) ?></h2>
+    <h2><?= e(setting('rest_menu_heading', 'Discover Our Menus')) ?></h2>
     <?php if (setting('rest_menu_lede')): ?>
       <p class="menu-lede"><?= e(setting('rest_menu_lede')) ?></p>
     <?php endif; ?>
+
+    <p class="menu-active-label" id="menuActiveLabel"><?= e(reset($menu_tabs)) ?> Specials</p>
 
     <div class="menu-tabs">
       <?php $first = true; foreach ($menu_tabs as $key => $label): ?>
@@ -231,7 +233,7 @@ while ($i < count($gallery)) {
 (function () {
   var tabs = document.querySelectorAll('.menu-tab-btn');
   var panels = document.querySelectorAll('.menu-panel');
-  var heading = document.getElementById('menuHeading');
+  var activeLabel = document.getElementById('menuActiveLabel');
   if (!tabs.length) return;
   tabs.forEach(function (btn) {
     btn.addEventListener('click', function () {
@@ -240,7 +242,7 @@ while ($i < count($gallery)) {
       btn.classList.add('active');
       var panel = document.querySelector('.menu-panel[data-menu-panel="' + btn.dataset.menuTab + '"]');
       if (panel) panel.classList.add('active');
-      if (heading) heading.textContent = btn.textContent.trim() + ' Specials';
+      if (activeLabel) activeLabel.textContent = btn.textContent.trim() + ' Specials';
     });
   });
 })();

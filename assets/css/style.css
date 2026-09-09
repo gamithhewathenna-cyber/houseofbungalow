@@ -530,9 +530,13 @@ body.menu-open-lock{overflow:hidden;}
   font-family:var(--serif);font-style:italic;font-weight:200;font-size:18px;line-height:1.5;
   color:var(--ink-soft);max-width:1000px;margin:0 auto;
 }
+.menu-active-label{
+  font-family:var(--sans);font-weight:500;font-size:13px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--maroon);margin:30px 0 0;
+}
 .menu-tabs{
   display:flex;justify-content:center;flex-wrap:wrap;gap:28px;
-  margin:34px 0 40px;border-bottom:1px solid #e0d3c4;
+  margin:14px 0 40px;border-bottom:1px solid #e0d3c4;
 }
 .menu-tab-btn{
   background:none;border:0;cursor:pointer;
