@@ -614,6 +614,109 @@ body.menu-open-lock{overflow:hidden;}
 .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;}
 
 /* ------------------------------------------------------------------ */
+/* Maroon band (Below page — Intro / Music sections)                  */
+/* ------------------------------------------------------------------ */
+.maroon-band{background:var(--maroon);padding:70px 0;text-align:center;}
+.maroon-band h1,.maroon-band h2{
+  font-family:var(--serif);font-weight:300;font-size:40px;
+  color:#fff;margin:0 0 18px;
+}
+.maroon-band .subheading{
+  font-family:var(--serif);font-weight:300;font-size:24px;
+  color:#fff;margin:0 0 18px;
+}
+.maroon-band .lede{
+  font-family:var(--serif);font-style:italic;font-weight:200;font-size:19px;line-height:1.5;
+  color:rgba(255,255,255,.85);max-width:700px;margin:0 auto 14px;
+}
+.maroon-band p{
+  font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.65;
+  color:rgba(255,255,255,.75);max-width:700px;margin:0 auto 8px;
+}
+.maroon-band .btn-wrap-row{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-top:24px;}
+.maroon-band .link-underline{color:#fff;border-bottom-color:rgba(255,255,255,.6);}
+.maroon-band .link-underline:hover{background:#fff;color:var(--maroon);}
+
+.section-hours{
+  font-family:var(--sans);font-weight:600;font-size:15px;
+  color:var(--ink);margin:16px 0 0;
+}
+
+/* Night grid (Music section) */
+.night-grid{display:flex;flex-direction:column;gap:26px;margin:40px 0;}
+.night-row{display:grid;gap:26px;}
+.night-row-3{grid-template-columns:repeat(3,1fr);}
+.night-row-2{grid-template-columns:repeat(2,1fr);max-width:640px;margin:0 auto;}
+.night-item-title{
+  font-family:var(--sans);font-weight:700;font-size:14px;letter-spacing:.5px;
+  color:#fff;margin-bottom:8px;
+}
+.night-item-desc{
+  font-family:var(--sans);font-weight:300;font-size:13px;line-height:1.6;
+  color:rgba(255,255,255,.65);
+}
+
+/* ------------------------------------------------------------------ */
+/* Lineup section (full-bleed image + DJ cards)                       */
+/* ------------------------------------------------------------------ */
+.lineup-section{
+  position:relative;background-position:center;background-size:cover;background-repeat:no-repeat;
+}
+.lineup-overlay{
+  background:rgba(13,11,10,.72);padding:70px 0;text-align:center;
+}
+.lineup-section h2{
+  font-family:var(--serif);font-weight:300;font-size:36px;color:#fff;margin:0 0 14px;
+}
+.lineup-section p{
+  font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.6;
+  color:rgba(255,255,255,.75);max-width:700px;margin:0 auto 40px;
+}
+.dj-row{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1100px;margin:0 auto;}
+.dj-card{text-align:left;}
+.dj-card-media{position:relative;aspect-ratio:3/4;overflow:hidden;}
+.dj-card-media img{width:100%;height:100%;object-fit:cover;display:block;}
+.dj-card-tint{position:absolute;inset:0;mix-blend-mode:color;opacity:.75;}
+.dj-card-info{background:#0d0b0a;padding:14px 16px 16px;}
+.dj-card-name{
+  font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:.5px;
+  text-transform:uppercase;color:#fff;margin-bottom:6px;
+}
+.dj-card-day,.dj-card-time{
+  font-family:var(--sans);font-weight:300;font-size:12px;color:rgba(255,255,255,.6);
+}
+.dj-card-link{
+  display:block;margin-top:8px;font-family:var(--sans);font-weight:600;font-size:11px;
+  letter-spacing:.5px;text-transform:uppercase;color:#fff;text-decoration:underline;
+}
+
+/* ------------------------------------------------------------------ */
+/* FAQ accordion (Below page)                                         */
+/* ------------------------------------------------------------------ */
+.faq-section{padding:60px 0 80px;text-align:center;}
+.faq-section h2{
+  font-family:var(--serif);font-weight:300;font-size:36px;color:var(--ink);margin:0 0 30px;
+}
+.faq-list{max-width:800px;margin:0 auto;text-align:left;}
+.faq-item{border-bottom:1px solid #e0d3c4;}
+.faq-question{
+  width:100%;display:flex;align-items:center;gap:14px;
+  background:none;border:0;cursor:pointer;text-align:left;
+  font-family:var(--sans);font-weight:400;font-size:15px;color:var(--ink);
+  padding:18px 0;
+}
+.faq-chevron{color:var(--maroon);transition:transform .2s ease;flex-shrink:0;}
+.faq-item.open .faq-chevron{transform:rotate(180deg);}
+.faq-answer{
+  max-height:0;overflow:hidden;transition:max-height .3s ease;
+}
+.faq-item.open .faq-answer{max-height:200px;}
+.faq-answer p{
+  font-family:var(--sans);font-weight:300;font-size:14px;line-height:1.6;
+  color:var(--ink-soft);margin:0 0 20px;padding-left:28px;
+}
+
+/* ------------------------------------------------------------------ */
 /* Responsive                                                         */
 /* ------------------------------------------------------------------ */
 @media (max-width:1450px){
@@ -635,6 +738,9 @@ body.menu-open-lock{overflow:hidden;}
   .gallery-row-3{grid-template-columns:1fr 1.3fr 1fr;}
   .chef-copy,.chef-copy p{text-align:center;}
   .chef-copy .chef-name{font-size:32px;}
+  .night-row-3,.night-row-2{grid-template-columns:1fr 1fr;max-width:none;}
+  .dj-row{grid-template-columns:repeat(2,1fr);}
+  .maroon-band h1,.maroon-band h2{font-size:32px;}
 }
 @media (max-width:640px){
   body{font-size:21px;}
@@ -665,6 +771,12 @@ body.menu-open-lock{overflow:hidden;}
   .menu-tabs{gap:16px;}
   .gallery-grid{gap:10px;}
   .gallery-row,.gallery-row-3,.gallery-row-2{grid-template-columns:1fr;grid-auto-rows:220px;gap:10px;}
+  .night-row-3,.night-row-2{grid-template-columns:1fr;}
+  .dj-row{grid-template-columns:1fr 1fr;gap:12px;}
+  .maroon-band{padding:50px 0;}
+  .maroon-band h1,.maroon-band h2{font-size:28px;}
+  .maroon-band .subheading{font-size:19px;}
+  .lineup-section h2{font-size:26px;}
 }
 
 /* Hide desktop-only nav labels on very small screens if needed */

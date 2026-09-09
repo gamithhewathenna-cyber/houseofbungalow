@@ -16,6 +16,7 @@ $mainNav = [
     ['href' => 'index.php',       'label' => 'Dashboard',          'icon' => 'grid'],
     ['href' => 'homepage.php',    'label' => 'Home Page',          'icon' => 'home'],
     ['href' => 'restaurant.php',  'label' => 'Restaurant & Menus', 'icon' => 'fork'],
+    ['href' => 'below.php',       'label' => 'Below',              'icon' => 'moon'],
     ['href' => 'subscribers.php', 'label' => 'Subscribers',        'icon' => 'mail'],
 ];
 $systemNav = [
@@ -34,6 +35,7 @@ function nav_icon(string $key): void
         'users' => '<circle cx="8.5" cy="8" r="3"/><path d="M2.5 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M14.5 20c.3-2.6 2.2-4.6 4.7-4.9"/>',
         'user'  => '<circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/>',
         'fork'  => '<path d="M6 2v8a2 2 0 0 0 4 0V2M8 2v20M18 2c-2 1.5-2 4-2 6 0 2.5 1 3 2 3.5V22"/>',
+        'moon'  => '<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/>',
     ];
     echo '<svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' . ($icons[$key] ?? '') . '</svg>';
 }
