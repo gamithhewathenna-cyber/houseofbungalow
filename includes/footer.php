@@ -3,7 +3,7 @@ $footer_nav = blocks('footer_nav');
 $brands     = blocks('brand');
 $msg        = $_GET['sub'] ?? '';
 ?>
-<footer class="site-footer">
+<footer class="site-footer reveal">
   <div class="container">
 
     <hr class="footer-rule">
@@ -70,6 +70,26 @@ $msg        = $_GET['sub'] ?? '';
     <?php endif; ?>
   </div>
 </footer>
+
+<script>
+(function () {
+  var items = document.querySelectorAll('.reveal');
+  if (!items.length) return;
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(function (el) { el.classList.add('is-visible'); });
+    return;
+  }
+  var observer = new IntersectionObserver(function (entries, obs) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+  items.forEach(function (el) { observer.observe(el); });
+})();
+</script>
 
 </body>
 </html>

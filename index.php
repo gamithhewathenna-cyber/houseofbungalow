@@ -5,7 +5,7 @@ $spaces = blocks('space');
 ?>
 
 <!-- Intro ---------------------------------------------------------- -->
-<section class="intro">
+<section class="intro reveal">
   <div class="container">
     <div class="intro-inner">
       <h1><?= e(setting('intro_heading')) ?></h1>
@@ -28,20 +28,20 @@ $spaces = blocks('space');
 </section>
 
 <!-- Building illustration ------------------------------------------ -->
-<section class="building">
+<section class="building reveal">
   <div class="container">
     <img src="<?= e(asset(setting('building_image','assets/img/building.png'))) ?>" alt="House of Bungalow storefront illustration">
   </div>
 </section>
 
 <!-- Three Spaces --------------------------------------------------- -->
-<section class="spaces">
+<section class="spaces reveal">
   <div class="container">
     <h2><?= e(setting('spaces_heading')) ?></h2>
     <p class="subheading"><?= e(setting('spaces_subheading')) ?></p>
     <div class="cards">
-      <?php foreach ($spaces as $s): ?>
-        <a class="card" href="<?= e(url($s['link_url'] ?: '#')) ?>">
+      <?php foreach ($spaces as $i => $s): ?>
+        <a class="card reveal" style="transition-delay:<?= $i * 120 ?>ms" href="<?= e(url($s['link_url'] ?: '#')) ?>">
           <img src="<?= e(asset($s['image'])) ?>" alt="<?= e($s['title']) ?>">
           <span class="card-label"><?= e($s['title']) ?></span>
         </a>
@@ -51,7 +51,7 @@ $spaces = blocks('space');
 </section>
 
 <!-- The House Starts At The Door ----------------------------------- -->
-<section class="textblock">
+<section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('door_heading')) ?></h2>
     <p><?= e(setting('door_p1')) ?></p>
@@ -63,7 +63,7 @@ $spaces = blocks('space');
 </section>
 
 <!-- One Address. Every Mood ---------------------------------------- -->
-<section class="textblock">
+<section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('mood_heading')) ?></h2>
     <p><?= e(setting('mood_p1')) ?></p>
@@ -72,7 +72,7 @@ $spaces = blocks('space');
 </section>
 
 <!-- What's On ------------------------------------------------------- -->
-<section class="textblock">
+<section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('whatson_heading')) ?></h2>
     <p><?= e(setting('whatson_p1')) ?></p>
@@ -85,7 +85,7 @@ $spaces = blocks('space');
 </section>
 
 <!-- Private Events -------------------------------------------------- -->
-<section class="textblock">
+<section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('events_heading')) ?></h2>
     <p><?= e(setting('events_p1')) ?></p>
