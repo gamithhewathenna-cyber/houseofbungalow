@@ -179,9 +179,9 @@ while ($i < count($gallery)) {
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
-      <div class="split-copy">
+      <div class="split-copy chef-copy">
         <p class="eyebrow"><?= e(setting('rest_chef_eyebrow', 'The Chef')) ?></p>
-        <h2><?= e(setting('rest_chef_name')) ?></h2>
+        <h2 class="chef-name"><?= e(setting('rest_chef_name')) ?></h2>
         <p><?= e(setting('rest_chef_p1')) ?></p>
         <p><?= e(setting('rest_chef_p2')) ?></p>
         <p><?= e(setting('rest_chef_p3')) ?></p>

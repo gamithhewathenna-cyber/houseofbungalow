@@ -518,6 +518,19 @@ body.menu-open-lock{overflow:hidden;}
 .split-copy .hours-line{font-family:var(--sans);font-weight:500;font-size:14px;color:var(--ink);margin:0 0 4px;}
 .split-copy .btn-wrap{margin-top:20px;}
 
+/* The Chef — reversed hierarchy: small bold label, then a large        */
+/* highlighted name, right-aligned                                     */
+.chef-copy{text-align:right;}
+.chef-copy .eyebrow{
+  font-family:var(--sans);font-weight:700;font-size:14px;letter-spacing:1px;
+  text-transform:uppercase;color:var(--ink);margin:0 0 8px;
+}
+.chef-copy .chef-name{
+  font-family:var(--serif);font-weight:400;font-size:46px;letter-spacing:.5px;
+  text-transform:uppercase;color:var(--maroon);margin:0 0 24px;
+}
+.chef-copy p{text-align:right;}
+
 /* ------------------------------------------------------------------ */
 /* Menu (tabs + item list)                                            */
 /* ------------------------------------------------------------------ */
@@ -620,6 +633,8 @@ body.menu-open-lock{overflow:hidden;}
   .page-hero-intro .container{max-width:88%;}
   .gallery-row{grid-auto-rows:200px;}
   .gallery-row-3{grid-template-columns:1fr 1.3fr 1fr;}
+  .chef-copy,.chef-copy p{text-align:center;}
+  .chef-copy .chef-name{font-size:32px;}
 }
 @media (max-width:640px){
   body{font-size:21px;}
