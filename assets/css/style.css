@@ -461,7 +461,7 @@ body.menu-open-lock{overflow:hidden;}
 /* Responsive                                                         */
 /* ------------------------------------------------------------------ */
 @media (max-width:1450px){
-  .container{padding:0 30px;}
+  .container{padding:0 40px;}
 }
 @media (max-width:900px){
   .hero{height:520px;}
