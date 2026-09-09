@@ -79,9 +79,9 @@ $hero_image_path = asset(setting('hero_image', 'assets/img/hero.jpg'));
 $hero_video_path = setting('hero_video');
 $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'video/quicktime'][strtolower(pathinfo($hero_video_path, PATHINFO_EXTENSION))] ?? 'video/mp4';
 ?>
-<section class="hero" style="background-image:url('<?= e($hero_image_path) ?>');">
+<section class="hero"<?php if (!$hero_video_path): ?> style="background-image:url('<?= e($hero_image_path) ?>');"<?php endif; ?>>
   <?php if ($hero_video_path): ?>
-    <video class="hero-video" autoplay muted loop playsinline poster="<?= e($hero_image_path) ?>">
+    <video class="hero-video" autoplay muted loop playsinline preload="auto">
       <source src="<?= e(asset($hero_video_path)) ?>" type="<?= e($hero_video_mime) ?>">
     </video>
   <?php endif; ?>
