@@ -250,6 +250,7 @@ body.menu-open-lock{overflow:hidden;}
   margin:0 0 0 auto;
   max-width:1000px;
   width:100%;
+  mix-blend-mode:multiply;
 }
 
 /* ------------------------------------------------------------------ */
