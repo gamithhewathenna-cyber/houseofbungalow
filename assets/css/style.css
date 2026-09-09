@@ -187,7 +187,7 @@ body.menu-open-lock{overflow:hidden;}
 /* Intro (left aligned column)                                        */
 /* ------------------------------------------------------------------ */
 .intro{padding:70px 0 20px;}
-.intro-inner{max-width:var(--text-col);}
+.intro-inner{max-width:var(--content);}
 .intro h1{
   font-family:var(--serif);
   font-weight:300;
@@ -219,7 +219,7 @@ body.menu-open-lock{overflow:hidden;}
   line-height:1.45;
   color:var(--ink-soft);
   margin:0 0 26px;
-  max-width:960px;
+  max-width:1400px;
 }
 .intro p.tight{margin-bottom:2px;}
 .intro p.gap-top{margin-top:34px;}
