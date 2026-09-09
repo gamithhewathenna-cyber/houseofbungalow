@@ -17,19 +17,25 @@ include __DIR__ . '/layout.php';
 
 <h2 style="font-size:15px;margin:0 0 12px;color:#5a544e;">Edit Home Page Content</h2>
 <div class="dash-links">
-  <a href="section.php?s=header">Header &amp; Nav</a>
-  <a href="section.php?s=hero">Hero Image</a>
-  <a href="section.php?s=intro">Intro</a>
-  <a href="spaces.php">Three Spaces</a>
-  <a href="section.php?s=door">The Door</a>
-  <a href="section.php?s=mood">Every Mood</a>
-  <a href="section.php?s=whatson">What's On</a>
-  <a href="section.php?s=events">Private Events</a>
-  <a href="footer.php">Footer &amp; Nav</a>
-  <a href="brands.php">Brand Logos</a>
-  <a href="section.php?s=website">Website Settings</a>
-  <a href="subscribers.php">Subscribers</a>
+  <a href="homepage.php?tab=header">Header &amp; Nav</a>
+  <a href="homepage.php?tab=hero">Hero Image</a>
+  <a href="homepage.php?tab=intro">Intro</a>
+  <a href="homepage.php?tab=spaces">Three Spaces</a>
+  <a href="homepage.php?tab=door">The Door</a>
+  <a href="homepage.php?tab=mood">Every Mood</a>
+  <a href="homepage.php?tab=whatson">What's On</a>
+  <a href="homepage.php?tab=events">Private Events</a>
+  <a href="homepage.php?tab=footer">Footer &amp; Nav</a>
+  <a href="homepage.php?tab=brands">Brand Logos</a>
 </div>
 
-<p class="muted" style="margin-top:24px;">Welcome back. Use the sidebar or the links above to manage each section of the Home page. All changes appear on the live site immediately.</p>
+<h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">System</h2>
+<div class="dash-links">
+  <a href="section.php?s=website">Website Settings</a>
+  <a href="users.php">Admin Users</a>
+  <a href="subscribers.php">Subscribers</a>
+  <a href="account.php">Account</a>
+</div>
+
+<p class="muted" style="margin-top:24px;">Welcome back. Use the sidebar or the links above to manage the site. All changes appear on the live site immediately.</p>
 <?php include __DIR__ . '/layout_end.php'; ?>
