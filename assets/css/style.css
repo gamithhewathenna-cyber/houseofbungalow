@@ -234,7 +234,7 @@ body.menu-open-lock{overflow:hidden;}
   font-size:17px;
   letter-spacing:1.5px;
   color:var(--maroon);
-  padding:10px 18px;
+  padding:10px 20px;
   border-bottom:1px solid var(--maroon);
   display:inline-block;
   transition:background-color .2s ease, color .2s ease;
