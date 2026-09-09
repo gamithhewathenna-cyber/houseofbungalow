@@ -477,8 +477,8 @@ body.menu-open-lock{overflow:hidden;}
   line-height:1.45;color:var(--ink-soft);margin:0 0 20px;
 }
 .page-hero-intro p{
-  font-family:var(--sans);font-weight:300;font-size:19px;
-  line-height:1.5;color:var(--ink-soft);margin:0 0 10px;
+  font-family:var(--sans);font-weight:400;font-size:15px;
+  line-height:1.65;color:var(--ink-soft);margin:0 0 10px;
 }
 .page-hero-intro .btn-wrap{margin-top:26px;}
 
