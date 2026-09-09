@@ -234,9 +234,14 @@ body.menu-open-lock{overflow:hidden;}
   font-size:17px;
   letter-spacing:1.5px;
   color:var(--maroon);
-  padding-bottom:10px;
+  padding:6px 4px 10px;
   border-bottom:1px solid var(--maroon);
   display:inline-block;
+  transition:background-color .2s ease, color .2s ease;
+}
+.link-underline:hover{
+  background:#620E15;
+  color:#fff;
 }
 
 /* ------------------------------------------------------------------ */
