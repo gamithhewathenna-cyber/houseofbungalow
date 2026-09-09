@@ -460,6 +460,10 @@ body.menu-open-lock{overflow:hidden;}
 /* ------------------------------------------------------------------ */
 /* Responsive                                                         */
 /* ------------------------------------------------------------------ */
+@media (max-width:1024px){
+  .container{padding:0 40px;}
+  .site-header .container{padding:0 40px;}
+}
 @media (max-width:900px){
   .hero{height:520px;}
   .intro h1{font-size:41px;}
