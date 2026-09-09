@@ -396,11 +396,11 @@ body.menu-open-lock{overflow:hidden;}
   font-weight:400;margin-top:5px;
 }
 .newsletter-heading{
-  font-family:var(--serif);font-weight:500;font-size:32px;
+  font-family:var(--serif);font-weight:500;font-size:27px;
   color:var(--ink);margin:0 0 10px;
 }
 .newsletter-sub{
-  font-family:var(--sans);font-weight:300;font-size:19px;
+  font-family:var(--sans);font-weight:300;font-size:16px;
   letter-spacing:.6px;color:var(--ink-soft);margin:0 0 26px;
 }
 .newsletter-form{
