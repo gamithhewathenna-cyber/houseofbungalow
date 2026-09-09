@@ -78,7 +78,8 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('nav_link_2_label','RESERVE','header','Nav link 2 label','text',3),
 ('nav_link_2_url','#','header','Nav link 2 URL','text',4),
 -- Hero
-('hero_image','assets/img/hero.jpg','hero','Hero background image','image',1),
+('hero_image','assets/img/hero.jpg','hero','Hero background image (used as video poster / fallback)','image',1),
+('hero_video','','hero','Hero background video (mp4/webm, ideally 1280×720)','video',2),
 -- Intro
 ('intro_heading','One Address. Every Mood.','intro','Intro heading','text',1),
 ('intro_subheading','Café. Restaurant. Late nights.','intro','Intro subheading','text',2),

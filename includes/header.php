@@ -74,4 +74,15 @@ if (setting('maintenance_mode', '0') === '1') {
   </div>
 </header>
 
-<section class="hero" style="background-image:url('<?= e(asset(setting('hero_image','assets/img/hero.jpg'))) ?>');"></section>
+<?php
+$hero_image_path = asset(setting('hero_image', 'assets/img/hero.jpg'));
+$hero_video_path = setting('hero_video');
+$hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'video/quicktime'][strtolower(pathinfo($hero_video_path, PATHINFO_EXTENSION))] ?? 'video/mp4';
+?>
+<section class="hero" style="background-image:url('<?= e($hero_image_path) ?>');">
+  <?php if ($hero_video_path): ?>
+    <video class="hero-video" autoplay muted loop playsinline poster="<?= e($hero_image_path) ?>">
+      <source src="<?= e(asset($hero_video_path)) ?>" type="<?= e($hero_video_mime) ?>">
+    </video>
+  <?php endif; ?>
+</section>

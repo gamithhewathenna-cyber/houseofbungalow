@@ -99,15 +99,25 @@ a{color:inherit;text-decoration:none;}
 .hero{
   position:relative;
   height:720px;
+  overflow:hidden;
   background-position:center 30%;
   background-size:cover;
   background-repeat:no-repeat;
+}
+.hero-video{
+  position:absolute;
+  top:0;left:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:center 30%;
+  z-index:0;
 }
 .hero::before{
   content:'';
   position:absolute;
   top:0;left:0;right:0;
   height:320px;
+  z-index:1;
   background:linear-gradient(to bottom, rgba(0,0,0,.7), rgba(0,0,0,0));
   pointer-events:none;
 }
