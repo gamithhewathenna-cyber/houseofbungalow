@@ -83,7 +83,7 @@ a{color:inherit;text-decoration:none;}
   color:#fff;
   background:transparent;
   font-family:var(--sans);
-  font-size:21px;
+  font-size:17px;
   letter-spacing:2px;
   font-weight:400;
   padding:12px 22px 10px;
@@ -98,11 +98,11 @@ a{color:inherit;text-decoration:none;}
   border-bottom-color:var(--ink);
 }
 .nav-toggle{
-  width:46px;height:28px;
+  width:38px;height:22px;
   display:flex;flex-direction:column;justify-content:space-between;
   background:none;border:0;cursor:pointer;padding:0;margin-left:10px;
 }
-.nav-toggle span{display:block;height:2px;background:#fff;width:100%;}
+.nav-toggle span{display:block;height:1.5px;background:#fff;width:100%;}
 
 /* ------------------------------------------------------------------ */
 /* Hero                                                               */
@@ -389,8 +389,8 @@ a{color:inherit;text-decoration:none;}
   .site-header{padding:22px 0;}
   .site-header .container{padding:0 20px;}
   .brand-logo img{height:52px;}
-  .header-nav a{font-size:19px;letter-spacing:1.5px;}
-  .nav-toggle{width:38px;height:24px;}
+  .header-nav a{font-size:15px;letter-spacing:1.5px;}
+  .nav-toggle{width:30px;height:18px;}
   .hero{height:420px;}
   .intro{padding:44px 0 10px;}
   .intro h1{font-size:35px;margin-bottom:26px;}
