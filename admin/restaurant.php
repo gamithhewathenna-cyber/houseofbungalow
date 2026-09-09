@@ -12,7 +12,7 @@ $fieldGroups = [
     'fridaysat' => ['rest_fridaysat_eyebrow', 'rest_fridaysat_heading', 'rest_fridaysat_p1', 'rest_fridaysat_p2', 'rest_fridaysat_btn_label', 'rest_fridaysat_btn_url', 'rest_fridaysat_image'],
     'happyhour' => ['rest_happyhour_eyebrow', 'rest_happyhour_heading', 'rest_happyhour_p1', 'rest_happyhour_hours1', 'rest_happyhour_hours2', 'rest_happyhour_btn_label', 'rest_happyhour_btn_url', 'rest_happyhour_image'],
     'chef'      => ['rest_chef_eyebrow', 'rest_chef_name', 'rest_chef_p1', 'rest_chef_p2', 'rest_chef_p3', 'rest_chef_image'],
-    'hours'     => ['rest_hours_heading', 'rest_hours_lunch', 'rest_hours_dinner', 'rest_hours_fridaysat', 'rest_hours_note', 'rest_hours_btn_label', 'rest_hours_btn_url', 'rest_hours_footnote'],
+    'hours'     => ['rest_hours_heading', 'rest_hours_lunch_label', 'rest_hours_lunch', 'rest_hours_dinner_label', 'rest_hours_dinner', 'rest_hours_fridaysat_label', 'rest_hours_fridaysat', 'rest_hours_note', 'rest_hours_btn_label', 'rest_hours_btn_url', 'rest_hours_footnote'],
 ];
 $menuCats = [
     'brunch'    => 'Brunch',

@@ -197,9 +197,12 @@ while ($i < count($gallery)) {
 <section class="hours-block reveal">
   <div class="container">
     <h2><?= e(setting('rest_hours_heading', 'Restaurant Hours')) ?></h2>
-    <?php if (setting('rest_hours_lunch')): ?><p class="hours-line"><?= e(setting('rest_hours_lunch')) ?></p><?php endif; ?>
-    <?php if (setting('rest_hours_dinner')): ?><p class="hours-line"><?= e(setting('rest_hours_dinner')) ?></p><?php endif; ?>
-    <?php if (setting('rest_hours_fridaysat')): ?><p class="hours-line"><?= e(setting('rest_hours_fridaysat')) ?></p><?php endif; ?>
+    <?php if (setting('rest_hours_lunch')): ?><p class="hours-line"><strong><?= e(setting('rest_hours_lunch_label', 'Lunch')) ?></strong> <?= e(setting('rest_hours_lunch')) ?></p><?php endif; ?>
+    <?php if (setting('rest_hours_dinner')): ?><p class="hours-line"><strong><?= e(setting('rest_hours_dinner_label', 'Dinner')) ?></strong> <?= e(setting('rest_hours_dinner')) ?></p><?php endif; ?>
+    <?php if (setting('rest_hours_fridaysat') || setting('rest_hours_note')): ?>
+      <hr class="hours-divider">
+    <?php endif; ?>
+    <?php if (setting('rest_hours_fridaysat')): ?><p class="hours-line"><strong><?= e(setting('rest_hours_fridaysat_label', 'Friday & Saturday')) ?></strong> <?= e(setting('rest_hours_fridaysat')) ?></p><?php endif; ?>
     <?php if (setting('rest_hours_note')): ?><p class="hours-note"><?= e(setting('rest_hours_note')) ?></p><?php endif; ?>
     <?php if (setting('rest_hours_btn_label')): ?>
       <div class="btn-wrap">
