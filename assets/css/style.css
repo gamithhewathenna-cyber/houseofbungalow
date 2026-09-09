@@ -356,7 +356,7 @@ body.menu-open-lock{overflow:hidden;}
 .footer-nav{
   font-family:var(--sans);
   font-weight:300;
-  font-size:19px;
+  font-size:15px;
   letter-spacing:.6px;
   color:var(--ink);
   margin:0 auto 26px;
@@ -368,7 +368,7 @@ body.menu-open-lock{overflow:hidden;}
   content:"|";position:absolute;right:-3px;color:var(--ink-mute);
 }
 .footer-address{
-  font-family:var(--sans);font-weight:300;font-size:19px;
+  font-family:var(--sans);font-weight:300;font-size:15px;
   letter-spacing:.8px;color:var(--ink);margin:0 0 40px;
 }
 .brands{
@@ -464,7 +464,7 @@ body.menu-open-lock{overflow:hidden;}
   .intro-actions{gap:34px;flex-wrap:wrap;}
   .section h2,.spaces h2,.textblock h2{font-size:33px;}
   .building img{max-width:100%;}
-  .footer-nav{font-size:16px;}
+  .footer-nav{font-size:13px;}
   .footer-nav a{padding:0 6px;}
   .brands{gap:24px;}
   .brands .brand{font-size:21px;}
