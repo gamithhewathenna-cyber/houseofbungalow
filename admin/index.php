@@ -31,6 +31,7 @@ include __DIR__ . '/layout.php';
 
 <h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">Edit Restaurant &amp; Menus</h2>
 <div class="dash-links">
+  <a href="restaurant.php?tab=herovideo">Hero Video</a>
   <a href="restaurant.php?tab=hero">Hero &amp; Intro</a>
   <a href="restaurant.php?tab=food">The Food</a>
   <a href="restaurant.php?tab=menu">Menu</a>

@@ -4,7 +4,8 @@ require_login();
 require_once __DIR__ . '/helpers.php';
 
 $fieldGroups = [
-    'hero'      => ['rest_hero_image', 'rest_hero_video', 'rest_heading', 'rest_subheading', 'rest_lede', 'rest_intro_p1', 'rest_intro_p2', 'rest_intro_btn_label', 'rest_intro_btn_url'],
+    'herovideo' => ['rest_hero_video'],
+    'hero'      => ['rest_heading', 'rest_subheading', 'rest_lede', 'rest_intro_p1', 'rest_intro_p2', 'rest_intro_btn_label', 'rest_intro_btn_url'],
     'food'      => ['rest_food_eyebrow', 'rest_food_heading', 'rest_food_p1', 'rest_food_p2', 'rest_food_image'],
     'menu'      => ['rest_menu_heading', 'rest_menu_lede'],
     'room'      => ['rest_room_eyebrow', 'rest_room_heading', 'rest_room_p1', 'rest_room_p2', 'rest_room_image'],
@@ -144,6 +145,7 @@ foreach ($menuCats as $cat => $label) {
 $gallery = db()->query("SELECT * FROM blocks WHERE block_type='rest_gallery' ORDER BY sort ASC, id ASC")->fetchAll();
 
 $tabs = [
+    'herovideo' => 'Hero Video',
     'hero'      => 'Hero & Intro',
     'food'      => 'The Food',
     'menu'      => 'Menu',
