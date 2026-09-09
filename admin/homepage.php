@@ -196,6 +196,7 @@ function render_setting_field(array $f): void
     <?php
 }
 
+$hiddenFields = ['hero' => ['hero_image']];
 $csrf = csrf_token();
 $page_title = 'Home Page';
 include __DIR__ . '/layout.php';
@@ -215,7 +216,10 @@ include __DIR__ . '/layout.php';
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
       <input type="hidden" name="action" value="save_section">
       <input type="hidden" name="section" value="<?= e($key) ?>">
-      <?php foreach ($fieldsBySection[$key] ?? [] as $f): render_setting_field($f); endforeach; ?>
+      <?php foreach ($fieldsBySection[$key] ?? [] as $f):
+          if (in_array($f['skey'], $hiddenFields[$key] ?? [], true)) continue;
+          render_setting_field($f);
+      endforeach; ?>
       <div class="form-actions"><button type="submit" class="btn">Save Changes</button></div>
     </form>
   </div>
