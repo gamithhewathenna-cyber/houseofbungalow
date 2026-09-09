@@ -59,7 +59,7 @@ if (setting('maintenance_mode', '0') === '1') {
 </head>
 <body>
 
-<header class="site-header">
+<header class="site-header" id="siteHeader">
   <div class="container">
     <a class="brand-logo" href="<?= e(url('index.php')) ?>" aria-label="<?= e(SITE_NAME) ?>">
       <img src="<?= e(asset(setting('logo_white', 'assets/img/logo-white.png'))) ?>" alt="<?= e(SITE_NAME) ?>">
@@ -67,12 +67,51 @@ if (setting('maintenance_mode', '0') === '1') {
     <nav class="header-nav">
       <a href="<?= e(url(setting('nav_link_1_url','#'))) ?>"><?= e(setting('nav_link_1_label','VIP')) ?></a>
       <a href="<?= e(url(setting('nav_link_2_url','#'))) ?>"><?= e(setting('nav_link_2_label','RESERVE')) ?></a>
-      <button class="nav-toggle" aria-label="Menu" onclick="return false;">
+      <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
         <span></span><span></span><span></span>
       </button>
     </nav>
   </div>
 </header>
+
+<nav class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu-links">
+    <a href="#">HOME</a>
+    <a href="#">RESTAURANT &amp; MENUS</a>
+    <a href="#">BELOW</a>
+    <a href="#">WHAT'S ON</a>
+    <a href="#">BRUNCH</a>
+    <a href="#">DINNER PARTY</a>
+    <a href="#">PRIVATE EVENTS</a>
+    <a href="#">CAFÉ</a>
+    <a href="#">FAQs</a>
+  </div>
+</nav>
+
+<script>
+(function () {
+  var toggle = document.getElementById('navToggle');
+  var menu = document.getElementById('mobileMenu');
+  var header = document.getElementById('siteHeader');
+  if (!toggle || !menu || !header) return;
+
+  function setMenu(open) {
+    menu.classList.toggle('is-open', open);
+    header.classList.toggle('menu-open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    menu.setAttribute('aria-hidden', open ? 'false' : 'true');
+    document.body.classList.toggle('menu-open-lock', open);
+  }
+
+  toggle.addEventListener('click', function () {
+    setMenu(!menu.classList.contains('is-open'));
+  });
+
+  menu.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () { setMenu(false); });
+  });
+})();
+</script>
 
 <?php
 $hero_image_path = asset(setting('hero_image', 'assets/img/hero.jpg'));
