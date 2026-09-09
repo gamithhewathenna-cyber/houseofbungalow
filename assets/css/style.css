@@ -335,7 +335,7 @@ body.menu-open-lock{overflow:hidden;}
 .textblock h2{margin:0 0 26px;}
 .textblock p{
   font-family:var(--sans);font-weight:300;font-size:20px;line-height:1.75;
-  color:var(--ink-soft);margin:0 auto 10px;max-width:770px;
+  color:var(--ink-soft);margin:0 auto 10px;max-width:800px;
 }
 .textblock .btn-wrap{margin-top:40px;}
 
