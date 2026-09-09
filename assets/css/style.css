@@ -1,0 +1,379 @@
+/* =====================================================================
+   House of Bungalow — Home Page styles
+   Palette:
+     cream      #F2E8DE
+     ink        #545355
+     ink-soft   #7d7873
+     ink-mute   #928d88
+     maroon     #620E15
+     dark card  #0d0b0a
+   Fonts:
+     Cormorant Garamond  — headings & italic body serif
+     Jost                — nav / buttons / small caps sans
+   ===================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap');
+
+:root{
+  --cream:#F2E8DE;
+  --ink:#545355;
+  --ink-soft:#7d7873;
+  --ink-mute:#948f8a;
+  --maroon:#620E15;
+  --dark:#0d0b0a;
+  --serif:'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --sans:'Jost', 'Helvetica Neue', Arial, sans-serif;
+  --content:1160px;
+  --text-col:1000px;
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:var(--serif);
+  font-size:18px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+
+.container{
+  width:100%;
+  max-width:var(--content);
+  margin:0 auto;
+  padding:0 24px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Header                                                             */
+/* ------------------------------------------------------------------ */
+.site-header{
+  position:absolute;
+  top:0;left:0;right:0;
+  z-index:20;
+  padding:34px 0;
+}
+.site-header .container{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+}
+.brand-logo{
+  grid-column:2;
+  display:flex;
+  justify-content:center;
+}
+.brand-logo img{height:58px;width:auto;}
+.header-nav{
+  grid-column:3;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:44px;
+}
+.header-nav a{
+  color:#fff;
+  font-family:var(--sans);
+  font-size:12px;
+  letter-spacing:2px;
+  font-weight:400;
+  padding-bottom:8px;
+  border-bottom:1px solid rgba(255,255,255,.7);
+  white-space:nowrap;
+}
+.nav-toggle{
+  width:34px;height:20px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  background:none;border:0;cursor:pointer;padding:0;margin-left:6px;
+}
+.nav-toggle span{display:block;height:1.5px;background:#fff;width:100%;}
+
+/* ------------------------------------------------------------------ */
+/* Hero                                                               */
+/* ------------------------------------------------------------------ */
+.hero{
+  height:720px;
+  background-position:center 30%;
+  background-size:cover;
+  background-repeat:no-repeat;
+}
+
+/* ------------------------------------------------------------------ */
+/* Intro (left aligned column)                                        */
+/* ------------------------------------------------------------------ */
+.intro{padding:70px 0 20px;}
+.intro-inner{max-width:var(--text-col);}
+.intro h1{
+  font-weight:500;
+  font-size:41px;
+  line-height:1.1;
+  color:var(--ink);
+  margin:0 0 40px;
+  letter-spacing:.2px;
+}
+.intro .subheading{
+  font-weight:500;
+  font-size:25px;
+  color:var(--ink);
+  margin:0 0 4px;
+}
+.intro .address{
+  font-weight:400;
+  font-size:21px;
+  color:var(--ink);
+  margin:0 0 42px;
+}
+.intro p{
+  font-style:italic;
+  font-weight:400;
+  font-size:22px;
+  line-height:1.45;
+  color:var(--ink-soft);
+  margin:0 0 26px;
+  max-width:960px;
+}
+.intro p.tight{margin-bottom:2px;}
+.intro p.gap-top{margin-top:34px;}
+
+.intro-actions{
+  display:flex;
+  gap:60px;
+  margin-top:44px;
+}
+.link-underline{
+  font-family:var(--sans);
+  font-size:12.5px;
+  letter-spacing:1.5px;
+  color:var(--maroon);
+  padding-bottom:10px;
+  border-bottom:1px solid var(--maroon);
+  display:inline-block;
+}
+
+/* ------------------------------------------------------------------ */
+/* Building illustration                                              */
+/* ------------------------------------------------------------------ */
+.building{
+  padding:40px 0 10px;
+  text-align:center;
+}
+.building img{
+  margin:0 auto;
+  max-width:760px;
+  width:100%;
+  mix-blend-mode:multiply;
+}
+
+/* ------------------------------------------------------------------ */
+/* Centered section shell (used by several blocks)                    */
+/* ------------------------------------------------------------------ */
+.section{padding:60px 0;text-align:center;}
+.section h2{
+  font-weight:500;
+  font-size:33px;
+  color:var(--ink);
+  margin:0 0 20px;
+  letter-spacing:.3px;
+}
+.section .lede,
+.section p{
+  font-family:var(--sans);
+  font-weight:300;
+  font-size:15px;
+  line-height:1.7;
+  color:var(--ink-soft);
+  margin:0 auto 8px;
+  max-width:760px;
+}
+.section .btn-wrap{margin-top:40px;}
+
+/* ------------------------------------------------------------------ */
+/* Three Spaces cards                                                 */
+/* ------------------------------------------------------------------ */
+.spaces{padding:56px 0 40px;text-align:center;}
+.spaces h2{
+  font-weight:500;font-size:33px;color:var(--ink);margin:0 0 18px;
+}
+.spaces .subheading{
+  font-family:var(--sans);font-weight:300;font-size:15px;
+  color:var(--ink-soft);margin:0 auto 44px;max-width:720px;line-height:1.6;
+}
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+}
+.card{
+  position:relative;
+  aspect-ratio:1/1.06;
+  overflow:hidden;
+  display:block;
+}
+.card img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+}
+.card .card-label{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-family:var(--serif);
+  font-weight:500;
+  font-size:29px;
+  letter-spacing:1px;
+  text-shadow:0 1px 12px rgba(0,0,0,.35);
+}
+
+/* ------------------------------------------------------------------ */
+/* Door / Mood / What's On / Events — centered text blocks            */
+/* ------------------------------------------------------------------ */
+.textblock{padding:66px 0;text-align:center;}
+.textblock h2{
+  font-weight:500;font-size:33px;color:var(--ink);margin:0 0 26px;letter-spacing:.3px;
+}
+.textblock p{
+  font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.75;
+  color:var(--ink-soft);margin:0 auto 10px;max-width:770px;
+}
+.textblock .btn-wrap{margin-top:40px;}
+
+/* ------------------------------------------------------------------ */
+/* Footer                                                             */
+/* ------------------------------------------------------------------ */
+.site-footer{padding:40px 0 30px;text-align:center;}
+.footer-rule{
+  width:64px;height:1px;background:var(--maroon);
+  margin:30px auto 26px;border:0;
+}
+.social{
+  display:flex;justify-content:center;gap:26px;margin-bottom:40px;
+}
+.social a{color:var(--maroon);display:inline-flex;}
+.social svg{width:22px;height:22px;}
+
+.footer-nav{
+  font-family:var(--sans);
+  font-weight:300;
+  font-size:13px;
+  letter-spacing:.6px;
+  color:var(--ink);
+  margin:0 auto 26px;
+  max-width:900px;
+  line-height:2;
+}
+.footer-nav a{padding:0 9px;position:relative;white-space:nowrap;}
+.footer-nav a:not(:last-child)::after{
+  content:"|";position:absolute;right:-3px;color:var(--ink-mute);
+}
+.footer-address{
+  font-family:var(--sans);font-weight:300;font-size:13px;
+  letter-spacing:.8px;color:var(--ink);margin:0 0 40px;
+}
+.brands{
+  display:flex;justify-content:center;align-items:center;
+  gap:52px;flex-wrap:wrap;margin:0 auto 60px;max-width:960px;
+}
+.brands .brand{
+  font-family:var(--serif);
+  color:#9a938c;
+  font-size:20px;
+  letter-spacing:1px;
+  opacity:.85;
+  filter:grayscale(1);
+}
+.brands img{max-height:34px;width:auto;opacity:.6;filter:grayscale(1);}
+
+.footer-logo{margin:0 auto 26px;}
+.footer-logo img{height:66px;width:auto;margin:0 auto;}
+.footer-logo .mark{
+  color:var(--maroon);font-family:var(--serif);font-weight:600;
+  font-size:34px;line-height:.85;
+}
+.footer-logo .mark small{
+  display:block;font-family:var(--sans);font-size:6px;letter-spacing:3px;
+  font-weight:400;margin-top:5px;
+}
+.newsletter-heading{
+  font-family:var(--serif);font-weight:500;font-size:26px;
+  color:var(--ink);margin:0 0 10px;
+}
+.newsletter-sub{
+  font-family:var(--sans);font-weight:300;font-size:13px;
+  letter-spacing:.6px;color:var(--ink-soft);margin:0 0 26px;
+}
+.newsletter-form{
+  max-width:460px;margin:0 auto;
+}
+.newsletter-form .row{display:flex;flex-direction:column;gap:10px;}
+.newsletter-form input[type=email]{
+  font-family:var(--sans);font-size:14px;padding:14px 16px;
+  border:1px solid #d8cabb;background:#fbf6f0;color:var(--ink);
+  border-radius:2px;
+}
+.newsletter-form input[type=email]:focus{outline:1px solid var(--maroon);}
+.btn-maroon{
+  font-family:var(--serif);
+  font-size:20px;
+  color:#f3ece4;
+  background:var(--maroon);
+  border:0;
+  padding:16px 20px;
+  width:100%;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.form-msg{font-family:var(--sans);font-size:13px;margin-top:10px;}
+.form-msg.ok{color:#2e6b34;}
+.form-msg.err{color:var(--maroon);}
+
+.footer-divider{width:100%;height:1px;background:#e0d3c4;border:0;margin:22px 0 24px;}
+.copyright{
+  font-family:var(--sans);font-weight:300;font-size:12px;
+  letter-spacing:1px;color:var(--ink-mute);text-align:center;margin:0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Responsive                                                         */
+/* ------------------------------------------------------------------ */
+@media (max-width:900px){
+  .hero{height:520px;}
+  .intro h1{font-size:34px;}
+  .intro p{font-size:19px;}
+  .cards{grid-template-columns:1fr;gap:18px;}
+  .card{aspect-ratio:16/11;}
+  .header-nav{gap:22px;}
+  .brands{gap:34px;}
+}
+@media (max-width:640px){
+  body{font-size:16px;}
+  .site-header{padding:22px 0;}
+  .brand-logo img{height:44px;}
+  .header-nav a{font-size:11px;letter-spacing:1.5px;}
+  .hero{height:420px;}
+  .intro{padding:44px 0 10px;}
+  .intro h1{font-size:28px;margin-bottom:26px;}
+  .intro .subheading{font-size:21px;}
+  .intro .address{font-size:18px;margin-bottom:30px;}
+  .intro p{font-size:17px;margin-bottom:20px;}
+  .intro-actions{gap:34px;flex-wrap:wrap;}
+  .section h2,.spaces h2,.textblock h2{font-size:27px;}
+  .building img{max-width:100%;}
+  .footer-nav{font-size:12px;}
+  .footer-nav a{padding:0 6px;}
+  .brands{gap:24px;}
+  .brands .brand{font-size:16px;}
+}
+
+/* Hide desktop-only nav labels on very small screens if needed */
+@media (max-width:480px){
+  .header-nav{gap:16px;}
+}
