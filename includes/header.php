@@ -57,7 +57,23 @@ if (setting('maintenance_mode', '0') === '1') {
 }
 </style>
 </head>
-<body>
+<body class="loading-lock">
+
+<div class="page-loader" id="pageLoader" role="status" aria-label="Loading">
+  <img src="<?= e(asset(setting('logo_white', 'assets/img/logo-white.png'))) ?>" alt="<?= e(SITE_NAME) ?>">
+  <div class="loader-bar"></div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var loader = document.getElementById('pageLoader');
+  if (!loader) return;
+  setTimeout(function () {
+    loader.classList.add('loaded');
+    document.body.classList.remove('loading-lock');
+  }, 700);
+});
+</script>
 
 <header class="site-header" id="siteHeader">
   <div class="container">
