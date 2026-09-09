@@ -77,7 +77,7 @@ if (setting('maintenance_mode', '0') === '1') {
 <nav class="mobile-menu" id="mobileMenu" aria-hidden="true">
   <div class="mobile-menu-links">
     <a href="<?= e(url('index.php')) ?>">HOME</a>
-    <a href="<?= e(url('restaurant.php')) ?>">RESTAURANT &amp; MENUS</a>
+    <a href="#">RESTAURANT &amp; MENUS</a>
     <a href="#">BELOW</a>
     <a href="#">WHAT'S ON</a>
     <a href="#">BRUNCH</a>
