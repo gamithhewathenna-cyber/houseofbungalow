@@ -26,7 +26,7 @@ $gallery = blocks('rest_gallery');
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
-<section class="hero" style="height:620px;<?php if (!$rest_hero_video): ?>background-image:url('<?= e($rest_hero_image) ?>');<?php endif; ?>">
+<section class="hero"<?php if (!$rest_hero_video): ?> style="background-image:url('<?= e($rest_hero_image) ?>');"<?php endif; ?>>
   <?php if ($rest_hero_video): ?>
     <video class="hero-video" autoplay muted loop playsinline preload="auto">
       <source src="<?= e(asset($rest_hero_video)) ?>" type="<?= e($rest_hero_video_mime) ?>">
