@@ -23,6 +23,16 @@ foreach ($menu_tabs as $key => $label) {
 }
 
 $gallery = blocks('rest_gallery');
+
+// Group photos into alternating rows of 3 (wide middle) then 2 (equal), repeating.
+$gallery_rows = [];
+$i = 0; $take3 = true;
+while ($i < count($gallery)) {
+    $take = $take3 ? 3 : 2;
+    $gallery_rows[] = array_slice($gallery, $i, $take);
+    $i += $take;
+    $take3 = !$take3;
+}
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
@@ -203,8 +213,14 @@ $gallery = blocks('rest_gallery');
 <section class="rest-gallery reveal">
   <div class="container">
     <div class="gallery-grid">
-      <?php foreach ($gallery as $g): ?>
-        <img src="<?= e(asset($g['image'])) ?>" alt="<?= e($g['title'] ?: SITE_NAME) ?>">
+      <?php foreach ($gallery_rows as $row): ?>
+        <div class="gallery-row gallery-row-<?= count($row) ?>">
+          <?php foreach ($row as $g): ?>
+            <div class="gallery-item">
+              <img src="<?= e(asset($g['image'])) ?>" alt="<?= e($g['title'] ?: SITE_NAME) ?>">
+            </div>
+          <?php endforeach; ?>
+        </div>
       <?php endforeach; ?>
     </div>
   </div>
