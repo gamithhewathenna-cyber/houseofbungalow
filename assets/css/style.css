@@ -435,6 +435,11 @@ body.menu-open-lock{overflow:hidden;}
   font-family:var(--sans);font-weight:300;font-size:13px;
   letter-spacing:1px;color:var(--ink-mute);text-align:center;margin:0;
 }
+.footer-disclaimer{
+  font-family:var(--sans);font-weight:300;font-size:11px;
+  letter-spacing:.3px;color:var(--ink-mute);text-align:center;
+  max-width:640px;margin:12px auto 0;line-height:1.6;
+}
 
 /* ------------------------------------------------------------------ */
 /* Responsive                                                         */

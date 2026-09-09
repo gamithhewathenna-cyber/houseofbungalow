@@ -129,6 +129,7 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('newsletter_sub','NEWS, EVENTS, NEW MENUS, GUEST DJS AND WHAT''S HAPPENING NEXT.','footer','Newsletter subtext','text',6),
 ('newsletter_btn','Join our Newsletters','footer','Newsletter button label','text',7),
 ('copyright','© HOUSE OF BUNGALOW @2025. ALL RIGHTS RESERVED.','footer','Copyright','text',8),
+('footer_disclaimer','Disclaimer: Images shown are 3D architectural renderings for illustrative purposes only. Final finishes, furnishings, colours and design details may vary.','footer','Disclaimer (below copyright)','textarea',9),
 -- Website Settings
 ('logo_white','assets/img/logo-white.png','website','White Logo (header)','image',1),
 ('logo_colour','assets/img/logo-maroon.png','website','Colour Logo (footer)','image',2),

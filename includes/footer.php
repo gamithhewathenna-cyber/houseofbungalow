@@ -65,6 +65,9 @@ $msg        = $_GET['sub'] ?? '';
 
     <hr class="footer-divider">
     <p class="copyright"><?= e(setting('copyright')) ?></p>
+    <?php if (setting('footer_disclaimer')): ?>
+      <p class="footer-disclaimer"><?= e(setting('footer_disclaimer')) ?></p>
+    <?php endif; ?>
   </div>
 </footer>
 
