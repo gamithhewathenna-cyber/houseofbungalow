@@ -16,7 +16,7 @@ $fieldGroups = [
 ];
 $menuCats = [
     'brunch'    => 'Brunch',
-    'dinner'    => 'Dinner Menu',
+    'dinner'    => 'Drink Menu',
     'dessert'   => 'Desert',
     'cocktails' => 'Cocktails',
     'wine'      => 'Wine',
