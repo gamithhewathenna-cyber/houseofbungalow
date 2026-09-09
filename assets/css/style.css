@@ -489,18 +489,18 @@ body.menu-open-lock{overflow:hidden;}
 .split-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  align-items:stretch;
+  align-items:center;
   gap:28px;
-  min-height:480px;
 }
 .split-copy{
   background:#ede1d2;
   display:flex;
   flex-direction:column;
   justify-content:center;
+  align-self:stretch;
   padding:70px 65px;
 }
-.split-media{overflow:hidden;}
+.split-media{aspect-ratio:3/2;overflow:hidden;}
 .split-media img{width:100%;height:100%;object-fit:cover;display:block;}
 .split-copy .eyebrow{
   font-family:var(--serif);font-weight:400;font-style:normal;font-size:27px;
