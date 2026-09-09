@@ -27,6 +27,7 @@ include __DIR__ . '/layout.php';
   <a href="section.php?s=events">Private Events</a>
   <a href="footer.php">Footer &amp; Nav</a>
   <a href="brands.php">Brand Logos</a>
+  <a href="section.php?s=website">Website Settings</a>
   <a href="subscribers.php">Subscribers</a>
 </div>
 

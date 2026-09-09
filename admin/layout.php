@@ -24,6 +24,7 @@ $nav = [
     'section.php?s=events'  => 'Private Events',
     'footer.php'      => 'Footer & Nav',
     'brands.php'      => 'Brand Logos',
+    'section.php?s=website' => 'Website Settings',
     'subscribers.php' => 'Subscribers',
     'account.php'     => 'Account',
 ];
