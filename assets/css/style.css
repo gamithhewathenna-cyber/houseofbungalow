@@ -280,9 +280,15 @@ body.menu-open-lock{overflow:hidden;}
 /* Three Spaces cards                                                 */
 /* ------------------------------------------------------------------ */
 .spaces{padding:56px 0 40px;text-align:center;}
-.spaces h2{
-  font-family:var(--serif);font-weight:300;font-size:40px;color:var(--ink);margin:0 0 18px;
+.spaces h2,
+.textblock h2{
+  font-family:var(--serif);
+  font-weight:500;
+  font-size:40px;
+  color:var(--ink);
+  letter-spacing:.3px;
 }
+.spaces h2{margin:0 0 18px;}
 .spaces .subheading{
   font-family:var(--sans);font-weight:300;font-size:20px;
   color:var(--ink-soft);margin:0 auto 44px;max-width:720px;line-height:1.6;
@@ -321,9 +327,7 @@ body.menu-open-lock{overflow:hidden;}
 /* Door / Mood / What's On / Events — centered text blocks            */
 /* ------------------------------------------------------------------ */
 .textblock{padding:66px 0;text-align:center;}
-.textblock h2{
-  font-family:var(--serif);font-weight:500;font-size:40px;color:var(--ink);margin:0 0 26px;letter-spacing:.3px;
-}
+.textblock h2{margin:0 0 26px;}
 .textblock p{
   font-family:var(--sans);font-weight:300;font-size:20px;line-height:1.75;
   color:var(--ink-soft);margin:0 auto 10px;max-width:770px;
