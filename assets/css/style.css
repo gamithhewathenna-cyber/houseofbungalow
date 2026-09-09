@@ -404,7 +404,7 @@ body.menu-open-lock{overflow:hidden;}
   letter-spacing:.6px;color:var(--ink-soft);margin:0 0 26px;
 }
 .newsletter-form{
-  max-width:460px;margin:0 auto;
+  max-width:320px;margin:0 auto;
 }
 .newsletter-form .row{display:flex;flex-direction:column;gap:10px;}
 .newsletter-form input[type=email]{
