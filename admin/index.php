@@ -65,6 +65,15 @@ include __DIR__ . '/layout.php';
   <a href="whatson.php?tab=faqs">FAQs</a>
 </div>
 
+<h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">Edit Brunch</h2>
+<div class="dash-links">
+  <a href="brunch.php?tab=herovideo">Hero Video</a>
+  <a href="brunch.php?tab=intro">Intro</a>
+  <a href="brunch.php?tab=gallery">Gallery</a>
+  <a href="brunch.php?tab=menu">Menu</a>
+  <a href="brunch.php?tab=guest">Guest Artists</a>
+</div>
+
 <h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">Week's Line-Up</h2>
 <div class="dash-links">
   <a href="lineup.php">Manage This Week's Line-Up</a>
