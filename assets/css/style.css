@@ -687,6 +687,23 @@ body.menu-open-lock{overflow:hidden;}
 
 /* Full-width horizontal scroller of DJ cards, navigated by arrows */
 .dj-carousel{position:relative;padding:0 56px;}
+.dj-carousel::before,
+.dj-carousel::after{
+  content:'';
+  position:absolute;
+  top:0;bottom:0;
+  width:120px;
+  z-index:1;
+  pointer-events:none;
+}
+.dj-carousel::before{
+  left:0;
+  background:linear-gradient(to right, rgba(13,11,10,.9), rgba(13,11,10,0));
+}
+.dj-carousel::after{
+  right:0;
+  background:linear-gradient(to left, rgba(13,11,10,.9), rgba(13,11,10,0));
+}
 .dj-scroller{
   width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;
   scroll-snap-type:x proximity;
@@ -786,6 +803,7 @@ body.menu-open-lock{overflow:hidden;}
   .chef-copy .chef-name{font-size:32px;}
   .night-row-3,.night-row-2{grid-template-columns:1fr 1fr;max-width:none;}
   .dj-carousel{padding:0 44px;}
+  .dj-carousel::before,.dj-carousel::after{width:70px;}
   .dj-card{flex-basis:260px;}
   .maroon-band h1,.maroon-band h2{font-size:32px;}
 }
@@ -821,6 +839,7 @@ body.menu-open-lock{overflow:hidden;}
   .trio-grid{grid-template-columns:1fr;gap:12px;}
   .night-row-3,.night-row-2{grid-template-columns:1fr;}
   .dj-carousel{padding:0 34px;}
+  .dj-carousel::before,.dj-carousel::after{width:44px;}
   .dj-row{gap:14px;}
   .dj-card{flex-basis:220px;}
   .dj-arrow{width:36px;height:36px;font-size:19px;}
