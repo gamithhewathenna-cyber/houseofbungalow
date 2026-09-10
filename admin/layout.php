@@ -19,6 +19,7 @@ $mainNav = [
     ['href' => 'below.php',       'label' => 'Below',              'icon' => 'moon'],
     ['href' => 'whatson.php',     'label' => "What's On",          'icon' => 'ticket'],
     ['href' => 'brunch.php',      'label' => 'Brunch',             'icon' => 'coffee'],
+    ['href' => 'dinnerparty.php', 'label' => 'Dinner Party',       'icon' => 'glass'],
     ['href' => 'lineup.php',      'label' => "Week's Line-Up",     'icon' => 'calendar'],
     ['href' => 'subscribers.php', 'label' => 'Subscribers',        'icon' => 'mail'],
 ];
@@ -42,6 +43,7 @@ function nav_icon(string $key): void
         'calendar' => '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
         'ticket' => '<path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4V8Z"/><path d="M13 6v2M13 11v2M13 16v2"/>',
         'coffee' => '<path d="M4 9h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9Z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M7 2c0 1.2-1 1.3-1 2.5S7 6.3 7 7.5M11 2c0 1.2-1 1.3-1 2.5S11 6.3 11 7.5"/>',
+        'glass' => '<path d="M5 3h14l-2.2 9.2a4.8 4.8 0 0 1-9.6 0L5 3Z"/><path d="M12 15v6M8 21h8"/>',
     ];
     echo '<svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' . ($icons[$key] ?? '') . '</svg>';
 }

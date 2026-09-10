@@ -74,6 +74,15 @@ include __DIR__ . '/layout.php';
   <a href="brunch.php?tab=guest">Guest Artists</a>
 </div>
 
+<h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">Edit Dinner Party</h2>
+<div class="dash-links">
+  <a href="dinnerparty.php?tab=herovideo">Hero Video</a>
+  <a href="dinnerparty.php?tab=intro">Intro</a>
+  <a href="dinnerparty.php?tab=gallery">Gallery</a>
+  <a href="dinnerparty.php?tab=menu">Menu</a>
+  <a href="dinnerparty.php?tab=guest">Guest Artists</a>
+</div>
+
 <h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">Week's Line-Up</h2>
 <div class="dash-links">
   <a href="lineup.php">Manage This Week's Line-Up</a>
