@@ -155,7 +155,7 @@ while ($i < count($nights)) {
 </script>
 
 <!-- Guest Artists -------------------------------------------------------- -->
-<section class="split-section reveal">
+<section class="split-section guest-section reveal">
   <div class="container">
     <div class="split-grid">
       <div class="split-media">
