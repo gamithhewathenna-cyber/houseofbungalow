@@ -8,7 +8,6 @@ $fieldGroups = [
     'intro'     => ['below_heading', 'below_subheading', 'below_lede', 'below_intro_p1', 'below_intro_p2', 'below_intro_btn1_label', 'below_intro_btn1_url', 'below_intro_btn2_label', 'below_intro_btn2_url'],
     'cocktails' => ['below_cocktails_heading', 'below_cocktails_p1', 'below_cocktails_p2', 'below_cocktails_p3', 'below_cocktails_hours', 'below_cocktails_image1', 'below_cocktails_image2', 'below_cocktails_image3'],
     'music'     => ['below_music_heading', 'below_music_lede', 'below_music_btn1_label', 'below_music_btn1_url', 'below_music_btn2_label', 'below_music_btn2_url'],
-    'lineup'    => ['below_lineup_image', 'below_lineup_heading', 'below_lineup_p1'],
     'guest'     => ['below_guest_eyebrow', 'below_guest_heading', 'below_guest_p1', 'below_guest_p2', 'below_guest_btn_label', 'below_guest_btn_url', 'below_guest_image'],
     'vip'       => ['below_vip_eyebrow', 'below_vip_heading', 'below_vip_p1', 'below_vip_p2', 'below_vip_btn_label', 'below_vip_btn_url', 'below_vip_image'],
     'hours'     => ['below_hours_heading', 'below_hours_days', 'below_hours_cocktail_label', 'below_hours_cocktail', 'below_hours_dj_label', 'below_hours_dj', 'below_hours_note'],
@@ -73,35 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Location: below.php?tab=music&saved=1'); exit;
             }
 
-            // ---- DJs / Line-up cards ----
-            if ($action === 'save_djs') {
-                foreach (($_POST['title'] ?? []) as $id => $title) {
-                    $id  = (int) $id;
-                    $img = handle_upload('file_' . $id);
-                    $fields = ['title=?', 'subtitle=?', 'body=?', 'link_url=?', 'sort=?'];
-                    $params = [trim($title), trim($_POST['subtitle'][$id] ?? ''), trim($_POST['desc'][$id] ?? ''), trim($_POST['link'][$id] ?? ''), (int) ($_POST['sort'][$id] ?? 0)];
-                    if ($img !== null) {
-                        $fields[] = 'image=?';
-                        $params[] = $img;
-                    }
-                    $params[] = $id;
-                    $q = db()->prepare('UPDATE blocks SET ' . implode(',', $fields) . ' WHERE id=? AND block_type="below_dj"');
-                    $q->execute($params);
-                }
-                header('Location: below.php?tab=lineup&saved=1'); exit;
-            }
-            if ($action === 'add_dj') {
-                $img = handle_upload('new_file');
-                $q = db()->prepare('INSERT INTO blocks (block_type,title,subtitle,body,link_url,image,sort,active) VALUES ("below_dj",?,?,?,?,?,?,1)');
-                $q->execute([trim($_POST['new_title'] ?? 'New DJ'), trim($_POST['new_subtitle'] ?? ''), trim($_POST['new_desc'] ?? ''), trim($_POST['new_link'] ?? '#'), $img ?? '', (int) ($_POST['new_sort'] ?? 99)]);
-                header('Location: below.php?tab=lineup&saved=1'); exit;
-            }
-            if ($action === 'delete_dj') {
-                $q = db()->prepare('DELETE FROM blocks WHERE id=? AND block_type="below_dj"');
-                $q->execute([(int) ($_POST['id'] ?? 0)]);
-                header('Location: below.php?tab=lineup&saved=1'); exit;
-            }
-
             // ---- FAQs ----
             if ($action === 'save_faqs') {
                 foreach (($_POST['title'] ?? []) as $id => $title) {
@@ -134,7 +104,6 @@ foreach ($allRows as $r) {
     $bySkey[$r['skey']] = $r;
 }
 $nights = db()->query("SELECT * FROM blocks WHERE block_type='below_night' ORDER BY sort ASC, id ASC")->fetchAll();
-$djs    = db()->query("SELECT * FROM blocks WHERE block_type='below_dj' ORDER BY sort ASC, id ASC")->fetchAll();
 $faqs   = db()->query("SELECT * FROM blocks WHERE block_type='below_faq' ORDER BY sort ASC, id ASC")->fetchAll();
 
 $tabs = [
@@ -142,7 +111,6 @@ $tabs = [
     'intro'     => 'Intro',
     'cocktails' => 'From Cocktails To Late Night',
     'music'     => 'Music',
-    'lineup'    => "This Week's Line-Up",
     'guest'     => 'Guest Artists',
     'vip'       => 'VIP Tables',
     'hours'     => 'Below Hours',
@@ -209,50 +177,6 @@ include __DIR__ . '/layout.php';
       <?php foreach ($keys as $key): if (!isset($bySkey[$key])) continue; render_below_field($bySkey[$key]); endforeach; ?>
       <div class="form-actions"><button type="submit" class="btn">Save Changes</button></div>
     </form>
-
-    <?php if ($group === 'lineup'): ?>
-      <h3 style="margin-top:30px;">DJ / Line-up Cards</h3>
-      <p class="group-help">Shown as cards over the line-up background image.</p>
-      <form method="post" enctype="multipart/form-data">
-        <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
-        <input type="hidden" name="action" value="save_djs">
-        <table>
-          <tr><th style="width:90px;">Image</th><th>Name</th><th style="width:110px;">Day</th><th style="width:140px;">Time</th><th>Link</th><th style="width:60px;">Order</th><th style="width:160px;">Replace image</th><th style="width:80px;"></th></tr>
-          <?php foreach ($djs as $dj): ?>
-            <tr>
-              <td><?php if ($dj['image']): ?><img src="<?= e(asset($dj['image'])) ?>" alt=""><?php endif; ?></td>
-              <td><input type="text" name="title[<?= $dj['id'] ?>]" value="<?= e($dj['title']) ?>"></td>
-              <td><input type="text" name="subtitle[<?= $dj['id'] ?>]" value="<?= e($dj['subtitle']) ?>"></td>
-              <td><input type="text" name="desc[<?= $dj['id'] ?>]" value="<?= e($dj['body']) ?>"></td>
-              <td><input type="text" name="link[<?= $dj['id'] ?>]" value="<?= e($dj['link_url']) ?>"></td>
-              <td><input type="text" name="sort[<?= $dj['id'] ?>]" value="<?= (int)$dj['sort'] ?>" style="width:56px;"></td>
-              <td><input type="file" name="file_<?= $dj['id'] ?>" accept="image/*"></td>
-              <td><button form="deldj<?= $dj['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this card?')">Delete</button></td>
-            </tr>
-          <?php endforeach; ?>
-        </table>
-        <div class="form-actions"><button class="btn">Save Changes</button></div>
-      </form>
-      <?php foreach ($djs as $dj): ?>
-        <form id="deldj<?= $dj['id'] ?>" method="post" class="inline-form">
-          <input type="hidden" name="csrf" value="<?= e($csrf) ?>"><input type="hidden" name="action" value="delete_dj"><input type="hidden" name="id" value="<?= $dj['id'] ?>">
-        </form>
-      <?php endforeach; ?>
-      <h3 style="margin-top:24px;font-size:14px;">Add a Card</h3>
-      <form method="post" enctype="multipart/form-data">
-        <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
-        <input type="hidden" name="action" value="add_dj">
-        <div class="row-actions">
-          <input type="file" name="new_file" accept="image/*">
-          <input type="text" name="new_title" placeholder="Name" style="max-width:160px;">
-          <input type="text" name="new_subtitle" placeholder="Day" style="width:90px;">
-          <input type="text" name="new_desc" placeholder="Time" style="width:120px;">
-          <input type="text" name="new_link" placeholder="Link URL" style="max-width:140px;">
-          <input type="text" name="new_sort" placeholder="Order" value="99" style="width:60px;">
-          <button class="btn btn-sm">Add</button>
-        </div>
-      </form>
-    <?php endif; ?>
   </div>
 <?php endforeach; ?>
 
