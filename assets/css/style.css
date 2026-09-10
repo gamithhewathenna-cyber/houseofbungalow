@@ -486,7 +486,7 @@ body.menu-open-lock{overflow:hidden;}
 /* Split section (alternating image / text blocks)                    */
 /* ------------------------------------------------------------------ */
 .split-section{padding:0;margin-bottom:80px;}
-.guest-section{margin-top:150px;}
+.guest-section{margin-top:80px;}
 .split-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
