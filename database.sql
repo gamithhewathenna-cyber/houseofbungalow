@@ -327,7 +327,11 @@ INSERT INTO `blocks` (`block_type`,`title`,`subtitle`,`body`,`link_url`,`image`,
 ('below_dj','Lorem Ipsum Dolor','Sunday','4:00 PM to 8:00 PM','#','assets/img/below.jpg',1,1),
 ('below_dj','Lorem Ipsum Dolor','Sunday','4:00 PM to 8:00 PM','#','assets/img/below.jpg',2,1),
 ('below_dj','Lorem Ipsum Dolor','Sunday','4:00 PM to 8:00 PM','#','assets/img/below.jpg',3,1),
-('below_dj','Lorem Ipsum Dolor','Sunday','4:00 PM to 8:00 PM','#','assets/img/below.jpg',4,1);
+('below_dj','Lorem Ipsum Dolor','Sunday','4:00 PM to 8:00 PM','#','assets/img/below.jpg',4,1),
+('below_dj','Lorem Ipsum Dolor','Wednesday','8:00 PM to 12:00 AM','#','assets/img/below.jpg',5,1),
+('below_dj','Lorem Ipsum Dolor','Thursday','8:00 PM to 12:00 AM','#','assets/img/below.jpg',6,1),
+('below_dj','Lorem Ipsum Dolor','Friday','9:00 PM to 1:00 AM','#','assets/img/below.jpg',7,1),
+('below_dj','Lorem Ipsum Dolor','Saturday','9:00 PM to 1:00 AM','#','assets/img/below.jpg',8,1);
 
 -- FAQs — placeholder content, replace via admin
 INSERT INTO `blocks` (`block_type`,`title`,`body`,`sort`,`active`) VALUES

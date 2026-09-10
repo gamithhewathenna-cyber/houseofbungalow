@@ -13,7 +13,6 @@ $below_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' =>
 $nights   = blocks('below_night');
 $djs      = blocks('below_dj');
 $faqs     = blocks('below_faq');
-$dj_colors = ['#7a1f1f', '#8a7a1f', '#1f3a7a', '#5a1f7a'];
 
 // Group nights into rows of 3 then 2, same masonry-row pattern as the gallery.
 $night_rows = [];
@@ -111,26 +110,28 @@ while ($i < count($nights)) {
     <div class="container">
       <h2><?= e(setting('below_lineup_heading', "See This Week's Line-Up")) ?></h2>
       <p><?= e(setting('below_lineup_p1')) ?></p>
+    </div>
 
-      <?php if ($djs): ?>
+    <?php if ($djs): ?>
+      <div class="dj-scroller">
         <div class="dj-row">
-          <?php foreach ($djs as $i => $dj): ?>
+          <?php foreach ($djs as $dj): ?>
             <div class="dj-card">
               <div class="dj-card-media">
                 <img src="<?= e(asset($dj['image'])) ?>" alt="<?= e($dj['title']) ?>">
-                <span class="dj-card-tint" style="background:<?= e($dj_colors[$i % count($dj_colors)]) ?>;"></span>
+                <span class="dj-card-tint"></span>
               </div>
               <div class="dj-card-info">
                 <div class="dj-card-name"><?= e($dj['title']) ?></div>
                 <?php if ($dj['subtitle']): ?><div class="dj-card-day"><?= e($dj['subtitle']) ?></div><?php endif; ?>
                 <?php if ($dj['body']): ?><div class="dj-card-time"><?= e($dj['body']) ?></div><?php endif; ?>
-                <?php if ($dj['link_url']): ?><a class="dj-card-link" href="<?= e(url($dj['link_url'])) ?>">Book a Table</a><?php endif; ?>
+                <?php if ($dj['link_url']): ?><a class="dj-card-link link-underline" href="<?= e(url($dj['link_url'])) ?>">Book a Table</a><?php endif; ?>
               </div>
             </div>
           <?php endforeach; ?>
         </div>
-      <?php endif; ?>
-    </div>
+      </div>
+    <?php endif; ?>
   </div>
 </section>
 
