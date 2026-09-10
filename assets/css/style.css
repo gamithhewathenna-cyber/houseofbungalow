@@ -682,7 +682,8 @@ body.menu-open-lock{overflow:hidden;}
 }
 .lineup-section p{
   font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.6;
-  color:rgba(255,255,255,.75);max-width:700px;margin:0 auto 40px;
+  color:rgba(255,255,255,.75);max-width:1100px;margin:0 auto 40px;
+  white-space:nowrap;
 }
 
 /* Full-width horizontal scroller of DJ cards, navigated by arrows */
@@ -806,6 +807,7 @@ body.menu-open-lock{overflow:hidden;}
   .dj-carousel::before,.dj-carousel::after{width:70px;}
   .dj-card{flex-basis:260px;}
   .maroon-band h1,.maroon-band h2{font-size:32px;}
+  .lineup-section p{white-space:normal;max-width:600px;}
 }
 @media (max-width:640px){
   body{font-size:21px;}
