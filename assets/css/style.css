@@ -645,7 +645,8 @@ body.menu-open-lock{overflow:hidden;}
 }
 .maroon-band .subheading{
   font-family:var(--serif);font-weight:300;font-size:24px;
-  color:#fff;margin:0 0 18px;text-align:center;
+  color:#fff;margin:0 auto 18px;text-align:center;
+  width:100%;max-width:100%;
 }
 .maroon-band .lede{
   font-family:var(--serif);font-style:italic;font-weight:200;font-size:19px;line-height:1.5;
