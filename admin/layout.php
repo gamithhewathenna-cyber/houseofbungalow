@@ -17,6 +17,7 @@ $mainNav = [
     ['href' => 'homepage.php',    'label' => 'Home Page',          'icon' => 'home'],
     ['href' => 'restaurant.php',  'label' => 'Restaurant & Menus', 'icon' => 'fork'],
     ['href' => 'below.php',       'label' => 'Below',              'icon' => 'moon'],
+    ['href' => 'whatson.php',     'label' => "What's On",          'icon' => 'ticket'],
     ['href' => 'lineup.php',      'label' => "Week's Line-Up",     'icon' => 'calendar'],
     ['href' => 'subscribers.php', 'label' => 'Subscribers',        'icon' => 'mail'],
 ];
@@ -38,6 +39,7 @@ function nav_icon(string $key): void
         'fork'  => '<path d="M6 2v8a2 2 0 0 0 4 0V2M8 2v20M18 2c-2 1.5-2 4-2 6 0 2.5 1 3 2 3.5V22"/>',
         'moon'  => '<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/>',
         'calendar' => '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+        'ticket' => '<path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4V8Z"/><path d="M13 6v2M13 11v2M13 16v2"/>',
     ];
     echo '<svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' . ($icons[$key] ?? '') . '</svg>';
 }

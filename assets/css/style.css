@@ -482,6 +482,17 @@ body.menu-open-lock{overflow:hidden;}
 }
 .page-hero-intro .btn-wrap{margin-top:26px;}
 
+/* Small filled tag buttons (What's On — CAFE / RESTAURANT / BELOW) */
+.tag-buttons{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:28px;}
+.tag-btn{
+  display:inline-block;background:var(--maroon);color:#fff;
+  font-family:var(--sans);font-weight:600;font-size:12px;letter-spacing:1px;
+  padding:10px 22px;text-transform:uppercase;
+  border:1px solid var(--maroon);
+  transition:background-color .2s ease, color .2s ease;
+}
+.tag-btn:hover{background:#fff;color:var(--maroon);}
+
 /* ------------------------------------------------------------------ */
 /* Split section (alternating image / text blocks)                    */
 /* ------------------------------------------------------------------ */
