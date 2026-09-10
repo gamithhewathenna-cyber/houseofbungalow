@@ -708,7 +708,7 @@ body.menu-open-lock{overflow:hidden;}
 .dj-arrow-prev{left:0;}
 .dj-arrow-next{right:0;}
 .dj-card{
-  flex:0 0 320px;
+  flex:0 0 300px;
   scroll-snap-align:start;
   text-align:left;
   border:4px solid var(--maroon);
