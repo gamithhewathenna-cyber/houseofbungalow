@@ -272,9 +272,9 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 
 ('below_cocktails_heading','From Cocktails To Late Night','below','Cocktails — heading','text',11),
 ('below_cocktails_p1','Below opens from 5 PM as a cocktail lounge - somewhere to begin the evening, meet for a drink or continue the night after dinner.','below','Cocktails — paragraph 1 (lede)','textarea',12),
-('below_cocktails_p2','From 8:30 PM, the DJ takes over.','below','Cocktails — paragraph 2','textarea',13),
+('below_cocktails_p2','From **8:30 PM**, the DJ takes over.','below','Cocktails — paragraph 2 (use **word** for bold)','textarea',13),
 ('below_cocktails_p3','The lights shift, the music builds and the room changes with it.','below','Cocktails — paragraph 3','textarea',14),
-('below_cocktails_hours','Wednesday - Sunday: From 5 PM until late.','below','Cocktails — hours line','text',15),
+('below_cocktails_hours','**Wednesday – Sunday** · From 5 PM until late.','below','Cocktails — hours line (use **word** for bold)','text',15),
 ('below_cocktails_image1','assets/img/below.jpg','below','Cocktails — image 1','image',16),
 ('below_cocktails_image2','assets/img/below.jpg','below','Cocktails — image 2','image',17),
 ('below_cocktails_image3','assets/img/below.jpg','below','Cocktails — image 3','image',18),

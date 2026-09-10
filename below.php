@@ -58,17 +58,17 @@ while ($i < count($nights)) {
 <section class="section reveal">
   <div class="container">
     <h2><?= e(setting('below_cocktails_heading', 'From Cocktails To Late Night')) ?></h2>
-    <p class="lede"><?= e(setting('below_cocktails_p1')) ?></p>
-    <p><?= e(setting('below_cocktails_p2')) ?></p>
-    <p><?= e(setting('below_cocktails_p3')) ?></p>
-    <?php if (setting('below_cocktails_hours')): ?><p class="section-hours"><?= e(setting('below_cocktails_hours')) ?></p><?php endif; ?>
+    <div class="cocktails-copy">
+      <p><?= eb(setting('below_cocktails_p1')) ?></p>
+      <p><?= eb(setting('below_cocktails_p2')) ?></p>
+      <p class="tight"><?= eb(setting('below_cocktails_p3')) ?></p>
+      <?php if (setting('below_cocktails_hours')): ?><p class="section-hours"><?= eb(setting('below_cocktails_hours')) ?></p><?php endif; ?>
+    </div>
 
-    <div class="gallery-grid" style="margin-top:40px;">
-      <div class="gallery-row gallery-row-3">
-        <div class="gallery-item"><img src="<?= e(asset(setting('below_cocktails_image1', 'assets/img/below.jpg'))) ?>" alt=""></div>
-        <div class="gallery-item"><img src="<?= e(asset(setting('below_cocktails_image2', 'assets/img/below.jpg'))) ?>" alt=""></div>
-        <div class="gallery-item"><img src="<?= e(asset(setting('below_cocktails_image3', 'assets/img/below.jpg'))) ?>" alt=""></div>
-      </div>
+    <div class="trio-grid">
+      <div class="trio-item"><img src="<?= e(asset(setting('below_cocktails_image1', 'assets/img/below.jpg'))) ?>" alt=""></div>
+      <div class="trio-item"><img src="<?= e(asset(setting('below_cocktails_image2', 'assets/img/below.jpg'))) ?>" alt=""></div>
+      <div class="trio-item"><img src="<?= e(asset(setting('below_cocktails_image3', 'assets/img/below.jpg'))) ?>" alt=""></div>
     </div>
   </div>
 </section>
