@@ -698,13 +698,13 @@ body.menu-open-lock{overflow:hidden;}
 }
 .dj-arrow{
   position:absolute;top:50%;transform:translateY(-50%);z-index:2;
-  width:44px;height:44px;border-radius:50%;
-  background:#fff;border:0;color:var(--maroon);
-  font-size:24px;line-height:1;cursor:pointer;
+  width:46px;height:46px;
+  background:var(--maroon);border:1px solid var(--maroon);color:#fff;
+  font-size:22px;line-height:1;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 14px rgba(0,0,0,.35);
+  transition:background-color .2s ease, color .2s ease;
 }
-.dj-arrow:hover{background:var(--maroon);color:#fff;}
+.dj-arrow:hover{background:#fff;color:var(--maroon);}
 .dj-arrow-prev{left:0;}
 .dj-arrow-next{right:0;}
 .dj-card{
