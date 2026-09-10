@@ -28,5 +28,17 @@ INSERT INTO `blocks` (`block_type`,`title`,`subtitle`,`body`,`link_url`,`image`,
 SELECT * FROM (
   SELECT 'pe_event_card' AS block_type, 'Restaurant Events' AS title, 'Long lunches. Private dinners. Cocktail receptions. Celebrations around the table.' AS subtitle, 'The Restaurant offers an elevated but relaxed setting built around food, drinks and a room that comes alive around the people in it.' AS body, '#' AS link_url, 'assets/img/restaurant.jpg' AS image, 1 AS sort, 1 AS active
   UNION ALL SELECT 'pe_event_card','Below Events','For something later, louder and deliberately different.','Below offers an intimate Basement setting for private celebrations, corporate events, brand activations and late-night experiences built around cocktails, music and atmosphere.','#','assets/img/below.jpg',2,1
+  UNION ALL SELECT 'pe_event_card','Café Events','Morning meetings, baby showers, relaxed daytime gatherings.','The Café offers a bright, casual space for daytime celebrations, meetings and gatherings that don''t need the full night out.','#','assets/img/cafe.jpg',3,1
+  UNION ALL SELECT 'pe_event_card','Full House Events','Every space, all to yourselves.','For larger occasions, take over the entire House — Restaurant, Below and Café together — for a fully exclusive-use event.','#','assets/img/hero.jpg',4,1
 ) AS seed
 WHERE NOT EXISTS (SELECT 1 FROM `blocks` WHERE block_type = 'pe_event_card');
+
+-- If you already ran the earlier 2-card version of this migration, the
+-- WHERE NOT EXISTS guard above will skip re-seeding. Run this instead to
+-- add just the 2 new cards without touching Restaurant/Below Events:
+INSERT INTO `blocks` (`block_type`,`title`,`subtitle`,`body`,`link_url`,`image`,`sort`,`active`)
+SELECT 'pe_event_card','Café Events','Morning meetings, baby showers, relaxed daytime gatherings.','The Café offers a bright, casual space for daytime celebrations, meetings and gatherings that don''t need the full night out.','#','assets/img/cafe.jpg',3,1
+WHERE NOT EXISTS (SELECT 1 FROM `blocks` WHERE block_type = 'pe_event_card' AND title = 'Café Events');
+INSERT INTO `blocks` (`block_type`,`title`,`subtitle`,`body`,`link_url`,`image`,`sort`,`active`)
+SELECT 'pe_event_card','Full House Events','Every space, all to yourselves.','For larger occasions, take over the entire House — Restaurant, Below and Café together — for a fully exclusive-use event.','#','assets/img/hero.jpg',4,1
+WHERE NOT EXISTS (SELECT 1 FROM `blocks` WHERE block_type = 'pe_event_card' AND title = 'Full House Events');

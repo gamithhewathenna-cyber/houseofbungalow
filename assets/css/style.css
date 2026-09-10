@@ -666,15 +666,15 @@ body.menu-open-lock{overflow:hidden;}
 .trio-item{aspect-ratio:1/1;overflow:hidden;}
 .trio-item img{width:100%;height:100%;object-fit:cover;display:block;}
 
-/* Event cards (Private Events — Restaurant Events / Below Events) */
+/* Event cards (Private Events — full-width row of event types) */
 .events-cards{padding:10px 0 60px;}
-.events-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.events-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;width:100%;}
 .event-card-media{aspect-ratio:4/3;overflow:hidden;}
 .event-card-media img{width:100%;height:100%;object-fit:cover;display:block;}
-.event-card-body{text-align:center;padding:30px 24px 0;}
+.event-card-body{text-align:center;padding:26px 16px 0;}
 .event-card-body h3{
-  font-family:var(--serif);font-weight:300;font-size:28px;
-  color:var(--ink);margin:0 0 16px;
+  font-family:var(--serif);font-weight:300;font-size:22px;
+  color:var(--ink);margin:0 0 14px;
 }
 .event-card-tagline{
   font-family:var(--sans);font-weight:400;font-size:15px;
@@ -835,6 +835,7 @@ body.menu-open-lock{overflow:hidden;}
   .chef-copy,.chef-copy p{text-align:center;}
   .chef-copy .chef-name{font-size:32px;}
   .night-row-3,.night-row-2{grid-template-columns:1fr 1fr;max-width:none;}
+  .events-grid{grid-template-columns:1fr 1fr;}
   .dj-carousel{padding:0 44px;}
   .dj-carousel::before,.dj-carousel::after{width:70px;}
   .dj-card{flex-basis:260px;}

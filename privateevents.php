@@ -42,24 +42,22 @@ $cards = blocks('pe_event_card');
 <!-- Event Cards (Restaurant Events / Below Events) --------------------- -->
 <?php if ($cards): ?>
 <section class="events-cards reveal">
-  <div class="container">
-    <div class="events-grid">
-      <?php foreach ($cards as $c): ?>
-        <div class="event-card">
-          <div class="event-card-media">
-            <img src="<?= e(asset($c['image'])) ?>" alt="<?= e($c['title']) ?>">
-          </div>
-          <div class="event-card-body">
-            <h3><?= e($c['title']) ?></h3>
-            <?php if ($c['subtitle']): ?><p class="event-card-tagline"><?= e($c['subtitle']) ?></p><?php endif; ?>
-            <?php if ($c['body']): ?><p><?= e($c['body']) ?></p><?php endif; ?>
-            <div class="btn-wrap">
-              <a class="link-underline" href="<?= e(url($c['link_url'] ?: '#')) ?>">ENQUIRE</a>
-            </div>
+  <div class="events-grid">
+    <?php foreach ($cards as $c): ?>
+      <div class="event-card">
+        <div class="event-card-media">
+          <img src="<?= e(asset($c['image'])) ?>" alt="<?= e($c['title']) ?>">
+        </div>
+        <div class="event-card-body">
+          <h3><?= e($c['title']) ?></h3>
+          <?php if ($c['subtitle']): ?><p class="event-card-tagline"><?= e($c['subtitle']) ?></p><?php endif; ?>
+          <?php if ($c['body']): ?><p><?= e($c['body']) ?></p><?php endif; ?>
+          <div class="btn-wrap">
+            <a class="link-underline" href="<?= e(url($c['link_url'] ?: '#')) ?>">ENQUIRE</a>
           </div>
         </div>
-      <?php endforeach; ?>
-    </div>
+      </div>
+    <?php endforeach; ?>
   </div>
 </section>
 <?php endif; ?>
