@@ -364,6 +364,11 @@ body.menu-open-lock{overflow:hidden;}
   width:64px;height:1px;background:var(--maroon);
   margin:30px auto 26px;border:0;
 }
+/* Wide mid-page divider (e.g. under a gallery, before the next section) */
+.section-divider{
+  width:700px;max-width:80%;height:1px;background:var(--maroon);
+  margin:50px auto;border:0;
+}
 .social{
   display:flex;justify-content:center;gap:26px;margin-bottom:40px;
 }
@@ -481,6 +486,7 @@ body.menu-open-lock{overflow:hidden;}
   line-height:1.65;color:var(--ink-soft);margin:0 0 10px;
 }
 .page-hero-intro .btn-wrap{margin-top:26px;}
+.page-hero-intro .cafe-intro-p{font-size:16px;}
 
 /* Small filled tag buttons (What's On — CAFE / RESTAURANT / BELOW) */
 .tag-buttons{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:28px;}

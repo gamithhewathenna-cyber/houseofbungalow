@@ -26,8 +26,8 @@ $cafe_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 
     <h1><?= e(setting('cafe_heading', 'Café')) ?></h1>
     <p class="subheading"><?= e(setting('cafe_subheading')) ?></p>
     <p class="lede"><?= e(setting('cafe_lede')) ?></p>
-    <p><?= e(setting('cafe_p1')) ?></p>
-    <p><?= e(setting('cafe_p2')) ?></p>
+    <p class="cafe-intro-p"><?= e(setting('cafe_p1')) ?></p>
+    <p class="cafe-intro-p"><?= e(setting('cafe_p2')) ?></p>
   </div>
 </section>
 
@@ -42,7 +42,7 @@ $cafe_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 
   </div>
 </section>
 
-<hr class="footer-rule">
+<hr class="section-divider">
 
 <!-- Hours ---------------------------------------------------------------- -->
 <section class="hours-block reveal">

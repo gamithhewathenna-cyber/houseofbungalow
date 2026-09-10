@@ -79,7 +79,7 @@ foreach ($menu_tabs as $key => $label) {
 </section>
 <?php endif; ?>
 
-<hr class="footer-rule">
+<hr class="section-divider">
 
 <!-- Menu (own dataset — not shared with the Restaurant page) --------------- -->
 <section class="menu-section reveal">
