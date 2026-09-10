@@ -470,7 +470,7 @@ body.menu-open-lock{overflow:hidden;}
 }
 .page-hero-intro .subheading{
   font-family:var(--serif);font-weight:300;font-size:31px;
-  color:var(--ink);margin:0 0 20px;
+  color:var(--ink);margin:0 0 20px;text-align:center;
 }
 .page-hero-intro .lede{
   font-family:var(--serif);font-style:italic;font-weight:200;font-size:28px;
