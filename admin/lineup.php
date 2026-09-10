@@ -115,24 +115,49 @@ include __DIR__ . '/layout.php';
 <div class="settings-group">
   <h3>DJ / Line-up Cards</h3>
   <p class="group-help">Shown as cards over the line-up background image on the Below page.</p>
+
   <form method="post" enctype="multipart/form-data">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
     <input type="hidden" name="action" value="save_djs">
-    <table>
-      <tr><th style="width:90px;">Image</th><th>Name</th><th style="width:110px;">Day</th><th style="width:140px;">Time</th><th>Link</th><th style="width:60px;">Order</th><th style="width:160px;">Replace image</th><th style="width:80px;"></th></tr>
+    <div class="dj-admin-list">
       <?php foreach ($djs as $dj): ?>
-        <tr>
-          <td><?php if ($dj['image']): ?><img src="<?= e(asset($dj['image'])) ?>" alt=""><?php endif; ?></td>
-          <td><input type="text" name="title[<?= $dj['id'] ?>]" value="<?= e($dj['title']) ?>"></td>
-          <td><input type="text" name="subtitle[<?= $dj['id'] ?>]" value="<?= e($dj['subtitle']) ?>"></td>
-          <td><input type="text" name="desc[<?= $dj['id'] ?>]" value="<?= e($dj['body']) ?>"></td>
-          <td><input type="text" name="link[<?= $dj['id'] ?>]" value="<?= e($dj['link_url']) ?>"></td>
-          <td><input type="text" name="sort[<?= $dj['id'] ?>]" value="<?= (int)$dj['sort'] ?>" style="width:56px;"></td>
-          <td><input type="file" name="file_<?= $dj['id'] ?>" accept="image/*"></td>
-          <td><button form="deldj<?= $dj['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this card?')">Delete</button></td>
-        </tr>
+        <div class="dj-admin-card">
+          <div class="dj-admin-media">
+            <div class="thumb-preview<?= $dj['image'] ? '' : ' empty' ?>">
+              <?php if ($dj['image']): ?><img src="<?= e(asset($dj['image'])) ?>" alt=""><?php else: ?>No photo yet<?php endif; ?>
+            </div>
+            <input type="file" name="file_<?= $dj['id'] ?>" accept="image/*">
+            <span class="help">Replace photo</span>
+          </div>
+          <div class="dj-admin-fields">
+            <div class="field-row">
+              <label>Name
+                <input type="text" name="title[<?= $dj['id'] ?>]" value="<?= e($dj['title']) ?>">
+              </label>
+            </div>
+            <div class="field-grid">
+              <label>Day
+                <input type="text" name="subtitle[<?= $dj['id'] ?>]" value="<?= e($dj['subtitle']) ?>">
+              </label>
+              <label>Time
+                <input type="text" name="desc[<?= $dj['id'] ?>]" value="<?= e($dj['body']) ?>">
+              </label>
+            </div>
+            <div class="field-grid">
+              <label>Link URL
+                <input type="text" name="link[<?= $dj['id'] ?>]" value="<?= e($dj['link_url']) ?>">
+              </label>
+              <label>Order
+                <input type="text" name="sort[<?= $dj['id'] ?>]" value="<?= (int)$dj['sort'] ?>">
+              </label>
+            </div>
+          </div>
+          <div class="dj-admin-actions">
+            <button form="deldj<?= $dj['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this card?')">Delete</button>
+          </div>
+        </div>
       <?php endforeach; ?>
-    </table>
+    </div>
     <div class="form-actions"><button class="btn">Save Changes</button></div>
   </form>
   <?php foreach ($djs as $dj): ?>
@@ -140,18 +165,41 @@ include __DIR__ . '/layout.php';
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>"><input type="hidden" name="action" value="delete_dj"><input type="hidden" name="id" value="<?= $dj['id'] ?>">
     </form>
   <?php endforeach; ?>
-  <h3 style="margin-top:24px;font-size:14px;">Add a Card</h3>
-  <form method="post" enctype="multipart/form-data">
+
+  <h3 style="margin-top:30px;">Add a Card</h3>
+  <form method="post" enctype="multipart/form-data" class="dj-admin-card dj-admin-add">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
     <input type="hidden" name="action" value="add_dj">
-    <div class="row-actions">
+    <div class="dj-admin-media">
+      <div class="thumb-preview empty">No photo yet</div>
       <input type="file" name="new_file" accept="image/*">
-      <input type="text" name="new_title" placeholder="Name" style="max-width:160px;">
-      <input type="text" name="new_subtitle" placeholder="Day" style="width:90px;">
-      <input type="text" name="new_desc" placeholder="Time" style="width:120px;">
-      <input type="text" name="new_link" placeholder="Link URL" style="max-width:140px;">
-      <input type="text" name="new_sort" placeholder="Order" value="99" style="width:60px;">
-      <button class="btn btn-sm">Add</button>
+      <span class="help">Upload photo</span>
+    </div>
+    <div class="dj-admin-fields">
+      <div class="field-row">
+        <label>Name
+          <input type="text" name="new_title" placeholder="e.g. DJ Nova">
+        </label>
+      </div>
+      <div class="field-grid">
+        <label>Day
+          <input type="text" name="new_subtitle" placeholder="e.g. Sunday">
+        </label>
+        <label>Time
+          <input type="text" name="new_desc" placeholder="e.g. 4:00 PM to 8:00 PM">
+        </label>
+      </div>
+      <div class="field-grid">
+        <label>Link URL
+          <input type="text" name="new_link" placeholder="#">
+        </label>
+        <label>Order
+          <input type="text" name="new_sort" value="99">
+        </label>
+      </div>
+    </div>
+    <div class="dj-admin-actions">
+      <button class="btn btn-sm">Add Card</button>
     </div>
   </form>
 </div>
