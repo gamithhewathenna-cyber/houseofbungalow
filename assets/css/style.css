@@ -660,7 +660,7 @@ body.menu-open-lock{overflow:hidden;}
 .night-row-3{grid-template-columns:repeat(3,1fr);}
 .night-row-2{grid-template-columns:repeat(2,1fr);max-width:640px;margin:0 auto;}
 .night-item-title{
-  font-family:var(--sans);font-weight:700;font-size:14px;letter-spacing:.5px;
+  font-family:var(--serif);font-weight:500;font-size:16px;letter-spacing:.3px;
   color:#fff;margin-bottom:8px;
 }
 .night-item-desc{
