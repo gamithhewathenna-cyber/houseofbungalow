@@ -83,7 +83,7 @@ if (setting('maintenance_mode', '0') === '1') {
     <a href="<?= e(url('brunch.php')) ?>">BRUNCH</a>
     <a href="<?= e(url('dinnerparty.php')) ?>">DINNER PARTY</a>
     <a href="<?= e(url('privateevents.php')) ?>">PRIVATE EVENTS</a>
-    <a href="#">CAFÉ</a>
+    <a href="<?= e(url('cafe.php')) ?>">CAFÉ</a>
     <a href="#">FAQs</a>
   </div>
 </nav>

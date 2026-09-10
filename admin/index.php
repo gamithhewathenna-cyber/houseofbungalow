@@ -43,6 +43,15 @@ include __DIR__ . '/layout.php';
   <a href="restaurant.php?tab=gallery">Gallery</a>
 </div>
 
+<h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">Edit Café</h2>
+<div class="dash-links">
+  <a href="cafe.php?tab=herovideo">Hero Video</a>
+  <a href="cafe.php?tab=intro">Intro</a>
+  <a href="cafe.php?tab=gallery">Gallery</a>
+  <a href="cafe.php?tab=hours">Hours &amp; Location</a>
+  <a href="cafe.php?tab=final">More Of The House</a>
+</div>
+
 <h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">Edit Below</h2>
 <div class="dash-links">
   <a href="below.php?tab=herovideo">Hero Video</a>

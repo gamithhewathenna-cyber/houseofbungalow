@@ -16,6 +16,7 @@ $mainNav = [
     ['href' => 'index.php',       'label' => 'Dashboard',          'icon' => 'grid'],
     ['href' => 'homepage.php',    'label' => 'Home Page',          'icon' => 'home'],
     ['href' => 'restaurant.php',  'label' => 'Restaurant & Menus', 'icon' => 'fork'],
+    ['href' => 'cafe.php',        'label' => 'Café',               'icon' => 'cup'],
     ['href' => 'below.php',       'label' => 'Below',              'icon' => 'moon'],
     ['href' => 'whatson.php',     'label' => "What's On",          'icon' => 'ticket'],
     ['href' => 'brunch.php',      'label' => 'Brunch',             'icon' => 'coffee'],
@@ -46,6 +47,7 @@ function nav_icon(string $key): void
         'coffee' => '<path d="M4 9h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9Z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M7 2c0 1.2-1 1.3-1 2.5S7 6.3 7 7.5M11 2c0 1.2-1 1.3-1 2.5S11 6.3 11 7.5"/>',
         'glass' => '<path d="M5 3h14l-2.2 9.2a4.8 4.8 0 0 1-9.6 0L5 3Z"/><path d="M12 15v6M8 21h8"/>',
         'gift'  => '<rect x="3" y="9" width="18" height="4" rx="1"/><rect x="4" y="13" width="16" height="8" rx="1"/><path d="M12 9v12M12 9C9.5 9 8 7.5 8 6a2.5 2.5 0 0 1 4-2c1 1.2 1 3 0 5ZM12 9c2.5 0 4-1.5 4-3a2.5 2.5 0 0 0-4-2c-1 1.2-1 3 0 5Z"/>',
+        'cup'   => '<path d="M5 9h11v6a5 5 0 0 1-5 5H9a4 4 0 0 1-4-4V9Z"/><path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M9 3c0 1-1.2 1-1.2 2S9 6.5 9 7.5M13 3c0 1-1.2 1-1.2 2S13 6.5 13 7.5"/>',
     ];
     echo '<svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' . ($icons[$key] ?? '') . '</svg>';
 }

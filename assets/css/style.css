@@ -612,6 +612,10 @@ body.menu-open-lock{overflow:hidden;}
   font-family:var(--sans);font-weight:300;font-size:13px;letter-spacing:.4px;
   color:var(--ink-mute);
 }
+.hours-block .hours-address{
+  font-family:var(--sans);font-weight:300;font-size:15px;
+  color:var(--ink-soft);margin:0 0 24px;
+}
 
 /* ------------------------------------------------------------------ */
 /* Gallery grid (mixed-width masonry rows: 3-then-2, repeating)       */
