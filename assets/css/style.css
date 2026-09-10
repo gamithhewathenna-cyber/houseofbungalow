@@ -762,11 +762,11 @@ body.menu-open-lock{overflow:hidden;}
 .faq-section h2{
   font-family:var(--serif);font-weight:300;font-size:36px;color:var(--ink);margin:0 0 30px;
 }
-.faq-list{max-width:800px;margin:0 auto;text-align:left;}
+.faq-list{max-width:800px;margin:0 auto;text-align:center;}
 .faq-item{border-bottom:1px solid #e0d3c4;}
 .faq-question{
-  width:100%;display:flex;align-items:center;gap:14px;
-  background:none;border:0;cursor:pointer;text-align:left;
+  width:100%;display:flex;align-items:center;justify-content:center;gap:14px;
+  background:none;border:0;cursor:pointer;text-align:center;
   font-family:var(--sans);font-weight:400;font-size:15px;color:var(--ink);
   padding:18px 0;
 }
@@ -778,7 +778,7 @@ body.menu-open-lock{overflow:hidden;}
 .faq-item.open .faq-answer{max-height:200px;}
 .faq-answer p{
   font-family:var(--sans);font-weight:300;font-size:14px;line-height:1.6;
-  color:var(--ink-soft);margin:0 0 20px;padding-left:28px;
+  color:var(--ink-soft);margin:0 0 20px;
 }
 
 /* ------------------------------------------------------------------ */
