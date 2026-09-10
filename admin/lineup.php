@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         }
                     }
                 }
-                header('Location: lineup.php?saved=1'); exit;
+                header('Location: lineup.php?tab=content&saved=1'); exit;
             }
 
             if ($action === 'save_djs') {
@@ -46,18 +46,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $q = db()->prepare('UPDATE blocks SET ' . implode(',', $fields) . ' WHERE id=? AND block_type="below_dj"');
                     $q->execute($params);
                 }
-                header('Location: lineup.php?saved=1'); exit;
+                header('Location: lineup.php?tab=cards&saved=1'); exit;
             }
             if ($action === 'add_dj') {
                 $img = handle_upload('new_file');
                 $q = db()->prepare('INSERT INTO blocks (block_type,title,subtitle,body,link_url,image,sort,active) VALUES ("below_dj",?,?,?,?,?,?,1)');
                 $q->execute([trim($_POST['new_title'] ?? 'New DJ'), trim($_POST['new_subtitle'] ?? ''), trim($_POST['new_desc'] ?? ''), trim($_POST['new_link'] ?? '#'), $img ?? '', (int) ($_POST['new_sort'] ?? 99)]);
-                header('Location: lineup.php?saved=1'); exit;
+                header('Location: lineup.php?tab=cards&saved=1'); exit;
             }
             if ($action === 'delete_dj') {
                 $q = db()->prepare('DELETE FROM blocks WHERE id=? AND block_type="below_dj"');
                 $q->execute([(int) ($_POST['id'] ?? 0)]);
-                header('Location: lineup.php?saved=1'); exit;
+                header('Location: lineup.php?tab=cards&saved=1'); exit;
             }
         } catch (RuntimeException $ex) {
             $error = $ex->getMessage();
@@ -96,13 +96,28 @@ function render_lineup_field(array $f): void
     <?php
 }
 
+$tabs = [
+    'content' => "See This Week's Line-Up",
+    'cards'   => 'DJ / Line-up Cards',
+];
+$activeTab = $_GET['tab'] ?? 'content';
+if (!isset($tabs[$activeTab])) {
+    $activeTab = 'content';
+}
+
 $csrf = csrf_token();
 $page_title = "Week's Line-Up";
 include __DIR__ . '/layout.php';
 ?>
 <?php if ($error): ?><div class="alert err"><?= e($error) ?></div><?php endif; ?>
 
-<div class="settings-group">
+<div class="tab-nav">
+  <?php foreach ($tabs as $key => $label): ?>
+    <button type="button" class="tab-btn<?= $activeTab === $key ? ' active' : '' ?>" data-tab="<?= e($key) ?>"><?= e($label) ?></button>
+  <?php endforeach; ?>
+</div>
+
+<div class="tab-panel settings-group<?= $activeTab === 'content' ? ' active' : '' ?>" data-tab="content">
   <h3>See This Week's Line-Up</h3>
   <form method="post" enctype="multipart/form-data">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
@@ -112,7 +127,7 @@ include __DIR__ . '/layout.php';
   </form>
 </div>
 
-<div class="settings-group">
+<div class="tab-panel settings-group<?= $activeTab === 'cards' ? ' active' : '' ?>" data-tab="cards">
   <h3>DJ / Line-up Cards</h3>
   <p class="group-help">Shown as cards over the line-up background image on the Below page.</p>
 
@@ -203,5 +218,20 @@ include __DIR__ . '/layout.php';
     </div>
   </form>
 </div>
+
+<script>
+document.querySelectorAll('.tab-btn').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+    document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
+    btn.classList.add('active');
+    var panel = document.querySelector('.tab-panel[data-tab="' + btn.dataset.tab + '"]');
+    if (panel) panel.classList.add('active');
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState(null, '', '?tab=' + btn.dataset.tab);
+    }
+  });
+});
+</script>
 
 <?php include __DIR__ . '/layout_end.php'; ?>
