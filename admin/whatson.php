@@ -5,7 +5,7 @@ require_once __DIR__ . '/helpers.php';
 
 $fieldGroups = [
     'herovideo' => ['wo_hero_video'],
-    'intro'     => ['wo_heading', 'wo_subheading', 'wo_lede', 'wo_tag1_label', 'wo_tag1_url', 'wo_tag2_label', 'wo_tag2_url', 'wo_tag3_label', 'wo_tag3_url'],
+    'intro'     => ['wo_heading', 'wo_subheading', 'wo_lede', 'wo_tag2_label', 'wo_tag2_url', 'wo_tag3_label', 'wo_tag3_url'],
     'happyhour' => ['wo_happyhour_eyebrow', 'wo_happyhour_heading', 'wo_happyhour_p1', 'wo_happyhour_p2', 'wo_happyhour_btn_label', 'wo_happyhour_btn_url', 'wo_happyhour_image'],
     'friday'    => ['wo_friday_eyebrow', 'wo_friday_heading', 'wo_friday_p1', 'wo_friday_p2', 'wo_friday_btn_label', 'wo_friday_btn_url', 'wo_friday_image'],
     'brunch'    => ['wo_brunch_eyebrow', 'wo_brunch_heading', 'wo_brunch_hours', 'wo_brunch_p1', 'wo_brunch_btn_label', 'wo_brunch_btn_url', 'wo_brunch_image'],

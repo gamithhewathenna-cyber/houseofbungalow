@@ -30,7 +30,6 @@ $faqs = blocks('whatson_faq');
     <p class="lede"><?= e(setting('wo_lede')) ?></p>
 
     <div class="tag-buttons">
-      <?php if (setting('wo_tag1_label')): ?><a class="tag-btn" href="<?= e(url(setting('wo_tag1_url', '#'))) ?>"><?= e(setting('wo_tag1_label')) ?></a><?php endif; ?>
       <?php if (setting('wo_tag2_label')): ?><a class="tag-btn" href="<?= e(url(setting('wo_tag2_url', '#'))) ?>"><?= e(setting('wo_tag2_label')) ?></a><?php endif; ?>
       <?php if (setting('wo_tag3_label')): ?><a class="tag-btn" href="<?= e(url(setting('wo_tag3_url', '#'))) ?>"><?= e(setting('wo_tag3_label')) ?></a><?php endif; ?>
     </div>
