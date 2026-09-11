@@ -501,9 +501,7 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 -- Event cards (Restaurant / Below / Café / Full House Events)
 INSERT INTO `blocks` (`block_type`,`title`,`subtitle`,`body`,`link_url`,`image`,`sort`,`active`) VALUES
 ('pe_event_card','Restaurant Events','Long lunches. Private dinners. Cocktail receptions. Celebrations around the table.','The Restaurant offers an elevated but relaxed setting built around food, drinks and a room that comes alive around the people in it.','#','assets/img/restaurant.jpg',1,1),
-('pe_event_card','Below Events','For something later, louder and deliberately different.','Below offers an intimate Basement setting for private celebrations, corporate events, brand activations and late-night experiences built around cocktails, music and atmosphere.','#','assets/img/below.jpg',2,1),
-('pe_event_card','Café Events','Morning meetings, baby showers, relaxed daytime gatherings.','The Café offers a bright, casual space for daytime celebrations, meetings and gatherings that don''t need the full night out.','#','assets/img/cafe.jpg',3,1),
-('pe_event_card','Full House Events','Every space, all to yourselves.','For larger occasions, take over the entire House — Restaurant, Below and Café together — for a fully exclusive-use event.','#','assets/img/hero.jpg',4,1);
+('pe_event_card','Below Events','For something later, louder and deliberately different.','Below offers an intimate Basement setting for private celebrations, corporate events, brand activations and late-night experiences built around cocktails, music and atmosphere.','#','assets/img/below.jpg',2,1);
 
 -- =====================================================================
 -- Café page
