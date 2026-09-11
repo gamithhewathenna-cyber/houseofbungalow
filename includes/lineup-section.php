@@ -29,7 +29,12 @@ $djs = blocks('below_dj');
                   <div class="dj-card-name"><?= e($dj['title']) ?></div>
                   <?php if ($dj['subtitle']): ?><div class="dj-card-day"><?= e($dj['subtitle']) ?></div><?php endif; ?>
                   <?php if ($dj['body']): ?><div class="dj-card-time"><?= e($dj['body']) ?></div><?php endif; ?>
-                  <?php if ($dj['link_url']): ?><a class="dj-card-link link-underline" href="<?= e(url($dj['link_url'])) ?>">Book a Table</a><?php endif; ?>
+                  <?php if ($dj['link_url'] || $dj['link_url2']): ?>
+                    <div class="dj-card-actions">
+                      <?php if ($dj['link_url']): ?><a class="dj-card-link link-underline" href="<?= e(url($dj['link_url'])) ?>">Book Now</a><?php endif; ?>
+                      <?php if ($dj['link_url2']): ?><a class="dj-card-link link-underline" href="<?= e(url($dj['link_url2'])) ?>">Buy Tickets</a><?php endif; ?>
+                    </div>
+                  <?php endif; ?>
                 </div>
               </div>
             <?php endforeach; ?>

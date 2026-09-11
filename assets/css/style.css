@@ -791,8 +791,9 @@ body.menu-open-lock{overflow:hidden;}
 .dj-card-day,.dj-card-time{
   font-family:var(--sans);font-weight:300;font-size:15px;color:rgba(255,255,255,.85);line-height:1.5;
 }
+.dj-card-actions{display:flex;flex-wrap:wrap;gap:18px;margin-top:16px;}
 .dj-card-link.link-underline{
-  display:inline-block;margin-top:16px;font-size:13px;letter-spacing:.5px;
+  display:inline-block;font-size:13px;letter-spacing:.5px;
   color:#fff;border-bottom-color:rgba(255,255,255,.7);padding:6px 0;
 }
 .dj-card-link.link-underline:hover{background:#fff;color:var(--maroon);}

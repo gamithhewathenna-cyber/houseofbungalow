@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS `blocks` (
   `body` TEXT NULL,
   `image` VARCHAR(255) NULL,
   `link_url` VARCHAR(255) NULL,
+  `link_url2` VARCHAR(255) NULL,
   `sort` INT(11) NOT NULL DEFAULT 0,
   `active` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`),

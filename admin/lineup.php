@@ -36,8 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 foreach (($_POST['title'] ?? []) as $id => $title) {
                     $id  = (int) $id;
                     $img = handle_upload('file_' . $id);
-                    $fields = ['title=?', 'subtitle=?', 'body=?', 'link_url=?', 'sort=?'];
-                    $params = [trim($title), trim($_POST['subtitle'][$id] ?? ''), trim($_POST['desc'][$id] ?? ''), trim($_POST['link'][$id] ?? ''), (int) ($_POST['sort'][$id] ?? 0)];
+                    $fields = ['title=?', 'subtitle=?', 'body=?', 'link_url=?', 'link_url2=?', 'sort=?'];
+                    $params = [trim($title), trim($_POST['subtitle'][$id] ?? ''), trim($_POST['desc'][$id] ?? ''), trim($_POST['link'][$id] ?? ''), trim($_POST['link2'][$id] ?? ''), (int) ($_POST['sort'][$id] ?? 0)];
                     if ($img !== null) {
                         $fields[] = 'image=?';
                         $params[] = $img;
@@ -50,8 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             if ($action === 'add_dj') {
                 $img = handle_upload('new_file');
-                $q = db()->prepare('INSERT INTO blocks (block_type,title,subtitle,body,link_url,image,sort,active) VALUES ("below_dj",?,?,?,?,?,?,1)');
-                $q->execute([trim($_POST['new_title'] ?? 'New DJ'), trim($_POST['new_subtitle'] ?? ''), trim($_POST['new_desc'] ?? ''), trim($_POST['new_link'] ?? '#'), $img ?? '', (int) ($_POST['new_sort'] ?? 99)]);
+                $q = db()->prepare('INSERT INTO blocks (block_type,title,subtitle,body,link_url,link_url2,image,sort,active) VALUES ("below_dj",?,?,?,?,?,?,?,1)');
+                $q->execute([trim($_POST['new_title'] ?? 'New DJ'), trim($_POST['new_subtitle'] ?? ''), trim($_POST['new_desc'] ?? ''), trim($_POST['new_link'] ?? '#'), trim($_POST['new_link2'] ?? ''), $img ?? '', (int) ($_POST['new_sort'] ?? 99)]);
                 header('Location: lineup.php?tab=cards&saved=1'); exit;
             }
             if ($action === 'delete_dj') {
@@ -129,7 +129,7 @@ include __DIR__ . '/layout.php';
 
 <div class="tab-panel settings-group<?= $activeTab === 'cards' ? ' active' : '' ?>" data-tab="cards">
   <h3>DJ / Line-up Cards</h3>
-  <p class="group-help">Shown as cards over the line-up background image on the Below page.</p>
+  <p class="group-help">Shown as cards over the line-up background image on the Below and What's On pages. Each card can show two buttons — "Book Now" and "Buy Tickets" — each with its own link; leave a link URL empty to hide that button.</p>
 
   <form method="post" enctype="multipart/form-data">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
@@ -159,11 +159,16 @@ include __DIR__ . '/layout.php';
               </label>
             </div>
             <div class="field-grid">
-              <label>Link URL
+              <label>Book Now — link URL
                 <input type="text" name="link[<?= $dj['id'] ?>]" value="<?= e($dj['link_url']) ?>">
               </label>
+              <label>Buy Tickets — link URL
+                <input type="text" name="link2[<?= $dj['id'] ?>]" value="<?= e($dj['link_url2']) ?>">
+              </label>
+            </div>
+            <div class="field-row">
               <label>Order
-                <input type="text" name="sort[<?= $dj['id'] ?>]" value="<?= (int)$dj['sort'] ?>">
+                <input type="text" name="sort[<?= $dj['id'] ?>]" value="<?= (int)$dj['sort'] ?>" style="max-width:100px;">
               </label>
             </div>
           </div>
@@ -205,11 +210,16 @@ include __DIR__ . '/layout.php';
         </label>
       </div>
       <div class="field-grid">
-        <label>Link URL
+        <label>Book Now — link URL
           <input type="text" name="new_link" placeholder="#">
         </label>
+        <label>Buy Tickets — link URL
+          <input type="text" name="new_link2" placeholder="#">
+        </label>
+      </div>
+      <div class="field-row">
         <label>Order
-          <input type="text" name="new_sort" value="99">
+          <input type="text" name="new_sort" value="99" style="max-width:100px;">
         </label>
       </div>
     </div>
