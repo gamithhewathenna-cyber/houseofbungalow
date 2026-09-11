@@ -358,7 +358,7 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('wo_tag2_label','RESTAURANT','whatson_page','Tag button 2 label','text',7),
 ('wo_tag2_url','restaurant.php','whatson_page','Tag button 2 URL','text',8),
 ('wo_tag3_label','BELOW','whatson_page','Tag button 3 label','text',9),
-('wo_tag3_url','below.php','whatson_page','Tag button 3 URL','text',10),
+('wo_tag3_url','#lineup-section','whatson_page','Tag button 3 URL (use #lineup-section to scroll to the Line-Up section on this page)','text',10),
 
 ('wo_happyhour_eyebrow','Happy Hour','whatson_page','Happy Hour — eyebrow label','text',11),
 ('wo_happyhour_heading','INFORMATION','whatson_page','Happy Hour — heading','text',12),

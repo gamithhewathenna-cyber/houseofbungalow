@@ -7,7 +7,7 @@
  */
 $djs = blocks('below_dj');
 ?>
-<section class="lineup-section reveal" style="background-image:url('<?= e(asset(setting('below_lineup_image', 'assets/img/below.jpg'))) ?>');">
+<section id="lineup-section" class="lineup-section reveal" style="background-image:url('<?= e(asset(setting('below_lineup_image', 'assets/img/below.jpg'))) ?>');">
   <div class="lineup-overlay">
     <div class="container">
       <h2><?= e(setting('below_lineup_heading', "See This Week's Line-Up")) ?></h2>
