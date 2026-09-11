@@ -20,16 +20,10 @@ while ($i < count($gallery)) {
     $take3 = !$take3;
 }
 
-$menu_tabs = [
-    'dinner'    => 'Dinner',
-    'drinks'    => 'Drink Menu',
-    'dessert'   => 'Desert',
-    'cocktails' => 'Cocktails',
-    'wine'      => 'Wine',
-];
-$menu_items_by_tab = [];
-foreach ($menu_tabs as $key => $label) {
-    $menu_items_by_tab[$key] = blocks('dp_menu_' . $key);
+$menu_cats = blocks('dp_menu_cat');
+$menu_items_by_cat = [];
+foreach ($menu_cats as $cat) {
+    $menu_items_by_cat[$cat['id']] = blocks('dp_menu_item_' . $cat['id']);
 }
 ?>
 
@@ -89,18 +83,18 @@ foreach ($menu_tabs as $key => $label) {
       <p class="menu-lede"><?= e(setting('dp_menu_lede')) ?></p>
     <?php endif; ?>
 
-    <p class="menu-active-label" id="menuActiveLabel"><?= e(reset($menu_tabs)) ?> Specials</p>
+    <p class="menu-active-label" id="menuActiveLabel"><?= e($menu_cats ? $menu_cats[0]['title'] : '') ?> Specials</p>
 
     <div class="menu-tabs">
-      <?php $first = true; foreach ($menu_tabs as $key => $label): ?>
-        <button type="button" class="menu-tab-btn<?= $first ? ' active' : '' ?>" data-menu-tab="<?= e($key) ?>"><?= e($label) ?></button>
+      <?php $first = true; foreach ($menu_cats as $cat): ?>
+        <button type="button" class="menu-tab-btn<?= $first ? ' active' : '' ?>" data-menu-tab="<?= (int) $cat['id'] ?>"><?= e($cat['title']) ?></button>
       <?php $first = false; endforeach; ?>
     </div>
 
-    <?php $first = true; foreach ($menu_tabs as $key => $label): ?>
-      <div class="menu-panel<?= $first ? ' active' : '' ?>" data-menu-panel="<?= e($key) ?>">
-        <?php if ($menu_items_by_tab[$key]): ?>
-          <?php foreach ($menu_items_by_tab[$key] as $item): ?>
+    <?php $first = true; foreach ($menu_cats as $cat): ?>
+      <div class="menu-panel<?= $first ? ' active' : '' ?>" data-menu-panel="<?= (int) $cat['id'] ?>">
+        <?php if ($menu_items_by_cat[$cat['id']]): ?>
+          <?php foreach ($menu_items_by_cat[$cat['id']] as $item): ?>
             <div class="menu-item">
               <div class="menu-item-title">
                 <span><?= e($item['title']) ?></span>

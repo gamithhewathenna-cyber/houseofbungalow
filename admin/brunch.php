@@ -9,13 +9,7 @@ $fieldGroups = [
     'menu'      => ['brunch_menu_heading', 'brunch_menu_lede'],
     'guest'     => ['brunch_guest_eyebrow', 'brunch_guest_heading', 'brunch_guest_p1', 'brunch_guest_p2', 'brunch_guest_btn_label', 'brunch_guest_btn_url', 'brunch_guest_image'],
 ];
-$menuCats = [
-    'brunch'    => 'Brunch',
-    'dinner'    => 'Drink Menu',
-    'dessert'   => 'Desert',
-    'cocktails' => 'Cocktails',
-    'wine'      => 'Wine',
-];
+$catBlockType = 'brunch_menu_cat';
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -55,32 +49,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Location: brunch.php?tab=' . urlencode($group) . '&saved=1'); exit;
             }
 
+            // ---- Menu categories ----
+            if ($action === 'save_categories') {
+                foreach (($_POST['cat_title'] ?? []) as $id => $title) {
+                    $id = (int) $id;
+                    $q = db()->prepare('UPDATE blocks SET title=?, sort=? WHERE id=? AND block_type=?');
+                    $q->execute([trim($title), (int) ($_POST['cat_sort'][$id] ?? 0), $id, $catBlockType]);
+                }
+                header('Location: brunch.php?tab=menu&saved=1'); exit;
+            }
+            if ($action === 'add_category') {
+                $label = trim($_POST['new_cat_title'] ?? '');
+                if ($label === '') {
+                    $error = 'Enter a category name.';
+                } else {
+                    $q = db()->prepare('INSERT INTO blocks (block_type,title,sort,active) VALUES (?,?,?,1)');
+                    $q->execute([$catBlockType, $label, (int) ($_POST['new_cat_sort'] ?? 99)]);
+                    $newId = (int) db()->lastInsertId();
+                    header('Location: brunch.php?tab=menu&cat=' . $newId . '&saved=1'); exit;
+                }
+            }
+            if ($action === 'delete_category') {
+                $catId = (int) ($_POST['cat_id'] ?? 0);
+                db()->prepare('DELETE FROM blocks WHERE id=? AND block_type=?')->execute([$catId, $catBlockType]);
+                db()->prepare('DELETE FROM blocks WHERE block_type=?')->execute(['brunch_menu_item_' . $catId]);
+                header('Location: brunch.php?tab=menu&saved=1'); exit;
+            }
+
             // ---- Menu items (per category) ----
             if ($action === 'save_menu_items') {
-                $cat = $_POST['cat'] ?? '';
-                if (isset($menuCats[$cat])) {
-                    $blockType = 'brunch_menu_' . $cat;
-                    foreach (($_POST['title'] ?? []) as $id => $title) {
-                        $id = (int) $id;
-                        $q = db()->prepare('UPDATE blocks SET title=?, subtitle=?, body=?, sort=? WHERE id=? AND block_type=?');
-                        $q->execute([trim($title), trim($_POST['price'][$id] ?? ''), trim($_POST['desc'][$id] ?? ''), (int) ($_POST['sort'][$id] ?? 0), $id, $blockType]);
-                    }
+                $catId = (int) ($_POST['cat'] ?? 0);
+                $blockType = 'brunch_menu_item_' . $catId;
+                foreach (($_POST['title'] ?? []) as $id => $title) {
+                    $id = (int) $id;
+                    $q = db()->prepare('UPDATE blocks SET title=?, subtitle=?, body=?, sort=? WHERE id=? AND block_type=?');
+                    $q->execute([trim($title), trim($_POST['price'][$id] ?? ''), trim($_POST['desc'][$id] ?? ''), (int) ($_POST['sort'][$id] ?? 0), $id, $blockType]);
                 }
-                header('Location: brunch.php?tab=menu&cat=' . urlencode($cat) . '&saved=1'); exit;
+                header('Location: brunch.php?tab=menu&cat=' . $catId . '&saved=1'); exit;
             }
             if ($action === 'add_menu_item') {
-                $cat = $_POST['cat'] ?? '';
-                if (isset($menuCats[$cat])) {
-                    $q = db()->prepare('INSERT INTO blocks (block_type,title,subtitle,body,sort,active) VALUES (?,?,?,?,?,1)');
-                    $q->execute(['brunch_menu_' . $cat, trim($_POST['new_title'] ?? 'New Item'), trim($_POST['new_price'] ?? ''), trim($_POST['new_desc'] ?? ''), (int) ($_POST['new_sort'] ?? 99)]);
-                }
-                header('Location: brunch.php?tab=menu&cat=' . urlencode($cat) . '&saved=1'); exit;
+                $catId = (int) ($_POST['cat'] ?? 0);
+                $q = db()->prepare('INSERT INTO blocks (block_type,title,subtitle,body,sort,active) VALUES (?,?,?,?,?,1)');
+                $q->execute(['brunch_menu_item_' . $catId, trim($_POST['new_title'] ?? 'New Item'), trim($_POST['new_price'] ?? ''), trim($_POST['new_desc'] ?? ''), (int) ($_POST['new_sort'] ?? 99)]);
+                header('Location: brunch.php?tab=menu&cat=' . $catId . '&saved=1'); exit;
             }
             if ($action === 'delete_menu_item') {
-                $cat = $_POST['cat'] ?? '';
+                $catId = (int) ($_POST['cat'] ?? 0);
                 $q = db()->prepare('DELETE FROM blocks WHERE id=? AND block_type=?');
-                $q->execute([(int) ($_POST['id'] ?? 0), 'brunch_menu_' . $cat]);
-                header('Location: brunch.php?tab=menu&cat=' . urlencode($cat) . '&saved=1'); exit;
+                $q->execute([(int) ($_POST['id'] ?? 0), 'brunch_menu_item_' . $catId]);
+                header('Location: brunch.php?tab=menu&cat=' . $catId . '&saved=1'); exit;
             }
 
             // ---- Gallery ----
@@ -124,9 +141,11 @@ $bySkey = [];
 foreach ($allRows as $r) {
     $bySkey[$r['skey']] = $r;
 }
+$menuCats = db()->query("SELECT * FROM blocks WHERE block_type='brunch_menu_cat' ORDER BY sort ASC, id ASC")->fetchAll();
 $menuItemsByCat = [];
-foreach ($menuCats as $cat => $label) {
-    $menuItemsByCat[$cat] = db()->query("SELECT * FROM blocks WHERE block_type='brunch_menu_$cat' ORDER BY sort ASC, id ASC")->fetchAll();
+foreach ($menuCats as $cat) {
+    $catId = (int) $cat['id'];
+    $menuItemsByCat[$catId] = db()->query("SELECT * FROM blocks WHERE block_type='brunch_menu_item_$catId' ORDER BY sort ASC, id ASC")->fetchAll();
 }
 $gallery = db()->query("SELECT * FROM blocks WHERE block_type='brunch_gallery' ORDER BY sort ASC, id ASC")->fetchAll();
 
@@ -141,10 +160,7 @@ $activeTab = $_GET['tab'] ?? 'herovideo';
 if (!isset($tabs[$activeTab])) {
     $activeTab = 'herovideo';
 }
-$activeCat = $_GET['cat'] ?? 'brunch';
-if (!isset($menuCats[$activeCat])) {
-    $activeCat = 'brunch';
-}
+$activeCat = isset($_GET['cat']) ? (int) $_GET['cat'] : ($menuCats[0]['id'] ?? 0);
 
 function render_brunch_field(array $f): void
 {
@@ -253,58 +269,97 @@ include __DIR__ . '/layout.php';
     <div class="form-actions"><button type="submit" class="btn">Save Changes</button></div>
   </form>
 
-  <h3 style="margin-top:30px;">Menu Items</h3>
-  <p class="group-help">This is a separate menu from the Restaurant page's menu — editing one does not affect the other.</p>
-  <div class="tab-nav" style="margin-bottom:18px;">
-    <?php foreach ($menuCats as $cat => $label): ?>
-      <button type="button" class="tab-btn menu-cat-btn<?= $activeCat === $cat ? ' active' : '' ?>" data-menu-cat="<?= e($cat) ?>"><?= e($label) ?></button>
-    <?php endforeach; ?>
-  </div>
-
-  <?php foreach ($menuCats as $cat => $label): ?>
-    <div class="menu-cat-panel<?= $activeCat === $cat ? ' active' : '' ?>" data-menu-cat-panel="<?= e($cat) ?>" style="<?= $activeCat === $cat ? '' : 'display:none;' ?>">
-      <form method="post">
-        <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
-        <input type="hidden" name="action" value="save_menu_items">
-        <input type="hidden" name="cat" value="<?= e($cat) ?>">
-        <table>
-          <tr><th>Item</th><th style="width:100px;">Price</th><th>Description</th><th style="width:70px;">Order</th><th style="width:80px;"></th></tr>
-          <?php foreach ($menuItemsByCat[$cat] as $item): ?>
-            <tr>
-              <td><input type="text" name="title[<?= $item['id'] ?>]" value="<?= e($item['title']) ?>"></td>
-              <td><input type="text" name="price[<?= $item['id'] ?>]" value="<?= e($item['subtitle']) ?>"></td>
-              <td><input type="text" name="desc[<?= $item['id'] ?>]" value="<?= e($item['body']) ?>"></td>
-              <td><input type="text" name="sort[<?= $item['id'] ?>]" value="<?= (int)$item['sort'] ?>" style="width:56px;"></td>
-              <td><button form="delmenu<?= $item['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this item?')">Delete</button></td>
-            </tr>
-          <?php endforeach; ?>
-        </table>
-        <div class="form-actions"><button class="btn">Save <?= e($label) ?> Items</button></div>
-      </form>
-      <?php foreach ($menuItemsByCat[$cat] as $item): ?>
-        <form id="delmenu<?= $item['id'] ?>" method="post" class="inline-form">
-          <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
-          <input type="hidden" name="action" value="delete_menu_item">
-          <input type="hidden" name="cat" value="<?= e($cat) ?>">
-          <input type="hidden" name="id" value="<?= $item['id'] ?>">
-        </form>
+  <h3 style="margin-top:30px;">Menu Categories</h3>
+  <p class="group-help">These become the tabs shown in the "Discover Our Menus" section. This is a separate menu from the Restaurant page's menu — editing one does not affect the other. Deleting a category also deletes its menu items.</p>
+  <form method="post">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="save_categories">
+    <table>
+      <tr><th>Category Name</th><th style="width:70px;">Order</th><th style="width:80px;"></th></tr>
+      <?php foreach ($menuCats as $cat): ?>
+        <tr>
+          <td><input type="text" name="cat_title[<?= $cat['id'] ?>]" value="<?= e($cat['title']) ?>"></td>
+          <td><input type="text" name="cat_sort[<?= $cat['id'] ?>]" value="<?= (int)$cat['sort'] ?>" style="width:56px;"></td>
+          <td><button form="delcat<?= $cat['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this category and ALL its menu items? This cannot be undone.')">Delete</button></td>
+        </tr>
       <?php endforeach; ?>
-
-      <h3 style="margin-top:24px;font-size:14px;">Add an Item to <?= e($label) ?></h3>
-      <form method="post">
-        <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
-        <input type="hidden" name="action" value="add_menu_item">
-        <input type="hidden" name="cat" value="<?= e($cat) ?>">
-        <div class="row-actions">
-          <input type="text" name="new_title" placeholder="Item name" style="max-width:200px;">
-          <input type="text" name="new_price" placeholder="Price" style="width:80px;">
-          <input type="text" name="new_desc" placeholder="Description" style="max-width:260px;">
-          <input type="text" name="new_sort" placeholder="Order" value="99" style="width:70px;">
-          <button class="btn btn-sm">Add</button>
-        </div>
-      </form>
-    </div>
+    </table>
+    <div class="form-actions"><button class="btn">Save Categories</button></div>
+  </form>
+  <?php foreach ($menuCats as $cat): ?>
+    <form id="delcat<?= $cat['id'] ?>" method="post" class="inline-form">
+      <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+      <input type="hidden" name="action" value="delete_category">
+      <input type="hidden" name="cat_id" value="<?= $cat['id'] ?>">
+    </form>
   <?php endforeach; ?>
+
+  <h4 style="margin-top:20px;font-size:14px;">Add a Category</h4>
+  <form method="post">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="add_category">
+    <div class="row-actions">
+      <input type="text" name="new_cat_title" placeholder="e.g. Kids Menu" style="max-width:220px;">
+      <input type="text" name="new_cat_sort" placeholder="Order" value="99" style="width:70px;">
+      <button class="btn btn-sm">Add Category</button>
+    </div>
+  </form>
+
+  <h3 style="margin-top:30px;">Menu Items</h3>
+  <?php if (!$menuCats): ?>
+    <p class="group-help">Add a category above first — its items will appear here once it exists.</p>
+  <?php else: ?>
+    <div class="tab-nav" style="margin-bottom:18px;">
+      <?php foreach ($menuCats as $cat): ?>
+        <button type="button" class="tab-btn menu-cat-btn<?= $activeCat === (int)$cat['id'] ? ' active' : '' ?>" data-menu-cat="<?= $cat['id'] ?>"><?= e($cat['title']) ?></button>
+      <?php endforeach; ?>
+    </div>
+
+    <?php foreach ($menuCats as $cat): $catId = (int) $cat['id']; ?>
+      <div class="menu-cat-panel<?= $activeCat === $catId ? ' active' : '' ?>" data-menu-cat-panel="<?= $catId ?>" style="<?= $activeCat === $catId ? '' : 'display:none;' ?>">
+        <form method="post">
+          <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+          <input type="hidden" name="action" value="save_menu_items">
+          <input type="hidden" name="cat" value="<?= $catId ?>">
+          <table>
+            <tr><th>Item</th><th style="width:100px;">Price</th><th>Description</th><th style="width:70px;">Order</th><th style="width:80px;"></th></tr>
+            <?php foreach ($menuItemsByCat[$catId] as $item): ?>
+              <tr>
+                <td><input type="text" name="title[<?= $item['id'] ?>]" value="<?= e($item['title']) ?>"></td>
+                <td><input type="text" name="price[<?= $item['id'] ?>]" value="<?= e($item['subtitle']) ?>"></td>
+                <td><input type="text" name="desc[<?= $item['id'] ?>]" value="<?= e($item['body']) ?>"></td>
+                <td><input type="text" name="sort[<?= $item['id'] ?>]" value="<?= (int)$item['sort'] ?>" style="width:56px;"></td>
+                <td><button form="delmenu<?= $item['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this item?')">Delete</button></td>
+              </tr>
+            <?php endforeach; ?>
+          </table>
+          <div class="form-actions"><button class="btn">Save <?= e($cat['title']) ?> Items</button></div>
+        </form>
+        <?php foreach ($menuItemsByCat[$catId] as $item): ?>
+          <form id="delmenu<?= $item['id'] ?>" method="post" class="inline-form">
+            <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+            <input type="hidden" name="action" value="delete_menu_item">
+            <input type="hidden" name="cat" value="<?= $catId ?>">
+            <input type="hidden" name="id" value="<?= $item['id'] ?>">
+          </form>
+        <?php endforeach; ?>
+
+        <h3 style="margin-top:24px;font-size:14px;">Add an Item to <?= e($cat['title']) ?></h3>
+        <form method="post">
+          <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+          <input type="hidden" name="action" value="add_menu_item">
+          <input type="hidden" name="cat" value="<?= $catId ?>">
+          <div class="row-actions">
+            <input type="text" name="new_title" placeholder="Item name" style="max-width:200px;">
+            <input type="text" name="new_price" placeholder="Price" style="width:80px;">
+            <input type="text" name="new_desc" placeholder="Description" style="max-width:260px;">
+            <input type="text" name="new_sort" placeholder="Order" value="99" style="width:70px;">
+            <button class="btn btn-sm">Add</button>
+          </div>
+        </form>
+      </div>
+    <?php endforeach; ?>
+  <?php endif; ?>
 </div>
 
 <script>

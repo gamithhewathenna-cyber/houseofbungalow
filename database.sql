@@ -236,16 +236,28 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('rest_hours_btn_url','#','restaurant','Hours — button URL','text',48),
 ('rest_hours_footnote','Walk-Ins Welcome. Book Ahead For Peak Hours Before Committing.','restaurant','Hours — footnote','text',49);
 
--- Brunch menu items (other categories start empty — add via admin)
+-- Restaurant menu categories (admin can add/rename/remove — see admin/restaurant.php)
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('rest_menu_cat','Brunch',1,1);
+SET @rest_cat_brunch := LAST_INSERT_ID();
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('rest_menu_cat','Drink Menu',2,1);
+SET @rest_cat_dinner := LAST_INSERT_ID();
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('rest_menu_cat','Desert',3,1);
+SET @rest_cat_dessert := LAST_INSERT_ID();
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('rest_menu_cat','Cocktails',4,1);
+SET @rest_cat_cocktails := LAST_INSERT_ID();
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('rest_menu_cat','Wine',5,1);
+SET @rest_cat_wine := LAST_INSERT_ID();
+
+-- Brunch category menu items (other categories start empty — add via admin)
 INSERT INTO `blocks` (`block_type`,`title`,`subtitle`,`body`,`sort`,`active`) VALUES
-('menu_brunch','Greek Omelette (GF)','22','Bell Pepper, Spinach, Tomato, PDO Feta Cheese',1,1),
-('menu_brunch','Avocado Aegean Toast','21','Sourdough, Tomato, Lemon, Arugula, Basil, Shaved Parmesan, Poached Egg',2,1),
-('menu_brunch','Smoked Salmon Eggs Benedict','26','Hollandaise Sauce, Spinach',3,1),
-('menu_brunch','Truffle Fries','18','Parmigiano Reggiano, Chive',4,1),
-('menu_brunch','French Toast','24','Caramelised Sicilian Pistachio',5,1),
-('menu_brunch','CASA HEOS Gourmet Burger','39','1/3 Beef Patty, Brioche Bun, Smoked Cheddar, Caramelised Onions, Harissa Aioli, French Fries',6,1),
-('menu_brunch','Farro Island Salmon Burger','27','Brioche Bun, Baby Arugula, Sauce Tartare, French Fries',7,1),
-('menu_brunch','7oz Grilled Hanger Steak','36','Charred Lemon, Green Harissa',8,1);
+(CONCAT('rest_menu_item_', @rest_cat_brunch),'Greek Omelette (GF)','22','Bell Pepper, Spinach, Tomato, PDO Feta Cheese',1,1),
+(CONCAT('rest_menu_item_', @rest_cat_brunch),'Avocado Aegean Toast','21','Sourdough, Tomato, Lemon, Arugula, Basil, Shaved Parmesan, Poached Egg',2,1),
+(CONCAT('rest_menu_item_', @rest_cat_brunch),'Smoked Salmon Eggs Benedict','26','Hollandaise Sauce, Spinach',3,1),
+(CONCAT('rest_menu_item_', @rest_cat_brunch),'Truffle Fries','18','Parmigiano Reggiano, Chive',4,1),
+(CONCAT('rest_menu_item_', @rest_cat_brunch),'French Toast','24','Caramelised Sicilian Pistachio',5,1),
+(CONCAT('rest_menu_item_', @rest_cat_brunch),'CASA HEOS Gourmet Burger','39','1/3 Beef Patty, Brioche Bun, Smoked Cheddar, Caramelised Onions, Harissa Aioli, French Fries',6,1),
+(CONCAT('rest_menu_item_', @rest_cat_brunch),'Farro Island Salmon Burger','27','Brioche Bun, Baby Arugula, Sauce Tartare, French Fries',7,1),
+(CONCAT('rest_menu_item_', @rest_cat_brunch),'7oz Grilled Hanger Steak','36','Charred Lemon, Green Harissa',8,1);
 
 -- Restaurant gallery (placeholder photos — replace via admin)
 INSERT INTO `blocks` (`block_type`,`title`,`image`,`sort`,`active`) VALUES
@@ -429,17 +441,28 @@ INSERT INTO `blocks` (`block_type`,`title`,`image`,`sort`,`active`) VALUES
 ('brunch_gallery','','assets/img/hero.jpg',4,1),
 ('brunch_gallery','','assets/img/building.png',5,1);
 
--- Brunch menu items (own dataset, block_type = brunch_menu_<category>;
--- other categories start empty — add via admin)
+-- Brunch menu categories (own dataset — admin can add/rename/remove — see admin/brunch.php)
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('brunch_menu_cat','Brunch',1,1);
+SET @brunch_cat_brunch := LAST_INSERT_ID();
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('brunch_menu_cat','Drink Menu',2,1);
+SET @brunch_cat_dinner := LAST_INSERT_ID();
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('brunch_menu_cat','Desert',3,1);
+SET @brunch_cat_dessert := LAST_INSERT_ID();
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('brunch_menu_cat','Cocktails',4,1);
+SET @brunch_cat_cocktails := LAST_INSERT_ID();
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('brunch_menu_cat','Wine',5,1);
+SET @brunch_cat_wine := LAST_INSERT_ID();
+
+-- Brunch category menu items (other categories start empty — add via admin)
 INSERT INTO `blocks` (`block_type`,`title`,`subtitle`,`body`,`sort`,`active`) VALUES
-('brunch_menu_brunch','Greek Omelette (GF)','22','Bell Pepper, Spinach, Tomato, PDO Feta Cheese',1,1),
-('brunch_menu_brunch','Avocado Aegean Toast','21','Sourdough, Tomato, Lemon, Arugula, Basil, Shaved Parmesan, Poached Egg',2,1),
-('brunch_menu_brunch','Smoked Salmon Eggs Benedict','26','Hollandaise Sauce, Spinach',3,1),
-('brunch_menu_brunch','Truffle Fries','18','Parmigiano Reggiano, Chive',4,1),
-('brunch_menu_brunch','French Toast','24','Caramelised Sicilian Pistachio',5,1),
-('brunch_menu_brunch','CASA NEOS Gourmet Burger','39','1/3 Beef Patty, Brioche Bun, Smoked Cheddar, Caramelised Onions, Harissa Aioli, French Fries',6,1),
-('brunch_menu_brunch','Farie Island Salmon Burger','27','Brioche Bun, Baby Arugula, Sauce Tartare, French Fries',7,1),
-('brunch_menu_brunch','7oz Grilled Hanger Steak','36','Charred Lemon, Green Harissa',8,1);
+(CONCAT('brunch_menu_item_', @brunch_cat_brunch),'Greek Omelette (GF)','22','Bell Pepper, Spinach, Tomato, PDO Feta Cheese',1,1),
+(CONCAT('brunch_menu_item_', @brunch_cat_brunch),'Avocado Aegean Toast','21','Sourdough, Tomato, Lemon, Arugula, Basil, Shaved Parmesan, Poached Egg',2,1),
+(CONCAT('brunch_menu_item_', @brunch_cat_brunch),'Smoked Salmon Eggs Benedict','26','Hollandaise Sauce, Spinach',3,1),
+(CONCAT('brunch_menu_item_', @brunch_cat_brunch),'Truffle Fries','18','Parmigiano Reggiano, Chive',4,1),
+(CONCAT('brunch_menu_item_', @brunch_cat_brunch),'French Toast','24','Caramelised Sicilian Pistachio',5,1),
+(CONCAT('brunch_menu_item_', @brunch_cat_brunch),'CASA NEOS Gourmet Burger','39','1/3 Beef Patty, Brioche Bun, Smoked Cheddar, Caramelised Onions, Harissa Aioli, French Fries',6,1),
+(CONCAT('brunch_menu_item_', @brunch_cat_brunch),'Farie Island Salmon Burger','27','Brioche Bun, Baby Arugula, Sauce Tartare, French Fries',7,1),
+(CONCAT('brunch_menu_item_', @brunch_cat_brunch),'7oz Grilled Hanger Steak','36','Charred Lemon, Green Harissa',8,1);
 
 -- =====================================================================
 -- Dinner Party page
@@ -477,7 +500,14 @@ INSERT INTO `blocks` (`block_type`,`title`,`image`,`sort`,`active`) VALUES
 ('dp_gallery','','assets/img/hero.jpg',4,1),
 ('dp_gallery','','assets/img/building.png',5,1);
 
+-- Dinner Party menu categories (own dataset — admin can add/rename/remove — see admin/dinnerparty.php)
 -- Menu items intentionally left empty for all categories — add via admin.
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES
+('dp_menu_cat','Dinner',1,1),
+('dp_menu_cat','Drink Menu',2,1),
+('dp_menu_cat','Desert',3,1),
+('dp_menu_cat','Cocktails',4,1),
+('dp_menu_cat','Wine',5,1);
 
 -- =====================================================================
 -- Private Events page
