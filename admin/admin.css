@@ -145,6 +145,25 @@ td img{height:44px;width:auto;border-radius:3px;border:1px solid var(--line);}
   .dj-admin-actions{justify-content:flex-start;}
 }
 
+/* ---- Generic "no-media" admin cards (Menu categories & items) ---- */
+.admin-card-list{display:flex;flex-direction:column;gap:14px;}
+.admin-card{
+  background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px 20px;
+  display:grid;grid-template-columns:1fr 90px;gap:22px;align-items:start;
+}
+.admin-card-fields .field-row{margin-bottom:12px;}
+.admin-card-fields .field-row:last-child{margin-bottom:0;}
+.admin-card-fields .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px;}
+.admin-card-fields .field-grid.field-grid-cat{grid-template-columns:1fr 120px;}
+.admin-card-fields .field-grid:last-child{margin-bottom:0;}
+.admin-card-actions{display:flex;justify-content:flex-end;align-items:flex-start;padding-top:2px;}
+.admin-card-add{border-style:dashed;background:#faf6f0;}
+.admin-card-count{font-size:12px;color:#9a9089;font-weight:600;margin:-8px 0 14px;}
+@media(max-width:760px){
+  .admin-card{grid-template-columns:1fr;}
+  .admin-card-actions{justify-content:flex-start;}
+}
+
 /* ---- Home Page tabs ---- */
 .tab-nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
 .tab-btn{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 18px;font-size:13px;font-weight:600;color:#5a544e;cursor:pointer;}

@@ -256,16 +256,26 @@ include __DIR__ . '/layout.php';
   <form method="post">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
     <input type="hidden" name="action" value="save_categories">
-    <table>
-      <tr><th>Category Name</th><th style="width:70px;">Order</th><th style="width:80px;"></th></tr>
+    <div class="admin-card-count"><?= count($menuCats) ?> categor<?= count($menuCats) === 1 ? 'y' : 'ies' ?></div>
+    <div class="admin-card-list">
       <?php foreach ($menuCats as $cat): ?>
-        <tr>
-          <td><input type="text" name="cat_title[<?= $cat['id'] ?>]" value="<?= e($cat['title']) ?>"></td>
-          <td><input type="text" name="cat_sort[<?= $cat['id'] ?>]" value="<?= (int)$cat['sort'] ?>" style="width:56px;"></td>
-          <td><button form="delcat<?= $cat['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this category and ALL its menu items? This cannot be undone.')">Delete</button></td>
-        </tr>
+        <div class="admin-card">
+          <div class="admin-card-fields">
+            <div class="field-grid field-grid-cat">
+              <label>Category Name
+                <input type="text" name="cat_title[<?= $cat['id'] ?>]" value="<?= e($cat['title']) ?>">
+              </label>
+              <label>Order
+                <input type="text" name="cat_sort[<?= $cat['id'] ?>]" value="<?= (int)$cat['sort'] ?>">
+              </label>
+            </div>
+          </div>
+          <div class="admin-card-actions">
+            <button form="delcat<?= $cat['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this category and ALL its menu items? This cannot be undone.')">Delete</button>
+          </div>
+        </div>
       <?php endforeach; ?>
-    </table>
+    </div>
     <div class="form-actions"><button class="btn">Save Categories</button></div>
   </form>
   <?php foreach ($menuCats as $cat): ?>
@@ -277,12 +287,20 @@ include __DIR__ . '/layout.php';
   <?php endforeach; ?>
 
   <h4 style="margin-top:20px;font-size:14px;">Add a Category</h4>
-  <form method="post">
+  <form method="post" class="admin-card admin-card-add">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
     <input type="hidden" name="action" value="add_category">
-    <div class="row-actions">
-      <input type="text" name="new_cat_title" placeholder="e.g. Kids Menu" style="max-width:220px;">
-      <input type="text" name="new_cat_sort" placeholder="Order" value="99" style="width:70px;">
+    <div class="admin-card-fields">
+      <div class="field-grid field-grid-cat">
+        <label>Category Name
+          <input type="text" name="new_cat_title" placeholder="e.g. Kids Menu">
+        </label>
+        <label>Order
+          <input type="text" name="new_cat_sort" value="99">
+        </label>
+      </div>
+    </div>
+    <div class="admin-card-actions">
       <button class="btn btn-sm">Add Category</button>
     </div>
   </form>
@@ -303,18 +321,36 @@ include __DIR__ . '/layout.php';
           <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
           <input type="hidden" name="action" value="save_menu_items">
           <input type="hidden" name="cat" value="<?= $catId ?>">
-          <table>
-            <tr><th>Item</th><th style="width:100px;">Price</th><th>Description</th><th style="width:70px;">Order</th><th style="width:80px;"></th></tr>
+          <div class="admin-card-count"><?= count($menuItemsByCat[$catId]) ?> item<?= count($menuItemsByCat[$catId]) === 1 ? '' : 's' ?></div>
+          <div class="admin-card-list">
             <?php foreach ($menuItemsByCat[$catId] as $item): ?>
-              <tr>
-                <td><input type="text" name="title[<?= $item['id'] ?>]" value="<?= e($item['title']) ?>"></td>
-                <td><input type="text" name="price[<?= $item['id'] ?>]" value="<?= e($item['subtitle']) ?>"></td>
-                <td><input type="text" name="desc[<?= $item['id'] ?>]" value="<?= e($item['body']) ?>"></td>
-                <td><input type="text" name="sort[<?= $item['id'] ?>]" value="<?= (int)$item['sort'] ?>" style="width:56px;"></td>
-                <td><button form="delmenu<?= $item['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this item?')">Delete</button></td>
-              </tr>
+              <div class="admin-card">
+                <div class="admin-card-fields">
+                  <div class="field-row">
+                    <label>Item Name
+                      <input type="text" name="title[<?= $item['id'] ?>]" value="<?= e($item['title']) ?>">
+                    </label>
+                  </div>
+                  <div class="field-grid">
+                    <label>Price
+                      <input type="text" name="price[<?= $item['id'] ?>]" value="<?= e($item['subtitle']) ?>">
+                    </label>
+                    <label>Order
+                      <input type="text" name="sort[<?= $item['id'] ?>]" value="<?= (int)$item['sort'] ?>">
+                    </label>
+                  </div>
+                  <div class="field-row">
+                    <label>Description
+                      <textarea name="desc[<?= $item['id'] ?>]"><?= e($item['body']) ?></textarea>
+                    </label>
+                  </div>
+                </div>
+                <div class="admin-card-actions">
+                  <button form="delmenu<?= $item['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this item?')">Delete</button>
+                </div>
+              </div>
             <?php endforeach; ?>
-          </table>
+          </div>
           <div class="form-actions"><button class="btn">Save <?= e($cat['title']) ?> Items</button></div>
         </form>
         <?php foreach ($menuItemsByCat[$catId] as $item): ?>
@@ -327,16 +363,32 @@ include __DIR__ . '/layout.php';
         <?php endforeach; ?>
 
         <h3 style="margin-top:24px;font-size:14px;">Add an Item to <?= e($cat['title']) ?></h3>
-        <form method="post">
+        <form method="post" class="admin-card admin-card-add">
           <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
           <input type="hidden" name="action" value="add_menu_item">
           <input type="hidden" name="cat" value="<?= $catId ?>">
-          <div class="row-actions">
-            <input type="text" name="new_title" placeholder="Item name" style="max-width:200px;">
-            <input type="text" name="new_price" placeholder="Price" style="width:80px;">
-            <input type="text" name="new_desc" placeholder="Description" style="max-width:260px;">
-            <input type="text" name="new_sort" placeholder="Order" value="99" style="width:70px;">
-            <button class="btn btn-sm">Add</button>
+          <div class="admin-card-fields">
+            <div class="field-row">
+              <label>Item Name
+                <input type="text" name="new_title" placeholder="Item name">
+              </label>
+            </div>
+            <div class="field-grid">
+              <label>Price
+                <input type="text" name="new_price" placeholder="Price">
+              </label>
+              <label>Order
+                <input type="text" name="new_sort" value="99">
+              </label>
+            </div>
+            <div class="field-row">
+              <label>Description
+                <textarea name="new_desc" placeholder="Description"></textarea>
+              </label>
+            </div>
+          </div>
+          <div class="admin-card-actions">
+            <button class="btn btn-sm">Add Item</button>
           </div>
         </form>
       </div>
