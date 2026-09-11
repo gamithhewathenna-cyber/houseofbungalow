@@ -105,6 +105,11 @@ include __DIR__ . '/layout.php';
   <a href="lineup.php">Manage This Week's Line-Up</a>
 </div>
 
+<h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">Popup Booking</h2>
+<div class="dash-links">
+  <a href="popup.php">Manage the "Book A Table" Popup</a>
+</div>
+
 <h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">System</h2>
 <div class="dash-links">
   <a href="section.php?s=website">Website Settings</a>

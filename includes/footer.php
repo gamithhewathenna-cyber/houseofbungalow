@@ -71,6 +71,8 @@ $msg        = $_GET['sub'] ?? '';
   </div>
 </footer>
 
+<?php include __DIR__ . '/booking-popup.php'; ?>
+
 <script>
 (function () {
   var items = document.querySelectorAll('.reveal');
