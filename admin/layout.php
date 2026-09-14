@@ -15,6 +15,7 @@ $current    = basename($_SERVER['PHP_SELF']);
 $mainNav = [
     ['href' => 'index.php',       'label' => 'Dashboard',          'icon' => 'grid'],
     ['href' => 'homepage.php',    'label' => 'Home Page',          'icon' => 'home'],
+    ['href' => 'reserve.php',     'label' => 'Reserve',            'icon' => 'reserve'],
     ['href' => 'restaurant.php',  'label' => 'Restaurant & Menus', 'icon' => 'fork'],
     ['href' => 'cafe.php',        'label' => 'Café',               'icon' => 'cup'],
     ['href' => 'below.php',       'label' => 'Below',              'icon' => 'moon'],
@@ -52,6 +53,7 @@ function nav_icon(string $key): void
         'cup'   => '<path d="M5 9h11v6a5 5 0 0 1-5 5H9a4 4 0 0 1-4-4V9Z"/><path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M9 3c0 1-1.2 1-1.2 2S9 6.5 9 7.5M13 3c0 1-1.2 1-1.2 2S13 6.5 13 7.5"/>',
         'popup' => '<rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 8h18"/><path d="M9.5 13.5l2 2 3-3.5"/>',
         'question' => '<circle cx="12" cy="12" r="9"/><path d="M9.2 9.3a2.8 2.8 0 0 1 5.4.9c0 1.8-2.6 2-2.6 3.8"/><circle cx="12" cy="17" r=".2" fill="currentColor"/>',
+        'reserve' => '<rect x="3" y="10" width="18" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/><path d="M9 14h.01M12 14h.01M15 14h.01"/>',
     ];
     echo '<svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' . ($icons[$key] ?? '') . '</svg>';
 }

@@ -200,6 +200,29 @@ body.menu-open-lock{overflow:hidden;}
   pointer-events:none;
 }
 
+/* Centered semi-opaque card over the hero image (Reserve page) */
+.hero-overlay-card{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  z-index:2;
+  background:rgba(242,232,222,.94);
+  max-width:640px;width:90%;
+  padding:48px 54px;
+  text-align:center;
+}
+.hero-overlay-card h1{
+  font-family:var(--serif);font-weight:400;font-size:29px;line-height:1.35;
+  color:var(--ink);margin:0 0 18px;
+}
+.hero-overlay-card .subheading{
+  font-family:var(--sans);font-weight:400;font-size:15px;
+  color:var(--ink-soft);margin:0 0 16px;
+}
+.hero-overlay-card p{
+  font-family:var(--sans);font-weight:300;font-size:14px;line-height:1.65;
+  color:var(--ink-soft);margin:0 0 14px;
+}
+.hero-overlay-card .btn-wrap{margin-top:8px;}
+
 /* ------------------------------------------------------------------ */
 /* Intro (left aligned column)                                        */
 /* ------------------------------------------------------------------ */
@@ -904,6 +927,10 @@ body.popup-open{overflow:hidden;}
   .header-nav a{font-size:15px;letter-spacing:1.5px;}
   .nav-toggle{width:30px;height:18px;}
   .hero{height:420px;}
+  .hero-overlay-card{padding:28px 22px;}
+  .hero-overlay-card h1{font-size:20px;margin-bottom:12px;}
+  .hero-overlay-card .subheading{font-size:13px;margin-bottom:12px;}
+  .hero-overlay-card p{font-size:12px;margin-bottom:10px;}
   .intro{padding:44px 0 10px;}
   .intro h1{font-size:35px;margin-bottom:26px;}
   .intro .subheading{font-size:27px;}
