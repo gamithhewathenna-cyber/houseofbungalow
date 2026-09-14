@@ -872,11 +872,12 @@ body.menu-open-lock{overflow:hidden;}
 .faq-answer{
   max-height:0;overflow:hidden;transition:max-height .3s ease;
 }
-.faq-item.open .faq-answer{max-height:400px;}
+.faq-item.open .faq-answer{max-height:460px;}
 .faq-answer p{
   font-family:var(--sans);font-weight:300;font-size:14px;line-height:1.6;
   color:var(--ink-soft);margin:0 0 20px;
 }
+.faq-answer .btn-wrap{margin:0 0 20px;}
 
 /* ------------------------------------------------------------------ */
 /* Booking popup (full-screen, opened by any "BOOK A TABLE" button)   */

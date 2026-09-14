@@ -139,6 +139,9 @@ td input[type=text]{margin-top:0;}
 .dj-admin-fields .field-grid:last-child{margin-bottom:0;}
 .dj-admin-actions{display:flex;justify-content:flex-end;align-items:flex-start;padding-top:2px;}
 .dj-admin-add{border-style:dashed;}
+.dj-admin-card.no-media{grid-template-columns:1fr 90px;}
+.dj-admin-fields .checkbox-row{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px;color:#5a544e;margin-bottom:12px;}
+.dj-admin-fields .checkbox-row input{margin:0;width:auto;}
 
 @media(max-width:760px){
   .dj-admin-card{grid-template-columns:1fr;}

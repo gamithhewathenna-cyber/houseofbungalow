@@ -50,14 +50,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($action === 'save_faqs') {
                 foreach (($_POST['title'] ?? []) as $id => $title) {
                     $id = (int) $id;
-                    $q = db()->prepare('UPDATE blocks SET title=?, body=?, sort=? WHERE id=? AND block_type="faq_page_item"');
-                    $q->execute([trim($title), trim($_POST['body'][$id] ?? ''), (int) ($_POST['sort'][$id] ?? 0), $id]);
+                    $enabled = isset($_POST['link_enabled'][$id]) ? '1' : '';
+                    $q = db()->prepare('UPDATE blocks SET title=?, body=?, subtitle=?, link_url=?, link_url2=?, sort=? WHERE id=? AND block_type="faq_page_item"');
+                    $q->execute([
+                        trim($title),
+                        trim($_POST['body'][$id] ?? ''),
+                        $enabled,
+                        trim($_POST['link_url'][$id] ?? ''),
+                        trim($_POST['link_label'][$id] ?? ''),
+                        (int) ($_POST['sort'][$id] ?? 0),
+                        $id,
+                    ]);
                 }
                 header('Location: faq.php?tab=faqs&saved=1'); exit;
             }
             if ($action === 'add_faq') {
-                $q = db()->prepare('INSERT INTO blocks (block_type,title,body,sort,active) VALUES ("faq_page_item",?,?,?,1)');
-                $q->execute([trim($_POST['new_title'] ?? 'New Question?'), trim($_POST['new_body'] ?? ''), (int) ($_POST['new_sort'] ?? 99)]);
+                $enabled = !empty($_POST['new_link_enabled']) ? '1' : '';
+                $q = db()->prepare('INSERT INTO blocks (block_type,title,body,subtitle,link_url,link_url2,sort,active) VALUES ("faq_page_item",?,?,?,?,?,?,1)');
+                $q->execute([
+                    trim($_POST['new_title'] ?? 'New Question?'),
+                    trim($_POST['new_body'] ?? ''),
+                    $enabled,
+                    trim($_POST['new_link_url'] ?? ''),
+                    trim($_POST['new_link_label'] ?? ''),
+                    (int) ($_POST['new_sort'] ?? 99),
+                ]);
                 header('Location: faq.php?tab=faqs&saved=1'); exit;
             }
             if ($action === 'delete_faq') {
@@ -150,21 +167,48 @@ include __DIR__ . '/layout.php';
 <!-- Questions & Answers tab -->
 <div class="tab-panel settings-group<?= $activeTab === 'faqs' ? ' active' : '' ?>" data-tab="faqs">
   <h3>Questions &amp; Answers</h3>
-  <p class="group-help">Shown as an accordion on the FAQ page — click a question on the live site to expand its answer.</p>
+  <p class="group-help">Shown as an accordion on the FAQ page — click a question on the live site to expand its answer. Tick "Show a button" on any question to add a link-styled button at the end of its answer (e.g. linking to the Restaurant or Below page).</p>
   <form method="post">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
     <input type="hidden" name="action" value="save_faqs">
-    <table>
-      <tr><th>Question</th><th>Answer</th><th style="width:90px;">Order</th><th style="width:90px;"></th></tr>
+    <div class="dj-admin-list">
       <?php foreach ($faqs as $faq): ?>
-        <tr>
-          <td><input type="text" name="title[<?= $faq['id'] ?>]" value="<?= e($faq['title']) ?>"></td>
-          <td><textarea name="body[<?= $faq['id'] ?>]" rows="2" style="min-height:0;"><?= e($faq['body']) ?></textarea></td>
-          <td><input type="text" name="sort[<?= $faq['id'] ?>]" value="<?= (int)$faq['sort'] ?>"></td>
-          <td><button form="delfaq<?= $faq['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this question?')">Delete</button></td>
-        </tr>
+        <div class="dj-admin-card no-media">
+          <div class="dj-admin-fields">
+            <div class="field-row">
+              <label>Question
+                <input type="text" name="title[<?= $faq['id'] ?>]" value="<?= e($faq['title']) ?>">
+              </label>
+            </div>
+            <div class="field-row">
+              <label>Answer
+                <textarea name="body[<?= $faq['id'] ?>]"><?= e($faq['body']) ?></textarea>
+              </label>
+            </div>
+            <label class="checkbox-row">
+              <input type="checkbox" name="link_enabled[<?= $faq['id'] ?>]" value="1"<?= $faq['subtitle'] === '1' ? ' checked' : '' ?>>
+              Show a button at the end of this answer
+            </label>
+            <div class="field-grid">
+              <label>Button label
+                <input type="text" name="link_label[<?= $faq['id'] ?>]" value="<?= e($faq['link_url2']) ?>" placeholder="e.g. VIEW MENU">
+              </label>
+              <label>Button URL
+                <input type="text" name="link_url[<?= $faq['id'] ?>]" value="<?= e($faq['link_url']) ?>" placeholder="e.g. restaurant.php">
+              </label>
+            </div>
+            <div class="field-row">
+              <label>Order
+                <input type="text" name="sort[<?= $faq['id'] ?>]" value="<?= (int)$faq['sort'] ?>" style="max-width:100px;">
+              </label>
+            </div>
+          </div>
+          <div class="dj-admin-actions">
+            <button form="delfaq<?= $faq['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this question?')">Delete</button>
+          </div>
+        </div>
       <?php endforeach; ?>
-    </table>
+    </div>
     <div class="form-actions"><button class="btn">Save Changes</button></div>
   </form>
   <?php foreach ($faqs as $faq): ?>
@@ -176,14 +220,40 @@ include __DIR__ . '/layout.php';
   <?php endforeach; ?>
 
   <h4 style="margin-top:20px;font-size:14px;">Add a Question</h4>
-  <form method="post">
+  <form method="post" class="dj-admin-card no-media dj-admin-add">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
     <input type="hidden" name="action" value="add_faq">
-    <div class="row-actions">
-      <input type="text" name="new_title" placeholder="Question" style="max-width:260px;">
-      <input type="text" name="new_body" placeholder="Answer" style="max-width:320px;">
-      <input type="text" name="new_sort" placeholder="Order" value="99" style="width:70px;">
-      <button class="btn btn-sm">+ Add Question</button>
+    <div class="dj-admin-fields">
+      <div class="field-row">
+        <label>Question
+          <input type="text" name="new_title" placeholder="Question">
+        </label>
+      </div>
+      <div class="field-row">
+        <label>Answer
+          <textarea name="new_body" placeholder="Answer"></textarea>
+        </label>
+      </div>
+      <label class="checkbox-row">
+        <input type="checkbox" name="new_link_enabled" value="1">
+        Show a button at the end of this answer
+      </label>
+      <div class="field-grid">
+        <label>Button label
+          <input type="text" name="new_link_label" placeholder="e.g. VIEW MENU">
+        </label>
+        <label>Button URL
+          <input type="text" name="new_link_url" placeholder="e.g. restaurant.php">
+        </label>
+      </div>
+      <div class="field-row">
+        <label>Order
+          <input type="text" name="new_sort" value="99" style="max-width:100px;">
+        </label>
+      </div>
+    </div>
+    <div class="dj-admin-actions">
+      <button class="btn btn-sm">Add Question</button>
     </div>
   </form>
 </div>
