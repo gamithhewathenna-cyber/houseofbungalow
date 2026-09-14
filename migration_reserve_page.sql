@@ -8,8 +8,6 @@
 -- =====================================================================
 
 INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) VALUES
-('reserve_hero_image','assets/img/cafe.jpg','reserve_page','Hero image (poster/fallback)','image',1),
-('reserve_hero_video','','reserve_page','Hero video (mp4/webm, ideally 1280×720)','video',1),
 ('reserve_hero_heading','Reserve Your Night At The House.','reserve_page','Hero card — heading','text',2),
 ('reserve_hero_subheading','Restaurant. Happy Hour. Below.','reserve_page','Hero card — subheading','text',3),
 ('reserve_hero_p1','From long lunches to late nights, book the experience that suits your plans — dinner, drinks, or a VIP table Below.','reserve_page','Hero card — paragraph 1','textarea',4),
@@ -40,6 +38,15 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('reserve_vip_btn_url','#','reserve_page','VIP Tables — button URL','text',29),
 ('reserve_vip_image','assets/img/hero.jpg','reserve_page','VIP Tables — image','image',30)
 ON DUPLICATE KEY UPDATE `skey` = `skey`;
+
+-- Hero slider photos — only seeded if none exist yet.
+INSERT INTO `blocks` (`block_type`,`title`,`image`,`sort`,`active`)
+SELECT * FROM (
+  SELECT 'reserve_hero_slide' AS block_type, '' AS title, 'assets/img/cafe.jpg' AS image, 1 AS sort, 1 AS active
+  UNION ALL SELECT 'reserve_hero_slide','','assets/img/restaurant.jpg',2,1
+  UNION ALL SELECT 'reserve_hero_slide','','assets/img/below.jpg',3,1
+) AS seed
+WHERE NOT EXISTS (SELECT 1 FROM `blocks` WHERE block_type = 'reserve_hero_slide');
 
 -- Point the header's RESERVE link at the new page (only if it was never
 -- customised away from the original "#" placeholder).

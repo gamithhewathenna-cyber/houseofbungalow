@@ -6,17 +6,20 @@ $page_meta_description = setting('reserve_hero_p1');
 
 include __DIR__ . '/includes/header.php';
 
-$reserve_hero_image = asset(setting('reserve_hero_image', 'assets/img/cafe.jpg'));
-$reserve_hero_video = setting('reserve_hero_video');
-$reserve_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'video/quicktime'][strtolower(pathinfo($reserve_hero_video, PATHINFO_EXTENSION))] ?? 'video/mp4';
+$reserve_slides = blocks('reserve_hero_slide');
+if (!$reserve_slides) {
+    $reserve_slides = [['image' => 'assets/img/cafe.jpg']];
+}
 ?>
 
-<!-- Hero (with centered overlay card) --------------------------------- -->
-<section class="hero"<?php if (!$reserve_hero_video): ?> style="background-image:url('<?= e($reserve_hero_image) ?>');"<?php endif; ?>>
-  <?php if ($reserve_hero_video): ?>
-    <video class="hero-video" autoplay muted loop playsinline preload="auto">
-      <source src="<?= e(asset($reserve_hero_video)) ?>" type="<?= e($reserve_hero_video_mime) ?>">
-    </video>
+<!-- Hero slider (with centered overlay card) --------------------------- -->
+<section class="hero hero-slider">
+  <?php foreach ($reserve_slides as $i => $slide): ?>
+    <div class="hero-slide<?= $i === 0 ? ' active' : '' ?>" style="background-image:url('<?= e(asset($slide['image'])) ?>');"></div>
+  <?php endforeach; ?>
+  <?php if (count($reserve_slides) > 1): ?>
+    <button type="button" class="hero-arrow hero-arrow-prev" aria-label="Previous photo">&#8249;</button>
+    <button type="button" class="hero-arrow hero-arrow-next" aria-label="Next photo">&#8250;</button>
   <?php endif; ?>
   <div class="hero-overlay-card">
     <h1><?= e(setting('reserve_hero_heading', 'Reserve Your Night At The House.')) ?></h1>
@@ -30,6 +33,25 @@ $reserve_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' 
     <?php endif; ?>
   </div>
 </section>
+
+<?php if (count($reserve_slides) > 1): ?>
+<script>
+(function () {
+  var slides = document.querySelectorAll('.hero-slider .hero-slide');
+  var prev = document.querySelector('.hero-slider .hero-arrow-prev');
+  var next = document.querySelector('.hero-slider .hero-arrow-next');
+  if (!slides.length) return;
+  var current = 0;
+  function show(index) {
+    slides[current].classList.remove('active');
+    current = (index + slides.length) % slides.length;
+    slides[current].classList.add('active');
+  }
+  if (prev) prev.addEventListener('click', function () { show(current - 1); });
+  if (next) next.addEventListener('click', function () { show(current + 1); });
+})();
+</script>
+<?php endif; ?>
 
 <!-- Reservations heading ------------------------------------------------ -->
 <section class="section reveal">
