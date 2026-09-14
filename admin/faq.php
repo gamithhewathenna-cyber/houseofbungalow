@@ -171,40 +171,46 @@ include __DIR__ . '/layout.php';
   <form method="post">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
     <input type="hidden" name="action" value="save_faqs">
-    <div class="dj-admin-list">
+    <div class="faq-admin-list">
       <?php foreach ($faqs as $faq): ?>
-        <div class="dj-admin-card no-media">
-          <div class="dj-admin-fields">
-            <div class="field-row">
-              <label>Question
-                <input type="text" name="title[<?= $faq['id'] ?>]" value="<?= e($faq['title']) ?>">
+        <div class="faq-admin-card">
+          <button type="button" class="faq-admin-toggle">
+            <span class="faq-admin-toggle-title"><?= e($faq['title'] ?: 'Untitled question') ?></span>
+            <span class="chevron">▾</span>
+          </button>
+          <div class="faq-admin-body">
+            <div class="dj-admin-fields">
+              <div class="field-row">
+                <label>Question
+                  <input type="text" name="title[<?= $faq['id'] ?>]" value="<?= e($faq['title']) ?>">
+                </label>
+              </div>
+              <div class="field-row">
+                <label>Answer
+                  <textarea name="body[<?= $faq['id'] ?>]"><?= e($faq['body']) ?></textarea>
+                </label>
+              </div>
+              <label class="checkbox-row">
+                <input type="checkbox" name="link_enabled[<?= $faq['id'] ?>]" value="1"<?= $faq['subtitle'] === '1' ? ' checked' : '' ?>>
+                Show a button at the end of this answer
               </label>
+              <div class="field-grid">
+                <label>Button label
+                  <input type="text" name="link_label[<?= $faq['id'] ?>]" value="<?= e($faq['link_url2']) ?>" placeholder="e.g. VIEW MENU">
+                </label>
+                <label>Button URL
+                  <input type="text" name="link_url[<?= $faq['id'] ?>]" value="<?= e($faq['link_url']) ?>" placeholder="e.g. restaurant.php">
+                </label>
+              </div>
+              <div class="field-row">
+                <label>Order
+                  <input type="text" name="sort[<?= $faq['id'] ?>]" value="<?= (int)$faq['sort'] ?>" style="max-width:100px;">
+                </label>
+              </div>
             </div>
-            <div class="field-row">
-              <label>Answer
-                <textarea name="body[<?= $faq['id'] ?>]"><?= e($faq['body']) ?></textarea>
-              </label>
+            <div class="dj-admin-actions">
+              <button form="delfaq<?= $faq['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this question?')">Delete</button>
             </div>
-            <label class="checkbox-row">
-              <input type="checkbox" name="link_enabled[<?= $faq['id'] ?>]" value="1"<?= $faq['subtitle'] === '1' ? ' checked' : '' ?>>
-              Show a button at the end of this answer
-            </label>
-            <div class="field-grid">
-              <label>Button label
-                <input type="text" name="link_label[<?= $faq['id'] ?>]" value="<?= e($faq['link_url2']) ?>" placeholder="e.g. VIEW MENU">
-              </label>
-              <label>Button URL
-                <input type="text" name="link_url[<?= $faq['id'] ?>]" value="<?= e($faq['link_url']) ?>" placeholder="e.g. restaurant.php">
-              </label>
-            </div>
-            <div class="field-row">
-              <label>Order
-                <input type="text" name="sort[<?= $faq['id'] ?>]" value="<?= (int)$faq['sort'] ?>" style="max-width:100px;">
-              </label>
-            </div>
-          </div>
-          <div class="dj-admin-actions">
-            <button form="delfaq<?= $faq['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this question?')">Delete</button>
           </div>
         </div>
       <?php endforeach; ?>
@@ -269,6 +275,11 @@ document.querySelectorAll('.tab-btn').forEach(function (btn) {
     if (window.history && window.history.replaceState) {
       window.history.replaceState(null, '', '?tab=' + btn.dataset.tab);
     }
+  });
+});
+document.querySelectorAll('.faq-admin-toggle').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    btn.closest('.faq-admin-card').classList.toggle('open');
   });
 });
 </script>

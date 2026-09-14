@@ -143,6 +143,21 @@ td input[type=text]{margin-top:0;}
 .dj-admin-fields .checkbox-row{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px;color:#5a544e;margin-bottom:12px;}
 .dj-admin-fields .checkbox-row input{margin:0;width:auto;}
 
+/* ---- Collapsible FAQ admin cards ---- */
+.faq-admin-list{display:flex;flex-direction:column;gap:12px;}
+.faq-admin-card{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+.faq-admin-toggle{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:14px;
+  background:none;border:0;padding:16px 20px;cursor:pointer;text-align:left;
+  font-family:inherit;font-size:14px;font-weight:600;color:var(--ink);
+}
+.faq-admin-toggle:hover{background:#faf6f0;}
+.faq-admin-toggle .chevron{color:#9a9089;flex-shrink:0;transition:transform .2s ease;}
+.faq-admin-card.open .faq-admin-toggle .chevron{transform:rotate(180deg);}
+.faq-admin-body{display:none;padding:0 20px 20px;border-top:1px solid var(--line);}
+.faq-admin-card.open .faq-admin-body{display:block;padding-top:18px;}
+.faq-admin-body .dj-admin-actions{display:flex;justify-content:flex-end;margin-top:6px;}
+
 @media(max-width:760px){
   .dj-admin-card{grid-template-columns:1fr;}
   .dj-admin-media .thumb-preview{max-width:200px;margin-left:auto;margin-right:auto;}
