@@ -100,6 +100,13 @@ include __DIR__ . '/layout.php';
   <a href="privateevents.php?tab=final">Make The House Yours</a>
 </div>
 
+<h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">Edit FAQ</h2>
+<div class="dash-links">
+  <a href="faq.php?tab=herovideo">Hero Video</a>
+  <a href="faq.php?tab=intro">Heading</a>
+  <a href="faq.php?tab=faqs">Questions &amp; Answers</a>
+</div>
+
 <h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">Week's Line-Up</h2>
 <div class="dash-links">
   <a href="lineup.php">Manage This Week's Line-Up</a>

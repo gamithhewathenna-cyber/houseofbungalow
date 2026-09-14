@@ -24,6 +24,7 @@ $mainNav = [
     ['href' => 'privateevents.php', 'label' => 'Private Events',  'icon' => 'gift'],
     ['href' => 'lineup.php',      'label' => "Week's Line-Up",     'icon' => 'calendar'],
     ['href' => 'popup.php',       'label' => 'Popup Booking',      'icon' => 'popup'],
+    ['href' => 'faq.php',         'label' => 'FAQ',                'icon' => 'question'],
     ['href' => 'subscribers.php', 'label' => 'Subscribers',        'icon' => 'mail'],
 ];
 $systemNav = [
@@ -50,6 +51,7 @@ function nav_icon(string $key): void
         'gift'  => '<rect x="3" y="9" width="18" height="4" rx="1"/><rect x="4" y="13" width="16" height="8" rx="1"/><path d="M12 9v12M12 9C9.5 9 8 7.5 8 6a2.5 2.5 0 0 1 4-2c1 1.2 1 3 0 5ZM12 9c2.5 0 4-1.5 4-3a2.5 2.5 0 0 0-4-2c-1 1.2-1 3 0 5Z"/>',
         'cup'   => '<path d="M5 9h11v6a5 5 0 0 1-5 5H9a4 4 0 0 1-4-4V9Z"/><path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M9 3c0 1-1.2 1-1.2 2S9 6.5 9 7.5M13 3c0 1-1.2 1-1.2 2S13 6.5 13 7.5"/>',
         'popup' => '<rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 8h18"/><path d="M9.5 13.5l2 2 3-3.5"/>',
+        'question' => '<circle cx="12" cy="12" r="9"/><path d="M9.2 9.3a2.8 2.8 0 0 1 5.4.9c0 1.8-2.6 2-2.6 3.8"/><circle cx="12" cy="17" r=".2" fill="currentColor"/>',
     ];
     echo '<svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' . ($icons[$key] ?? '') . '</svg>';
 }
