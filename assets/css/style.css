@@ -948,8 +948,10 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 @media (max-width:640px){
   body{font-size:21px;}
   .site-header{padding:22px 0;}
-  .site-header .container{padding:0 20px;}
+  .site-header .container{padding:0 20px;grid-template-columns:auto 1fr;}
+  .brand-logo{grid-column:1;justify-content:flex-start;}
   .brand-logo img{height:52px;}
+  .header-nav{grid-column:2;}
   .header-nav a{font-size:13px;letter-spacing:1px;padding:8px 14px 7px;}
   .nav-toggle{width:30px;height:18px;}
   .hero{height:420px;}
