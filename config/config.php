@@ -1,6 +1,6 @@
 <?php
 /**
- * House of Bungalow — Configuration
+ * House of Bungalow - Configuration
  * ---------------------------------------------------------------
  * Edit the four DB_* values below to match the database you create
  * in cPanel (MySQL Databases section). Everything else can stay.

@@ -206,7 +206,7 @@ function render_rest_field(array $f): void
             </span>
           <?php endif; ?>
           <input type="file" name="file_<?= e($key) ?>" accept="video/mp4,video/webm,video/quicktime">
-          <span class="help"><strong>MP4 (H.264) recommended</strong> — WEBM will not play in Safari. Ideally 1280×720 (720p), short and compressed (max 60&nbsp;MB) so it loads quickly. Leave empty to keep the current video.</span>
+          <span class="help"><strong>MP4 (H.264) recommended</strong> - WEBM will not play in Safari. Ideally 1280×720 (720p), short and compressed (max 60&nbsp;MB) so it loads quickly. Leave empty to keep the current video.</span>
         <?php else: ?>
           <input type="text" name="<?= e($key) ?>" value="<?= e($val) ?>">
         <?php endif; ?>
@@ -252,7 +252,7 @@ include __DIR__ . '/layout.php';
   </form>
 
   <h3 style="margin-top:30px;">Menu Categories</h3>
-  <p class="group-help">These become the tabs shown in the "Discover Our Menus" section (e.g. "Brunch", "Wine"). Add, rename, reorder or remove them here — deleting a category also deletes its menu items.</p>
+  <p class="group-help">These become the tabs shown in the "Discover Our Menus" section (e.g. "Brunch", "Wine"). Add, rename, reorder or remove them here - deleting a category also deletes its menu items.</p>
   <form method="post">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
     <input type="hidden" name="action" value="save_categories">
@@ -289,7 +289,7 @@ include __DIR__ . '/layout.php';
 
   <h3 style="margin-top:30px;">Menu Items</h3>
   <?php if (!$menuCats): ?>
-    <p class="group-help">Add a category above first — its items will appear here once it exists.</p>
+    <p class="group-help">Add a category above first - its items will appear here once it exists.</p>
   <?php else: ?>
     <div class="tab-nav" style="margin-bottom:18px;">
       <?php foreach ($menuCats as $cat): ?>

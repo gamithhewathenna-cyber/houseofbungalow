@@ -50,7 +50,7 @@ function e(?string $v): string
 /**
  * Escape a value, then turn **word** into <strong>word</strong>.
  * Escaping happens first, so this only ever introduces the <strong>
- * tags added here — safe even though the source text is admin-editable.
+ * tags added here - safe even though the source text is admin-editable.
  */
 function eb(?string $v): string
 {

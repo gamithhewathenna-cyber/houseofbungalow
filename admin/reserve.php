@@ -158,7 +158,7 @@ include __DIR__ . '/layout.php';
 <!-- Hero Slides tab (image + its own heading/text/button) -->
 <div class="tab-panel settings-group<?= $activeTab === 'slides' ? ' active' : '' ?>" data-tab="slides">
   <h3>Hero Slides</h3>
-  <p class="group-help">Each slide is a photo with its own heading, subheading, paragraph(s) and button — the text card changes together with the photo as visitors click the arrows. Leave the button label empty to hide the button on that slide. For the paragraph, put each sentence on its own line to create separate paragraphs.</p>
+  <p class="group-help">Each slide is a photo with its own heading, subheading, paragraph(s) and button - the text card changes together with the photo as visitors click the arrows. Leave the button label empty to hide the button on that slide. For the paragraph, put each sentence on its own line to create separate paragraphs.</p>
 
   <form method="post" enctype="multipart/form-data">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">

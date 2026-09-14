@@ -1,6 +1,6 @@
 <?php
 /**
- * Shared "See This Week's Line-Up" section — used on both below.php and
+ * Shared "See This Week's Line-Up" section - used on both below.php and
  * whatson.php. Content (heading, image, paragraph, DJ cards) is managed
  * in one place in the admin (Week's Line-Up), so it stays identical and
  * in sync on every page that includes this file.

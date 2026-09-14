@@ -154,7 +154,7 @@ include __DIR__ . '/layout.php';
 <!-- Questions & Answers tab -->
 <div class="tab-panel settings-group<?= $activeTab === 'faqs' ? ' active' : '' ?>" data-tab="faqs">
   <h3>Questions &amp; Answers</h3>
-  <p class="group-help">Shown as an accordion on the FAQ page — click a question on the live site to expand its answer. Tick "Show a button" on any question to add a link-styled button at the end of its answer (e.g. linking to the Restaurant or Below page).</p>
+  <p class="group-help">Shown as an accordion on the FAQ page - click a question on the live site to expand its answer. Tick "Show a button" on any question to add a link-styled button at the end of its answer (e.g. linking to the Restaurant or Below page).</p>
   <form method="post">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
     <input type="hidden" name="action" value="save_faqs">

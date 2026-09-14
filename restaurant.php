@@ -100,7 +100,7 @@ while ($i < count($gallery)) {
             </div>
           <?php endforeach; ?>
         <?php else: ?>
-          <p class="menu-empty">More to come — this menu is being finalised.</p>
+          <p class="menu-empty">More to come - this menu is being finalised.</p>
         <?php endif; ?>
       </div>
     <?php $first = false; endforeach; ?>

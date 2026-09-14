@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Login — <?= e(SITE_NAME) ?></title>
+<title>Admin Login - <?= e(SITE_NAME) ?></title>
 <link rel="stylesheet" href="admin.css">
 </head>
 <body class="login-body">
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </label>
       <button type="submit" class="btn">Sign In</button>
     </form>
-    <p class="hint">Default: <code>admin</code> / <code>admin123</code> — change after login.</p>
+    <p class="hint">Default: <code>admin</code> / <code>admin123</code> - change after login.</p>
   </div>
 </body>
 </html>

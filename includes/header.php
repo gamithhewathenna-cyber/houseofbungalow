@@ -14,7 +14,7 @@ if (setting('maintenance_mode', '0') === '1') {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?= e(SITE_NAME) ?> — Down for Maintenance</title>
+<title><?= e(SITE_NAME) ?> - Down for Maintenance</title>
 <style>
   body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
     background:<?= e(setting('theme_cream', '#F2E8DE')) ?>;color:<?= e(setting('theme_ink', '#545355')) ?>;
@@ -41,7 +41,7 @@ if (setting('maintenance_mode', '0') === '1') {
 <?php if (setting('seo_visible', '1') !== '1'): ?>
 <meta name="robots" content="noindex,nofollow">
 <?php endif; ?>
-<title><?= e($page_meta_title ?? setting('intro_heading', SITE_NAME)) ?> — <?= e(SITE_NAME) ?></title>
+<title><?= e($page_meta_title ?? setting('intro_heading', SITE_NAME)) ?> - <?= e(SITE_NAME) ?></title>
 <meta name="description" content="<?= e($page_meta_description ?? setting('intro_p1')) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

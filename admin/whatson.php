@@ -118,7 +118,7 @@ function render_wo_field(array $f): void
             </span>
           <?php endif; ?>
           <input type="file" name="file_<?= e($key) ?>" accept="video/mp4,video/webm,video/quicktime">
-          <span class="help"><strong>MP4 (H.264) recommended</strong> — WEBM will not play in Safari. Ideally 1280×720 (720p), short and compressed (max 60&nbsp;MB) so it loads quickly. Leave empty to keep the current video.</span>
+          <span class="help"><strong>MP4 (H.264) recommended</strong> - WEBM will not play in Safari. Ideally 1280×720 (720p), short and compressed (max 60&nbsp;MB) so it loads quickly. Leave empty to keep the current video.</span>
         <?php else: ?>
           <input type="text" name="<?= e($key) ?>" value="<?= e($val) ?>">
         <?php endif; ?>
@@ -143,7 +143,7 @@ include __DIR__ . '/layout.php';
   <div class="tab-panel settings-group<?= $activeTab === $group ? ' active' : '' ?>" data-tab="<?= e($group) ?>">
     <h3><?= e($tabs[$group]) ?></h3>
     <?php if ($group === 'happyhour' || $group === 'friday' || $group === 'brunch'): ?>
-      <p class="group-help">"INFORMATION" is the small bold label shown under the title — leave it as-is or customise it.</p>
+      <p class="group-help">"INFORMATION" is the small bold label shown under the title - leave it as-is or customise it.</p>
     <?php endif; ?>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
@@ -192,7 +192,7 @@ include __DIR__ . '/layout.php';
   </form>
 </div>
 
-<p class="muted" style="margin-top:24px;">The "See This Week's Line-Up" section on this page is shared with the Below page — manage it from <a href="lineup.php">Week's Line-Up</a> in the sidebar.</p>
+<p class="muted" style="margin-top:24px;">The "See This Week's Line-Up" section on this page is shared with the Below page - manage it from <a href="lineup.php">Week's Line-Up</a> in the sidebar.</p>
 
 <script>
 document.querySelectorAll('.tab-btn').forEach(function (btn) {

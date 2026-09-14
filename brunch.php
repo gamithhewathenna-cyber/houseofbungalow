@@ -75,7 +75,7 @@ foreach ($menu_cats as $cat) {
 
 <hr class="section-divider">
 
-<!-- Menu (own dataset — not shared with the Restaurant page) --------------- -->
+<!-- Menu (own dataset - not shared with the Restaurant page) --------------- -->
 <section class="menu-section reveal">
   <div class="container">
     <h2><?= e(setting('brunch_menu_heading', 'Discover Our Menus')) ?></h2>
@@ -104,7 +104,7 @@ foreach ($menu_cats as $cat) {
             </div>
           <?php endforeach; ?>
         <?php else: ?>
-          <p class="menu-empty">More to come — this menu is being finalised.</p>
+          <p class="menu-empty">More to come - this menu is being finalised.</p>
         <?php endif; ?>
       </div>
     <?php $first = false; endforeach; ?>

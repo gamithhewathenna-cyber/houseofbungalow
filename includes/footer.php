@@ -55,7 +55,7 @@ $msg        = $_GET['sub'] ?? '';
         <button type="submit" class="btn-maroon"><?= e(setting('newsletter_btn')) ?></button>
       </div>
       <?php if ($msg === 'ok'): ?>
-        <p class="form-msg ok">Thank you — you're on the list.</p>
+        <p class="form-msg ok">Thank you - you're on the list.</p>
       <?php elseif ($msg === 'dupe'): ?>
         <p class="form-msg ok">You're already subscribed.</p>
       <?php elseif ($msg === 'err'): ?>

@@ -1,5 +1,5 @@
 /* =====================================================================
-   House of Bungalow — Home Page styles
+   House of Bungalow - Home Page styles
    Palette:
      cream      #F2E8DE
      ink        #545355
@@ -8,8 +8,8 @@
      maroon     #620E15
      dark card  #0d0b0a
    Fonts:
-     Fraunces        — headings (free Google Fonts stand-in for Canela)
-     Hanken Grotesk  — paragraphs & buttons (free Google Fonts stand-in for Aktiv Grotesk)
+     Fraunces        - headings (free Google Fonts stand-in for Canela)
+     Hanken Grotesk  - paragraphs & buttons (free Google Fonts stand-in for Aktiv Grotesk)
    ===================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,500;0,600;1,200;1,300;1,400;1,500&family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
@@ -221,7 +221,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .hero-arrow-prev{left:28px;}
 .hero-arrow-next{right:28px;}
 
-/* Centered semi-opaque card over the hero image (Reserve page) — one per   */
+/* Centered semi-opaque card over the hero image (Reserve page) - one per   */
 /* slide, stacked and cross-faded together with the matching .hero-slide   */
 .hero-overlay-card{
   position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
@@ -394,7 +394,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 }
 
 /* ------------------------------------------------------------------ */
-/* Door / Mood / What's On / Events — centered text blocks            */
+/* Door / Mood / What's On / Events - centered text blocks            */
 /* ------------------------------------------------------------------ */
 .textblock{padding:66px 0;text-align:center;}
 .textblock h2{margin:0 0 26px;}
@@ -513,7 +513,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 
 /* ------------------------------------------------------------------ */
 /* Sub-page hero intro (centered heading + lede, used by Restaurant   */
-/* and future inner pages) — narrow centered column, not full width   */
+/* and future inner pages) - narrow centered column, not full width   */
 /* ------------------------------------------------------------------ */
 .page-hero-intro{padding:70px 0 46px;text-align:center;}
 .page-hero-intro .container{max-width:1000px;margin:0 auto;}
@@ -536,7 +536,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .page-hero-intro .btn-wrap{margin-top:26px;}
 .page-hero-intro .cafe-intro-p{font-size:16px;}
 
-/* Small filled tag buttons (What's On — CAFE / RESTAURANT / BELOW) */
+/* Small filled tag buttons (What's On - CAFE / RESTAURANT / BELOW) */
 .tag-buttons{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:28px;}
 .tag-btn{
   display:inline-block;background:var(--maroon);color:#fff;
@@ -584,7 +584,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .split-copy .hours-line{font-family:var(--sans);font-weight:500;font-size:14px;color:var(--ink);margin:0 0 4px;}
 .split-copy .btn-wrap{margin-top:20px;}
 
-/* The Chef — reversed hierarchy: small bold label, then a large        */
+/* The Chef - reversed hierarchy: small bold label, then a large        */
 /* highlighted name, right-aligned                                     */
 .chef-copy{text-align:right;}
 .chef-copy .eyebrow{
@@ -684,7 +684,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;}
 
 /* ------------------------------------------------------------------ */
-/* Maroon band (Below page — Intro / Music sections)                  */
+/* Maroon band (Below page - Intro / Music sections)                  */
 /* ------------------------------------------------------------------ */
 .maroon-band{background:var(--maroon);padding:70px 0;text-align:center;}
 .maroon-band h1,.maroon-band h2{
@@ -717,7 +717,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 }
 .section-hours strong{font-weight:700;color:var(--ink);}
 
-/* Three equal square images (Below — Cocktails section) */
+/* Three equal square images (Below - Cocktails section) */
 .trio-grid{
   display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
   max-width:1200px;margin:40px auto 0;
@@ -725,7 +725,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .trio-item{aspect-ratio:1/1;overflow:hidden;}
 .trio-item img{width:100%;height:100%;object-fit:cover;display:block;}
 
-/* Event cards (Private Events — Restaurant Events / Below Events) */
+/* Event cards (Private Events - Restaurant Events / Below Events) */
 .events-cards{padding:10px 24px 60px;}
 .events-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;width:100%;max-width:1200px;margin:0 auto;}
 .event-card-media{aspect-ratio:4/3;overflow:hidden;}

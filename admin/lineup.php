@@ -129,7 +129,7 @@ include __DIR__ . '/layout.php';
 
 <div class="tab-panel settings-group<?= $activeTab === 'cards' ? ' active' : '' ?>" data-tab="cards">
   <h3>DJ / Line-up Cards</h3>
-  <p class="group-help">Shown as cards over the line-up background image on the Below and What's On pages. Each card can show two buttons — "Book Now" and "Buy Tickets" — each with its own link; leave a link URL empty to hide that button.</p>
+  <p class="group-help">Shown as cards over the line-up background image on the Below and What's On pages. Each card can show two buttons - "Book Now" and "Buy Tickets" - each with its own link; leave a link URL empty to hide that button.</p>
 
   <form method="post" enctype="multipart/form-data">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
@@ -159,10 +159,10 @@ include __DIR__ . '/layout.php';
               </label>
             </div>
             <div class="field-grid">
-              <label>Book Now — link URL
+              <label>Book Now - link URL
                 <input type="text" name="link[<?= $dj['id'] ?>]" value="<?= e($dj['link_url']) ?>">
               </label>
-              <label>Buy Tickets — link URL
+              <label>Buy Tickets - link URL
                 <input type="text" name="link2[<?= $dj['id'] ?>]" value="<?= e($dj['link_url2']) ?>">
               </label>
             </div>
@@ -210,10 +210,10 @@ include __DIR__ . '/layout.php';
         </label>
       </div>
       <div class="field-grid">
-        <label>Book Now — link URL
+        <label>Book Now - link URL
           <input type="text" name="new_link" placeholder="#">
         </label>
-        <label>Buy Tickets — link URL
+        <label>Buy Tickets - link URL
           <input type="text" name="new_link2" placeholder="#">
         </label>
       </div>
