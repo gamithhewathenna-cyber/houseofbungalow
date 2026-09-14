@@ -583,7 +583,6 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 -- =====================================================================
 INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) VALUES
 ('faq_hero_image','assets/img/cafe.jpg','faq_page','Hero image (poster/fallback)','image',1),
-('faq_hero_video','','faq_page','Hero video (mp4/webm, ideally 1280×720)','video',1),
 ('faq_heading','Frequently Asked Questions','faq_page','Heading','text',2),
 ('faq_subheading','House Of Bungalow','faq_page','Subheading','text',3);
 

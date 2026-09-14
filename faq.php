@@ -7,20 +7,12 @@ $page_meta_description = setting('faq_subheading');
 include __DIR__ . '/includes/header.php';
 
 $faq_hero_image = asset(setting('faq_hero_image', 'assets/img/cafe.jpg'));
-$faq_hero_video = setting('faq_hero_video');
-$faq_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'video/quicktime'][strtolower(pathinfo($faq_hero_video, PATHINFO_EXTENSION))] ?? 'video/mp4';
 
 $faqs = blocks('faq_page_item');
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
-<section class="hero"<?php if (!$faq_hero_video): ?> style="background-image:url('<?= e($faq_hero_image) ?>');"<?php endif; ?>>
-  <?php if ($faq_hero_video): ?>
-    <video class="hero-video" autoplay muted loop playsinline preload="auto">
-      <source src="<?= e(asset($faq_hero_video)) ?>" type="<?= e($faq_hero_video_mime) ?>">
-    </video>
-  <?php endif; ?>
-</section>
+<section class="hero" style="background-image:url('<?= e($faq_hero_image) ?>');"></section>
 
 <!-- FAQs --------------------------------------------------------------- -->
 <?php if ($faqs): ?>

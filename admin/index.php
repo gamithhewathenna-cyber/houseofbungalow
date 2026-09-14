@@ -111,7 +111,6 @@ include __DIR__ . '/layout.php';
 
 <h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">Edit FAQ</h2>
 <div class="dash-links">
-  <a href="faq.php?tab=herovideo">Hero Video</a>
   <a href="faq.php?tab=intro">Heading</a>
   <a href="faq.php?tab=faqs">Questions &amp; Answers</a>
 </div>
