@@ -11,6 +11,45 @@
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#f6f1ea;font-size:14px;}
 a{color:var(--maroon);text-decoration:none;}
 code{background:#efe6da;padding:1px 5px;border-radius:3px;font-size:12px;}
+body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
+
+/* ---- Mandatory image crop modal ---- */
+.crop-modal{
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(20,17,15,.72);
+  display:none;align-items:center;justify-content:center;
+  padding:24px;
+}
+.crop-modal.open{display:flex;}
+.crop-modal-inner{
+  background:#fff;border-radius:10px;padding:24px;
+  width:100%;max-width:560px;
+  box-shadow:0 20px 60px rgba(0,0,0,.35);
+}
+.crop-modal-inner h3{margin:0 0 8px;font-size:17px;color:var(--ink);}
+.crop-modal-help{margin:0 0 16px;font-size:12px;color:#8a8078;line-height:1.5;}
+.crop-stage{
+  position:relative;width:100%;height:340px;
+  background:#1c1a18;border-radius:6px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  user-select:none;
+}
+.crop-img{max-width:100%;max-height:100%;display:block;pointer-events:none;user-select:none;}
+.crop-box{
+  position:absolute;
+  border:2px solid #fff;
+  box-shadow:0 0 0 2000px rgba(0,0,0,.5);
+  cursor:move;
+  touch-action:none;
+}
+.crop-handle{
+  position:absolute;right:-7px;bottom:-7px;
+  width:16px;height:16px;border-radius:50%;
+  background:var(--maroon);border:2px solid #fff;
+  cursor:nwse-resize;
+  touch-action:none;
+}
+.crop-modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px;}
 
 /* ---- Login ---- */
 .login-body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--cream);}

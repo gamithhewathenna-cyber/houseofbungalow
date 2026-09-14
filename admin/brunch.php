@@ -175,7 +175,7 @@ function render_brunch_field(array $f): void
           <?php if ($val): ?>
             <div class="thumb-preview"><img src="<?= e(asset($val)) ?>" alt=""></div>
           <?php endif; ?>
-          <input type="file" name="file_<?= e($key) ?>" accept="image/*">
+          <input type="file" name="file_<?= e($key) ?>" accept="image/*" data-crop-ratio="<?= e(crop_ratio_for_key($key)) ?>">
           <span class="help">Current: <code><?= e($val ?: 'none') ?></code>. Leave empty to keep it.</span>
         <?php elseif ($type === 'video'): ?>
           <?php if ($val): ?>
@@ -234,7 +234,7 @@ include __DIR__ . '/layout.php';
         <tr>
           <td><?php if ($g['image']): ?><img src="<?= e(asset($g['image'])) ?>" alt=""><?php endif; ?></td>
           <td><input type="text" name="g_sort[<?= $g['id'] ?>]" value="<?= (int)$g['sort'] ?>" style="width:56px;"></td>
-          <td><input type="file" name="file_<?= $g['id'] ?>" accept="image/*"></td>
+          <td><input type="file" name="file_<?= $g['id'] ?>" accept="image/*" data-crop-ratio="3:2"></td>
           <td><button form="delgal<?= $g['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Remove this photo?')">Delete</button></td>
         </tr>
       <?php endforeach; ?>
@@ -251,7 +251,7 @@ include __DIR__ . '/layout.php';
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
     <input type="hidden" name="action" value="add_gallery">
     <div class="row-actions">
-      <input type="file" name="new_file" accept="image/*">
+      <input type="file" name="new_file" accept="image/*" data-crop-ratio="3:2">
       <input type="text" name="new_sort" placeholder="Order" value="99" style="width:70px;">
       <button class="btn btn-sm">Add</button>
     </div>

@@ -175,7 +175,7 @@ function render_setting_field(array $f): void
             <div class="thumb-preview"><img src="<?= e(asset($val)) ?>" alt=""></div>
             <input type="hidden" name="keep_<?= e($key) ?>" value="1">
           <?php endif; ?>
-          <input type="file" name="file_<?= e($key) ?>" accept="image/*">
+          <input type="file" name="file_<?= e($key) ?>" accept="image/*" data-crop-ratio="<?= e(crop_ratio_for_key($key)) ?>">
           <span class="help">Current: <code><?= e($val ?: 'none') ?></code>. Leave empty to keep it.</span>
         <?php elseif ($type === 'video'): ?>
           <?php if ($val): ?>
@@ -239,7 +239,7 @@ include __DIR__ . '/layout.php';
           <td><input type="text" name="title[<?= $c['id'] ?>]" value="<?= e($c['title']) ?>"></td>
           <td><input type="text" name="link_url[<?= $c['id'] ?>]" value="<?= e($c['link_url']) ?>"></td>
           <td><input type="text" name="sort[<?= $c['id'] ?>]" value="<?= (int)$c['sort'] ?>" style="width:56px;"></td>
-          <td><input type="file" name="file_<?= $c['id'] ?>" accept="image/*"></td>
+          <td><input type="file" name="file_<?= $c['id'] ?>" accept="image/*" data-crop-ratio="16:11"></td>
         </tr>
       <?php endforeach; ?>
     </table>

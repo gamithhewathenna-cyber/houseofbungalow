@@ -77,6 +77,7 @@ function nav_link(array $item, string $current): void
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= e($page_title) ?> - <?= e(SITE_NAME) ?> Admin</title>
 <link rel="stylesheet" href="admin.css">
+<script src="crop.js" defer></script>
 </head>
 <body class="admin-body">
 <aside class="sidebar">

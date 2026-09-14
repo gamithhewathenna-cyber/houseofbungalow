@@ -106,7 +106,7 @@ function render_wo_field(array $f): void
           <?php if ($val): ?>
             <div class="thumb-preview"><img src="<?= e(asset($val)) ?>" alt=""></div>
           <?php endif; ?>
-          <input type="file" name="file_<?= e($key) ?>" accept="image/*">
+          <input type="file" name="file_<?= e($key) ?>" accept="image/*" data-crop-ratio="<?= e(crop_ratio_for_key($key)) ?>">
           <span class="help">Current: <code><?= e($val ?: 'none') ?></code>. Leave empty to keep it.</span>
         <?php elseif ($type === 'video'): ?>
           <?php if ($val): ?>

@@ -97,3 +97,52 @@ function save_setting(string $key, ?string $value): void
     );
     $stmt->execute([':k' => $key, ':v' => $value, ':v2' => $value]);
 }
+
+/**
+ * The required crop aspect ratio ("W:H") for a given settings image key,
+ * matching the CSS box that image actually renders into on the live site.
+ * Returns '' for logos/illustrations that must keep their natural shape —
+ * those are never forced through the crop tool.
+ */
+function crop_ratio_for_key(string $key): string
+{
+    static $ratios = [
+        // Full-bleed hero / banner backgrounds (.hero, .lineup-section)
+        'hero_image'              => '16:9',
+        'rest_hero_image'         => '16:9',
+        'below_hero_image'        => '16:9',
+        'below_lineup_image'      => '16:9',
+        'wo_hero_image'           => '16:9',
+        'brunch_hero_image'       => '16:9',
+        'dp_hero_image'           => '16:9',
+        'pe_hero_image'           => '16:9',
+        'cafe_hero_image'         => '16:9',
+        'faq_hero_image'          => '16:9',
+
+        // Split-section images (.split-media, aspect-ratio 3:2)
+        'rest_food_image'         => '3:2',
+        'rest_room_image'         => '3:2',
+        'rest_fridaysat_image'    => '3:2',
+        'rest_happyhour_image'    => '3:2',
+        'rest_chef_image'         => '3:2',
+        'below_guest_image'       => '3:2',
+        'below_vip_image'         => '3:2',
+        'wo_happyhour_image'      => '3:2',
+        'wo_friday_image'         => '3:2',
+        'wo_brunch_image'         => '3:2',
+        'brunch_guest_image'      => '3:2',
+        'dp_guest_image'          => '3:2',
+        'reserve_fridaysat_image' => '3:2',
+        'reserve_happyhour_image' => '3:2',
+        'reserve_vip_image'       => '3:2',
+
+        // Square photos (.trio-item, aspect-ratio 1:1)
+        'below_cocktails_image1'  => '1:1',
+        'below_cocktails_image2'  => '1:1',
+        'below_cocktails_image3'  => '1:1',
+        'cafe_gallery_image1'     => '1:1',
+        'cafe_gallery_image2'     => '1:1',
+        'cafe_gallery_image3'     => '1:1',
+    ];
+    return $ratios[$key] ?? '';
+}

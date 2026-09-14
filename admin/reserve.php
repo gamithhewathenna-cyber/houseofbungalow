@@ -133,7 +133,7 @@ function render_reserve_field(array $f): void
           <?php if ($val): ?>
             <div class="thumb-preview"><img src="<?= e(asset($val)) ?>" alt=""></div>
           <?php endif; ?>
-          <input type="file" name="file_<?= e($key) ?>" accept="image/*">
+          <input type="file" name="file_<?= e($key) ?>" accept="image/*" data-crop-ratio="<?= e(crop_ratio_for_key($key)) ?>">
           <span class="help">Current: <code><?= e($val ?: 'none') ?></code>. Leave empty to keep it.</span>
         <?php else: ?>
           <input type="text" name="<?= e($key) ?>" value="<?= e($val) ?>">
@@ -170,7 +170,7 @@ include __DIR__ . '/layout.php';
             <div class="thumb-preview<?= $s['image'] ? '' : ' empty' ?>">
               <?php if ($s['image']): ?><img src="<?= e(asset($s['image'])) ?>" alt=""><?php else: ?>No photo yet<?php endif; ?>
             </div>
-            <input type="file" name="file_<?= $s['id'] ?>" accept="image/*">
+            <input type="file" name="file_<?= $s['id'] ?>" accept="image/*" data-crop-ratio="16:9">
             <span class="help">Replace photo</span>
           </div>
           <div class="dj-admin-fields">
@@ -225,7 +225,7 @@ include __DIR__ . '/layout.php';
     <input type="hidden" name="action" value="add_slide">
     <div class="dj-admin-media">
       <div class="thumb-preview empty">No photo yet</div>
-      <input type="file" name="new_file" accept="image/*">
+      <input type="file" name="new_file" accept="image/*" data-crop-ratio="16:9">
       <span class="help">Upload photo</span>
     </div>
     <div class="dj-admin-fields">

@@ -89,7 +89,7 @@ foreach ($fields as $f) {
               <label class="logo-field-label"><?= e($f['label']) ?></label>
               <span class="help"><?= e($website_help[$key] ?? '') ?></span>
               <?php if ($val): ?><input type="hidden" name="keep_<?= e($key) ?>" value="1"><?php endif; ?>
-              <input type="file" name="file_<?= e($key) ?>" accept="image/*">
+              <input type="file" name="file_<?= e($key) ?>" accept="image/*" data-crop-ratio="<?= e(crop_ratio_for_key($key)) ?>">
             </div>
           <?php endforeach; ?>
         </div>

@@ -112,7 +112,7 @@ function render_pe_field(array $f): void
           <?php if ($val): ?>
             <div class="thumb-preview"><img src="<?= e(asset($val)) ?>" alt=""></div>
           <?php endif; ?>
-          <input type="file" name="file_<?= e($key) ?>" accept="image/*">
+          <input type="file" name="file_<?= e($key) ?>" accept="image/*" data-crop-ratio="<?= e(crop_ratio_for_key($key)) ?>">
           <span class="help">Current: <code><?= e($val ?: 'none') ?></code>. Leave empty to keep it.</span>
         <?php elseif ($type === 'video'): ?>
           <?php if ($val): ?>
@@ -173,7 +173,7 @@ include __DIR__ . '/layout.php';
             <div class="thumb-preview<?= $c['image'] ? '' : ' empty' ?>">
               <?php if ($c['image']): ?><img src="<?= e(asset($c['image'])) ?>" alt=""><?php else: ?>No photo yet<?php endif; ?>
             </div>
-            <input type="file" name="file_<?= $c['id'] ?>" accept="image/*">
+            <input type="file" name="file_<?= $c['id'] ?>" accept="image/*" data-crop-ratio="4:3">
             <span class="help">Replace photo</span>
           </div>
           <div class="dj-admin-fields">
@@ -221,7 +221,7 @@ include __DIR__ . '/layout.php';
     <input type="hidden" name="action" value="add_card">
     <div class="dj-admin-media">
       <div class="thumb-preview empty">No photo yet</div>
-      <input type="file" name="new_file" accept="image/*">
+      <input type="file" name="new_file" accept="image/*" data-crop-ratio="4:3">
       <span class="help">Upload photo</span>
     </div>
     <div class="dj-admin-fields">
