@@ -100,7 +100,15 @@ if (setting('maintenance_mode', '0') === '1') {
     header.classList.toggle('menu-open', open);
     toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     menu.setAttribute('aria-hidden', open ? 'false' : 'true');
-    document.body.classList.toggle('menu-open-lock', open);
+    if (open) {
+      window.__hobScrollY = window.scrollY || window.pageYOffset || 0;
+      document.body.style.top = (-window.__hobScrollY) + 'px';
+      document.body.classList.add('scroll-locked');
+    } else {
+      document.body.classList.remove('scroll-locked');
+      document.body.style.top = '';
+      window.scrollTo(0, window.__hobScrollY || 0);
+    }
   }
 
   toggle.addEventListener('click', function () {

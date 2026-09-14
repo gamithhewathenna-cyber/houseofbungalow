@@ -32,12 +32,16 @@ $bp_btn2_url   = setting('popup_btn2_url', 'restaurant.php');
     if (e) e.preventDefault();
     popup.classList.add('open');
     popup.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('popup-open');
+    window.__hobScrollY = window.scrollY || window.pageYOffset || 0;
+    document.body.style.top = (-window.__hobScrollY) + 'px';
+    document.body.classList.add('scroll-locked');
   }
   function closePopup() {
     popup.classList.remove('open');
     popup.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('popup-open');
+    document.body.classList.remove('scroll-locked');
+    document.body.style.top = '';
+    window.scrollTo(0, window.__hobScrollY || 0);
   }
 
   document.querySelectorAll('a').forEach(function (a) {

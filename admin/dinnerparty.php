@@ -187,7 +187,7 @@ function render_dp_field(array $f): void
             </span>
           <?php endif; ?>
           <input type="file" name="file_<?= e($key) ?>" accept="video/mp4,video/webm,video/quicktime">
-          <span class="help">MP4 or WEBM, ideally <strong>1280×720 (720p)</strong>, short and compressed (max 60&nbsp;MB) so it loads quickly. Leave empty to keep the current video.</span>
+          <span class="help"><strong>MP4 (H.264) recommended</strong> — WEBM will not play in Safari. Ideally 1280×720 (720p), short and compressed (max 60&nbsp;MB) so it loads quickly. Leave empty to keep the current video.</span>
         <?php else: ?>
           <input type="text" name="<?= e($key) ?>" value="<?= e($val) ?>">
         <?php endif; ?>
