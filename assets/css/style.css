@@ -219,7 +219,8 @@ body.menu-open-lock{overflow:hidden;}
 .hero-arrow-prev{left:28px;}
 .hero-arrow-next{right:28px;}
 
-/* Centered semi-opaque card over the hero image (Reserve page) */
+/* Centered semi-opaque card over the hero image (Reserve page) — one per   */
+/* slide, stacked and cross-faded together with the matching .hero-slide   */
 .hero-overlay-card{
   position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
   z-index:2;
@@ -227,7 +228,10 @@ body.menu-open-lock{overflow:hidden;}
   max-width:640px;width:90%;
   padding:48px 54px;
   text-align:center;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .5s ease;
 }
+.hero-overlay-card.active{opacity:1;visibility:visible;pointer-events:auto;}
 .hero-overlay-card h1{
   font-family:var(--serif);font-weight:400;font-size:29px;line-height:1.35;
   color:var(--ink);margin:0 0 18px;

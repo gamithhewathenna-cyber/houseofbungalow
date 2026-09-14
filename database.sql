@@ -615,12 +615,6 @@ INSERT INTO `blocks` (`block_type`,`title`,`body`,`sort`,`active`) VALUES
 -- Reserve page
 -- =====================================================================
 INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) VALUES
-('reserve_hero_heading','Reserve Your Night At The House.','reserve_page','Hero card — heading','text',2),
-('reserve_hero_subheading','Restaurant. Happy Hour. Below.','reserve_page','Hero card — subheading','text',3),
-('reserve_hero_p1','From long lunches to late nights, book the experience that suits your plans — dinner, drinks, or a VIP table Below.','reserve_page','Hero card — paragraph 1','textarea',4),
-('reserve_hero_p2','Walk-ins are always welcome, but booking ahead means your table''s ready when you are.','reserve_page','Hero card — paragraph 2','textarea',5),
-('reserve_hero_btn_label','VIEW HAPPY HOUR','reserve_page','Hero card — button label','text',6),
-('reserve_hero_btn_url','#happyhour','reserve_page','Hero card — button URL (#happyhour scrolls to the Happy Hour section below)','text',7),
 ('reserve_heading','Reservations','reserve_page','Reservations — heading','text',8),
 ('reserve_fridaysat_eyebrow','Friday & Saturday','reserve_page','Fri/Sat — eyebrow label','text',9),
 ('reserve_fridaysat_heading','Dinner, Turned Up.','reserve_page','Fri/Sat — heading','text',10),
@@ -645,9 +639,9 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('reserve_vip_btn_url','#','reserve_page','VIP Tables — button URL','text',29),
 ('reserve_vip_image','assets/img/hero.jpg','reserve_page','VIP Tables — image','image',30);
 
--- Hero slider photos (placeholder photos — replace/add via admin)
-INSERT INTO `blocks` (`block_type`,`title`,`image`,`sort`,`active`) VALUES
-('reserve_hero_slide','','assets/img/cafe.jpg',1,1),
-('reserve_hero_slide','','assets/img/restaurant.jpg',2,1),
-('reserve_hero_slide','','assets/img/below.jpg',3,1);
+-- Hero slides (each with its own heading/subheading/paragraph/button)
+INSERT INTO `blocks` (`block_type`,`title`,`subtitle`,`body`,`link_url`,`link_url2`,`image`,`sort`,`active`) VALUES
+('reserve_hero_slide','Reserve Your Night At The House.','Restaurant. Happy Hour. Below.','From long lunches to late nights, book the experience that suits your plans — dinner, drinks, or a VIP table Below.\nWalk-ins are always welcome, but booking ahead means your table''s ready when you are.','#happyhour','VIEW HAPPY HOUR','assets/img/cafe.jpg',1,1),
+('reserve_hero_slide','Dinner, Turned Up.','Friday & Saturday','From 8 PM, the music lifts, drinks keep flowing and the room becomes more social.','#','BOOK A TABLE','assets/img/restaurant.jpg',2,1),
+('reserve_hero_slide','Your Table. Your Night.','VIP Tables At Below','For groups wanting their own space, Below offers a limited number of VIP tables with dedicated service.','#','VIP ENQUIRY','assets/img/below.jpg',3,1);
 

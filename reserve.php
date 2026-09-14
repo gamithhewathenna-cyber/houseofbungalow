@@ -1,51 +1,64 @@
 <?php
 require_once __DIR__ . '/includes/functions.php';
 
-$page_meta_title       = setting('reserve_hero_heading', 'Reserve');
-$page_meta_description = setting('reserve_hero_p1');
-
-include __DIR__ . '/includes/header.php';
-
 $reserve_slides = blocks('reserve_hero_slide');
 if (!$reserve_slides) {
-    $reserve_slides = [['image' => 'assets/img/cafe.jpg']];
+    $reserve_slides = [[
+        'image'     => 'assets/img/cafe.jpg',
+        'title'     => 'Reserve Your Night At The House.',
+        'subtitle'  => '',
+        'body'      => '',
+        'link_url'  => '#happyhour',
+        'link_url2' => 'VIEW HAPPY HOUR',
+    ]];
 }
+
+$page_meta_title       = $reserve_slides[0]['title'] ?: 'Reserve';
+$page_meta_description = $reserve_slides[0]['body'];
+
+include __DIR__ . '/includes/header.php';
 ?>
 
-<!-- Hero slider (with centered overlay card) --------------------------- -->
+<!-- Hero slider (image + content change together) ----------------------- -->
 <section class="hero hero-slider">
   <?php foreach ($reserve_slides as $i => $slide): ?>
     <div class="hero-slide<?= $i === 0 ? ' active' : '' ?>" style="background-image:url('<?= e(asset($slide['image'])) ?>');"></div>
   <?php endforeach; ?>
   <?php if (count($reserve_slides) > 1): ?>
-    <button type="button" class="hero-arrow hero-arrow-prev" aria-label="Previous photo">&#8249;</button>
-    <button type="button" class="hero-arrow hero-arrow-next" aria-label="Next photo">&#8250;</button>
+    <button type="button" class="hero-arrow hero-arrow-prev" aria-label="Previous">&#8249;</button>
+    <button type="button" class="hero-arrow hero-arrow-next" aria-label="Next">&#8250;</button>
   <?php endif; ?>
-  <div class="hero-overlay-card">
-    <h1><?= e(setting('reserve_hero_heading', 'Reserve Your Night At The House.')) ?></h1>
-    <p class="subheading"><?= e(setting('reserve_hero_subheading')) ?></p>
-    <p><?= e(setting('reserve_hero_p1')) ?></p>
-    <p><?= e(setting('reserve_hero_p2')) ?></p>
-    <?php if (setting('reserve_hero_btn_label')): ?>
-      <div class="btn-wrap">
-        <a class="link-underline" href="<?= e(url(setting('reserve_hero_btn_url', '#happyhour'))) ?>"><?= e(setting('reserve_hero_btn_label')) ?></a>
-      </div>
-    <?php endif; ?>
-  </div>
+  <?php foreach ($reserve_slides as $i => $slide): ?>
+    <div class="hero-overlay-card<?= $i === 0 ? ' active' : '' ?>">
+      <?php if ($slide['title']): ?><h1><?= e($slide['title']) ?></h1><?php endif; ?>
+      <?php if ($slide['subtitle']): ?><p class="subheading"><?= e($slide['subtitle']) ?></p><?php endif; ?>
+      <?php foreach (preg_split('/\r?\n/', trim($slide['body'] ?? '')) as $para): if (trim($para) === '') continue; ?>
+        <p><?= e(trim($para)) ?></p>
+      <?php endforeach; ?>
+      <?php if (!empty($slide['link_url2'])): ?>
+        <div class="btn-wrap">
+          <a class="link-underline" href="<?= e(url($slide['link_url'] ?: '#')) ?>"><?= e($slide['link_url2']) ?></a>
+        </div>
+      <?php endif; ?>
+    </div>
+  <?php endforeach; ?>
 </section>
 
 <?php if (count($reserve_slides) > 1): ?>
 <script>
 (function () {
   var slides = document.querySelectorAll('.hero-slider .hero-slide');
+  var cards = document.querySelectorAll('.hero-slider .hero-overlay-card');
   var prev = document.querySelector('.hero-slider .hero-arrow-prev');
   var next = document.querySelector('.hero-slider .hero-arrow-next');
   if (!slides.length) return;
   var current = 0;
   function show(index) {
     slides[current].classList.remove('active');
+    if (cards[current]) cards[current].classList.remove('active');
     current = (index + slides.length) % slides.length;
     slides[current].classList.add('active');
+    if (cards[current]) cards[current].classList.add('active');
   }
   if (prev) prev.addEventListener('click', function () { show(current - 1); });
   if (next) next.addEventListener('click', function () { show(current + 1); });

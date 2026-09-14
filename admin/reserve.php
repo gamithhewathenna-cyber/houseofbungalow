@@ -4,7 +4,6 @@ require_login();
 require_once __DIR__ . '/helpers.php';
 
 $fieldGroups = [
-    'hero'      => ['reserve_hero_heading', 'reserve_hero_subheading', 'reserve_hero_p1', 'reserve_hero_p2', 'reserve_hero_btn_label', 'reserve_hero_btn_url'],
     'heading'   => ['reserve_heading'],
     'fridaysat' => ['reserve_fridaysat_eyebrow', 'reserve_fridaysat_heading', 'reserve_fridaysat_p1', 'reserve_fridaysat_p2', 'reserve_fridaysat_btn_label', 'reserve_fridaysat_btn_url', 'reserve_fridaysat_image'],
     'happyhour' => ['reserve_happyhour_eyebrow', 'reserve_happyhour_heading', 'reserve_happyhour_p1', 'reserve_happyhour_hours1', 'reserve_happyhour_hours2', 'reserve_happyhour_btn_label', 'reserve_happyhour_btn_url', 'reserve_happyhour_image'],
@@ -49,18 +48,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Location: reserve.php?tab=' . urlencode($group) . '&saved=1'); exit;
             }
 
-            // ---- Hero slides ----
+            // ---- Hero slides (image + its own content) ----
             if ($action === 'save_slides') {
-                foreach (($_POST['s_sort'] ?? []) as $id => $sort) {
+                foreach (($_POST['title'] ?? []) as $id => $title) {
                     $id  = (int) $id;
                     $img = handle_upload('file_' . $id);
+                    $fields = ['title=?', 'subtitle=?', 'body=?', 'link_url=?', 'link_url2=?', 'sort=?'];
+                    $params = [
+                        trim($title),
+                        trim($_POST['subtitle'][$id] ?? ''),
+                        trim($_POST['body'][$id] ?? ''),
+                        trim($_POST['link'][$id] ?? '#'),
+                        trim($_POST['link_label'][$id] ?? ''),
+                        (int) ($_POST['sort'][$id] ?? 0),
+                    ];
                     if ($img !== null) {
-                        $q = db()->prepare('UPDATE blocks SET sort=?, image=? WHERE id=? AND block_type="reserve_hero_slide"');
-                        $q->execute([(int) $sort, $img, $id]);
-                    } else {
-                        $q = db()->prepare('UPDATE blocks SET sort=? WHERE id=? AND block_type="reserve_hero_slide"');
-                        $q->execute([(int) $sort, $id]);
+                        $fields[] = 'image=?';
+                        $params[] = $img;
                     }
+                    $params[] = $id;
+                    $q = db()->prepare('UPDATE blocks SET ' . implode(',', $fields) . ' WHERE id=? AND block_type="reserve_hero_slide"');
+                    $q->execute($params);
                 }
                 header('Location: reserve.php?tab=slides&saved=1'); exit;
             }
@@ -69,8 +77,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($img === null) {
                     $error = 'Choose an image to add to the slider.';
                 } else {
-                    $q = db()->prepare('INSERT INTO blocks (block_type,title,image,sort,active) VALUES ("reserve_hero_slide","",?,?,1)');
-                    $q->execute([$img, (int) ($_POST['new_sort'] ?? 99)]);
+                    $q = db()->prepare('INSERT INTO blocks (block_type,title,subtitle,body,link_url,link_url2,image,sort,active) VALUES ("reserve_hero_slide",?,?,?,?,?,?,?,1)');
+                    $q->execute([
+                        trim($_POST['new_title'] ?? 'New Slide'),
+                        trim($_POST['new_subtitle'] ?? ''),
+                        trim($_POST['new_body'] ?? ''),
+                        trim($_POST['new_link'] ?? '#'),
+                        trim($_POST['new_link_label'] ?? ''),
+                        $img,
+                        (int) ($_POST['new_sort'] ?? 99),
+                    ]);
                     header('Location: reserve.php?tab=slides&saved=1'); exit;
                 }
             }
@@ -94,15 +110,14 @@ $slides = db()->query("SELECT * FROM blocks WHERE block_type='reserve_hero_slide
 
 $tabs = [
     'slides'    => 'Hero Slides',
-    'hero'      => 'Hero Card',
     'heading'   => 'Reservations Heading',
     'fridaysat' => 'Friday & Saturday',
     'happyhour' => 'Happy Hour',
     'vip'       => 'VIP Tables',
 ];
-$activeTab = $_GET['tab'] ?? 'hero';
+$activeTab = $_GET['tab'] ?? 'slides';
 if (!isset($tabs[$activeTab])) {
-    $activeTab = 'hero';
+    $activeTab = 'slides';
 }
 
 function render_reserve_field(array $f): void
@@ -140,24 +155,60 @@ include __DIR__ . '/layout.php';
   <?php endforeach; ?>
 </div>
 
-<!-- Hero Slides tab -->
+<!-- Hero Slides tab (image + its own heading/text/button) -->
 <div class="tab-panel settings-group<?= $activeTab === 'slides' ? ' active' : '' ?>" data-tab="slides">
   <h3>Hero Slides</h3>
-  <p class="group-help">Photos shown in the hero image slider at the top of the page, with the text card overlaid on top. Add as many as you like — visitors can click the arrows to move between them (the arrows are hidden automatically if there's only one photo).</p>
+  <p class="group-help">Each slide is a photo with its own heading, subheading, paragraph(s) and button — the text card changes together with the photo as visitors click the arrows. Leave the button label empty to hide the button on that slide. For the paragraph, put each sentence on its own line to create separate paragraphs.</p>
+
   <form method="post" enctype="multipart/form-data">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
     <input type="hidden" name="action" value="save_slides">
-    <table>
-      <tr><th style="width:110px;">Image</th><th style="width:90px;">Order</th><th style="width:220px;">Replace image</th><th style="width:90px;"></th></tr>
+    <div class="dj-admin-list">
       <?php foreach ($slides as $s): ?>
-        <tr>
-          <td><?php if ($s['image']): ?><img src="<?= e(asset($s['image'])) ?>" alt=""><?php endif; ?></td>
-          <td><input type="text" name="s_sort[<?= $s['id'] ?>]" value="<?= (int)$s['sort'] ?>"></td>
-          <td><input type="file" name="file_<?= $s['id'] ?>" accept="image/*"></td>
-          <td><button form="delslide<?= $s['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Remove this slide?')">Delete</button></td>
-        </tr>
+        <div class="dj-admin-card">
+          <div class="dj-admin-media">
+            <div class="thumb-preview<?= $s['image'] ? '' : ' empty' ?>">
+              <?php if ($s['image']): ?><img src="<?= e(asset($s['image'])) ?>" alt=""><?php else: ?>No photo yet<?php endif; ?>
+            </div>
+            <input type="file" name="file_<?= $s['id'] ?>" accept="image/*">
+            <span class="help">Replace photo</span>
+          </div>
+          <div class="dj-admin-fields">
+            <div class="field-row">
+              <label>Heading
+                <input type="text" name="title[<?= $s['id'] ?>]" value="<?= e($s['title']) ?>">
+              </label>
+            </div>
+            <div class="field-row">
+              <label>Subheading
+                <input type="text" name="subtitle[<?= $s['id'] ?>]" value="<?= e($s['subtitle']) ?>">
+              </label>
+            </div>
+            <div class="field-row">
+              <label>Paragraph(s)
+                <textarea name="body[<?= $s['id'] ?>]"><?= e($s['body']) ?></textarea>
+              </label>
+            </div>
+            <div class="field-grid">
+              <label>Button label
+                <input type="text" name="link_label[<?= $s['id'] ?>]" value="<?= e($s['link_url2']) ?>" placeholder="e.g. VIEW HAPPY HOUR">
+              </label>
+              <label>Button URL
+                <input type="text" name="link[<?= $s['id'] ?>]" value="<?= e($s['link_url']) ?>" placeholder="#happyhour">
+              </label>
+            </div>
+            <div class="field-grid">
+              <label>Order
+                <input type="text" name="sort[<?= $s['id'] ?>]" value="<?= (int)$s['sort'] ?>">
+              </label>
+            </div>
+          </div>
+          <div class="dj-admin-actions">
+            <button form="delslide<?= $s['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Remove this slide?')">Delete</button>
+          </div>
+        </div>
       <?php endforeach; ?>
-    </table>
+    </div>
     <div class="form-actions"><button class="btn">Save Changes</button></div>
   </form>
   <?php foreach ($slides as $s): ?>
@@ -169,13 +220,46 @@ include __DIR__ . '/layout.php';
   <?php endforeach; ?>
 
   <h4 style="margin-top:20px;font-size:14px;">Add a Slide</h4>
-  <form method="post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data" class="dj-admin-card dj-admin-add">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
     <input type="hidden" name="action" value="add_slide">
-    <div class="row-actions">
+    <div class="dj-admin-media">
+      <div class="thumb-preview empty">No photo yet</div>
       <input type="file" name="new_file" accept="image/*">
-      <input type="text" name="new_sort" placeholder="Order" value="99" style="width:70px;">
-      <button class="btn btn-sm">+ Add Slide</button>
+      <span class="help">Upload photo</span>
+    </div>
+    <div class="dj-admin-fields">
+      <div class="field-row">
+        <label>Heading
+          <input type="text" name="new_title" placeholder="e.g. Reserve Your Night At The House.">
+        </label>
+      </div>
+      <div class="field-row">
+        <label>Subheading
+          <input type="text" name="new_subtitle" placeholder="e.g. Restaurant. Happy Hour. Below.">
+        </label>
+      </div>
+      <div class="field-row">
+        <label>Paragraph(s)
+          <textarea name="new_body" placeholder="One sentence per line..."></textarea>
+        </label>
+      </div>
+      <div class="field-grid">
+        <label>Button label
+          <input type="text" name="new_link_label" placeholder="e.g. VIEW HAPPY HOUR">
+        </label>
+        <label>Button URL
+          <input type="text" name="new_link" placeholder="#happyhour">
+        </label>
+      </div>
+      <div class="field-grid">
+        <label>Order
+          <input type="text" name="new_sort" value="99">
+        </label>
+      </div>
+    </div>
+    <div class="dj-admin-actions">
+      <button class="btn btn-sm">Add Slide</button>
     </div>
   </form>
 </div>
@@ -183,9 +267,6 @@ include __DIR__ . '/layout.php';
 <?php foreach ($fieldGroups as $group => $keys): ?>
   <div class="tab-panel settings-group<?= $activeTab === $group ? ' active' : '' ?>" data-tab="<?= e($group) ?>">
     <h3><?= e($tabs[$group]) ?></h3>
-    <?php if ($group === 'hero'): ?>
-      <p class="group-help">The text card centered over the hero slider, including the "VIEW HAPPY HOUR" button, which by default scrolls to the Happy Hour section on this page (set its URL to <code>#happyhour</code>, or any other link).</p>
-    <?php endif; ?>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
       <input type="hidden" name="action" value="save_section">

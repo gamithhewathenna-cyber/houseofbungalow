@@ -32,7 +32,6 @@ include __DIR__ . '/layout.php';
 <h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">Edit Reserve</h2>
 <div class="dash-links">
   <a href="reserve.php?tab=slides">Hero Slides</a>
-  <a href="reserve.php?tab=hero">Hero Card</a>
   <a href="reserve.php?tab=heading">Reservations Heading</a>
   <a href="reserve.php?tab=fridaysat">Friday &amp; Saturday</a>
   <a href="reserve.php?tab=happyhour">Happy Hour</a>
