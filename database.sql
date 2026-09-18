@@ -279,7 +279,7 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('below_intro_p1','Come early for a drink, stay when the DJ takes over, or make the night your own with one of a limited number of VIP tables.','below','Intro - paragraph 1','textarea',5),
 ('below_intro_p2','Guest artists. Curated nights. Late finishes.','below','Intro - paragraph 2','textarea',6),
 ('below_intro_btn1_label','WHAT''S ON','below','Intro - button 1 label','text',7),
-('below_intro_btn1_url','#','below','Intro - button 1 URL','text',8),
+('below_intro_btn1_url','#lineup-section','below','Intro - button 1 URL (use #lineup-section to scroll to the Line-Up section on this page)','text',8),
 ('below_intro_btn2_label','VIP TABLES','below','Intro - button 2 label','text',9),
 ('below_intro_btn2_url','#','below','Intro - button 2 URL','text',10),
 
