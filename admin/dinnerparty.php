@@ -5,7 +5,7 @@ require_once __DIR__ . '/helpers.php';
 
 $fieldGroups = [
     'herovideo' => ['dp_hero_video'],
-    'intro'     => ['dp_heading', 'dp_subheading', 'dp_lede1', 'dp_lede2', 'dp_p1', 'dp_hours', 'dp_btn1_label', 'dp_btn1_url', 'dp_btn2_label', 'dp_btn2_url'],
+    'intro'     => ['dp_heading', 'dp_subheading', 'dp_lede1', 'dp_lede2', 'dp_p1', 'dp_p2', 'dp_hours', 'dp_btn1_label', 'dp_btn1_url', 'dp_btn2_label', 'dp_btn2_url'],
     'menu'      => ['dp_menu_heading', 'dp_menu_lede'],
     'guest'     => ['dp_guest_eyebrow', 'dp_guest_heading', 'dp_guest_p1', 'dp_guest_p2', 'dp_guest_btn_label', 'dp_guest_btn_url', 'dp_guest_image'],
 ];

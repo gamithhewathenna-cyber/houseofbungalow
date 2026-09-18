@@ -44,6 +44,7 @@ foreach ($menu_cats as $cat) {
     <p class="lede"><?= e(setting('dp_lede1')) ?></p>
     <p class="lede"><?= e(setting('dp_lede2')) ?></p>
     <p><?= e(setting('dp_p1')) ?></p>
+    <?php if (setting('dp_p2')): ?><p><?= e(setting('dp_p2')) ?></p><?php endif; ?>
     <?php if (setting('dp_hours')): ?><p class="hours-line" style="text-align:center;"><?= eb(setting('dp_hours')) ?></p><?php endif; ?>
     <div class="btn-wrap btn-wrap-row">
       <?php if (setting('dp_btn1_label')): ?>
