@@ -32,7 +32,7 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
 
       <div class="intro-actions">
         <a class="link-underline" href="<?= e(url(setting('intro_btn1_url','#'))) ?>"><?= e(setting('intro_btn1_label')) ?></a>
-        <a class="link-underline" href="<?= e(url(setting('intro_btn2_url','#'))) ?>"><?= e(setting('intro_btn2_label')) ?></a>
+        <a class="link-underline js-booking-popup-trigger" href="<?= e(url(setting('intro_btn2_url','#'))) ?>"><?= e(setting('intro_btn2_label')) ?></a>
       </div>
     </div>
   </div>

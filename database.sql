@@ -183,7 +183,7 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('rest_intro_p1','Led by Chef Gianni Moretto, the menu puts Spanish inspiration at the centre, with Asian flavours, techniques and ingredients woven through where they make sense.','restaurant','Paragraph 1','textarea',5),
 ('rest_intro_p2','Food made for the table, drinks made for staying, and a room that changes as the day turns into night.','restaurant','Paragraph 2','textarea',6),
 ('rest_intro_btn_label','BOOK A TABLE','restaurant','Button label','text',7),
-('rest_intro_btn_url','#','restaurant','Button URL','text',8),
+('rest_intro_btn_url','reserve.php','restaurant','Button URL','text',8),
 
 ('rest_food_eyebrow','The Food','restaurant','Food - eyebrow label','text',9),
 ('rest_food_heading','MADE FOR THE TABLE.','restaurant','Food - heading','text',10),
@@ -205,7 +205,7 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('rest_fridaysat_p1','From 6 PM on Friday and Saturday, the music lifts, drinks keep flowing and the room becomes more social.','restaurant','Fri/Sat - paragraph 1','textarea',23),
 ('rest_fridaysat_p2','It''s a dinner party atmosphere built around great food, generous hospitality, good music and a table worth staying at.','restaurant','Fri/Sat - paragraph 2','textarea',24),
 ('rest_fridaysat_btn_label','BOOK A TABLE','restaurant','Fri/Sat - button label','text',25),
-('rest_fridaysat_btn_url','#','restaurant','Fri/Sat - button URL','text',26),
+('rest_fridaysat_btn_url','reserve.php','restaurant','Fri/Sat - button URL','text',26),
 ('rest_fridaysat_image','assets/img/restaurant.jpg','restaurant','Fri/Sat - image','image',27),
 
 ('rest_happyhour_eyebrow','Happy Hour','restaurant','Happy Hour - eyebrow label','text',28),
@@ -233,7 +233,7 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('rest_hours_fridaysat','Until 11:30 PM','restaurant','Hours - Fri/Sat line','text',48),
 ('rest_hours_note','Reservations And Walk-Ins Welcome.','restaurant','Hours - note','text',46),
 ('rest_hours_btn_label','BOOK A TABLE','restaurant','Hours - button label','text',47),
-('rest_hours_btn_url','#','restaurant','Hours - button URL','text',48),
+('rest_hours_btn_url','reserve.php','restaurant','Hours - button URL','text',48),
 ('rest_hours_footnote','Walk-Ins Welcome. Book Ahead For Peak Hours Before Committing.','restaurant','Hours - footnote','text',49);
 
 -- Restaurant menu categories (admin can add/rename/remove - see admin/restaurant.php)
@@ -295,7 +295,7 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('below_music_heading','Music','below','Music - heading','text',19),
 ('below_music_lede','Five nights. Five different moods. Music sits at the centre of Below, with each night shaped around its own sound and audience.','below','Music - lede paragraph','textarea',20),
 ('below_music_btn1_label','BOOK A TABLE','below','Music - button 1 label','text',21),
-('below_music_btn1_url','#','below','Music - button 1 URL','text',22),
+('below_music_btn1_url','reserve.php','below','Music - button 1 URL','text',22),
 ('below_music_btn2_label','BOOK BOTTLE SERVICE','below','Music - button 2 label','text',23),
 ('below_music_btn2_url','#','below','Music - button 2 URL','text',24),
 
@@ -385,7 +385,7 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('wo_friday_p1','From 6pm, dinner moves into another gear as the music, drinks and energy build around the room.','whatson_page','Fri/Sat - paragraph 1','textarea',20),
 ('wo_friday_p2','Expect a fuller room, a livelier soundtrack and a night that runs later than usual.','whatson_page','Fri/Sat - paragraph 2','textarea',21),
 ('wo_friday_btn_label','BOOK A TABLE','whatson_page','Fri/Sat - button label','text',22),
-('wo_friday_btn_url','#','whatson_page','Fri/Sat - button URL','text',23),
+('wo_friday_btn_url','reserve.php','whatson_page','Fri/Sat - button URL','text',23),
 ('wo_friday_image','assets/img/below.jpg','whatson_page','Fri/Sat - image','image',24),
 
 ('wo_brunch_eyebrow','Weekend Bottomless Brunch','whatson_page','Brunch - eyebrow label','text',25),
@@ -482,7 +482,7 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('dp_btn1_label','VIEW DINNER MENU','dinnerparty_page','Button 1 label','text',8),
 ('dp_btn1_url','#','dinnerparty_page','Button 1 URL','text',9),
 ('dp_btn2_label','BOOK A TABLE','dinnerparty_page','Button 2 label','text',10),
-('dp_btn2_url','#','dinnerparty_page','Button 2 URL','text',11),
+('dp_btn2_url','reserve.php','dinnerparty_page','Button 2 URL','text',11),
 ('dp_menu_heading','Discover Our Menus','dinnerparty_page','Menu - heading','text',12),
 ('dp_menu_lede','','dinnerparty_page','Menu - lede (optional)','textarea',13),
 ('dp_guest_eyebrow','Guest Artists','dinnerparty_page','Guest Artists - eyebrow label','text',14),

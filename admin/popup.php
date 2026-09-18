@@ -47,7 +47,7 @@ include __DIR__ . '/layout.php';
 
 <div class="tab-panel settings-group active" data-tab="content">
   <h3>Popup Booking</h3>
-  <p class="group-help">This full-screen popup opens whenever a visitor clicks any button labelled exactly "BOOK A TABLE" anywhere on the site - no per-page setup needed.</p>
+  <p class="group-help">This full-screen popup only opens from the "BOOK A TABLE" button on the Home Page. Every "BOOK A TABLE" button on the other pages (Restaurant, Below, What's On, Dinner Party) is a normal link that goes straight to its own page's configured URL, edited from that page's own admin tab.</p>
   <form method="post">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
     <?php foreach ($keys as $key): if (!isset($bySkey[$key])) continue; render_popup_field($bySkey[$key]); endforeach; ?>
