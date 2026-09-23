@@ -73,11 +73,7 @@ a{color:inherit;text-decoration:none;}
   top:0;left:0;right:0;
   z-index:20;
   padding:34px 0;
-  transition:background-color .2s ease;
 }
-/* Solid backdrop while the mobile menu is open, so its scrolling link  */
-/* list passes behind the header row instead of showing through it.    */
-.site-header.menu-open{background:var(--cream);}
 .site-header .container{
   max-width:none;
   padding:0 48px;
@@ -91,16 +87,18 @@ a{color:inherit;text-decoration:none;}
   justify-content:center;
 }
 .brand-logo img{height:72px;width:auto;}
-.brand-logo-dark{display:none;}
-.site-header.menu-open .brand-logo-light{display:none;}
-.site-header.menu-open .brand-logo-dark{display:block;}
 .header-nav{
   grid-column:3;
   display:flex;
   align-items:center;
   justify-content:flex-end;
   gap:44px;
+  transition:background-color .2s ease;
 }
+/* Solid backdrop behind just the nav/hamburger cluster while the mobile */
+/* menu is open, so its scrolling link list passes behind these buttons */
+/* instead of showing through them — the rest of the header stays as-is. */
+.site-header.menu-open .header-nav{background:var(--cream);}
 .header-nav a{
   display:inline-block;
   color:#fff;

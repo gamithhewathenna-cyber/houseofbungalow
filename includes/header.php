@@ -62,8 +62,7 @@ if (setting('maintenance_mode', '0') === '1') {
 <header class="site-header" id="siteHeader">
   <div class="container">
     <a class="brand-logo" href="<?= e(url('index.php')) ?>" aria-label="<?= e(SITE_NAME) ?>">
-      <img class="brand-logo-light" src="<?= e(asset(setting('logo_white', 'assets/img/logo-white.png'))) ?>" alt="<?= e(SITE_NAME) ?>">
-      <img class="brand-logo-dark" src="<?= e(asset(setting('logo_colour', 'assets/img/logo-maroon.png'))) ?>" alt="<?= e(SITE_NAME) ?>">
+      <img src="<?= e(asset(setting('logo_white', 'assets/img/logo-white.png'))) ?>" alt="<?= e(SITE_NAME) ?>">
     </a>
     <nav class="header-nav">
       <a href="<?= e(url(setting('nav_link_1_url','#'))) ?>"><?= e(setting('nav_link_1_label','VIP')) ?></a>
