@@ -141,7 +141,7 @@ a{color:inherit;text-decoration:none;}
   transform:translateX(100%);
   transition:transform .45s ease;
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   justify-content:center;
   overflow-y:auto;
   box-shadow:-10px 0 40px rgba(0,0,0,.18);
