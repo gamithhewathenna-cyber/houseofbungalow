@@ -44,9 +44,10 @@ $bp_btn2_url   = setting('popup_btn2_url', 'restaurant.php');
     window.scrollTo(0, window.__hobScrollY || 0);
   }
 
-  // Only the Home page's "BOOK A TABLE" button opens this popup — every
-  // other "BOOK A TABLE" button on the site is a normal link to its own
-  // admin-configured URL.
+  // Only elements carrying this trigger class open the popup: the Home
+  // page's "BOOK A TABLE" button and the header's "RESERVE" button.
+  // Every other "BOOK A TABLE" button on the site is a normal link to
+  // its own admin-configured URL.
   document.querySelectorAll('.js-booking-popup-trigger').forEach(function (a) {
     a.addEventListener('click', openPopup);
   });
