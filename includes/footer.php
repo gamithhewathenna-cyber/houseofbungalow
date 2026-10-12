@@ -30,7 +30,7 @@ $msg        = $_GET['sub'] ?? '';
 
     <p class="footer-address"><?= e(setting('footer_address')) ?></p>
 
-    <?php if ($brands): ?>
+    <?php if ($brands && section_visible('brands')): ?>
     <div class="brands">
       <?php foreach ($brands as $b): ?>
         <?php if (!empty($b['image'])): ?>
