@@ -14,6 +14,7 @@ $cards = blocks('pe_event_card');
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
+<?php if (section_visible('pe_hero')): ?>
 <section class="hero"<?php if (!$pe_hero_video): ?> style="background-image:url('<?= e($pe_hero_image) ?>');"<?php endif; ?>>
   <?php if ($pe_hero_video): ?>
     <video class="hero-video" autoplay muted loop playsinline preload="auto">
@@ -21,8 +22,10 @@ $cards = blocks('pe_event_card');
     </video>
   <?php endif; ?>
 </section>
+<?php endif; ?>
 
 <!-- Intro -------------------------------------------------------------- -->
+<?php if (section_visible('pe_intro')): ?>
 <section class="page-hero-intro reveal">
   <div class="container">
     <h1><?= e(setting('pe_heading', 'Private Events')) ?></h1>
@@ -38,9 +41,10 @@ $cards = blocks('pe_event_card');
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Event Cards (Restaurant Events / Below Events) --------------------- -->
-<?php if ($cards): ?>
+<?php if ($cards && section_visible('pe_cards')): ?>
 <section class="events-cards reveal">
   <div class="events-grid">
     <?php foreach ($cards as $c): ?>
@@ -60,11 +64,12 @@ $cards = blocks('pe_event_card');
     <?php endforeach; ?>
   </div>
 </section>
-<?php endif; ?>
 
 <hr class="footer-rule">
+<?php endif; ?>
 
 <!-- Make The House Yours ------------------------------------------------ -->
+<?php if (section_visible('pe_final')): ?>
 <section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('pe_final_heading', 'Make The House Yours')) ?></h2>
@@ -76,5 +81,6 @@ $cards = blocks('pe_event_card');
     <?php endif; ?>
   </div>
 </section>
+<?php endif; ?>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>

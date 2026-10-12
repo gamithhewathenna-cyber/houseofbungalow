@@ -12,10 +12,12 @@ $faqs = blocks('faq_page_item');
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
+<?php if (section_visible('faq_hero')): ?>
 <section class="hero" style="background-image:url('<?= e($faq_hero_image) ?>');"></section>
+<?php endif; ?>
 
 <!-- FAQs --------------------------------------------------------------- -->
-<?php if ($faqs): ?>
+<?php if ($faqs && section_visible('faq_list')): ?>
 <section class="faq-section reveal">
   <div class="container">
     <h1><?= e(setting('faq_heading', 'Frequently Asked Questions')) ?></h1>

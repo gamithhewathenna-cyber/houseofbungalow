@@ -20,6 +20,7 @@ include __DIR__ . '/includes/header.php';
 ?>
 
 <!-- Hero slider (image + content change together) ----------------------- -->
+<?php if (section_visible('reserve_hero')): ?>
 <section class="hero hero-slider">
   <?php foreach ($reserve_slides as $i => $slide): ?>
     <div class="hero-slide<?= $i === 0 ? ' active' : '' ?>" style="background-image:url('<?= e(asset($slide['image'])) ?>');"></div>
@@ -43,8 +44,9 @@ include __DIR__ . '/includes/header.php';
     </div>
   <?php endforeach; ?>
 </section>
+<?php endif; ?>
 
-<?php if (count($reserve_slides) > 1): ?>
+<?php if (count($reserve_slides) > 1 && section_visible('reserve_hero')): ?>
 <script>
 (function () {
   var slides = document.querySelectorAll('.hero-slider .hero-slide');
@@ -67,13 +69,16 @@ include __DIR__ . '/includes/header.php';
 <?php endif; ?>
 
 <!-- Reservations heading ------------------------------------------------ -->
+<?php if (section_visible('reserve_heading')): ?>
 <section class="section reveal">
   <div class="container">
     <h2><?= e(setting('reserve_heading', 'Reservations')) ?></h2>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Friday & Saturday ----------------------------------------------------- -->
+<?php if (section_visible('reserve_fridaysat')): ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -94,8 +99,10 @@ include __DIR__ . '/includes/header.php';
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Happy Hour -------------------------------------------------------------- -->
+<?php if (section_visible('reserve_happyhour')): ?>
 <section id="happyhour" class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -117,8 +124,10 @@ include __DIR__ . '/includes/header.php';
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- VIP Tables ------------------------------------------------------------------ -->
+<?php if (section_visible('reserve_vip')): ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -139,5 +148,6 @@ include __DIR__ . '/includes/header.php';
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>

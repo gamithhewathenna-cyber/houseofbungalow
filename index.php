@@ -7,6 +7,7 @@ $hero_image_path = asset(setting('hero_image', 'assets/img/hero.jpg'));
 $hero_video_path = setting('hero_video');
 $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'video/quicktime'][strtolower(pathinfo($hero_video_path, PATHINFO_EXTENSION))] ?? 'video/mp4';
 ?>
+<?php if (section_visible('hero')): ?>
 <section class="hero"<?php if (!$hero_video_path): ?> style="background-image:url('<?= e($hero_image_path) ?>');"<?php endif; ?>>
   <?php if ($hero_video_path): ?>
     <video class="hero-video" autoplay muted loop playsinline preload="auto">
@@ -14,8 +15,10 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
     </video>
   <?php endif; ?>
 </section>
+<?php endif; ?>
 
 <!-- Intro ---------------------------------------------------------- -->
+<?php if (section_visible('intro')): ?>
 <section class="intro reveal">
   <div class="container">
     <div class="intro-inner">
@@ -37,15 +40,19 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Building illustration ------------------------------------------ -->
+<?php if (section_visible('building')): ?>
 <section class="building reveal">
   <div class="container">
     <img src="<?= e(asset(setting('building_image','assets/img/building.png'))) ?>" alt="House of Bungalow storefront illustration">
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Three Spaces --------------------------------------------------- -->
+<?php if (section_visible('spaces')): ?>
 <section class="spaces reveal">
   <div class="container">
     <h2><?= e(setting('spaces_heading')) ?></h2>
@@ -60,8 +67,10 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- The House Starts At The Door ----------------------------------- -->
+<?php if (section_visible('door')): ?>
 <section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('door_heading')) ?></h2>
@@ -72,8 +81,10 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- One Address. Every Mood ---------------------------------------- -->
+<?php if (section_visible('mood')): ?>
 <section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('mood_heading')) ?></h2>
@@ -81,8 +92,10 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
     <p><?= e(setting('mood_p2')) ?></p>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- What's On ------------------------------------------------------- -->
+<?php if (section_visible('whatson')): ?>
 <section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('whatson_heading')) ?></h2>
@@ -94,8 +107,10 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Private Events -------------------------------------------------- -->
+<?php if (section_visible('events')): ?>
 <section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('events_heading')) ?></h2>
@@ -107,5 +122,6 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>

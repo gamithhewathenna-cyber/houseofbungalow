@@ -8,6 +8,12 @@ $fieldGroups = [
     'intro'     => ['pe_heading', 'pe_subheading', 'pe_lede', 'pe_p1', 'pe_p2', 'pe_p3', 'pe_btn_label', 'pe_btn_url'],
     'final'     => ['pe_final_heading', 'pe_final_p1', 'pe_final_btn_label', 'pe_final_btn_url'],
 ];
+$visibilitySections = [
+    'pe_hero'  => 'Hero',
+    'pe_intro' => 'Intro',
+    'pe_cards' => 'Event Cards',
+    'pe_final' => 'Make The House Yours',
+];
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -16,6 +22,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $action = $_POST['action'] ?? '';
         try {
+            // ---- Section visibility ----
+            if ($action === 'save_visibility') {
+                foreach ($visibilitySections as $vkey => $vlabel) {
+                    save_setting($vkey . '_visible', isset($_POST['vis_' . $vkey]) ? '1' : '0');
+                }
+                header('Location: privateevents.php?tab=visibility&saved=1'); exit;
+            }
+
             if ($action === 'save_section') {
                 $group = $_POST['group'] ?? '';
                 if (isset($fieldGroups[$group])) {
@@ -93,6 +107,7 @@ $tabs = [
     'intro'     => 'Intro',
     'cards'     => 'Event Cards',
     'final'     => 'Make The House Yours',
+    'visibility' => 'Section Visibility',
 ];
 $activeTab = $_GET['tab'] ?? 'herovideo';
 if (!isset($tabs[$activeTab])) {
@@ -252,6 +267,25 @@ include __DIR__ . '/layout.php';
     <div class="dj-admin-actions">
       <button class="btn btn-sm">Add Card</button>
     </div>
+  </form>
+</div>
+
+<!-- Section Visibility tab -->
+<div class="tab-panel settings-group<?= $activeTab === 'visibility' ? ' active' : '' ?>" data-tab="visibility">
+  <h3>Section Visibility</h3>
+  <p class="group-help">Untick a section to hide it from the live Private Events page without deleting its content - tick it again any time to bring it back.</p>
+  <form method="post">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="save_visibility">
+    <div class="visibility-list">
+      <?php foreach ($visibilitySections as $vkey => $vlabel): ?>
+        <label class="visibility-row">
+          <input type="checkbox" name="vis_<?= e($vkey) ?>" value="1"<?= section_visible($vkey) ? ' checked' : '' ?>>
+          <?= e($vlabel) ?>
+        </label>
+      <?php endforeach; ?>
+    </div>
+    <div class="form-actions"><button class="btn">Save Visibility</button></div>
   </form>
 </div>
 

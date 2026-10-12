@@ -12,6 +12,16 @@ $settingTabs = [
     'whatson' => "What's On",
     'events'  => 'Private Events',
 ];
+$visibilitySections = [
+    'hero'     => 'Hero',
+    'intro'    => 'Intro',
+    'building' => 'Building Illustration',
+    'spaces'   => 'Three Spaces',
+    'door'     => 'The House Starts At The Door',
+    'mood'     => 'One Address. Every Mood',
+    'whatson'  => "What's On",
+    'events'   => 'Private Events',
+];
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -20,6 +30,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $action = $_POST['action'] ?? '';
         try {
+            // ---- Section visibility ----
+            if ($action === 'save_visibility') {
+                foreach ($visibilitySections as $vkey => $vlabel) {
+                    save_setting($vkey . '_visible', isset($_POST['vis_' . $vkey]) ? '1' : '0');
+                }
+                header('Location: homepage.php?tab=visibility&saved=1'); exit;
+            }
+
             // ---- Generic text/image settings tabs (header, hero, intro, door, mood, whatson, events) ----
             if ($action === 'save_section') {
                 $sec = $_POST['section'] ?? '';
@@ -145,16 +163,17 @@ $footerNav    = db()->query("SELECT * FROM blocks WHERE block_type='footer_nav' 
 $brands       = db()->query("SELECT * FROM blocks WHERE block_type='brand' ORDER BY sort ASC, id ASC")->fetchAll();
 
 $tabs = [
-    'header'  => 'Header & Nav',
-    'hero'    => 'Hero',
-    'intro'   => 'Intro',
-    'spaces'  => 'Three Spaces',
-    'door'    => 'The Door',
-    'mood'    => 'Every Mood',
-    'whatson' => "What's On",
-    'events'  => 'Private Events',
-    'footer'  => 'Footer & Nav',
-    'brands'  => 'Brand Logos',
+    'header'     => 'Header & Nav',
+    'hero'       => 'Hero',
+    'intro'      => 'Intro',
+    'spaces'     => 'Three Spaces',
+    'door'       => 'The Door',
+    'mood'       => 'Every Mood',
+    'whatson'    => "What's On",
+    'events'     => 'Private Events',
+    'footer'     => 'Footer & Nav',
+    'brands'     => 'Brand Logos',
+    'visibility' => 'Section Visibility',
 ];
 $activeTab = $_GET['tab'] ?? 'header';
 if (!isset($tabs[$activeTab])) {
@@ -345,6 +364,24 @@ include __DIR__ . '/layout.php';
       <input type="text" name="new_sort" placeholder="Order" value="99" style="width:70px;">
       <button class="btn btn-sm">Add</button>
     </div>
+  </form>
+</div>
+
+<div class="tab-panel settings-group<?= $activeTab === 'visibility' ? ' active' : '' ?>" data-tab="visibility">
+  <h3>Section Visibility</h3>
+  <p class="group-help">Untick a section to hide it from the live Home Page without deleting its content — tick it again any time to bring it back.</p>
+  <form method="post">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="save_visibility">
+    <div class="visibility-list">
+      <?php foreach ($visibilitySections as $vkey => $vlabel): ?>
+        <label class="visibility-row">
+          <input type="checkbox" name="vis_<?= e($vkey) ?>" value="1"<?= section_visible($vkey) ? ' checked' : '' ?>>
+          <?= e($vlabel) ?>
+        </label>
+      <?php endforeach; ?>
+    </div>
+    <div class="form-actions"><button class="btn">Save Visibility</button></div>
   </form>
 </div>
 

@@ -9,6 +9,13 @@ $fieldGroups = [
     'happyhour' => ['reserve_happyhour_eyebrow', 'reserve_happyhour_heading', 'reserve_happyhour_p1', 'reserve_happyhour_hours1', 'reserve_happyhour_hours2', 'reserve_happyhour_btn_label', 'reserve_happyhour_btn_url', 'reserve_happyhour_image'],
     'vip'       => ['reserve_vip_eyebrow', 'reserve_vip_heading', 'reserve_vip_p1', 'reserve_vip_p2', 'reserve_vip_btn_label', 'reserve_vip_btn_url', 'reserve_vip_image'],
 ];
+$visibilitySections = [
+    'reserve_hero'      => 'Hero Slides',
+    'reserve_heading'   => 'Reservations Heading',
+    'reserve_fridaysat' => 'Friday & Saturday',
+    'reserve_happyhour' => 'Happy Hour',
+    'reserve_vip'       => 'VIP Tables',
+];
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -17,6 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $action = $_POST['action'] ?? '';
         try {
+            // ---- Section visibility ----
+            if ($action === 'save_visibility') {
+                foreach ($visibilitySections as $vkey => $vlabel) {
+                    save_setting($vkey . '_visible', isset($_POST['vis_' . $vkey]) ? '1' : '0');
+                }
+                header('Location: reserve.php?tab=visibility&saved=1'); exit;
+            }
+
             if ($action === 'save_section') {
                 $group = $_POST['group'] ?? '';
                 if (isset($fieldGroups[$group])) {
@@ -114,6 +129,7 @@ $tabs = [
     'fridaysat' => 'Friday & Saturday',
     'happyhour' => 'Happy Hour',
     'vip'       => 'VIP Tables',
+    'visibility' => 'Section Visibility',
 ];
 $activeTab = $_GET['tab'] ?? 'slides';
 if (!isset($tabs[$activeTab])) {
@@ -276,6 +292,25 @@ include __DIR__ . '/layout.php';
     </form>
   </div>
 <?php endforeach; ?>
+
+<!-- Section Visibility tab -->
+<div class="tab-panel settings-group<?= $activeTab === 'visibility' ? ' active' : '' ?>" data-tab="visibility">
+  <h3>Section Visibility</h3>
+  <p class="group-help">Untick a section to hide it from the live Reserve page without deleting its content - tick it again any time to bring it back.</p>
+  <form method="post">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="save_visibility">
+    <div class="visibility-list">
+      <?php foreach ($visibilitySections as $vkey => $vlabel): ?>
+        <label class="visibility-row">
+          <input type="checkbox" name="vis_<?= e($vkey) ?>" value="1"<?= section_visible($vkey) ? ' checked' : '' ?>>
+          <?= e($vlabel) ?>
+        </label>
+      <?php endforeach; ?>
+    </div>
+    <div class="form-actions"><button class="btn">Save Visibility</button></div>
+  </form>
+</div>
 
 <script>
 document.querySelectorAll('.tab-btn').forEach(function (btn) {

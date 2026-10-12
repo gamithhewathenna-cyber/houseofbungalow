@@ -25,6 +25,7 @@ while ($i < count($nights)) {
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
+<?php if (section_visible('below_hero')): ?>
 <section class="hero"<?php if (!$below_hero_video): ?> style="background-image:url('<?= e($below_hero_image) ?>');"<?php endif; ?>>
   <?php if ($below_hero_video): ?>
     <video class="hero-video" autoplay muted loop playsinline preload="auto">
@@ -32,8 +33,10 @@ while ($i < count($nights)) {
     </video>
   <?php endif; ?>
 </section>
+<?php endif; ?>
 
 <!-- Intro (maroon band) ----------------------------------------------- -->
+<?php if (section_visible('below_intro')): ?>
 <section class="maroon-band reveal">
   <div class="container">
     <h1><?= e(setting('below_heading', 'Below')) ?></h1>
@@ -51,8 +54,10 @@ while ($i < count($nights)) {
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- From Cocktails To Late Night --------------------------------------- -->
+<?php if (section_visible('below_cocktails')): ?>
 <section class="section reveal">
   <div class="container">
     <h2><?= e(setting('below_cocktails_heading', 'From Cocktails To Late Night')) ?></h2>
@@ -70,8 +75,10 @@ while ($i < count($nights)) {
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Music (maroon band) ------------------------------------------------ -->
+<?php if (section_visible('below_music')): ?>
 <section class="maroon-band reveal">
   <div class="container">
     <h2><?= e(setting('below_music_heading', 'Music')) ?></h2>
@@ -102,11 +109,15 @@ while ($i < count($nights)) {
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- See This Week's Line-Up (shared with the What's On page) ----------- -->
+<?php if (section_visible('below_lineup')): ?>
 <?php include __DIR__ . '/includes/lineup-section.php'; ?>
+<?php endif; ?>
 
 <!-- Guest Artists -------------------------------------------------------- -->
+<?php if (section_visible('below_guest')): ?>
 <section class="split-section guest-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -127,8 +138,10 @@ while ($i < count($nights)) {
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- VIP Tables ------------------------------------------------------------- -->
+<?php if (section_visible('below_vip')): ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -149,8 +162,10 @@ while ($i < count($nights)) {
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Below Hours -------------------------------------------------------------- -->
+<?php if (section_visible('below_hours')): ?>
 <section class="hours-block reveal">
   <div class="container">
     <h2><?= e(setting('below_hours_heading', 'Below Hours')) ?></h2>
@@ -160,9 +175,10 @@ while ($i < count($nights)) {
     <?php if (setting('below_hours_note')): ?><p class="hours-footnote" style="margin-top:14px;"><?= e(setting('below_hours_note')) ?></p><?php endif; ?>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- FAQs ------------------------------------------------------------------------ -->
-<?php if ($faqs): ?>
+<?php if ($faqs && section_visible('below_faq')): ?>
 <section class="faq-section reveal">
   <div class="container">
     <h2>FAQs</h2>

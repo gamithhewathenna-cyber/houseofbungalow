@@ -30,6 +30,7 @@ while ($i < count($gallery)) {
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
+<?php if (section_visible('rest_hero')): ?>
 <section class="hero"<?php if (!$rest_hero_video): ?> style="background-image:url('<?= e($rest_hero_image) ?>');"<?php endif; ?>>
   <?php if ($rest_hero_video): ?>
     <video class="hero-video" autoplay muted loop playsinline preload="auto">
@@ -37,8 +38,10 @@ while ($i < count($gallery)) {
     </video>
   <?php endif; ?>
 </section>
+<?php endif; ?>
 
 <!-- Intro ------------------------------------------------------------- -->
+<?php if (section_visible('rest_intro')): ?>
 <section class="page-hero-intro reveal">
   <div class="container">
     <h1><?= e(setting('rest_heading', 'Restaurant')) ?></h1>
@@ -53,8 +56,10 @@ while ($i < count($gallery)) {
     <?php endif; ?>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- The Food ----------------------------------------------------------- -->
+<?php if (section_visible('rest_food')): ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -70,8 +75,10 @@ while ($i < count($gallery)) {
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Menu --------------------------------------------------------------- -->
+<?php if (section_visible('rest_menu')): ?>
 <section class="menu-section reveal">
   <div class="container">
     <h2><?= e(setting('rest_menu_heading', 'Discover Our Menus')) ?></h2>
@@ -106,8 +113,10 @@ while ($i < count($gallery)) {
     <?php $first = false; endforeach; ?>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- The Room ------------------------------------------------------------ -->
+<?php if (section_visible('rest_room')): ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -123,8 +132,10 @@ while ($i < count($gallery)) {
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Friday & Saturday ----------------------------------------------------- -->
+<?php if (section_visible('rest_fridaysat')): ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -145,8 +156,10 @@ while ($i < count($gallery)) {
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Happy Hour -------------------------------------------------------------- -->
+<?php if (section_visible('rest_happyhour')): ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -168,8 +181,10 @@ while ($i < count($gallery)) {
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- The Chef ------------------------------------------------------------------ -->
+<?php if (section_visible('rest_chef')): ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -186,8 +201,10 @@ while ($i < count($gallery)) {
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Restaurant Hours ------------------------------------------------------------ -->
+<?php if (section_visible('rest_hours')): ?>
 <section class="hours-block reveal">
   <div class="container">
     <h2><?= e(setting('rest_hours_heading', 'Restaurant Hours')) ?></h2>
@@ -206,9 +223,10 @@ while ($i < count($gallery)) {
     <?php if (setting('rest_hours_footnote')): ?><p class="hours-footnote"><?= e(setting('rest_hours_footnote')) ?></p><?php endif; ?>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Gallery ------------------------------------------------------------------ -->
-<?php if ($gallery): ?>
+<?php if ($gallery && section_visible('rest_gallery')): ?>
 <section class="rest-gallery reveal">
   <div class="container">
     <div class="gallery-grid">

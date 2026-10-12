@@ -14,6 +14,7 @@ $faqs = blocks('whatson_faq');
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
+<?php if (section_visible('wo_hero')): ?>
 <section class="hero"<?php if (!$wo_hero_video): ?> style="background-image:url('<?= e($wo_hero_image) ?>');"<?php endif; ?>>
   <?php if ($wo_hero_video): ?>
     <video class="hero-video" autoplay muted loop playsinline preload="auto">
@@ -21,8 +22,10 @@ $faqs = blocks('whatson_faq');
     </video>
   <?php endif; ?>
 </section>
+<?php endif; ?>
 
 <!-- Intro -------------------------------------------------------------- -->
+<?php if (section_visible('wo_intro')): ?>
 <section class="page-hero-intro reveal">
   <div class="container">
     <h1><?= e(setting('wo_heading', "What's On")) ?></h1>
@@ -35,8 +38,10 @@ $faqs = blocks('whatson_faq');
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Happy Hour ----------------------------------------------------------- -->
+<?php if (section_visible('wo_happyhour')): ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -57,8 +62,10 @@ $faqs = blocks('whatson_faq');
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Friday & Saturday Dinner Party ----------------------------------------- -->
+<?php if (section_visible('wo_friday')): ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -79,8 +86,10 @@ $faqs = blocks('whatson_faq');
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Weekend Bottomless Brunch --------------------------------------------- -->
+<?php if (section_visible('wo_brunch')): ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -101,12 +110,15 @@ $faqs = blocks('whatson_faq');
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- See This Week's Line-Up (shared with the Below page) ------------------ -->
+<?php if (section_visible('wo_lineup')): ?>
 <?php include __DIR__ . '/includes/lineup-section.php'; ?>
+<?php endif; ?>
 
 <!-- FAQs -------------------------------------------------------------------- -->
-<?php if ($faqs): ?>
+<?php if ($faqs && section_visible('wo_faq')): ?>
 <section class="faq-section reveal">
   <div class="container">
     <h2>FAQs</h2>

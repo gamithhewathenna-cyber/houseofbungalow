@@ -28,6 +28,17 @@ function setting(string $key, string $default = ''): string
 }
 
 /**
+ * Whether a given section should be shown on the live site. Section
+ * visibility is stored as a plain setting named "<key>_visible" (admin
+ * tab: Section Visibility) — '0' hides it, anything else (including no
+ * row at all, i.e. a page built before this feature existed) shows it.
+ */
+function section_visible(string $key): bool
+{
+    return setting($key . '_visible', '1') !== '0';
+}
+
+/**
  * Fetch active blocks of a given type, ordered.
  */
 function blocks(string $type): array

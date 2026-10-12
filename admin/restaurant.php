@@ -15,6 +15,18 @@ $fieldGroups = [
     'hours'     => ['rest_hours_heading', 'rest_hours_lunch_label', 'rest_hours_lunch', 'rest_hours_dinner_label', 'rest_hours_dinner', 'rest_hours_fridaysat_label', 'rest_hours_fridaysat', 'rest_hours_note', 'rest_hours_btn_label', 'rest_hours_btn_url', 'rest_hours_footnote'],
 ];
 $catBlockType = 'rest_menu_cat';
+$visibilitySections = [
+    'rest_hero'      => 'Hero',
+    'rest_intro'     => 'Hero & Intro Text',
+    'rest_food'      => 'The Food',
+    'rest_menu'      => 'Menu',
+    'rest_room'      => 'The Room',
+    'rest_fridaysat' => 'Friday & Saturday',
+    'rest_happyhour' => 'Happy Hour',
+    'rest_chef'      => 'The Chef',
+    'rest_hours'     => 'Restaurant Hours',
+    'rest_gallery'   => 'Gallery',
+];
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -23,6 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $action = $_POST['action'] ?? '';
         try {
+            // ---- Section visibility ----
+            if ($action === 'save_visibility') {
+                foreach ($visibilitySections as $vkey => $vlabel) {
+                    save_setting($vkey . '_visible', isset($_POST['vis_' . $vkey]) ? '1' : '0');
+                }
+                header('Location: restaurant.php?tab=visibility&saved=1'); exit;
+            }
+
             // ---- Generic settings groups ----
             if ($action === 'save_section') {
                 $group = $_POST['group'] ?? '';
@@ -174,6 +194,7 @@ $tabs = [
     'chef'      => 'The Chef',
     'hours'     => 'Restaurant Hours',
     'gallery'   => 'Gallery',
+    'visibility' => 'Section Visibility',
 ];
 $activeTab = $_GET['tab'] ?? 'hero';
 if (!isset($tabs[$activeTab])) {
@@ -381,6 +402,24 @@ include __DIR__ . '/layout.php';
       <input type="text" name="new_sort" placeholder="Order" value="99" style="width:70px;">
       <button class="btn btn-sm">Add</button>
     </div>
+  </form>
+</div>
+
+<div class="tab-panel settings-group<?= $activeTab === 'visibility' ? ' active' : '' ?>" data-tab="visibility">
+  <h3>Section Visibility</h3>
+  <p class="group-help">Untick a section to hide it from the live Restaurant page without deleting its content.</p>
+  <form method="post">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="save_visibility">
+    <div class="visibility-list">
+      <?php foreach ($visibilitySections as $vkey => $vlabel): ?>
+        <label class="visibility-row">
+          <input type="checkbox" name="vis_<?= e($vkey) ?>" value="1"<?= section_visible($vkey) ? ' checked' : '' ?>>
+          <?= e($vlabel) ?>
+        </label>
+      <?php endforeach; ?>
+    </div>
+    <div class="form-actions"><button class="btn">Save Visibility</button></div>
   </form>
 </div>
 

@@ -28,6 +28,7 @@ foreach ($menu_cats as $cat) {
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
+<?php if (section_visible('dp_hero')): ?>
 <section class="hero"<?php if (!$dp_hero_video): ?> style="background-image:url('<?= e($dp_hero_image) ?>');"<?php endif; ?>>
   <?php if ($dp_hero_video): ?>
     <video class="hero-video" autoplay muted loop playsinline preload="auto">
@@ -35,8 +36,10 @@ foreach ($menu_cats as $cat) {
     </video>
   <?php endif; ?>
 </section>
+<?php endif; ?>
 
 <!-- Intro -------------------------------------------------------------- -->
+<?php if (section_visible('dp_intro')): ?>
 <section class="page-hero-intro reveal">
   <div class="container">
     <h1><?= e(setting('dp_heading', 'Dinner Party At The House')) ?></h1>
@@ -56,9 +59,10 @@ foreach ($menu_cats as $cat) {
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Gallery ------------------------------------------------------------------ -->
-<?php if ($gallery_rows): ?>
+<?php if ($gallery_rows && section_visible('dp_gallery')): ?>
 <section class="rest-gallery reveal">
   <div class="container">
     <div class="gallery-grid">
@@ -72,11 +76,12 @@ foreach ($menu_cats as $cat) {
     </div>
   </div>
 </section>
-<?php endif; ?>
 
 <hr class="section-divider">
+<?php endif; ?>
 
 <!-- Menu (own dataset - not shared with the Restaurant or Brunch pages) --- -->
+<?php if (section_visible('dp_menu')): ?>
 <section class="menu-section reveal">
   <div class="container">
     <h2><?= e(setting('dp_menu_heading', 'Discover Our Menus')) ?></h2>
@@ -111,8 +116,10 @@ foreach ($menu_cats as $cat) {
     <?php $first = false; endforeach; ?>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Guest Artists -------------------------------------------------------- -->
+<?php if (section_visible('dp_guest')): ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -133,6 +140,7 @@ foreach ($menu_cats as $cat) {
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <script>
 (function () {

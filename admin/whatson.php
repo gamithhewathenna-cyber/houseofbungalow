@@ -10,6 +10,15 @@ $fieldGroups = [
     'friday'    => ['wo_friday_eyebrow', 'wo_friday_heading', 'wo_friday_p1', 'wo_friday_p2', 'wo_friday_btn_label', 'wo_friday_btn_url', 'wo_friday_image'],
     'brunch'    => ['wo_brunch_eyebrow', 'wo_brunch_heading', 'wo_brunch_hours', 'wo_brunch_p1', 'wo_brunch_btn_label', 'wo_brunch_btn_url', 'wo_brunch_image'],
 ];
+$visibilitySections = [
+    'wo_hero'      => 'Hero',
+    'wo_intro'     => 'Intro',
+    'wo_happyhour' => 'Happy Hour',
+    'wo_friday'    => 'Friday & Saturday Dinner Party',
+    'wo_brunch'    => 'Weekend Bottomless Brunch',
+    'wo_lineup'    => "See This Week's Line-Up",
+    'wo_faq'       => 'FAQs',
+];
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -18,6 +27,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $action = $_POST['action'] ?? '';
         try {
+            // ---- Section visibility ----
+            if ($action === 'save_visibility') {
+                foreach ($visibilitySections as $vkey => $vlabel) {
+                    save_setting($vkey . '_visible', isset($_POST['vis_' . $vkey]) ? '1' : '0');
+                }
+                header('Location: whatson.php?tab=visibility&saved=1'); exit;
+            }
+
             if ($action === 'save_section') {
                 $group = $_POST['group'] ?? '';
                 if (isset($fieldGroups[$group])) {
@@ -87,6 +104,7 @@ $tabs = [
     'friday'    => 'Friday & Saturday Dinner Party',
     'brunch'    => 'Weekend Bottomless Brunch',
     'faqs'      => 'FAQs',
+    'visibility' => 'Section Visibility',
 ];
 $activeTab = $_GET['tab'] ?? 'herovideo';
 if (!isset($tabs[$activeTab])) {
@@ -192,7 +210,26 @@ include __DIR__ . '/layout.php';
   </form>
 </div>
 
-<p class="muted" style="margin-top:24px;">The "See This Week's Line-Up" section on this page is shared with the Below page - manage it from <a href="lineup.php">Week's Line-Up</a> in the sidebar.</p>
+<!-- Section Visibility tab -->
+<div class="tab-panel settings-group<?= $activeTab === 'visibility' ? ' active' : '' ?>" data-tab="visibility">
+  <h3>Section Visibility</h3>
+  <p class="group-help">Untick a section to hide it from the live What's On page without deleting its content - tick it again any time to bring it back.</p>
+  <form method="post">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="save_visibility">
+    <div class="visibility-list">
+      <?php foreach ($visibilitySections as $vkey => $vlabel): ?>
+        <label class="visibility-row">
+          <input type="checkbox" name="vis_<?= e($vkey) ?>" value="1"<?= section_visible($vkey) ? ' checked' : '' ?>>
+          <?= e($vlabel) ?>
+        </label>
+      <?php endforeach; ?>
+    </div>
+    <div class="form-actions"><button class="btn">Save Visibility</button></div>
+  </form>
+</div>
+
+<p class="muted" style="margin-top:24px;">The "See This Week's Line-Up" section on this page is shared with the Below page - manage its content from <a href="lineup.php">Week's Line-Up</a> in the sidebar; its visibility toggle above is independent of Below's.</p>
 
 <script>
 document.querySelectorAll('.tab-btn').forEach(function (btn) {

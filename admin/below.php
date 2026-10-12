@@ -12,6 +12,17 @@ $fieldGroups = [
     'vip'       => ['below_vip_eyebrow', 'below_vip_heading', 'below_vip_p1', 'below_vip_p2', 'below_vip_btn_label', 'below_vip_btn_url', 'below_vip_image'],
     'hours'     => ['below_hours_heading', 'below_hours_days', 'below_hours_cocktail_label', 'below_hours_cocktail', 'below_hours_dj_label', 'below_hours_dj', 'below_hours_note'],
 ];
+$visibilitySections = [
+    'below_hero'      => 'Hero',
+    'below_intro'     => 'Intro',
+    'below_cocktails' => 'From Cocktails To Late Night',
+    'below_music'     => 'Music',
+    'below_lineup'    => "See This Week's Line-Up",
+    'below_guest'     => 'Guest Artists',
+    'below_vip'       => 'VIP Tables',
+    'below_hours'     => 'Below Hours',
+    'below_faq'       => 'FAQs',
+];
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -20,6 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $action = $_POST['action'] ?? '';
         try {
+            // ---- Section visibility ----
+            if ($action === 'save_visibility') {
+                foreach ($visibilitySections as $vkey => $vlabel) {
+                    save_setting($vkey . '_visible', isset($_POST['vis_' . $vkey]) ? '1' : '0');
+                }
+                header('Location: below.php?tab=visibility&saved=1'); exit;
+            }
+
             // ---- Generic settings groups ----
             if ($action === 'save_section') {
                 $group = $_POST['group'] ?? '';
@@ -115,6 +134,7 @@ $tabs = [
     'vip'       => 'VIP Tables',
     'hours'     => 'Below Hours',
     'faqs'      => 'FAQs',
+    'visibility' => 'Section Visibility',
 ];
 $activeTab = $_GET['tab'] ?? 'herovideo';
 if (!isset($tabs[$activeTab])) {
@@ -260,6 +280,25 @@ include __DIR__ . '/layout.php';
       <input type="text" name="new_sort" placeholder="Order" value="99" style="width:70px;">
       <button class="btn btn-sm">Add</button>
     </div>
+  </form>
+</div>
+
+<!-- Section Visibility tab -->
+<div class="tab-panel settings-group<?= $activeTab === 'visibility' ? ' active' : '' ?>" data-tab="visibility">
+  <h3>Section Visibility</h3>
+  <p class="group-help">Untick a section to hide it from the live Below page without deleting its content - tick it again any time to bring it back.</p>
+  <form method="post">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="save_visibility">
+    <div class="visibility-list">
+      <?php foreach ($visibilitySections as $vkey => $vlabel): ?>
+        <label class="visibility-row">
+          <input type="checkbox" name="vis_<?= e($vkey) ?>" value="1"<?= section_visible($vkey) ? ' checked' : '' ?>>
+          <?= e($vlabel) ?>
+        </label>
+      <?php endforeach; ?>
+    </div>
+    <div class="form-actions"><button class="btn">Save Visibility</button></div>
   </form>
 </div>
 

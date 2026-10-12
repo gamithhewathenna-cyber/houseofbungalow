@@ -12,6 +12,7 @@ $cafe_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
+<?php if (section_visible('cafe_hero')): ?>
 <section class="hero"<?php if (!$cafe_hero_video): ?> style="background-image:url('<?= e($cafe_hero_image) ?>');"<?php endif; ?>>
   <?php if ($cafe_hero_video): ?>
     <video class="hero-video" autoplay muted loop playsinline preload="auto">
@@ -19,8 +20,10 @@ $cafe_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 
     </video>
   <?php endif; ?>
 </section>
+<?php endif; ?>
 
 <!-- Intro -------------------------------------------------------------- -->
+<?php if (section_visible('cafe_intro')): ?>
 <section class="page-hero-intro reveal">
   <div class="container">
     <h1><?= e(setting('cafe_heading', 'Café')) ?></h1>
@@ -30,8 +33,10 @@ $cafe_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 
     <p class="cafe-intro-p"><?= e(setting('cafe_p2')) ?></p>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Gallery (3 fixed photos) ------------------------------------------- -->
+<?php if (section_visible('cafe_gallery')): ?>
 <section class="section reveal">
   <div class="container">
     <div class="trio-grid">
@@ -43,8 +48,10 @@ $cafe_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 
 </section>
 
 <hr class="section-divider">
+<?php endif; ?>
 
 <!-- Hours ---------------------------------------------------------------- -->
+<?php if (section_visible('cafe_hours')): ?>
 <section class="hours-block reveal">
   <div class="container">
     <h2><?= e(setting('cafe_hours_heading', 'Coffee. Food. Foveaux Street.')) ?></h2>
@@ -62,8 +69,10 @@ $cafe_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- More Of The House ----------------------------------------------------- -->
+<?php if (section_visible('cafe_final')): ?>
 <section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('cafe_final_heading', 'More Of The House')) ?></h2>
@@ -79,5 +88,6 @@ $cafe_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>
