@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/functions.php';
 
-$page_meta_title       = setting('contact_heading', 'Contact');
+$page_meta_title       = setting('contact_heading', 'Contact Us');
 $page_meta_description = setting('contact_lede');
 
 include __DIR__ . '/includes/header.php';
@@ -29,7 +29,7 @@ $map_embed_url = 'https://www.google.com/maps?q=' . rawurlencode($map_address) .
 <?php if (section_visible('contact_intro')): ?>
 <section class="page-hero-intro reveal">
   <div class="container">
-    <h1><?= e(setting('contact_heading', 'Contact')) ?></h1>
+    <h1><?= e(setting('contact_heading', 'Contact Us')) ?></h1>
     <?php if (setting('contact_subheading')): ?><p class="subheading"><?= e(setting('contact_subheading')) ?></p><?php endif; ?>
     <?php if (setting('contact_lede')): ?><p class="lede"><?= enl(setting('contact_lede')) ?></p><?php endif; ?>
   </div>
@@ -52,6 +52,17 @@ $map_embed_url = 'https://www.google.com/maps?q=' . rawurlencode($map_address) .
         <?php if (setting('contact_email')): ?>
           <p><a class="link-underline" href="mailto:<?= e(setting('contact_email')) ?>"><?= e(setting('contact_email')) ?></a></p>
         <?php endif; ?>
+        <div class="social contact-social">
+          <a href="<?= e(url(setting('social_instagram','#'))) ?>" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="<?= e(url(setting('social_facebook','#'))) ?>" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9.5V7.2c0-.9.6-1.1 1-1.1h2.5V2.5L14.5 2.5c-3.3 0-4 2.5-4 4.1v2.9H8v4h2.5V22h4V13.5h2.9l.4-4H14.5Z"/></svg>
+          </a>
+          <a href="<?= e(url(setting('social_tiktok','#'))) ?>" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2 1.5 3.5 3.5 3.8v2.4c-1.3.1-2.5-.3-3.5-1v6.1c0 3.2-2.5 5.7-5.6 5.7A5.6 5.6 0 015.3 14a5.6 5.6 0 016.4-5.6v2.5a3.1 3.1 0 00-.9-.1 3.1 3.1 0 103.1 3.1V3h2.6z"/></svg>
+          </a>
+        </div>
       </div>
       <div class="split-media">
         <iframe src="<?= e($map_embed_url) ?>" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen title="Map to <?= e(setting('contact_name', 'House of Bungalow')) ?>"></iframe>

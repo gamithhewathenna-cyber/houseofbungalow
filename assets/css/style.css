@@ -430,6 +430,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 }
 .social a{color:var(--maroon);display:inline-flex;}
 .social svg{width:22px;height:22px;}
+.contact-social{justify-content:flex-start;margin:4px 0 0;gap:20px;}
 
 .footer-nav{
   font-family:var(--sans);

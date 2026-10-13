@@ -712,7 +712,7 @@ INSERT INTO `blocks` (`block_type`,`title`,`subtitle`,`body`,`link_url`,`link_ur
 INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) VALUES
 ('contact_hero_image','assets/img/hero.jpg','contact_page','Hero image (poster/fallback)','image',1),
 ('contact_hero_video','','contact_page','Hero video (mp4/webm, ideally 1280×720)','video',1),
-('contact_heading','Contact','contact_page','Heading','text',2),
+('contact_heading','Contact Us','contact_page','Heading','text',2),
 ('contact_subheading','','contact_page','Subheading','text',3),
 ('contact_lede','','contact_page','Lede paragraph (italic)','textarea',4),
 ('contact_name','House of Bungalow','contact_page','Business name','text',5),

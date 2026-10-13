@@ -132,7 +132,7 @@ include __DIR__ . '/layout.php';
   <div class="tab-panel settings-group<?= $activeTab === $group ? ' active' : '' ?>" data-tab="<?= e($group) ?>">
     <h3><?= e($tabs[$group]) ?></h3>
     <?php if ($group === 'details'): ?>
-      <p class="group-help">The map pulls from "Map address" below using Google Maps - it doesn't need to match the address lines shown on the page exactly, but should be accurate enough for Google to find it.</p>
+      <p class="group-help">The map pulls from "Map address" below using Google Maps - it doesn't need to match the address lines shown on the page exactly, but should be accurate enough for Google to find it. The social icons shown under the email reuse the same Instagram/Facebook/TikTok links set on the Home Page's Footer &amp; Nav tab.</p>
     <?php endif; ?>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
