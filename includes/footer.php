@@ -72,6 +72,7 @@ $msg        = $_GET['sub'] ?? '';
 </footer>
 
 <?php include __DIR__ . '/booking-popup.php'; ?>
+<?php include __DIR__ . '/enquiry-popup.php'; ?>
 
 <script>
 (function () {

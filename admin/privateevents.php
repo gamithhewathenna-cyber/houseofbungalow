@@ -176,7 +176,7 @@ include __DIR__ . '/layout.php';
 <!-- Event Cards tab -->
 <div class="tab-panel settings-group<?= $activeTab === 'cards' ? ' active' : '' ?>" data-tab="cards">
   <h3>Event Cards</h3>
-  <p class="group-help">The two cards below the intro (e.g. "Restaurant Events" / "Below Events"). Add more if the House offers another kind of private event space.</p>
+  <p class="group-help">The two cards below the intro (e.g. "Restaurant Events" / "Below Events"). Add more if the House offers another kind of private event space. Note: the ENQUIRE button now opens the enquiry popup form instead of the link below - the "ENQUIRE link URL" field is kept for reference but is no longer used by the button. Submitted enquiries appear under "Enquiries" in the sidebar.</p>
 
   <form method="post" enctype="multipart/form-data">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">

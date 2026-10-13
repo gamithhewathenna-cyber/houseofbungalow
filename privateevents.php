@@ -57,7 +57,7 @@ $cards = blocks('pe_event_card');
           <?php if ($c['subtitle']): ?><p class="event-card-tagline"><?= e($c['subtitle']) ?></p><?php endif; ?>
           <?php if ($c['body']): ?><p><?= enl($c['body']) ?></p><?php endif; ?>
           <div class="btn-wrap">
-            <a class="link-underline" href="<?= e(url($c['link_url'] ?: '#')) ?>">ENQUIRE</a>
+            <a class="link-underline js-enquiry-popup-trigger" href="#" data-enquiry-source="<?= e($c['title']) ?>">ENQUIRE</a>
           </div>
         </div>
       </div>
