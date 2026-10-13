@@ -98,14 +98,17 @@ $msg        = $_GET['sub'] ?? '';
 
 <script>
 (function () {
-  // Every CTA "link button" (.link-underline) opens in a new tab - site
-  // navigation (header/mobile/footer menus) doesn't use this class, so it
-  // is untouched. Same-page anchor links (href="#...") stay in-tab.
+  // Only EXTERNAL CTA "link buttons" (.link-underline) open in a new tab -
+  // links to other pages on this same site (e.g. whatson.php) stay in-tab,
+  // same as same-page anchors (href="#...") and mailto:/tel: links. Site
+  // navigation (header/mobile/footer menus) doesn't use this class at all.
   document.querySelectorAll('a.link-underline').forEach(function (a) {
     var href = a.getAttribute('href') || '';
-    if (href.charAt(0) === '#') return;
-    a.setAttribute('target', '_blank');
-    a.setAttribute('rel', 'noopener');
+    if (href.charAt(0) === '#' || href.indexOf('mailto:') === 0 || href.indexOf('tel:') === 0) return;
+    if (a.hostname && a.hostname !== window.location.hostname) {
+      a.setAttribute('target', '_blank');
+      a.setAttribute('rel', 'noopener');
+    }
   });
 })();
 </script>
