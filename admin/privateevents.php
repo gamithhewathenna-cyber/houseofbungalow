@@ -7,6 +7,7 @@ $fieldGroups = [
     'herovideo' => ['pe_hero_video'],
     'intro'     => ['pe_heading', 'pe_subheading', 'pe_lede', 'pe_p1', 'pe_p2', 'pe_p3', 'pe_btn_label', 'pe_btn_url'],
     'final'     => ['pe_final_heading', 'pe_final_p1', 'pe_final_btn_label', 'pe_final_btn_url'],
+    'emails'    => ['pe_enquiry_to_email', 'pe_enquiry_cc_email', 'pe_enquiry_thankyou_subject', 'pe_enquiry_thankyou_message'],
 ];
 $visibilitySections = [
     'pe_hero'  => 'Hero',
@@ -107,6 +108,7 @@ $tabs = [
     'intro'     => 'Intro',
     'cards'     => 'Event Cards',
     'final'     => 'Make The House Yours',
+    'emails'    => 'Enquiry Emails',
     'visibility' => 'Section Visibility',
 ];
 $activeTab = $_GET['tab'] ?? 'herovideo';
@@ -163,6 +165,9 @@ include __DIR__ . '/layout.php';
 <?php foreach ($fieldGroups as $group => $keys): ?>
   <div class="tab-panel settings-group<?= $activeTab === $group ? ' active' : '' ?>" data-tab="<?= e($group) ?>">
     <h3><?= e($tabs[$group]) ?></h3>
+    <?php if ($group === 'emails'): ?>
+      <p class="group-help">Controls what happens when someone submits the ENQUIRE popup form. No email server setup needed - this sends straight from the website. Leave "Send enquiries to" empty to only save enquiries here in the admin (under "Enquiries") without emailing anyone.</p>
+    <?php endif; ?>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
       <input type="hidden" name="action" value="save_section">

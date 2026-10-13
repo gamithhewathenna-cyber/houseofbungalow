@@ -553,7 +553,11 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('pe_final_heading','Make The House Yours','privateevents_page','Closing - heading','text',10),
 ('pe_final_p1','For larger occasions, talk to our team about experiences across multiple spaces or selected exclusive-use options.','privateevents_page','Closing - paragraph','textarea',11),
 ('pe_final_btn_label','START PLANNING','privateevents_page','Closing - button label','text',12),
-('pe_final_btn_url','#','privateevents_page','Closing - button URL','text',13);
+('pe_final_btn_url','#','privateevents_page','Closing - button URL','text',13),
+('pe_enquiry_to_email','','privateevents_page','Send enquiries to (email address)','text',14),
+('pe_enquiry_cc_email','','privateevents_page','CC email (optional - comma-separate for more than one)','text',15),
+('pe_enquiry_thankyou_subject','Thanks for your enquiry - House of Bungalow','privateevents_page','Thank-you email subject (sent to the client)','text',16),
+('pe_enquiry_thankyou_message','Hi {name},\n\nThanks for reaching out about your event - we''ve received your enquiry and someone from our team will be in touch shortly.\n\nIn the meantime, if you need anything, just reply to this email.\n\nSee you soon,\nHouse of Bungalow','privateevents_page','Thank-you email message (sent to the client - use {name} for their name)','textarea',17);
 
 -- Event cards (Restaurant / Below / Café / Full House Events)
 INSERT INTO `blocks` (`block_type`,`title`,`subtitle`,`body`,`link_url`,`image`,`sort`,`active`) VALUES
