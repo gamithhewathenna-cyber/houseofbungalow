@@ -159,7 +159,7 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 -- Footer
 ('footer_address','65 - 67 FOVEAUX STREET, SURRY HILLS NSW 2010, SYDNEY, AUSTRALIA','footer','Address','text',1),
 ('social_instagram','#','footer','Instagram URL','text',2),
-('social_spotify','#','footer','Spotify URL','text',3),
+('social_facebook','#','footer','Facebook URL','text',3),
 ('social_tiktok','#','footer','TikTok URL','text',4),
 ('newsletter_heading','Stay in the House.','footer','Newsletter heading','text',5),
 ('newsletter_sub','NEWS, EVENTS, NEW MENUS, GUEST DJS AND WHAT''S HAPPENING NEXT.','footer','Newsletter subtext','text',6),

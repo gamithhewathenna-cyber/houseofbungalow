@@ -12,8 +12,8 @@ $msg        = $_GET['sub'] ?? '';
       <a href="<?= e(url(setting('social_instagram','#'))) ?>" aria-label="Instagram">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
       </a>
-      <a href="<?= e(url(setting('social_spotify','#'))) ?>" aria-label="Spotify">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4.6 14.4a.7.7 0 01-1 .24c-2.6-1.6-5.9-1.96-9.8-1.07a.7.7 0 11-.3-1.36c4.24-.97 7.9-.56 10.8 1.2.34.2.44.65.3 1zm1.23-2.74a.87.87 0 01-1.2.29c-3-1.83-7.55-2.36-11.1-1.29a.87.87 0 11-.5-1.66c4.05-1.22 9.06-.63 12.5 1.47.42.26.55.8.3 1.19zm.1-2.85C14.44 8.72 8.9 8.52 5.5 9.55a1.04 1.04 0 11-.6-2C8.8 6.38 14.9 6.6 18.85 8.94a1.04 1.04 0 01-1.08 1.77z"/></svg>
+      <a href="<?= e(url(setting('social_facebook','#'))) ?>" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9.5V7.2c0-.9.6-1.1 1-1.1h2.5V2.5L14.5 2.5c-3.3 0-4 2.5-4 4.1v2.9H8v4h2.5V22h4V13.5h2.9l.4-4H14.5Z"/></svg>
       </a>
       <a href="<?= e(url(setting('social_tiktok','#'))) ?>" aria-label="TikTok">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2 1.5 3.5 3.5 3.8v2.4c-1.3.1-2.5-.3-3.5-1v6.1c0 3.2-2.5 5.7-5.6 5.7A5.6 5.6 0 015.3 14a5.6 5.6 0 016.4-5.6v2.5a3.1 3.1 0 00-.9-.1 3.1 3.1 0 103.1 3.1V3h2.6z"/></svg>
