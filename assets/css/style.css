@@ -1021,6 +1021,34 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .enquiry-success .enquiry-submit{max-width:220px;margin:0 auto;}
 
 /* ------------------------------------------------------------------ */
+/* VIP Bottle Service popup intro (sits above the form, reuses the     */
+/* .enquiry-* popup chrome/form styles above)                          */
+/* ------------------------------------------------------------------ */
+.vip-popup-intro{text-align:center;margin-bottom:30px;}
+.vip-popup-eyebrow1{
+  font-family:var(--serif);font-weight:400;font-size:15px;letter-spacing:6px;
+  text-transform:uppercase;color:rgba(255,255,255,.7);margin:0 0 10px;
+}
+.vip-popup-eyebrow2{
+  font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:3px;
+  text-transform:uppercase;color:#fff;margin:0 0 20px;
+  padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.3);
+  display:inline-block;
+}
+.vip-popup-heading{
+  font-family:var(--serif);font-weight:400;font-size:42px;line-height:1.1;
+  color:#fff;margin:0 0 14px;
+}
+.vip-popup-subheading{
+  font-family:var(--serif);font-weight:400;font-size:24px;
+  color:#fff;margin:0 0 14px;
+}
+.vip-popup-lede{
+  font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.6;
+  color:rgba(255,255,255,.8);max-width:640px;margin:0 auto 6px;
+}
+
+/* ------------------------------------------------------------------ */
 /* Responsive                                                         */
 /* ------------------------------------------------------------------ */
 @media (max-width:1450px){
@@ -1103,6 +1131,8 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .enquiry-grid{grid-template-columns:1fr;}
   .enquiry-option{flex-basis:100%;}
   .enquiry-success h3{font-size:26px;}
+  .vip-popup-heading{font-size:28px;}
+  .vip-popup-subheading{font-size:19px;}
   .dj-carousel{padding:0 34px;}
   .dj-carousel::before,.dj-carousel::after{width:44px;}
   .dj-row{gap:14px;}

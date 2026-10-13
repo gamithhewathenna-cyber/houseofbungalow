@@ -7,10 +7,11 @@ $fieldGroups = [
     'herovideo' => ['below_hero_video'],
     'intro'     => ['below_heading', 'below_subheading', 'below_lede', 'below_intro_p1', 'below_intro_p2', 'below_intro_btn1_label', 'below_intro_btn1_url', 'below_intro_btn2_label', 'below_intro_btn2_url'],
     'cocktails' => ['below_cocktails_heading', 'below_cocktails_p1', 'below_cocktails_p2', 'below_cocktails_p3', 'below_cocktails_hours', 'below_cocktails_image1', 'below_cocktails_image2', 'below_cocktails_image3'],
-    'music'     => ['below_music_heading', 'below_music_lede', 'below_music_btn2_label', 'below_music_btn2_url'],
+    'music'     => ['below_music_heading', 'below_music_lede', 'below_music_btn2_label'],
     'guest'     => ['below_guest_eyebrow', 'below_guest_heading', 'below_guest_p1', 'below_guest_p2', 'below_guest_btn_label', 'below_guest_btn_url', 'below_guest_image'],
     'vip'       => ['below_vip_eyebrow', 'below_vip_heading', 'below_vip_p1', 'below_vip_p2', 'below_vip_btn_label', 'below_vip_btn_url', 'below_vip_image'],
     'hours'     => ['below_hours_heading', 'below_hours_days', 'below_hours_cocktail_label', 'below_hours_cocktail', 'below_hours_dj_label', 'below_hours_dj', 'below_hours_note'],
+    'vipbottle' => ['below_vipbottle_popup_eyebrow1', 'below_vipbottle_popup_eyebrow2', 'below_vipbottle_popup_heading', 'below_vipbottle_popup_subheading', 'below_vipbottle_popup_p1', 'below_vipbottle_popup_p2', 'below_vipbottle_popup_success', 'below_vipbottle_enquiry_to_email', 'below_vipbottle_enquiry_cc_email'],
 ];
 $visibilitySections = [
     'below_hero'      => 'Hero',
@@ -133,6 +134,7 @@ $tabs = [
     'guest'     => 'Guest Artists',
     'vip'       => 'VIP Tables',
     'hours'     => 'Below Hours',
+    'vipbottle' => 'VIP Bottle Service Popup',
     'faqs'      => 'FAQs',
     'visibility' => 'Section Visibility',
 ];
@@ -190,6 +192,9 @@ include __DIR__ . '/layout.php';
 <?php foreach ($fieldGroups as $group => $keys): if ($group === 'music') continue; ?>
   <div class="tab-panel settings-group<?= $activeTab === $group ? ' active' : '' ?>" data-tab="<?= e($group) ?>">
     <h3><?= e($tabs[$group]) ?></h3>
+    <?php if ($group === 'vipbottle'): ?>
+      <p class="group-help">Controls the popup form opened by the "BOOK BOTTLE SERVICE" button in the Music section. No email server setup needed - this sends straight from the website. Leave "Send enquiries to" empty to only save enquiries here in the admin (under "VIP Enquiries") without emailing anyone.</p>
+    <?php endif; ?>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
       <input type="hidden" name="action" value="save_section">

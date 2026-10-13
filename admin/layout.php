@@ -28,6 +28,7 @@ $mainNav = [
     ['href' => 'faq.php',         'label' => 'FAQ',                'icon' => 'question'],
     ['href' => 'subscribers.php', 'label' => 'Subscribers',        'icon' => 'mail'],
     ['href' => 'enquiries.php',   'label' => 'Enquiries',          'icon' => 'inbox'],
+    ['href' => 'vip-bottle-enquiries.php', 'label' => 'VIP Enquiries', 'icon' => 'inbox'],
 ];
 $systemNav = [
     ['href' => 'section.php?s=website', 'label' => 'Website Settings', 'icon' => 'gear'],
