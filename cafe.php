@@ -9,6 +9,16 @@ include __DIR__ . '/includes/header.php';
 $cafe_hero_image = asset(setting('cafe_hero_image', 'assets/img/cafe.jpg'));
 $cafe_hero_video = setting('cafe_hero_video');
 $cafe_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'video/quicktime'][strtolower(pathinfo($cafe_hero_video, PATHINFO_EXTENSION))] ?? 'video/mp4';
+
+$gallery = blocks('cafe_gallery');
+$gallery_rows = [];
+$i = 0; $take3 = true;
+while ($i < count($gallery)) {
+    $take = $take3 ? 3 : 2;
+    $gallery_rows[] = array_slice($gallery, $i, $take);
+    $i += $take;
+    $take3 = !$take3;
+}
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
@@ -35,14 +45,20 @@ $cafe_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 
 </section>
 <?php endif; ?>
 
-<!-- Gallery (3 fixed photos) ------------------------------------------- -->
-<?php if (section_visible('cafe_gallery')): ?>
-<section class="section reveal">
+<!-- Gallery ------------------------------------------------------------------ -->
+<?php if ($gallery && section_visible('cafe_gallery')): ?>
+<section class="rest-gallery reveal">
   <div class="container">
-    <div class="trio-grid">
-      <div class="trio-item"><img src="<?= e(asset(setting('cafe_gallery_image1', 'assets/img/cafe.jpg'))) ?>" alt=""></div>
-      <div class="trio-item"><img src="<?= e(asset(setting('cafe_gallery_image2', 'assets/img/restaurant.jpg'))) ?>" alt=""></div>
-      <div class="trio-item"><img src="<?= e(asset(setting('cafe_gallery_image3', 'assets/img/building.png'))) ?>" alt=""></div>
+    <div class="gallery-grid">
+      <?php foreach ($gallery_rows as $row): ?>
+        <div class="gallery-row gallery-row-<?= count($row) ?>">
+          <?php foreach ($row as $g): ?>
+            <div class="gallery-item">
+              <img src="<?= e(asset($g['image'])) ?>" alt="<?= e($g['title'] ?: SITE_NAME) ?>">
+            </div>
+          <?php endforeach; ?>
+        </div>
+      <?php endforeach; ?>
     </div>
   </div>
 </section>

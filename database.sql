@@ -286,6 +286,12 @@ INSERT INTO `blocks` (`block_type`,`title`,`image`,`sort`,`active`) VALUES
 ('rest_gallery','','assets/img/hero.jpg',4,1),
 ('rest_gallery','','assets/img/building.png',5,1);
 
+-- Café gallery (placeholder photos - replace via admin)
+INSERT INTO `blocks` (`block_type`,`title`,`image`,`sort`,`active`) VALUES
+('cafe_gallery','','assets/img/cafe.jpg',1,1),
+('cafe_gallery','','assets/img/restaurant.jpg',2,1),
+('cafe_gallery','','assets/img/building.png',3,1);
+
 -- =====================================================================
 -- Below page
 -- =====================================================================
@@ -564,9 +570,6 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('cafe_lede','Coffee, food and mornings on Foveaux Street.','cafe_page','Lede (italic)','text',4),
 ('cafe_p1','House of Bungalow Café is our street-level neighbourhood café in the heart of Surry Hills - somewhere to stop for your morning coffee, grab something on the way to work, meet between meetings or stay a little longer.','cafe_page','Paragraph 1','textarea',5),
 ('cafe_p2','Serving coffee by The Grounds Roastery alongside pastries, sandwiches and café favourites.','cafe_page','Paragraph 2','textarea',6),
-('cafe_gallery_image1','assets/img/cafe.jpg','cafe_page','Gallery photo 1','image',7),
-('cafe_gallery_image2','assets/img/restaurant.jpg','cafe_page','Gallery photo 2','image',8),
-('cafe_gallery_image3','assets/img/building.png','cafe_page','Gallery photo 3','image',9),
 ('cafe_hours_heading','Coffee. Food. Foveaux Street.','cafe_page','Hours - heading','text',10),
 ('cafe_hours_p1','Fast when you need it to be. Relaxed when you don''t.','cafe_page','Hours - paragraph 1','textarea',11),
 ('cafe_hours_p2','Whether it''s your first visit or your everyday order, the Café is designed to become part of your Surry Hills routine.','cafe_page','Hours - paragraph 2','textarea',12),

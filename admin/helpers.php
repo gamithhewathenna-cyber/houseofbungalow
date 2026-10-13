@@ -140,9 +140,6 @@ function crop_ratio_for_key(string $key): string
         'below_cocktails_image1'  => '1:1',
         'below_cocktails_image2'  => '1:1',
         'below_cocktails_image3'  => '1:1',
-        'cafe_gallery_image1'     => '1:1',
-        'cafe_gallery_image2'     => '1:1',
-        'cafe_gallery_image3'     => '1:1',
     ];
     return $ratios[$key] ?? '';
 }

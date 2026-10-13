@@ -6,7 +6,6 @@ require_once __DIR__ . '/helpers.php';
 $fieldGroups = [
     'herovideo' => ['cafe_hero_video'],
     'intro'     => ['cafe_heading', 'cafe_subheading', 'cafe_lede', 'cafe_p1', 'cafe_p2'],
-    'gallery'   => ['cafe_gallery_image1', 'cafe_gallery_image2', 'cafe_gallery_image3'],
     'hours'     => ['cafe_hours_heading', 'cafe_hours_p1', 'cafe_hours_p2', 'cafe_hours', 'cafe_address', 'cafe_btn1_label', 'cafe_btn1_url', 'cafe_btn2_label', 'cafe_btn2_url'],
     'final'     => ['cafe_final_heading', 'cafe_final_p1', 'cafe_final_p2', 'cafe_final_btn1_label', 'cafe_final_btn1_url', 'cafe_final_btn2_label', 'cafe_final_btn2_url'],
 ];
@@ -63,6 +62,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 header('Location: cafe.php?tab=' . urlencode($group) . '&saved=1'); exit;
             }
+
+            // ---- Gallery ----
+            if ($action === 'save_gallery') {
+                foreach (($_POST['g_sort'] ?? []) as $id => $sort) {
+                    $id  = (int) $id;
+                    $img = handle_upload('file_' . $id);
+                    if ($img !== null) {
+                        $q = db()->prepare('UPDATE blocks SET sort=?, image=? WHERE id=? AND block_type="cafe_gallery"');
+                        $q->execute([(int) $sort, $img, $id]);
+                    } else {
+                        $q = db()->prepare('UPDATE blocks SET sort=? WHERE id=? AND block_type="cafe_gallery"');
+                        $q->execute([(int) $sort, $id]);
+                    }
+                }
+                header('Location: cafe.php?tab=gallery&saved=1'); exit;
+            }
+            if ($action === 'add_gallery') {
+                $img = handle_upload('new_file');
+                if ($img === null) {
+                    $error = 'Choose an image to add to the gallery.';
+                } else {
+                    $q = db()->prepare('INSERT INTO blocks (block_type,title,image,sort,active) VALUES ("cafe_gallery","",?,?,1)');
+                    $q->execute([$img, (int) ($_POST['new_sort'] ?? 99)]);
+                    header('Location: cafe.php?tab=gallery&saved=1'); exit;
+                }
+            }
+            if ($action === 'delete_gallery') {
+                $q = db()->prepare('DELETE FROM blocks WHERE id=? AND block_type="cafe_gallery"');
+                $q->execute([(int) ($_POST['id'] ?? 0)]);
+                header('Location: cafe.php?tab=gallery&saved=1'); exit;
+            }
         } catch (RuntimeException $ex) {
             $error = $ex->getMessage();
         }
@@ -74,6 +104,7 @@ $bySkey = [];
 foreach ($allRows as $r) {
     $bySkey[$r['skey']] = $r;
 }
+$gallery = db()->query("SELECT * FROM blocks WHERE block_type='cafe_gallery' ORDER BY sort ASC, id ASC")->fetchAll();
 
 $tabs = [
     'herovideo' => 'Hero Video',
@@ -146,6 +177,46 @@ include __DIR__ . '/layout.php';
     </form>
   </div>
 <?php endforeach; ?>
+
+<!-- Gallery tab -->
+<div class="tab-panel settings-group<?= $activeTab === 'gallery' ? ' active' : '' ?>" data-tab="gallery">
+  <h3>Gallery</h3>
+  <p class="group-help">The photo grid on the Café page. Add, reorder or remove as many photos as you like.</p>
+  <form method="post" enctype="multipart/form-data">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="save_gallery">
+    <table>
+      <tr><th style="width:110px;">Image</th><th style="width:70px;">Order</th><th style="width:220px;">Replace image</th><th style="width:80px;"></th></tr>
+      <?php foreach ($gallery as $g): ?>
+        <tr>
+          <td><?php if ($g['image']): ?><img src="<?= e(asset($g['image'])) ?>" alt=""><?php endif; ?></td>
+          <td><input type="text" name="g_sort[<?= $g['id'] ?>]" value="<?= (int)$g['sort'] ?>" style="width:56px;"></td>
+          <td><input type="file" name="file_<?= $g['id'] ?>" accept="image/*" data-crop-ratio="3:2"></td>
+          <td><button form="delgal<?= $g['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Remove this photo?')">Delete</button></td>
+        </tr>
+      <?php endforeach; ?>
+    </table>
+    <div class="form-actions"><button class="btn">Save Changes</button></div>
+  </form>
+  <?php foreach ($gallery as $g): ?>
+    <form id="delgal<?= $g['id'] ?>" method="post" class="inline-form">
+      <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+      <input type="hidden" name="action" value="delete_gallery">
+      <input type="hidden" name="id" value="<?= $g['id'] ?>">
+    </form>
+  <?php endforeach; ?>
+
+  <h3 style="margin-top:30px;">Add a Photo</h3>
+  <form method="post" enctype="multipart/form-data">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="add_gallery">
+    <div class="row-actions">
+      <input type="file" name="new_file" accept="image/*" data-crop-ratio="3:2">
+      <input type="text" name="new_sort" placeholder="Order" value="99" style="width:70px;">
+      <button class="btn btn-sm">Add</button>
+    </div>
+  </form>
+</div>
 
 <div class="tab-panel settings-group<?= $activeTab === 'visibility' ? ' active' : '' ?>" data-tab="visibility">
   <h3>Section Visibility</h3>
