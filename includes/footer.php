@@ -91,7 +91,7 @@ $msg        = $_GET['sub'] ?? '';
         obs.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+  }, { threshold: 0, rootMargin: '0px 0px -60px 0px' });
   items.forEach(function (el) { observer.observe(el); });
 })();
 </script>
