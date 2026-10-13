@@ -27,6 +27,7 @@ $mainNav = [
     ['href' => 'popup.php',       'label' => 'Popup Booking',      'icon' => 'popup'],
     ['href' => 'faq.php',         'label' => 'FAQ',                'icon' => 'question'],
     ['href' => 'contact.php',     'label' => 'Contact',            'icon' => 'pin'],
+    ['href' => 'privacy.php',     'label' => 'Privacy & Terms',    'icon' => 'question'],
     ['href' => 'subscribers.php', 'label' => 'Subscribers',        'icon' => 'mail'],
     ['href' => 'enquiries.php',   'label' => 'Enquiries',          'icon' => 'inbox'],
     ['href' => 'vip-bottle-enquiries.php', 'label' => 'VIP Enquiries', 'icon' => 'inbox'],

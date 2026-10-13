@@ -712,3 +712,12 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('contact_email','hello@houseofbungalow.com.au','contact_page','Email address','text',8),
 ('contact_map_address','65-67 Foveaux St, Surry Hills NSW 2010','contact_page','Map address (used to look up the Google Map)','text',9);
 
+-- ---------------------------------------------------------------------
+-- Privacy Policy & Terms page (the full legal text is in privacy.php -
+-- only the heading, date and intro are admin-editable)
+-- ---------------------------------------------------------------------
+INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) VALUES
+('privacy_heading','Privacy & Terms','privacy_page','Heading','text',1),
+('privacy_updated','October 2026','privacy_page','Last updated (shown under the heading)','text',2),
+('privacy_intro','House of Bungalow respects your privacy and is committed to handling personal information responsibly. This page explains how we collect and use personal information and the terms that apply when using our website and online services.','privacy_page','Intro paragraph','textarea',3);
+

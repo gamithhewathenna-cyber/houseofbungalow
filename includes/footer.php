@@ -68,6 +68,7 @@ $msg        = $_GET['sub'] ?? '';
     <?php if (setting('footer_disclaimer')): ?>
       <p class="footer-disclaimer"><?= enl(setting('footer_disclaimer')) ?></p>
     <?php endif; ?>
+    <p class="footer-privacy"><a href="<?= e(url('privacy.php')) ?>">View our Privacy Policy.</a></p>
   </div>
 </footer>
 
