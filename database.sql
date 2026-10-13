@@ -683,7 +683,7 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('cafe_hours_p2','Whether it''s your first visit or your everyday order, the Café is designed to become part of your Surry Hills routine.','cafe_page','Hours - paragraph 2','textarea',12),
 ('cafe_hours','**Monday – Saturday:** 7:00 AM–3:00 PM','cafe_page','Hours line (use **word** for bold)','text',13),
 ('cafe_address','65 - 67 Foveaux Street, Surry Hills','cafe_page','Address line','text',14),
-('cafe_btn1_label','VIEW MENU','cafe_page','Button 1 label','text',15),
+('cafe_btn1_label','','cafe_page','Button 1 label','text',15),
 ('cafe_btn1_url','#','cafe_page','Button 1 URL','text',16),
 ('cafe_btn2_label','GET DIRECTIONS','cafe_page','Button 2 label','text',17),
 ('cafe_btn2_url','#','cafe_page','Button 2 URL','text',18),
