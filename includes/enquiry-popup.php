@@ -55,21 +55,22 @@ function enquiry_icon(string $key): void
           </label>
         </div>
 
-        <label class="enquiry-field">
-          <span>Email address <em>*</em></span>
-          <span class="enquiry-input-icon">
-            <?php enquiry_icon('mail'); ?>
-            <input type="email" name="email" placeholder="you@example.com" required>
-          </span>
-        </label>
-
-        <label class="enquiry-field">
-          <span>Company</span>
-          <span class="enquiry-input-icon">
-            <?php enquiry_icon('briefcase'); ?>
-            <input type="text" name="company" placeholder="Company name (optional)">
-          </span>
-        </label>
+        <div class="enquiry-grid">
+          <label class="enquiry-field">
+            <span>Email address <em>*</em></span>
+            <span class="enquiry-input-icon">
+              <?php enquiry_icon('mail'); ?>
+              <input type="email" name="email" placeholder="you@example.com" required>
+            </span>
+          </label>
+          <label class="enquiry-field">
+            <span>Company</span>
+            <span class="enquiry-input-icon">
+              <?php enquiry_icon('briefcase'); ?>
+              <input type="text" name="company" placeholder="Company name (optional)">
+            </span>
+          </label>
+        </div>
 
         <p class="enquiry-eyebrow enquiry-eyebrow-spaced">Your Event</p>
 
