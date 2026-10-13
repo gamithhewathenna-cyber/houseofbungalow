@@ -42,7 +42,7 @@ $map_embed_url = 'https://www.google.com/maps?q=' . rawurlencode($map_address) .
   <div class="container">
     <div class="split-grid">
       <div class="split-copy">
-        <h2><?= e(setting('contact_name', 'House of Bungalow')) ?></h2>
+        <h2 class="contact-name"><?= e(setting('contact_name', 'House of Bungalow')) ?></h2>
         <?php if (setting('contact_address_line1') || setting('contact_address_line2')): ?>
           <p>
             <?php if (setting('contact_address_line1')): ?><?= e(setting('contact_address_line1')) ?><br><?php endif; ?>

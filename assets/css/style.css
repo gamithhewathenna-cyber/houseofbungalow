@@ -586,6 +586,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   font-family:var(--sans);font-weight:700;font-size:15px;letter-spacing:.5px;
   text-transform:uppercase;color:var(--ink);margin:0 0 20px;
 }
+.split-copy h2.contact-name{font-size:22px;}
 .split-copy p{
   font-family:var(--sans);font-weight:400;font-size:15px;
   line-height:1.65;color:var(--ink-soft);margin:0 0 16px;
