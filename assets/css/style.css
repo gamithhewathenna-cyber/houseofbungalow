@@ -687,6 +687,10 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   color:var(--ink-mute);margin-top:4px;
 }
 .menu-empty{font-family:var(--sans);font-size:13px;color:var(--ink-mute);padding:24px 0;}
+.menu-footnote{
+  font-family:var(--sans);font-weight:300;font-size:12px;letter-spacing:.3px;
+  color:var(--ink-mute);text-align:center;margin:30px 0 0;
+}
 
 /* ------------------------------------------------------------------ */
 /* Restaurant hours block                                             */

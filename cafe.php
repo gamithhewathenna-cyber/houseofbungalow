@@ -19,6 +19,12 @@ while ($i < count($gallery)) {
     $i += $take;
     $take3 = !$take3;
 }
+
+$menu_cats = blocks('cafe_menu_cat');
+$menu_items_by_cat = [];
+foreach ($menu_cats as $cat) {
+    $menu_items_by_cat[$cat['id']] = blocks('cafe_menu_item_' . $cat['id']);
+}
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
@@ -43,6 +49,67 @@ while ($i < count($gallery)) {
     <p class="cafe-intro-p"><?= enl(setting('cafe_p2')) ?></p>
   </div>
 </section>
+<?php endif; ?>
+
+<!-- Menu --------------------------------------------------------------- -->
+<?php if (section_visible('cafe_menu')): ?>
+<section class="menu-section reveal">
+  <div class="container">
+    <h2><?= e(setting('cafe_menu_heading', 'Café Menu')) ?></h2>
+    <?php if (setting('cafe_menu_lede')): ?>
+      <p class="menu-lede"><?= enl(setting('cafe_menu_lede')) ?></p>
+    <?php endif; ?>
+
+    <p class="menu-active-label" id="menuActiveLabel"><?= e($menu_cats ? $menu_cats[0]['title'] : '') ?></p>
+
+    <div class="menu-tabs">
+      <?php $first = true; foreach ($menu_cats as $cat): ?>
+        <button type="button" class="menu-tab-btn<?= $first ? ' active' : '' ?>" data-menu-tab="<?= (int) $cat['id'] ?>"><?= e($cat['title']) ?></button>
+      <?php $first = false; endforeach; ?>
+    </div>
+
+    <?php $first = true; foreach ($menu_cats as $cat): ?>
+      <div class="menu-panel<?= $first ? ' active' : '' ?>" data-menu-panel="<?= (int) $cat['id'] ?>">
+        <?php if ($menu_items_by_cat[$cat['id']]): ?>
+          <?php foreach ($menu_items_by_cat[$cat['id']] as $item): ?>
+            <div class="menu-item">
+              <div class="menu-item-title">
+                <span><?= e($item['title']) ?></span>
+                <?php if ($item['subtitle']): ?><span class="price"><?= e($item['subtitle']) ?></span><?php endif; ?>
+              </div>
+              <?php if ($item['body']): ?><div class="menu-item-desc"><?= enl($item['body']) ?></div><?php endif; ?>
+            </div>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <p class="menu-empty">More to come - this menu is being finalised.</p>
+        <?php endif; ?>
+      </div>
+    <?php $first = false; endforeach; ?>
+
+    <?php if (setting('cafe_menu_footnote')): ?>
+      <p class="menu-footnote"><?= e(setting('cafe_menu_footnote')) ?></p>
+    <?php endif; ?>
+  </div>
+</section>
+
+<script>
+(function () {
+  var tabs = document.querySelectorAll('.menu-tab-btn');
+  var panels = document.querySelectorAll('.menu-panel');
+  var activeLabel = document.getElementById('menuActiveLabel');
+  if (!tabs.length) return;
+  tabs.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      tabs.forEach(function (b) { b.classList.remove('active'); });
+      panels.forEach(function (p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      var panel = document.querySelector('.menu-panel[data-menu-panel="' + btn.dataset.menuTab + '"]');
+      if (panel) panel.classList.add('active');
+      if (activeLabel) activeLabel.textContent = btn.textContent.trim();
+    });
+  });
+})();
+</script>
 <?php endif; ?>
 
 <!-- Gallery ------------------------------------------------------------------ -->
