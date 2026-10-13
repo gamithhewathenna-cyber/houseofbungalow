@@ -195,7 +195,7 @@ INSERT INTO `blocks` (`block_type`,`title`,`link_url`,`sort`,`active`) VALUES
 ('footer_nav','THE HOUSE','#',7,1),
 ('footer_nav','PRESS','#',8,1),
 ('footer_nav','JOIN OUR TEAM','#',9,1),
-('footer_nav','CONTACT US','#',10,1);
+('footer_nav','CONTACT US','contact.php',10,1);
 
 -- Footer brand/partner logos (text-based marks by default; upload images to replace)
 INSERT INTO `blocks` (`block_type`,`title`,`image`,`sort`,`active`) VALUES
@@ -696,4 +696,19 @@ INSERT INTO `blocks` (`block_type`,`title`,`subtitle`,`body`,`link_url`,`link_ur
 ('reserve_hero_slide','Reserve Your Night At The House.','Restaurant. Happy Hour. Below.','From long lunches to late nights, book the experience that suits your plans - dinner, drinks, or a VIP table Below.\nWalk-ins are always welcome, but booking ahead means your table''s ready when you are.','#happyhour','VIEW HAPPY HOUR','assets/img/cafe.jpg',1,1),
 ('reserve_hero_slide','Dinner, Turned Up.','Friday & Saturday','From 8 PM, the music lifts, drinks keep flowing and the room becomes more social.','#','BOOK A TABLE','assets/img/restaurant.jpg',2,1),
 ('reserve_hero_slide','Your Table. Your Night.','VIP Tables At Below','For groups wanting their own space, Below offers a limited number of VIP tables with dedicated service.','#','VIP ENQUIRY','assets/img/below.jpg',3,1);
+
+-- ---------------------------------------------------------------------
+-- Contact page
+-- ---------------------------------------------------------------------
+INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) VALUES
+('contact_hero_image','assets/img/hero.jpg','contact_page','Hero image (poster/fallback)','image',1),
+('contact_hero_video','','contact_page','Hero video (mp4/webm, ideally 1280×720)','video',1),
+('contact_heading','Contact','contact_page','Heading','text',2),
+('contact_subheading','','contact_page','Subheading','text',3),
+('contact_lede','','contact_page','Lede paragraph (italic)','textarea',4),
+('contact_name','House of Bungalow','contact_page','Business name','text',5),
+('contact_address_line1','65-67 Foveaux St','contact_page','Address line 1','text',6),
+('contact_address_line2','Surry Hills NSW 2010','contact_page','Address line 2','text',7),
+('contact_email','hello@houseofbungalow.com.au','contact_page','Email address','text',8),
+('contact_map_address','65-67 Foveaux St, Surry Hills NSW 2010','contact_page','Map address (used to look up the Google Map)','text',9);
 

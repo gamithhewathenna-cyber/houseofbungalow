@@ -118,6 +118,7 @@ function crop_ratio_for_key(string $key): string
         'pe_hero_image'           => '16:9',
         'cafe_hero_image'         => '16:9',
         'faq_hero_image'          => '16:9',
+        'contact_hero_image'      => '16:9',
 
         // Split-section images (.split-media, aspect-ratio 3:2)
         'rest_food_image'         => '3:2',

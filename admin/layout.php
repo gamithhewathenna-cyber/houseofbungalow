@@ -26,6 +26,7 @@ $mainNav = [
     ['href' => 'lineup.php',      'label' => "Week's Line-Up",     'icon' => 'calendar'],
     ['href' => 'popup.php',       'label' => 'Popup Booking',      'icon' => 'popup'],
     ['href' => 'faq.php',         'label' => 'FAQ',                'icon' => 'question'],
+    ['href' => 'contact.php',     'label' => 'Contact',            'icon' => 'pin'],
     ['href' => 'subscribers.php', 'label' => 'Subscribers',        'icon' => 'mail'],
     ['href' => 'enquiries.php',   'label' => 'Enquiries',          'icon' => 'inbox'],
     ['href' => 'vip-bottle-enquiries.php', 'label' => 'VIP Enquiries', 'icon' => 'inbox'],
@@ -57,6 +58,7 @@ function nav_icon(string $key): void
         'question' => '<circle cx="12" cy="12" r="9"/><path d="M9.2 9.3a2.8 2.8 0 0 1 5.4.9c0 1.8-2.6 2-2.6 3.8"/><circle cx="12" cy="17" r=".2" fill="currentColor"/>',
         'reserve' => '<rect x="3" y="10" width="18" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/><path d="M9 14h.01M12 14h.01M15 14h.01"/>',
         'inbox' => '<path d="M3 13h5l1.5 3h5L16 13h5"/><path d="M5.5 6h13L21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6L5.5 6Z"/>',
+        'pin'   => '<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 12 2a7 7 0 0 1 7 7.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/>',
     ];
     echo '<svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' . ($icons[$key] ?? '') . '</svg>';
 }
