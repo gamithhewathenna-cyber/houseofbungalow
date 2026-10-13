@@ -755,7 +755,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .event-card-body .btn-wrap{margin-top:4px;}
 
 /* Night grid (Music section) */
-.night-grid{display:flex;flex-direction:column;gap:26px;margin:40px 0;}
+.night-grid{display:flex;flex-direction:column;gap:50px;margin:40px 0;}
 .night-row{display:grid;gap:26px;}
 .night-row-3{grid-template-columns:repeat(3,1fr);}
 .night-row-2{grid-template-columns:repeat(2,1fr);max-width:640px;margin:0 auto;}
