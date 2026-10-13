@@ -186,11 +186,11 @@ INSERT INTO `blocks` (`block_type`,`title`,`image`,`link_url`,`sort`,`active`) V
 
 -- Footer navigation links
 INSERT INTO `blocks` (`block_type`,`title`,`link_url`,`sort`,`active`) VALUES
-('footer_nav','RESTAURANT','#',1,1),
-('footer_nav','BELOW','#',2,1),
-('footer_nav','CAFÉ','#',3,1),
-('footer_nav','WHAT''S ON','#',4,1),
-('footer_nav','PRIVATE EVENTS','#',5,1),
+('footer_nav','RESTAURANT','restaurant.php',1,1),
+('footer_nav','BELOW','below.php',2,1),
+('footer_nav','CAFÉ','cafe.php',3,1),
+('footer_nav','WHAT''S ON','whatson.php',4,1),
+('footer_nav','PRIVATE EVENTS','privateevents.php',5,1),
 ('footer_nav','HOUSE COLLECTIVE','#',6,1),
 ('footer_nav','THE HOUSE','#',7,1),
 ('footer_nav','PRESS','#',8,1),
