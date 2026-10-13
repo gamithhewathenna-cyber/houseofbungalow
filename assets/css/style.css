@@ -734,7 +734,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 /* Maroon band (Below page - Intro / Music sections)                  */
 /* ------------------------------------------------------------------ */
 .maroon-band{background:var(--maroon);padding:70px 0;text-align:center;}
-.page-header-band{padding-top:160px;}
+.page-header-band{padding-top:200px;}
 .maroon-band h1,.maroon-band h2{
   font-family:var(--serif);font-weight:300;font-size:40px;
   color:#fff;margin:0 0 18px;
@@ -1181,7 +1181,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .dj-arrow{width:36px;height:36px;font-size:19px;}
   .maroon-band{padding:50px 0;}
   .maroon-band h1,.maroon-band h2{font-size:28px;}
-  .page-header-band{padding-top:110px;}
+  .page-header-band{padding-top:140px;}
   .maroon-band .subheading{font-size:19px;}
   .lineup-section h2{font-size:26px;}
 }
