@@ -94,5 +94,19 @@ $msg        = $_GET['sub'] ?? '';
 })();
 </script>
 
+<script>
+(function () {
+  // Every CTA "link button" (.link-underline) opens in a new tab - site
+  // navigation (header/mobile/footer menus) doesn't use this class, so it
+  // is untouched. Same-page anchor links (href="#...") stay in-tab.
+  document.querySelectorAll('a.link-underline').forEach(function (a) {
+    var href = a.getAttribute('href') || '';
+    if (href.charAt(0) === '#') return;
+    a.setAttribute('target', '_blank');
+    a.setAttribute('rel', 'noopener');
+  });
+})();
+</script>
+
 </body>
 </html>
