@@ -76,7 +76,7 @@ $cards = blocks('pe_event_card');
     <p><?= enl(setting('pe_final_p1')) ?></p>
     <?php if (setting('pe_final_btn_label')): ?>
       <div class="btn-wrap">
-        <a class="link-underline" href="<?= e(url(setting('pe_final_btn_url', '#'))) ?>"><?= e(setting('pe_final_btn_label')) ?></a>
+        <a class="link-underline js-enquiry-popup-trigger" href="#"><?= e(setting('pe_final_btn_label')) ?></a>
       </div>
     <?php endif; ?>
   </div>
