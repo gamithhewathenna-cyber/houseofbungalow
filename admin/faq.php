@@ -133,6 +133,17 @@ function render_faq_field(array $f): void
           <?php endif; ?>
           <input type="file" name="file_<?= e($key) ?>" accept="image/*" data-crop-ratio="<?= e(crop_ratio_for_key($key)) ?>">
           <span class="help">Current: <code><?= e($val ?: 'none') ?></code>. Leave empty to keep it.</span>
+        <?php elseif ($type === 'video'): ?>
+          <?php if ($val): ?>
+            <div class="thumb-preview">
+              <video src="<?= e(asset($val)) ?>" style="max-height:160px;max-width:100%;" controls muted></video>
+            </div>
+            <span class="help" style="display:block;margin:6px 0;">
+              <input type="checkbox" name="remove_<?= e($key) ?>" value="1"> Remove this video (revert to the static hero image)
+            </span>
+          <?php endif; ?>
+          <input type="file" name="file_<?= e($key) ?>" accept="video/mp4,video/webm,video/quicktime">
+          <span class="help"><strong>MP4 (H.264) recommended</strong> - WEBM will not play in Safari. Ideally 1280×720 (720p), short and compressed (max 60&nbsp;MB) so it loads quickly. Leave empty to keep the current video.</span>
         <?php else: ?>
           <input type="text" name="<?= e($key) ?>" value="<?= e($val) ?>">
         <?php endif; ?>
