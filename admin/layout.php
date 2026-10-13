@@ -20,7 +20,7 @@ $mainNav = [
     ['href' => 'cafe.php',        'label' => 'Café',               'icon' => 'cup'],
     ['href' => 'below.php',       'label' => 'Below',              'icon' => 'moon'],
     ['href' => 'whatson.php',     'label' => "What's On",          'icon' => 'ticket'],
-    ['href' => 'brunch.php',      'label' => 'Brunch',             'icon' => 'coffee'],
+    ['href' => 'brunch.php',      'label' => 'Bottomless Brunch',  'icon' => 'coffee'],
     ['href' => 'dinnerparty.php', 'label' => 'Dinner Party',       'icon' => 'glass'],
     ['href' => 'privateevents.php', 'label' => 'Private Events',  'icon' => 'gift'],
     ['href' => 'lineup.php',      'label' => "Week's Line-Up",     'icon' => 'calendar'],

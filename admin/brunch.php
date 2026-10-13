@@ -213,7 +213,7 @@ function render_brunch_field(array $f): void
 }
 
 $csrf = csrf_token();
-$page_title = 'Brunch';
+$page_title = 'Bottomless Brunch';
 include __DIR__ . '/layout.php';
 ?>
 <?php if ($error): ?><div class="alert err"><?= e($error) ?></div><?php endif; ?>
