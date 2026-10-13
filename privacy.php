@@ -9,8 +9,8 @@ include __DIR__ . '/includes/header.php';
 $privacy_email = setting('contact_email', 'hello@houseofbungalow.com.au');
 ?>
 
-<!-- Intro -------------------------------------------------------------- -->
-<section class="page-hero-intro reveal">
+<!-- Header (solid colour band) ------------------------------------------ -->
+<section class="maroon-band reveal">
   <div class="container">
     <h1><?= e(setting('privacy_heading', 'Privacy & Terms')) ?></h1>
     <p class="legal-updated">Last updated: <?= e(setting('privacy_updated', 'October 2026')) ?></p>

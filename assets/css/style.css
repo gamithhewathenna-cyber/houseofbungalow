@@ -553,6 +553,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   font-family:var(--sans);font-weight:300;font-size:13px;letter-spacing:.5px;
   color:var(--ink-mute);margin:0 0 20px;
 }
+.maroon-band .legal-updated{color:rgba(255,255,255,.7);}
 
 /* ------------------------------------------------------------------ */
 /* Legal content (Privacy & Terms) - left-aligned reading column       */
