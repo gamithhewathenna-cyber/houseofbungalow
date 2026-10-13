@@ -26,6 +26,7 @@ $visibilitySections = [
     'rest_chef'      => 'The Chef',
     'rest_hours'     => 'Restaurant Hours',
     'rest_gallery'   => 'Gallery',
+    'rest_faq'       => 'FAQs',
 ];
 
 $error = '';
@@ -163,6 +164,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $q->execute([(int) ($_POST['id'] ?? 0)]);
                 header('Location: restaurant.php?tab=gallery&saved=1'); exit;
             }
+
+            // ---- FAQs ----
+            if ($action === 'save_faqs') {
+                foreach (($_POST['title'] ?? []) as $id => $title) {
+                    $id = (int) $id;
+                    $q = db()->prepare('UPDATE blocks SET title=?, body=?, sort=? WHERE id=? AND block_type="rest_faq"');
+                    $q->execute([trim($title), trim($_POST['desc'][$id] ?? ''), (int) ($_POST['sort'][$id] ?? 0), $id]);
+                }
+                header('Location: restaurant.php?tab=faqs&saved=1'); exit;
+            }
+            if ($action === 'add_faq') {
+                $q = db()->prepare('INSERT INTO blocks (block_type,title,body,sort,active) VALUES ("rest_faq",?,?,?,1)');
+                $q->execute([trim($_POST['new_title'] ?? 'New Question'), trim($_POST['new_desc'] ?? ''), (int) ($_POST['new_sort'] ?? 99)]);
+                header('Location: restaurant.php?tab=faqs&saved=1'); exit;
+            }
+            if ($action === 'delete_faq') {
+                $q = db()->prepare('DELETE FROM blocks WHERE id=? AND block_type="rest_faq"');
+                $q->execute([(int) ($_POST['id'] ?? 0)]);
+                header('Location: restaurant.php?tab=faqs&saved=1'); exit;
+            }
         } catch (RuntimeException $ex) {
             $error = $ex->getMessage();
         }
@@ -182,6 +203,7 @@ foreach ($menuCats as $cat) {
     $menuItemsByCat[$catId] = db()->query("SELECT * FROM blocks WHERE block_type='rest_menu_item_$catId' ORDER BY sort ASC, id ASC")->fetchAll();
 }
 $gallery = db()->query("SELECT * FROM blocks WHERE block_type='rest_gallery' ORDER BY sort ASC, id ASC")->fetchAll();
+$faqs    = db()->query("SELECT * FROM blocks WHERE block_type='rest_faq' ORDER BY sort ASC, id ASC")->fetchAll();
 
 $tabs = [
     'herovideo' => 'Hero Video',
@@ -194,6 +216,7 @@ $tabs = [
     'chef'      => 'The Chef',
     'hours'     => 'Restaurant Hours',
     'gallery'   => 'Gallery',
+    'faqs'      => 'FAQs',
     'visibility' => 'Section Visibility',
 ];
 $activeTab = $_GET['tab'] ?? 'hero';
@@ -399,6 +422,43 @@ include __DIR__ . '/layout.php';
     <input type="hidden" name="action" value="add_gallery">
     <div class="row-actions">
       <input type="file" name="new_file" accept="image/*" data-crop-ratio="3:2">
+      <input type="text" name="new_sort" placeholder="Order" value="99" style="width:70px;">
+      <button class="btn btn-sm">Add</button>
+    </div>
+  </form>
+</div>
+
+<!-- FAQs tab -->
+<div class="tab-panel settings-group<?= $activeTab === 'faqs' ? ' active' : '' ?>" data-tab="faqs">
+  <h3>FAQs</h3>
+  <form method="post">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="save_faqs">
+    <table>
+      <tr><th>Question</th><th>Answer</th><th style="width:70px;">Order</th><th style="width:80px;"></th></tr>
+      <?php foreach ($faqs as $f): ?>
+        <tr>
+          <td><input type="text" name="title[<?= $f['id'] ?>]" value="<?= e($f['title']) ?>"></td>
+          <td><textarea name="desc[<?= $f['id'] ?>]" rows="2" style="min-height:0;"><?= e($f['body']) ?></textarea></td>
+          <td><input type="text" name="sort[<?= $f['id'] ?>]" value="<?= (int)$f['sort'] ?>" style="width:56px;"></td>
+          <td><button form="delfaq<?= $f['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this question?')">Delete</button></td>
+        </tr>
+      <?php endforeach; ?>
+    </table>
+    <div class="form-actions"><button class="btn">Save Changes</button></div>
+  </form>
+  <?php foreach ($faqs as $f): ?>
+    <form id="delfaq<?= $f['id'] ?>" method="post" class="inline-form">
+      <input type="hidden" name="csrf" value="<?= e($csrf) ?>"><input type="hidden" name="action" value="delete_faq"><input type="hidden" name="id" value="<?= $f['id'] ?>">
+    </form>
+  <?php endforeach; ?>
+  <h3 style="margin-top:24px;font-size:14px;">Add a Question</h3>
+  <form method="post">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="add_faq">
+    <div class="row-actions">
+      <input type="text" name="new_title" placeholder="Question" style="max-width:260px;">
+      <input type="text" name="new_desc" placeholder="Answer" style="max-width:320px;">
       <input type="text" name="new_sort" placeholder="Order" value="99" style="width:70px;">
       <button class="btn btn-sm">Add</button>
     </div>

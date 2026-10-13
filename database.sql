@@ -302,6 +302,14 @@ INSERT INTO `blocks` (`block_type`,`title`,`image`,`sort`,`active`) VALUES
 ('rest_gallery','','assets/img/hero.jpg',4,1),
 ('rest_gallery','','assets/img/building.png',5,1);
 
+-- Restaurant FAQs
+INSERT INTO `blocks` (`block_type`,`title`,`body`,`sort`,`active`) VALUES
+('rest_faq','Do I need a reservation?','Bookings are recommended, particularly for Friday and Saturday evenings and for larger groups. Walk-ins are welcome subject to availability.',1,1),
+('rest_faq','What style of food does The Restaurant serve?','The Restaurant serves modern Spanish-inspired food with Asian influence, designed around sharing, alongside a considered wine and cocktail program.',2,1),
+('rest_faq','Do you cater for dietary requirements?','Yes. Please include any allergies or dietary requirements when booking so our team can advise on suitable dishes and make appropriate arrangements.',3,1),
+('rest_faq','Can I book for a birthday, celebration or larger group?','Absolutely. We welcome birthdays, group dinners, long lunches and celebrations, with private dining and exclusive-hire options also available.',4,1),
+('rest_faq','Can I continue the night at Below after dinner?','Yes. Guests are welcome to continue downstairs at Below after dinner, subject to capacity and Below''s entry requirements.',5,1);
+
 -- Café gallery (placeholder photos - replace via admin)
 INSERT INTO `blocks` (`block_type`,`title`,`image`,`sort`,`active`) VALUES
 ('cafe_gallery','','assets/img/cafe.jpg',1,1),

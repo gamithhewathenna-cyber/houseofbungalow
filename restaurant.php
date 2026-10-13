@@ -17,6 +17,7 @@ foreach ($menu_cats as $cat) {
 }
 
 $gallery = blocks('rest_gallery');
+$faqs    = blocks('rest_faq');
 
 // Group photos into alternating rows of 3 (wide middle) then 2 (equal), repeating.
 $gallery_rows = [];
@@ -243,6 +244,39 @@ while ($i < count($gallery)) {
   </div>
 </section>
 <?php endif; ?>
+
+<!-- FAQs ------------------------------------------------------------------------ -->
+<?php if ($faqs && section_visible('rest_faq')): ?>
+<section class="faq-section reveal">
+  <div class="container">
+    <h2>FAQs</h2>
+    <div class="faq-list">
+      <?php foreach ($faqs as $i => $faq): ?>
+        <div class="faq-item">
+          <button type="button" class="faq-question" data-faq-index="<?= $i ?>">
+            <span class="faq-chevron">▾</span>
+            <span><?= e($faq['title']) ?></span>
+          </button>
+          <div class="faq-answer"><p><?= e($faq['body']) ?></p></div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
+
+<script>
+(function () {
+  document.querySelectorAll('.faq-question').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var item = btn.closest('.faq-item');
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function (el) { el.classList.remove('open'); });
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+})();
+</script>
 
 <script>
 (function () {
