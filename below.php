@@ -149,7 +149,7 @@ while ($i < count($nights)) {
         <p><?= enl(setting('below_vip_p2')) ?></p>
         <?php if (setting('below_vip_btn_label')): ?>
           <div class="btn-wrap">
-            <a class="link-underline" href="<?= e(url(setting('below_vip_btn_url', '#'))) ?>"><?= e(setting('below_vip_btn_label')) ?></a>
+            <a class="link-underline js-vipbottle-popup-trigger" href="#"><?= e(setting('below_vip_btn_label')) ?></a>
           </div>
         <?php endif; ?>
       </div>
