@@ -13,6 +13,7 @@ $settingTabs = [
     'events'  => 'Private Events',
 ];
 $visibilitySections = [
+    'header_vip' => 'Header - VIP Button',
     'hero'     => 'Hero',
     'intro'    => 'Intro',
     'building' => 'Building Illustration',
@@ -370,7 +371,7 @@ include __DIR__ . '/layout.php';
 
 <div class="tab-panel settings-group<?= $activeTab === 'visibility' ? ' active' : '' ?>" data-tab="visibility">
   <h3>Section Visibility</h3>
-  <p class="group-help">Untick a section to hide it from the live Home Page without deleting its content — tick it again any time to bring it back. Note: "Brand Logos" lives in the footer, so hiding it here hides it site-wide, not just on the Home Page.</p>
+  <p class="group-help">Untick a section to hide it from the live Home Page without deleting its content — tick it again any time to bring it back. Note: "Header - VIP Button" and "Brand Logos" live in the shared header/footer, so hiding either here hides it site-wide, not just on the Home Page.</p>
   <form method="post">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
     <input type="hidden" name="action" value="save_visibility">
