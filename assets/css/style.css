@@ -1034,8 +1034,10 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   font-family:var(--sans);font-weight:500;font-size:13px;letter-spacing:.2px;
   color:#fff;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
   padding:10px 14px;cursor:pointer;flex:1 1 220px;
+  appearance:none;-webkit-appearance:none;-moz-appearance:none;
   transition:background-color .2s ease,color .2s ease,border-color .2s ease;
 }
+.enquiry-option span{color:inherit;}
 .enquiry-option .enquiry-icon{color:#fff;transition:color .2s ease;}
 .enquiry-option:hover{border-color:rgba(255,255,255,.4);}
 .enquiry-option.active{background:var(--cream);border-color:var(--cream);color:var(--ink);}
