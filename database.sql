@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS `enquiries` (
   `full_name` VARCHAR(160) NOT NULL,
   `phone` VARCHAR(40) NOT NULL,
   `email` VARCHAR(190) NOT NULL,
+  `company` VARCHAR(160) NOT NULL DEFAULT '',
   `event_type` VARCHAR(80) NOT NULL DEFAULT '',
   `preferred_space` VARCHAR(80) NOT NULL DEFAULT '',
   `preferred_date` VARCHAR(40) NOT NULL DEFAULT '',

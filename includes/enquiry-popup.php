@@ -63,6 +63,14 @@ function enquiry_icon(string $key): void
           </span>
         </label>
 
+        <label class="enquiry-field">
+          <span>Company</span>
+          <span class="enquiry-input-icon">
+            <?php enquiry_icon('briefcase'); ?>
+            <input type="text" name="company" placeholder="Company name (optional)">
+          </span>
+        </label>
+
         <p class="enquiry-eyebrow enquiry-eyebrow-spaced">Your Event</p>
 
         <div class="enquiry-field">

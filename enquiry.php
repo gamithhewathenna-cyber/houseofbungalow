@@ -11,6 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $fullName = trim($_POST['full_name'] ?? '');
 $phone    = trim($_POST['phone'] ?? '');
 $email    = trim($_POST['email'] ?? '');
+$company   = trim($_POST['company'] ?? '');
 $eventType = trim($_POST['event_type'] ?? '');
 $space     = trim($_POST['preferred_space'] ?? '');
 $date      = trim($_POST['preferred_date'] ?? '');
@@ -27,10 +28,10 @@ if ($fullName === '' || $phone === '' || !filter_var($email, FILTER_VALIDATE_EMA
 
 try {
     $stmt = db()->prepare(
-        'INSERT INTO enquiries (full_name, phone, email, event_type, preferred_space, preferred_date, preferred_time, guests, message, source)
-         VALUES (?,?,?,?,?,?,?,?,?,?)'
+        'INSERT INTO enquiries (full_name, phone, email, company, event_type, preferred_space, preferred_date, preferred_time, guests, message, source)
+         VALUES (?,?,?,?,?,?,?,?,?,?,?)'
     );
-    $stmt->execute([$fullName, $phone, $email, $eventType, $space, $date, $time, $guests, $message, $source]);
+    $stmt->execute([$fullName, $phone, $email, $company, $eventType, $space, $date, $time, $guests, $message, $source]);
     echo json_encode(['ok' => true]);
 } catch (PDOException $e) {
     echo json_encode(['ok' => false, 'error' => 'Something went wrong. Please try again.']);
