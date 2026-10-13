@@ -100,7 +100,7 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 -- Door
 ('door_heading','The House Starts At The Door.','door','Heading','text',1),
 ('door_p1','The Restaurant and Below each begin with their own entrance and their own backlit agate staircase - two separate arrival moments, two different moods.','door','Paragraph 1','textarea',2),
-('door_p2','From there, lighting, material, colour and sound shift with each space. The idea is simple: every room should feel distinct, but unmistakably part of House of Bungalow.','door','Paragraph 2','textarea',3),
+('door_p2','From there, lighting, material, colour and sound shift with each space. The idea is simple: every room should feel distinct, but unmistakably part of House of Bungalow.','door','Paragraph 2 (type <br> or press Enter for a line break)','textarea',3),
 ('door_btn_label','STEP INSIDE THE HOUSE','door','Button label','text',4),
 ('door_btn_url','#','door','Button URL','text',5),
 -- Mood

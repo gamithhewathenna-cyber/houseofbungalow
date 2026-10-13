@@ -69,6 +69,18 @@ function eb(?string $v): string
 }
 
 /**
+ * Like eb(), but also turns line breaks into real <br> tags - both actual
+ * newlines (from pressing Enter in the admin textarea) and a literal "<br>"
+ * typed into the text. Escaping happens first, so this is safe even though
+ * the source text is admin-editable.
+ */
+function enl(?string $v): string
+{
+    $escaped = preg_replace('#&lt;br\s*/?&gt;#i', '<br>', eb($v));
+    return nl2br($escaped, false);
+}
+
+/**
  * Build a URL that respects BASE_URL. Absolute URLs and anchors pass through.
  */
 function url(string $path): string

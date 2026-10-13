@@ -75,7 +75,7 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
   <div class="container">
     <h2><?= e(setting('door_heading')) ?></h2>
     <p><?= e(setting('door_p1')) ?></p>
-    <p><?= e(setting('door_p2')) ?></p>
+    <p><?= enl(setting('door_p2')) ?></p>
     <div class="btn-wrap">
       <a class="link-underline" href="<?= e(url(setting('door_btn_url','#'))) ?>"><?= e(setting('door_btn_label')) ?></a>
     </div>
