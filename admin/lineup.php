@@ -4,6 +4,10 @@ require_login();
 require_once __DIR__ . '/helpers.php';
 
 $keys = ['below_lineup_image', 'below_lineup_heading', 'below_lineup_p1'];
+$visibilitySections = [
+    'below_lineup' => 'Show on the Below page',
+    'wo_lineup'    => "Show on the What's On page",
+];
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -12,6 +16,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $action = $_POST['action'] ?? '';
         try {
+            // ---- Section visibility ----
+            if ($action === 'save_visibility') {
+                foreach ($visibilitySections as $vkey => $vlabel) {
+                    save_setting($vkey . '_visible', isset($_POST['vis_' . $vkey]) ? '1' : '0');
+                }
+                header('Location: lineup.php?tab=visibility&saved=1'); exit;
+            }
+
             if ($action === 'save_section') {
                 $placeholders = implode(',', array_fill(0, count($keys), '?'));
                 $stmt = db()->prepare("SELECT * FROM settings WHERE skey IN ($placeholders)");
@@ -97,8 +109,9 @@ function render_lineup_field(array $f): void
 }
 
 $tabs = [
-    'content' => "See This Week's Line-Up",
-    'cards'   => 'DJ / Line-up Cards',
+    'content'    => "See This Week's Line-Up",
+    'cards'      => 'DJ / Line-up Cards',
+    'visibility' => 'Section Visibility',
 ];
 $activeTab = $_GET['tab'] ?? 'content';
 if (!isset($tabs[$activeTab])) {
@@ -226,6 +239,25 @@ include __DIR__ . '/layout.php';
     <div class="dj-admin-actions">
       <button class="btn btn-sm">Add Card</button>
     </div>
+  </form>
+</div>
+
+<!-- Section Visibility tab -->
+<div class="tab-panel settings-group<?= $activeTab === 'visibility' ? ' active' : '' ?>" data-tab="visibility">
+  <h3>Section Visibility</h3>
+  <p class="group-help">This section is shared between the Below and What's On pages but can be shown or hidden independently on each one. Untick a page to hide "See This Week's Line-Up" there without deleting its content.</p>
+  <form method="post">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="save_visibility">
+    <div class="visibility-list">
+      <?php foreach ($visibilitySections as $vkey => $vlabel): ?>
+        <label class="visibility-row">
+          <input type="checkbox" name="vis_<?= e($vkey) ?>" value="1"<?= section_visible($vkey) ? ' checked' : '' ?>>
+          <?= e($vlabel) ?>
+        </label>
+      <?php endforeach; ?>
+    </div>
+    <div class="form-actions"><button class="btn">Save Visibility</button></div>
   </form>
 </div>
 
