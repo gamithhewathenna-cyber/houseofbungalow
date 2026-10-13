@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS `enquiries` (
   `preferred_date` VARCHAR(40) NOT NULL DEFAULT '',
   `preferred_time` VARCHAR(40) NOT NULL DEFAULT '',
   `guests` VARCHAR(40) NOT NULL DEFAULT '',
-  `budget` VARCHAR(60) NOT NULL DEFAULT '',
   `message` TEXT NULL,
   `source` VARCHAR(160) NOT NULL DEFAULT '',
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

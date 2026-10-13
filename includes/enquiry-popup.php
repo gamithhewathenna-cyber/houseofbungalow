@@ -1,6 +1,6 @@
 <div class="enquiry-popup" id="enquiryPopup" aria-hidden="true">
+  <button type="button" class="enquiry-popup-close" id="enquiryPopupClose" aria-label="Close">&times;</button>
   <div class="enquiry-popup-card">
-    <button type="button" class="enquiry-popup-close" id="enquiryPopupClose" aria-label="Close">&times;</button>
     <div class="enquiry-popup-body">
 
       <form id="enquiryForm" novalidate>
@@ -63,30 +63,17 @@
           </label>
         </div>
 
-        <div class="enquiry-grid">
-          <label class="enquiry-field">
-            <span>Estimated guests <em>*</em></span>
-            <select name="guests" required>
-              <option value="">Select number of guests</option>
-              <option value="1 - 10">1 - 10</option>
-              <option value="11 - 20">11 - 20</option>
-              <option value="21 - 40">21 - 40</option>
-              <option value="41 - 80">41 - 80</option>
-              <option value="80+">80+</option>
-            </select>
-          </label>
-          <label class="enquiry-field">
-            <span>Estimated total budget</span>
-            <select name="budget">
-              <option value="">Select budget range</option>
-              <option value="Under $1,000">Under $1,000</option>
-              <option value="$1,000 - $2,500">$1,000 - $2,500</option>
-              <option value="$2,500 - $5,000">$2,500 - $5,000</option>
-              <option value="$5,000 - $10,000">$5,000 - $10,000</option>
-              <option value="$10,000+">$10,000+</option>
-            </select>
-          </label>
-        </div>
+        <label class="enquiry-field">
+          <span>Estimated guests <em>*</em></span>
+          <select name="guests" required>
+            <option value="">Select number of guests</option>
+            <option value="1 - 10">1 - 10</option>
+            <option value="11 - 20">11 - 20</option>
+            <option value="21 - 40">21 - 40</option>
+            <option value="41 - 80">41 - 80</option>
+            <option value="80+">80+</option>
+          </select>
+        </label>
 
         <label class="enquiry-field">
           <span>Tell us about your occasion</span>

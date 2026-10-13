@@ -8,9 +8,9 @@ if (($_GET['export'] ?? '') === 'csv') {
     header('Content-Type: text/csv; charset=utf-8');
     header('Content-Disposition: attachment; filename="enquiries.csv"');
     $out = fopen('php://output', 'w');
-    fputcsv($out, ['Full Name', 'Phone', 'Email', 'Type Of Event', 'Preferred Space', 'Preferred Date', 'Preferred Time', 'Guests', 'Budget', 'Message', 'Event Card', 'Submitted At']);
+    fputcsv($out, ['Full Name', 'Phone', 'Email', 'Type Of Event', 'Preferred Space', 'Preferred Date', 'Preferred Time', 'Guests', 'Message', 'Event Card', 'Submitted At']);
     foreach ($rows as $r) {
-        fputcsv($out, [$r['full_name'], $r['phone'], $r['email'], $r['event_type'], $r['preferred_space'], $r['preferred_date'], $r['preferred_time'], $r['guests'], $r['budget'], $r['message'], $r['source'], $r['created_at']]);
+        fputcsv($out, [$r['full_name'], $r['phone'], $r['email'], $r['event_type'], $r['preferred_space'], $r['preferred_date'], $r['preferred_time'], $r['guests'], $r['message'], $r['source'], $r['created_at']]);
     }
     fclose($out);
     exit;
@@ -44,7 +44,7 @@ include __DIR__ . '/layout.php';
     <th>Event</th>
     <th>Space</th>
     <th>Date / Time</th>
-    <th>Guests / Budget</th>
+    <th>Guests</th>
     <th style="width:150px;">Submitted</th>
     <th style="width:90px;"></th>
   </tr>
@@ -56,7 +56,7 @@ include __DIR__ . '/layout.php';
       <td><?= e($r['event_type']) ?></td>
       <td><?= e($r['preferred_space']) ?></td>
       <td><?= e($r['preferred_date']) ?><?php if ($r['preferred_time']): ?><br><span class="muted"><?= e($r['preferred_time']) ?></span><?php endif; ?></td>
-      <td><?= e($r['guests']) ?><?php if ($r['budget']): ?><br><span class="muted"><?= e($r['budget']) ?></span><?php endif; ?></td>
+      <td><?= e($r['guests']) ?></td>
       <td class="muted"><?= e($r['created_at']) ?></td>
       <td>
         <form method="post" class="inline-form" onsubmit="return confirm('Delete this enquiry?')">
