@@ -134,7 +134,7 @@ $tabs = [
     'guest'     => 'Guest Artists',
     'vip'       => 'VIP Tables',
     'hours'     => 'Below Hours',
-    'vipbottle' => 'VIP Bottle Service Popup',
+    'vipbottle' => 'VIP Bottle Service Popup Contact Form',
     'faqs'      => 'FAQs',
     'visibility' => 'Section Visibility',
 ];
