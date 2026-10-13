@@ -41,9 +41,9 @@ while ($i < count($nights)) {
   <div class="container">
     <h1><?= e(setting('below_heading', 'Below')) ?></h1>
     <p class="subheading"><?= e(setting('below_subheading')) ?></p>
-    <p class="lede"><?= e(setting('below_lede')) ?></p>
-    <p><?= e(setting('below_intro_p1')) ?></p>
-    <p><?= e(setting('below_intro_p2')) ?></p>
+    <p class="lede"><?= enl(setting('below_lede')) ?></p>
+    <p><?= enl(setting('below_intro_p1')) ?></p>
+    <p><?= enl(setting('below_intro_p2')) ?></p>
     <div class="btn-wrap btn-wrap-row">
       <?php if (setting('below_intro_btn1_label')): ?>
         <a class="link-underline" href="<?= e(url(setting('below_intro_btn1_url', '#'))) ?>"><?= e(setting('below_intro_btn1_label')) ?></a>
@@ -62,9 +62,9 @@ while ($i < count($nights)) {
   <div class="container">
     <h2><?= e(setting('below_cocktails_heading', 'From Cocktails To Late Night')) ?></h2>
     <div class="cocktails-copy">
-      <p><?= eb(setting('below_cocktails_p1')) ?></p>
-      <p><?= eb(setting('below_cocktails_p2')) ?></p>
-      <p class="tight"><?= eb(setting('below_cocktails_p3')) ?></p>
+      <p><?= enl(setting('below_cocktails_p1')) ?></p>
+      <p><?= enl(setting('below_cocktails_p2')) ?></p>
+      <p class="tight"><?= enl(setting('below_cocktails_p3')) ?></p>
       <?php if (setting('below_cocktails_hours')): ?><p class="section-hours"><?= eb(setting('below_cocktails_hours')) ?></p><?php endif; ?>
     </div>
 
@@ -82,7 +82,7 @@ while ($i < count($nights)) {
 <section class="maroon-band reveal">
   <div class="container">
     <h2><?= e(setting('below_music_heading', 'Music')) ?></h2>
-    <p class="lede"><?= e(setting('below_music_lede')) ?></p>
+    <p class="lede"><?= enl(setting('below_music_lede')) ?></p>
 
     <?php if ($night_rows): ?>
       <div class="night-grid">
@@ -127,8 +127,8 @@ while ($i < count($nights)) {
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('below_guest_eyebrow', 'Guest Artists')) ?></p>
         <h2><?= e(setting('below_guest_heading')) ?></h2>
-        <p><?= e(setting('below_guest_p1')) ?></p>
-        <p><?= e(setting('below_guest_p2')) ?></p>
+        <p><?= enl(setting('below_guest_p1')) ?></p>
+        <p><?= enl(setting('below_guest_p2')) ?></p>
         <?php if (setting('below_guest_btn_label')): ?>
           <div class="btn-wrap">
             <a class="link-underline" href="<?= e(url(setting('below_guest_btn_url', '#'))) ?>"><?= e(setting('below_guest_btn_label')) ?></a>
@@ -148,8 +148,8 @@ while ($i < count($nights)) {
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('below_vip_eyebrow', 'VIP Tables')) ?></p>
         <h2><?= e(setting('below_vip_heading')) ?></h2>
-        <p><?= e(setting('below_vip_p1')) ?></p>
-        <p><?= e(setting('below_vip_p2')) ?></p>
+        <p><?= enl(setting('below_vip_p1')) ?></p>
+        <p><?= enl(setting('below_vip_p2')) ?></p>
         <?php if (setting('below_vip_btn_label')): ?>
           <div class="btn-wrap">
             <a class="link-underline" href="<?= e(url(setting('below_vip_btn_url', '#'))) ?>"><?= e(setting('below_vip_btn_label')) ?></a>

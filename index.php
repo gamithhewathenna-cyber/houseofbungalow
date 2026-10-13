@@ -26,12 +26,12 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
       <p class="subheading"><?= e(setting('intro_subheading')) ?></p>
       <p class="address"><?= e(setting('intro_address')) ?></p>
 
-      <p><?= e(setting('intro_p1')) ?></p>
+      <p><?= enl(setting('intro_p1')) ?></p>
 
-      <p class="tight gap-top"><?= e(setting('intro_p2a')) ?></p>
-      <p><?= e(setting('intro_p2b')) ?></p>
+      <p class="tight gap-top"><?= enl(setting('intro_p2a')) ?></p>
+      <p><?= enl(setting('intro_p2b')) ?></p>
 
-      <p class="gap-top"><?= e(setting('intro_p3')) ?></p>
+      <p class="gap-top"><?= enl(setting('intro_p3')) ?></p>
 
       <div class="intro-actions">
         <a class="link-underline" href="<?= e(url(setting('intro_btn1_url','#'))) ?>"><?= e(setting('intro_btn1_label')) ?></a>
@@ -56,7 +56,7 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
 <section class="spaces reveal">
   <div class="container">
     <h2><?= e(setting('spaces_heading')) ?></h2>
-    <p class="subheading"><?= e(setting('spaces_subheading')) ?></p>
+    <p class="subheading"><?= enl(setting('spaces_subheading')) ?></p>
     <div class="cards">
       <?php foreach ($spaces as $i => $s): ?>
         <a class="card reveal" style="transition-delay:<?= $i * 120 ?>ms" href="<?= e(url($s['link_url'] ?: '#')) ?>">
@@ -74,7 +74,7 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
 <section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('door_heading')) ?></h2>
-    <p><?= e(setting('door_p1')) ?></p>
+    <p><?= enl(setting('door_p1')) ?></p>
     <p><?= enl(setting('door_p2')) ?></p>
     <div class="btn-wrap">
       <a class="link-underline" href="<?= e(url(setting('door_btn_url','#'))) ?>"><?= e(setting('door_btn_label')) ?></a>
@@ -88,8 +88,8 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
 <section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('mood_heading')) ?></h2>
-    <p><?= e(setting('mood_p1')) ?></p>
-    <p><?= e(setting('mood_p2')) ?></p>
+    <p><?= enl(setting('mood_p1')) ?></p>
+    <p><?= enl(setting('mood_p2')) ?></p>
   </div>
 </section>
 <?php endif; ?>
@@ -99,9 +99,9 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
 <section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('whatson_heading')) ?></h2>
-    <p><?= e(setting('whatson_p1')) ?></p>
-    <p><?= e(setting('whatson_p2')) ?></p>
-    <p><?= e(setting('whatson_p3')) ?></p>
+    <p><?= enl(setting('whatson_p1')) ?></p>
+    <p><?= enl(setting('whatson_p2')) ?></p>
+    <p><?= enl(setting('whatson_p3')) ?></p>
     <div class="btn-wrap">
       <a class="link-underline" href="<?= e(url(setting('whatson_btn_url','#'))) ?>"><?= e(setting('whatson_btn_label')) ?></a>
     </div>
@@ -114,9 +114,9 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
 <section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('events_heading')) ?></h2>
-    <p><?= e(setting('events_p1')) ?></p>
-    <p><?= e(setting('events_p2')) ?></p>
-    <p><?= e(setting('events_p3')) ?></p>
+    <p><?= enl(setting('events_p1')) ?></p>
+    <p><?= enl(setting('events_p2')) ?></p>
+    <p><?= enl(setting('events_p3')) ?></p>
     <div class="btn-wrap">
       <a class="link-underline" href="<?= e(url(setting('events_btn_url','#'))) ?>"><?= e(setting('events_btn_label')) ?></a>
     </div>

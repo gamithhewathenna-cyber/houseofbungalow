@@ -46,8 +46,8 @@ foreach ($menu_cats as $cat) {
     <p class="subheading"><?= e(setting('dp_subheading')) ?></p>
     <p class="lede"><?= e(setting('dp_lede1')) ?></p>
     <p class="lede"><?= e(setting('dp_lede2')) ?></p>
-    <p><?= e(setting('dp_p1')) ?></p>
-    <?php if (setting('dp_p2')): ?><p><?= e(setting('dp_p2')) ?></p><?php endif; ?>
+    <p><?= enl(setting('dp_p1')) ?></p>
+    <?php if (setting('dp_p2')): ?><p><?= enl(setting('dp_p2')) ?></p><?php endif; ?>
     <?php if (setting('dp_hours')): ?><p class="hours-line" style="text-align:center;"><?= eb(setting('dp_hours')) ?></p><?php endif; ?>
     <div class="btn-wrap btn-wrap-row">
       <?php if (setting('dp_btn1_label')): ?>
@@ -86,7 +86,7 @@ foreach ($menu_cats as $cat) {
   <div class="container">
     <h2><?= e(setting('dp_menu_heading', 'Discover Our Menus')) ?></h2>
     <?php if (setting('dp_menu_lede')): ?>
-      <p class="menu-lede"><?= e(setting('dp_menu_lede')) ?></p>
+      <p class="menu-lede"><?= enl(setting('dp_menu_lede')) ?></p>
     <?php endif; ?>
 
     <p class="menu-active-label" id="menuActiveLabel"><?= e($menu_cats ? $menu_cats[0]['title'] : '') ?> Specials</p>
@@ -106,7 +106,7 @@ foreach ($menu_cats as $cat) {
                 <span><?= e($item['title']) ?></span>
                 <?php if ($item['subtitle']): ?><span class="price">$<?= e($item['subtitle']) ?></span><?php endif; ?>
               </div>
-              <?php if ($item['body']): ?><div class="menu-item-desc"><?= e($item['body']) ?></div><?php endif; ?>
+              <?php if ($item['body']): ?><div class="menu-item-desc"><?= enl($item['body']) ?></div><?php endif; ?>
             </div>
           <?php endforeach; ?>
         <?php else: ?>
@@ -129,8 +129,8 @@ foreach ($menu_cats as $cat) {
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('dp_guest_eyebrow', 'Guest Artists')) ?></p>
         <h2><?= e(setting('dp_guest_heading')) ?></h2>
-        <p><?= e(setting('dp_guest_p1')) ?></p>
-        <p><?= e(setting('dp_guest_p2')) ?></p>
+        <p><?= enl(setting('dp_guest_p1')) ?></p>
+        <p><?= enl(setting('dp_guest_p2')) ?></p>
         <?php if (setting('dp_guest_btn_label')): ?>
           <div class="btn-wrap">
             <a class="link-underline" href="<?= e(url(setting('dp_guest_btn_url', '#'))) ?>"><?= e(setting('dp_guest_btn_label')) ?></a>

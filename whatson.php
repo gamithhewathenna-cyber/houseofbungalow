@@ -30,7 +30,7 @@ $faqs = blocks('whatson_faq');
   <div class="container">
     <h1><?= e(setting('wo_heading', "What's On")) ?></h1>
     <p class="subheading"><?= e(setting('wo_subheading')) ?></p>
-    <p class="lede"><?= e(setting('wo_lede')) ?></p>
+    <p class="lede"><?= enl(setting('wo_lede')) ?></p>
 
     <div class="tag-buttons">
       <?php if (setting('wo_tag2_label')): ?><a class="tag-btn" href="<?= e(url(setting('wo_tag2_url', '#'))) ?>"><?= e(setting('wo_tag2_label')) ?></a><?php endif; ?>
@@ -48,8 +48,8 @@ $faqs = blocks('whatson_faq');
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('wo_happyhour_eyebrow', 'Happy Hour')) ?></p>
         <h2><?= e(setting('wo_happyhour_heading', 'INFORMATION')) ?></h2>
-        <p><?= e(setting('wo_happyhour_p1')) ?></p>
-        <p><?= e(setting('wo_happyhour_p2')) ?></p>
+        <p><?= enl(setting('wo_happyhour_p1')) ?></p>
+        <p><?= enl(setting('wo_happyhour_p2')) ?></p>
         <?php if (setting('wo_happyhour_btn_label')): ?>
           <div class="btn-wrap">
             <a class="link-underline" href="<?= e(url(setting('wo_happyhour_btn_url', '#'))) ?>"><?= e(setting('wo_happyhour_btn_label')) ?></a>
@@ -75,8 +75,8 @@ $faqs = blocks('whatson_faq');
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('wo_friday_eyebrow', 'Friday & Saturday Dinner Party')) ?></p>
         <h2><?= e(setting('wo_friday_heading', 'INFORMATION')) ?></h2>
-        <p><?= e(setting('wo_friday_p1')) ?></p>
-        <p><?= e(setting('wo_friday_p2')) ?></p>
+        <p><?= enl(setting('wo_friday_p1')) ?></p>
+        <p><?= enl(setting('wo_friday_p2')) ?></p>
         <?php if (setting('wo_friday_btn_label')): ?>
           <div class="btn-wrap">
             <a class="link-underline" href="<?= e(url(setting('wo_friday_btn_url', '#'))) ?>"><?= e(setting('wo_friday_btn_label')) ?></a>
@@ -97,7 +97,7 @@ $faqs = blocks('whatson_faq');
         <p class="eyebrow"><?= e(setting('wo_brunch_eyebrow', 'Weekend Bottomless Brunch')) ?></p>
         <h2><?= e(setting('wo_brunch_heading', 'INFORMATION')) ?></h2>
         <?php if (setting('wo_brunch_hours')): ?><p class="hours-line"><?= eb(setting('wo_brunch_hours')) ?></p><?php endif; ?>
-        <p><?= e(setting('wo_brunch_p1')) ?></p>
+        <p><?= enl(setting('wo_brunch_p1')) ?></p>
         <?php if (setting('wo_brunch_btn_label')): ?>
           <div class="btn-wrap">
             <a class="link-underline" href="<?= e(url(setting('wo_brunch_btn_url', '#'))) ?>"><?= e(setting('wo_brunch_btn_label')) ?></a>

@@ -30,7 +30,7 @@ $faqs = blocks('faq_page_item');
             <span><?= e($faq['title']) ?></span>
           </button>
           <div class="faq-answer">
-            <p><?= e($faq['body']) ?></p>
+            <p><?= enl($faq['body']) ?></p>
             <?php if ($faq['subtitle'] === '1' && $faq['link_url2'] && $faq['link_url']): ?>
               <div class="btn-wrap">
                 <a class="link-underline" href="<?= e(url($faq['link_url'])) ?>"><?= e($faq['link_url2']) ?></a>

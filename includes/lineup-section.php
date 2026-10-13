@@ -11,7 +11,7 @@ $djs = blocks('below_dj');
   <div class="lineup-overlay">
     <div class="container">
       <h2><?= e(setting('below_lineup_heading', "See This Week's Line-Up")) ?></h2>
-      <p><?= e(setting('below_lineup_p1')) ?></p>
+      <p><?= enl(setting('below_lineup_p1')) ?></p>
     </div>
 
     <?php if ($djs): ?>

@@ -46,9 +46,9 @@ while ($i < count($gallery)) {
   <div class="container">
     <h1><?= e(setting('rest_heading', 'Restaurant')) ?></h1>
     <p class="subheading"><?= e(setting('rest_subheading')) ?></p>
-    <p class="lede"><?= e(setting('rest_lede')) ?></p>
-    <p><?= e(setting('rest_intro_p1')) ?></p>
-    <p><?= e(setting('rest_intro_p2')) ?></p>
+    <p class="lede"><?= enl(setting('rest_lede')) ?></p>
+    <p><?= enl(setting('rest_intro_p1')) ?></p>
+    <p><?= enl(setting('rest_intro_p2')) ?></p>
     <?php if (setting('rest_intro_btn_label')): ?>
       <div class="btn-wrap">
         <a class="link-underline" href="<?= e(url(setting('rest_intro_btn_url', '#'))) ?>"><?= e(setting('rest_intro_btn_label')) ?></a>
@@ -66,8 +66,8 @@ while ($i < count($gallery)) {
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('rest_food_eyebrow', 'The Food')) ?></p>
         <h2><?= e(setting('rest_food_heading')) ?></h2>
-        <p><?= e(setting('rest_food_p1')) ?></p>
-        <p><?= e(setting('rest_food_p2')) ?></p>
+        <p><?= enl(setting('rest_food_p1')) ?></p>
+        <p><?= enl(setting('rest_food_p2')) ?></p>
       </div>
       <div class="split-media">
         <img src="<?= e(asset(setting('rest_food_image', 'assets/img/restaurant.jpg'))) ?>" alt="<?= e(setting('rest_food_heading')) ?>">
@@ -83,7 +83,7 @@ while ($i < count($gallery)) {
   <div class="container">
     <h2><?= e(setting('rest_menu_heading', 'Discover Our Menus')) ?></h2>
     <?php if (setting('rest_menu_lede')): ?>
-      <p class="menu-lede"><?= e(setting('rest_menu_lede')) ?></p>
+      <p class="menu-lede"><?= enl(setting('rest_menu_lede')) ?></p>
     <?php endif; ?>
 
     <p class="menu-active-label" id="menuActiveLabel"><?= e($menu_cats ? $menu_cats[0]['title'] : '') ?> Specials</p>
@@ -103,7 +103,7 @@ while ($i < count($gallery)) {
                 <span><?= e($item['title']) ?></span>
                 <?php if ($item['subtitle']): ?><span class="price">$<?= e($item['subtitle']) ?></span><?php endif; ?>
               </div>
-              <?php if ($item['body']): ?><div class="menu-item-desc"><?= e($item['body']) ?></div><?php endif; ?>
+              <?php if ($item['body']): ?><div class="menu-item-desc"><?= enl($item['body']) ?></div><?php endif; ?>
             </div>
           <?php endforeach; ?>
         <?php else: ?>
@@ -126,8 +126,8 @@ while ($i < count($gallery)) {
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('rest_room_eyebrow', 'The Room')) ?></p>
         <h2><?= e(setting('rest_room_heading')) ?></h2>
-        <p><?= e(setting('rest_room_p1')) ?></p>
-        <p><?= e(setting('rest_room_p2')) ?></p>
+        <p><?= enl(setting('rest_room_p1')) ?></p>
+        <p><?= enl(setting('rest_room_p2')) ?></p>
       </div>
     </div>
   </div>
@@ -142,8 +142,8 @@ while ($i < count($gallery)) {
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('rest_fridaysat_eyebrow', 'Friday & Saturday')) ?></p>
         <h2><?= e(setting('rest_fridaysat_heading')) ?></h2>
-        <p><?= e(setting('rest_fridaysat_p1')) ?></p>
-        <p><?= e(setting('rest_fridaysat_p2')) ?></p>
+        <p><?= enl(setting('rest_fridaysat_p1')) ?></p>
+        <p><?= enl(setting('rest_fridaysat_p2')) ?></p>
         <?php if (setting('rest_fridaysat_btn_label')): ?>
           <div class="btn-wrap">
             <a class="link-underline" href="<?= e(url(setting('rest_fridaysat_btn_url', '#'))) ?>"><?= e(setting('rest_fridaysat_btn_label')) ?></a>
@@ -169,7 +169,7 @@ while ($i < count($gallery)) {
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('rest_happyhour_eyebrow', 'Happy Hour')) ?></p>
         <h2><?= e(setting('rest_happyhour_heading')) ?></h2>
-        <p><?= e(setting('rest_happyhour_p1')) ?></p>
+        <p><?= enl(setting('rest_happyhour_p1')) ?></p>
         <?php if (setting('rest_happyhour_hours1')): ?><p class="hours-line"><?= e(setting('rest_happyhour_hours1')) ?></p><?php endif; ?>
         <?php if (setting('rest_happyhour_hours2')): ?><p class="hours-line"><?= e(setting('rest_happyhour_hours2')) ?></p><?php endif; ?>
         <?php if (setting('rest_happyhour_btn_label')): ?>
@@ -191,9 +191,9 @@ while ($i < count($gallery)) {
       <div class="split-copy chef-copy">
         <p class="eyebrow"><?= e(setting('rest_chef_eyebrow', 'The Chef')) ?></p>
         <h2 class="chef-name"><?= e(setting('rest_chef_name')) ?></h2>
-        <p><?= e(setting('rest_chef_p1')) ?></p>
-        <p><?= e(setting('rest_chef_p2')) ?></p>
-        <p><?= e(setting('rest_chef_p3')) ?></p>
+        <p><?= enl(setting('rest_chef_p1')) ?></p>
+        <p><?= enl(setting('rest_chef_p2')) ?></p>
+        <p><?= enl(setting('rest_chef_p3')) ?></p>
       </div>
       <div class="split-media">
         <img src="<?= e(asset(setting('rest_chef_image', 'assets/img/restaurant.jpg'))) ?>" alt="<?= e(setting('rest_chef_name')) ?>">

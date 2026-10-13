@@ -34,7 +34,7 @@ include __DIR__ . '/includes/header.php';
       <?php if ($slide['title']): ?><h1><?= e($slide['title']) ?></h1><?php endif; ?>
       <?php if ($slide['subtitle']): ?><p class="subheading"><?= e($slide['subtitle']) ?></p><?php endif; ?>
       <?php foreach (preg_split('/\r?\n/', trim($slide['body'] ?? '')) as $para): if (trim($para) === '') continue; ?>
-        <p><?= e(trim($para)) ?></p>
+        <p><?= enl(trim($para)) ?></p>
       <?php endforeach; ?>
       <?php if (!empty($slide['link_url2'])): ?>
         <div class="btn-wrap">
@@ -85,8 +85,8 @@ include __DIR__ . '/includes/header.php';
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('reserve_fridaysat_eyebrow', 'Friday & Saturday')) ?></p>
         <h2><?= e(setting('reserve_fridaysat_heading')) ?></h2>
-        <p><?= e(setting('reserve_fridaysat_p1')) ?></p>
-        <p><?= e(setting('reserve_fridaysat_p2')) ?></p>
+        <p><?= enl(setting('reserve_fridaysat_p1')) ?></p>
+        <p><?= enl(setting('reserve_fridaysat_p2')) ?></p>
         <?php if (setting('reserve_fridaysat_btn_label')): ?>
           <div class="btn-wrap">
             <a class="link-underline" href="<?= e(url(setting('reserve_fridaysat_btn_url', '#'))) ?>"><?= e(setting('reserve_fridaysat_btn_label')) ?></a>
@@ -112,7 +112,7 @@ include __DIR__ . '/includes/header.php';
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('reserve_happyhour_eyebrow', 'Happy Hour')) ?></p>
         <h2><?= e(setting('reserve_happyhour_heading')) ?></h2>
-        <p><?= e(setting('reserve_happyhour_p1')) ?></p>
+        <p><?= enl(setting('reserve_happyhour_p1')) ?></p>
         <?php if (setting('reserve_happyhour_hours1')): ?><p class="hours-line"><?= eb(setting('reserve_happyhour_hours1')) ?></p><?php endif; ?>
         <?php if (setting('reserve_happyhour_hours2')): ?><p class="hours-line"><?= eb(setting('reserve_happyhour_hours2')) ?></p><?php endif; ?>
         <?php if (setting('reserve_happyhour_btn_label')): ?>
@@ -134,8 +134,8 @@ include __DIR__ . '/includes/header.php';
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('reserve_vip_eyebrow', 'VIP Tables')) ?></p>
         <h2><?= e(setting('reserve_vip_heading')) ?></h2>
-        <p><?= e(setting('reserve_vip_p1')) ?></p>
-        <p><?= e(setting('reserve_vip_p2')) ?></p>
+        <p><?= enl(setting('reserve_vip_p1')) ?></p>
+        <p><?= enl(setting('reserve_vip_p2')) ?></p>
         <?php if (setting('reserve_vip_btn_label')): ?>
           <div class="btn-wrap">
             <a class="link-underline" href="<?= e(url(setting('reserve_vip_btn_url', '#'))) ?>"><?= e(setting('reserve_vip_btn_label')) ?></a>

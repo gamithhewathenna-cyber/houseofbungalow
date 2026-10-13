@@ -30,10 +30,10 @@ $cards = blocks('pe_event_card');
   <div class="container">
     <h1><?= e(setting('pe_heading', 'Private Events')) ?></h1>
     <p class="subheading"><?= e(setting('pe_subheading')) ?></p>
-    <p class="lede"><?= e(setting('pe_lede')) ?></p>
-    <p><?= e(setting('pe_p1')) ?></p>
-    <p><?= e(setting('pe_p2')) ?></p>
-    <p><?= e(setting('pe_p3')) ?></p>
+    <p class="lede"><?= enl(setting('pe_lede')) ?></p>
+    <p><?= enl(setting('pe_p1')) ?></p>
+    <p><?= enl(setting('pe_p2')) ?></p>
+    <p><?= enl(setting('pe_p3')) ?></p>
     <div class="btn-wrap">
       <?php if (setting('pe_btn_label')): ?>
         <a class="link-underline" href="<?= e(url(setting('pe_btn_url', '#'))) ?>"><?= e(setting('pe_btn_label')) ?></a>
@@ -55,7 +55,7 @@ $cards = blocks('pe_event_card');
         <div class="event-card-body">
           <h3><?= e($c['title']) ?></h3>
           <?php if ($c['subtitle']): ?><p class="event-card-tagline"><?= e($c['subtitle']) ?></p><?php endif; ?>
-          <?php if ($c['body']): ?><p><?= e($c['body']) ?></p><?php endif; ?>
+          <?php if ($c['body']): ?><p><?= enl($c['body']) ?></p><?php endif; ?>
           <div class="btn-wrap">
             <a class="link-underline" href="<?= e(url($c['link_url'] ?: '#')) ?>">ENQUIRE</a>
           </div>
@@ -73,7 +73,7 @@ $cards = blocks('pe_event_card');
 <section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('pe_final_heading', 'Make The House Yours')) ?></h2>
-    <p><?= e(setting('pe_final_p1')) ?></p>
+    <p><?= enl(setting('pe_final_p1')) ?></p>
     <?php if (setting('pe_final_btn_label')): ?>
       <div class="btn-wrap">
         <a class="link-underline" href="<?= e(url(setting('pe_final_btn_url', '#'))) ?>"><?= e(setting('pe_final_btn_label')) ?></a>

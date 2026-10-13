@@ -29,8 +29,8 @@ $cafe_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 
     <h1><?= e(setting('cafe_heading', 'Café')) ?></h1>
     <p class="subheading"><?= e(setting('cafe_subheading')) ?></p>
     <p class="lede"><?= e(setting('cafe_lede')) ?></p>
-    <p class="cafe-intro-p"><?= e(setting('cafe_p1')) ?></p>
-    <p class="cafe-intro-p"><?= e(setting('cafe_p2')) ?></p>
+    <p class="cafe-intro-p"><?= enl(setting('cafe_p1')) ?></p>
+    <p class="cafe-intro-p"><?= enl(setting('cafe_p2')) ?></p>
   </div>
 </section>
 <?php endif; ?>
@@ -55,8 +55,8 @@ $cafe_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 
 <section class="hours-block reveal">
   <div class="container">
     <h2><?= e(setting('cafe_hours_heading', 'Coffee. Food. Foveaux Street.')) ?></h2>
-    <?php if (setting('cafe_hours_p1')): ?><p class="hours-note"><?= e(setting('cafe_hours_p1')) ?></p><?php endif; ?>
-    <?php if (setting('cafe_hours_p2')): ?><p class="hours-note"><?= e(setting('cafe_hours_p2')) ?></p><?php endif; ?>
+    <?php if (setting('cafe_hours_p1')): ?><p class="hours-note"><?= enl(setting('cafe_hours_p1')) ?></p><?php endif; ?>
+    <?php if (setting('cafe_hours_p2')): ?><p class="hours-note"><?= enl(setting('cafe_hours_p2')) ?></p><?php endif; ?>
     <?php if (setting('cafe_hours')): ?><p class="hours-line" style="margin-top:16px;"><?= eb(setting('cafe_hours')) ?></p><?php endif; ?>
     <?php if (setting('cafe_address')): ?><p class="hours-address"><?= e(setting('cafe_address')) ?></p><?php endif; ?>
     <div class="btn-wrap btn-wrap-row">
@@ -76,8 +76,8 @@ $cafe_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 
 <section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('cafe_final_heading', 'More Of The House')) ?></h2>
-    <p><?= e(setting('cafe_final_p1')) ?></p>
-    <p><?= e(setting('cafe_final_p2')) ?></p>
+    <p><?= enl(setting('cafe_final_p1')) ?></p>
+    <p><?= enl(setting('cafe_final_p2')) ?></p>
     <div class="btn-wrap btn-wrap-row">
       <?php if (setting('cafe_final_btn1_label')): ?>
         <a class="link-underline" href="<?= e(url(setting('cafe_final_btn1_url', '#'))) ?>"><?= e(setting('cafe_final_btn1_label')) ?></a>
