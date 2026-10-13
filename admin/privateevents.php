@@ -5,7 +5,7 @@ require_once __DIR__ . '/helpers.php';
 
 $fieldGroups = [
     'herovideo' => ['pe_hero_video'],
-    'intro'     => ['pe_heading', 'pe_subheading', 'pe_lede', 'pe_p1', 'pe_p2', 'pe_p3', 'pe_btn_label', 'pe_btn_url'],
+    'intro'     => ['pe_heading', 'pe_subheading', 'pe_lede', 'pe_p1', 'pe_p2', 'pe_p3', 'pe_btn_label'],
     'final'     => ['pe_final_heading', 'pe_final_p1', 'pe_final_btn_label', 'pe_final_btn_url'],
     'emails'    => ['pe_enquiry_to_email', 'pe_enquiry_cc_email', 'pe_enquiry_thankyou_subject', 'pe_enquiry_thankyou_message'],
 ];
@@ -167,6 +167,9 @@ include __DIR__ . '/layout.php';
     <h3><?= e($tabs[$group]) ?></h3>
     <?php if ($group === 'emails'): ?>
       <p class="group-help">Controls what happens when someone submits the ENQUIRE popup form. No email server setup needed - this sends straight from the website. Leave "Send enquiries to" empty to only save enquiries here in the admin (under "Enquiries") without emailing anyone.</p>
+    <?php endif; ?>
+    <?php if ($group === 'intro'): ?>
+      <p class="group-help">The button below now opens the enquiry popup form instead of linking anywhere, so there's no URL field to set.</p>
     <?php endif; ?>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
