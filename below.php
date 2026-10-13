@@ -101,7 +101,7 @@ while ($i < count($nights)) {
 
     <div class="btn-wrap btn-wrap-row">
       <?php if (setting('below_music_btn2_label')): ?>
-        <a class="link-underline js-vipbottle-popup-trigger" href="#"><?= e(setting('below_music_btn2_label')) ?></a>
+        <span class="link-underline"><?= e(setting('below_music_btn2_label')) ?></span>
       <?php endif; ?>
     </div>
   </div>
