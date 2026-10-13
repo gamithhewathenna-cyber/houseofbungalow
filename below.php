@@ -101,7 +101,7 @@ while ($i < count($nights)) {
 
     <div class="btn-wrap btn-wrap-row">
       <?php if (setting('below_music_btn2_label')): ?>
-        <span class="link-underline"><?= e(setting('below_music_btn2_label')) ?></span>
+        <a class="link-underline" href="<?= e(url(setting('below_music_btn2_url', '#'))) ?>"><?= e(setting('below_music_btn2_label')) ?></a>
       <?php endif; ?>
     </div>
   </div>

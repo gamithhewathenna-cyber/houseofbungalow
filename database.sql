@@ -338,7 +338,7 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('below_music_btn1_label','BOOK A TABLE','below','Music - button 1 label','text',21),
 ('below_music_btn1_url','reserve.php','below','Music - button 1 URL','text',22),
 ('below_music_btn2_label','BOOK BOTTLE SERVICE','below','Music - button 2 label','text',23),
-('below_music_btn2_url','#','below','Music - button 2 URL (no longer used - this button now opens the VIP Bottle Service popup)','text',24),
+('below_music_btn2_url','#','below','Music - button 2 URL','text',24),
 
 ('below_vipbottle_popup_eyebrow1','Below','below','VIP Bottle Service popup - eyebrow line 1','text',49),
 ('below_vipbottle_popup_eyebrow2','VIP Bottle Service','below','VIP Bottle Service popup - eyebrow line 2','text',50),
