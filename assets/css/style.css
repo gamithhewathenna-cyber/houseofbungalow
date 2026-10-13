@@ -1094,6 +1094,58 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 }
 
 /* ------------------------------------------------------------------ */
+/* Join Our Team - on-page application form (light theme, no popup)    */
+/* ------------------------------------------------------------------ */
+.career-form-section{padding:10px 0 90px;}
+.career-form-card{
+  max-width:760px;margin:0 auto;background:#ede1d2;border-radius:20px;
+  padding:54px 60px;
+}
+.career-eyebrow{
+  font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--maroon);margin:0 0 14px;text-align:center;
+}
+.career-form-intro{
+  font-family:var(--sans);font-weight:300;font-size:16px;line-height:1.6;
+  color:var(--ink-soft);text-align:center;max-width:560px;margin:0 auto 36px;
+}
+.career-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.career-field{display:block;margin-bottom:20px;}
+.career-field span{
+  display:block;font-family:var(--sans);font-weight:600;font-size:14px;
+  color:var(--ink);margin-bottom:8px;
+}
+.career-field em{color:var(--maroon);font-style:normal;}
+.career-field-help{
+  display:block;font-family:var(--sans);font-weight:300;font-size:12px;
+  color:var(--ink-mute);margin-top:6px;
+}
+.career-field input[type=text],
+.career-field input[type=email],
+.career-field input[type=tel],
+.career-field select,
+.career-field input[type=file]{
+  width:100%;font-family:var(--sans);font-size:15px;color:var(--ink);
+  padding:12px 14px;border:1px solid #d8cabb;background:#fbf6f0;
+  border-radius:2px;
+}
+.career-field input:focus,
+.career-field select:focus{outline:1px solid var(--maroon);}
+.career-form-msg{font-family:var(--sans);font-size:14px;margin:0 0 14px;text-align:center;}
+.career-form-msg.err{color:var(--maroon);font-weight:600;}
+.career-submit{
+  display:block;width:100%;font-family:var(--sans);font-weight:600;font-size:14px;
+  letter-spacing:2px;text-transform:uppercase;color:#f3ece4;background:var(--maroon);
+  border:0;padding:16px;cursor:pointer;margin-top:10px;
+  transition:background-color .2s ease;
+}
+.career-submit:hover{background:#4c0b10;}
+.career-submit:disabled{opacity:.6;cursor:default;}
+.career-success{text-align:center;padding:20px 0;}
+.career-success h3{font-family:var(--serif);font-weight:400;font-size:34px;color:var(--ink);margin:0 0 16px;}
+.career-success p{font-family:var(--sans);font-size:16px;color:var(--ink-soft);max-width:520px;margin:0 auto;}
+
+/* ------------------------------------------------------------------ */
 /* Responsive                                                         */
 /* ------------------------------------------------------------------ */
 @media (max-width:1450px){
@@ -1159,6 +1211,9 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .faq-subheading{font-size:18px;margin-bottom:30px;}
   .legal-content h2{font-size:24px;margin-top:40px;}
   .legal-content h3{font-size:15px;}
+  .career-form-card{padding:36px 22px;border-radius:14px;}
+  .career-grid{grid-template-columns:1fr;}
+  .career-success h3{font-size:28px;}
   .split-copy{padding:34px 24px;}
   .split-copy .eyebrow{font-size:22px;}
   .split-copy h2{font-size:13px;}
