@@ -4,6 +4,7 @@ require_login();
 require_once __DIR__ . '/helpers.php';
 
 $fieldGroups = [
+    'herovideo' => ['faq_hero_video'],
     'intro' => ['faq_hero_image', 'faq_heading', 'faq_subheading'],
 ];
 $visibilitySections = [
@@ -107,6 +108,7 @@ foreach ($allRows as $r) {
 $faqs = db()->query("SELECT * FROM blocks WHERE block_type='faq_page_item' ORDER BY sort ASC, id ASC")->fetchAll();
 
 $tabs = [
+    'herovideo' => 'Hero Video',
     'intro' => 'Heading',
     'faqs'  => 'Questions & Answers',
     'visibility' => 'Section Visibility',
