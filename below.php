@@ -186,7 +186,7 @@ while ($i < count($nights)) {
             <span class="faq-chevron">▾</span>
             <span><?= e($faq['title']) ?></span>
           </button>
-          <div class="faq-answer"><p><?= e($faq['body']) ?></p></div>
+          <div class="faq-answer"><p><?= enl($faq['body']) ?></p></div>
         </div>
       <?php endforeach; ?>
     </div>

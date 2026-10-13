@@ -265,7 +265,7 @@ include __DIR__ . '/layout.php';
       <?php foreach ($faqs as $f): ?>
         <tr>
           <td><input type="text" name="title[<?= $f['id'] ?>]" value="<?= e($f['title']) ?>"></td>
-          <td><input type="text" name="desc[<?= $f['id'] ?>]" value="<?= e($f['body']) ?>"></td>
+          <td><textarea name="desc[<?= $f['id'] ?>]" rows="2" style="min-height:0;"><?= e($f['body']) ?></textarea></td>
           <td><input type="text" name="sort[<?= $f['id'] ?>]" value="<?= (int)$f['sort'] ?>" style="width:56px;"></td>
           <td><button form="delfaq<?= $f['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this question?')">Delete</button></td>
         </tr>
@@ -284,7 +284,7 @@ include __DIR__ . '/layout.php';
     <input type="hidden" name="action" value="add_faq">
     <div class="row-actions">
       <input type="text" name="new_title" placeholder="Question" style="max-width:260px;">
-      <input type="text" name="new_desc" placeholder="Answer" style="max-width:320px;">
+      <textarea name="new_desc" placeholder="Answer" style="max-width:320px;min-height:0;" rows="2"></textarea>
       <input type="text" name="new_sort" placeholder="Order" value="99" style="width:70px;">
       <button class="btn btn-sm">Add</button>
     </div>
