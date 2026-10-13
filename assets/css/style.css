@@ -594,8 +594,8 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .split-copy .btn-wrap{margin-top:20px;}
 
 /* The Chef - reversed hierarchy: small bold label, then a large        */
-/* highlighted name, right-aligned                                     */
-.chef-copy{text-align:right;}
+/* highlighted name, left-aligned                                      */
+.chef-copy{text-align:left;}
 .chef-copy .eyebrow{
   font-family:var(--sans);font-weight:700;font-size:14px;letter-spacing:1px;
   text-transform:uppercase;color:var(--ink);margin:0 0 8px;
@@ -604,7 +604,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   font-family:var(--serif);font-weight:400;font-size:46px;letter-spacing:.5px;
   text-transform:uppercase;color:var(--ink);margin:0 0 24px;
 }
-.chef-copy p{text-align:right;}
+.chef-copy p{text-align:left;}
 
 /* ------------------------------------------------------------------ */
 /* Menu (tabs + item list)                                            */
@@ -944,7 +944,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .page-hero-intro .container{max-width:88%;}
   .gallery-row{grid-auto-rows:200px;}
   .gallery-row-3{grid-template-columns:1fr 1.3fr 1fr;}
-  .chef-copy,.chef-copy p{text-align:center;}
+  .chef-copy,.chef-copy p{text-align:left;}
   .chef-copy .chef-name{font-size:32px;}
   .night-row-3,.night-row-2{grid-template-columns:1fr 1fr;max-width:none;}
   .events-grid{grid-template-columns:1fr 1fr;}
