@@ -7,9 +7,9 @@ $page_meta_description = setting('career_lede');
 include __DIR__ . '/includes/header.php';
 ?>
 
-<!-- Intro -------------------------------------------------------------- -->
+<!-- Header (solid colour band) ------------------------------------------ -->
 <?php if (section_visible('career_intro')): ?>
-<section class="page-hero-intro reveal">
+<section class="maroon-band page-header-band reveal">
   <div class="container">
     <h1><?= e(setting('career_heading', 'Join Our Team')) ?></h1>
     <?php if (setting('career_lede')): ?><p class="lede"><?= enl(setting('career_lede')) ?></p><?php endif; ?>
