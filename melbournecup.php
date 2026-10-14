@@ -205,6 +205,42 @@ function render_bev_package(string $heading, string $price, string $itemsSetting
     <hr class="cup-expmenu-divider">
     <?php
 }
+
+/**
+ * Renders Below's drinks list inside the "View Drinks Package" expander:
+ * an intro line, then each drink type as a heading followed by its item
+ * list, with a divider after every type.
+ */
+function render_below_drinks_package(): void
+{
+    if (setting('mcup_below_drinks_lede')) {
+        ?><p class="cup-expbev-intro"><?= e(setting('mcup_below_drinks_lede')) ?></p><?php
+    }
+    render_drinks_category('Champagne', 'mcup_below_drinks_champagne_items');
+    render_drinks_category('White Wine', 'mcup_below_drinks_white_items');
+    render_drinks_category('Rosé', 'mcup_below_drinks_rose_items');
+    render_drinks_category('Red Wine', 'mcup_below_drinks_red_items');
+    render_drinks_category('Beer', 'mcup_below_drinks_beer_items');
+    render_drinks_category('Signature Cocktails', 'mcup_below_drinks_cocktails_items');
+}
+
+/** One drink type heading plus its item list, followed by a trailing divider. */
+function render_drinks_category(string $label, string $itemsSettingKey): void
+{
+    ?>
+    <div class="cup-expbev-package">
+      <p class="cup-expmenu-cat-heading"><?= e($label) ?></p>
+      <?php
+        $lines = preg_split('/\r?\n/', trim(setting($itemsSettingKey)));
+        foreach ($lines as $line):
+            if (trim($line) === '') continue;
+      ?>
+        <p class="cup-expbev-item"><?= e(trim($line)) ?></p>
+      <?php endforeach; ?>
+    </div>
+    <hr class="cup-expmenu-divider">
+    <?php
+}
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
@@ -269,9 +305,9 @@ function render_bev_package(string $heading, string $price, string $itemsSetting
       <?php render_dark_expander(setting('mcup_below_expander1_label', 'View Canapé Menu'), function () use ($below_menu_cats, $below_menu_items_by_cat) {
           render_set_menu_expander($below_menu_cats, $below_menu_items_by_cat);
       }); ?>
-      <?php render_dark_expander(setting('mcup_below_expander2_label', 'View Drinks Package'), function () { ?>
-        <p class="cup-dark-dummy">Drinks package details coming soon.</p>
-      <?php }); ?>
+      <?php render_dark_expander(setting('mcup_below_expander2_label', 'View Drinks Package'), function () {
+          render_below_drinks_package();
+      }); ?>
     </div>
     <?php endif; ?>
 
