@@ -44,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </label>
       <button type="submit" class="btn">Sign In</button>
     </form>
-    <p class="hint">Default: <code>admin</code> / <code>admin123</code> - change after login.</p>
   </div>
 </body>
 </html>
