@@ -13,7 +13,7 @@ $fieldGroups = [
 $visibilitySections = [
     'wo_hero'      => 'Hero',
     'wo_intro'     => 'Intro',
-    'wo_features'  => 'Melbourne Cup / Featured Sections',
+    'wo_features'  => 'Featured Event Sections',
     'wo_happyhour' => 'Happy Hour',
     'wo_friday'    => 'Friday & Saturday Dinner Party',
     'wo_brunch'    => 'Weekend Bottomless Brunch',
@@ -130,7 +130,7 @@ $features = db()->query("SELECT * FROM blocks WHERE block_type='wo_feature' ORDE
 $tabs = [
     'herovideo' => 'Hero Video',
     'intro'     => 'Intro',
-    'features'  => 'Melbourne Cup / Featured Sections',
+    'features'  => 'Featured Event Sections',
     'happyhour' => 'Happy Hour',
     'friday'    => 'Friday & Saturday Dinner Party',
     'brunch'    => 'Weekend Bottomless Brunch',
@@ -204,9 +204,9 @@ include __DIR__ . '/layout.php';
   </div>
 <?php endforeach; ?>
 
-<!-- Melbourne Cup / Featured Sections tab -->
+<!-- Featured Event Sections tab -->
 <div class="tab-panel settings-group<?= $activeTab === 'features' ? ' active' : '' ?>" data-tab="features">
-  <h3>Melbourne Cup / Featured Sections</h3>
+  <h3>Featured Event Sections</h3>
   <p class="group-help">Shown as image + text sections on the What's On page, between the intro and "Happy Hour". Add as many as you like, in any order - each alternates image-left/image-right automatically. Leave the button label empty to hide the button on that section.</p>
 
   <form method="post" enctype="multipart/form-data">
