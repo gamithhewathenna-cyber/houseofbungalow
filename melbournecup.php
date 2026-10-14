@@ -128,7 +128,15 @@ function render_bev_rows(string $settingKey): void
 </section>
 <?php endif; ?>
 
-<!-- Melbourne Cup At The Restaurant - Beverage Packages (Menu temporarily hidden) -->
+<?php
+/*
+ * "At The Restaurant" and "At Below" sections removed from the live page per
+ * request (headings, descriptions, pricing and the Beverage Packages / Drinks
+ * Package panels). The markup is kept below, disabled behind `if (false)`, so
+ * it's a quick restore - just change `false` to `true`. Nothing in the
+ * database was touched.
+ */
+if (false): ?>
 <?php if (section_visible('mcup_restaurant')): ?>
 <section class="cup-offer-v2 reveal">
   <div class="container">
@@ -175,7 +183,6 @@ function render_bev_rows(string $settingKey): void
 </section>
 <?php endif; ?>
 
-<!-- Melbourne Cup At Below - Drinks Package (Menu temporarily hidden) -->
 <?php if (section_visible('mcup_below')): ?>
 <section class="cup-offer-v2 reveal">
   <div class="container">
@@ -219,6 +226,7 @@ function render_bev_rows(string $settingKey): void
   </div>
 </section>
 <?php endif; ?>
+<?php endif; // if (false) ?>
 
 <!-- The Menu - two columns, Restaurant menu and Below menu side by side -->
 <?php if (section_visible('mcup_menus')): ?>
