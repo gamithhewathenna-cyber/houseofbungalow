@@ -38,6 +38,12 @@ UPDATE `settings` SET `svalue` = 'Premium' WHERE `skey` = 'mcup_rest_bev_premium
 UPDATE `settings` SET `svalue` = 'The Table' WHERE `skey` = 'mcup_menus_rest_label' AND `svalue` IN ('At The Restaurant', 'For The Table');
 UPDATE `settings` SET `svalue` = 'The Menu' WHERE `skey` = 'mcup_menus_below_label' AND `svalue` = 'At Below';
 
+-- Match the dark expander menu's "eyebrow · price · note" subtext line wording.
+UPDATE `settings` SET `svalue` = 'Three-Course Shared Set Menu' WHERE `skey` = 'mcup_rest_price_eyebrow' AND `svalue` = 'Three-Course Lunch';
+UPDATE `settings` SET `svalue` = '$120pp' WHERE `skey` = 'mcup_rest_price' AND `svalue` = '$120 PP';
+UPDATE `settings` SET `svalue` = 'Welcome drink included' WHERE `skey` = 'mcup_rest_price_note' AND `svalue` = 'Includes a welcome drink.';
+UPDATE `settings` SET `svalue` = '$160pp' WHERE `skey` = 'mcup_below_price' AND `svalue` = '$160 PP';
+
 -- If an earlier run of this migration already converted the beverage items to
 -- the "Label | Value" row format, revert them back to a plain one-per-line list.
 UPDATE `settings` SET `svalue` = 'Moët & Chandon Impérial Brut\nHouse white and red wine\nMimosas\nAsahi\nSoft drinks'
@@ -69,11 +75,13 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('mcup_rest_p1','Celebrate Melbourne Cup at the Restaurant with a three-course menu designed for sharing, bringing together Spanish inspiration, Asian influences and the best of Australian produce.','melbournecup_page','Restaurant - paragraph 1','textarea',16),
 ('mcup_rest_p2','Begin with a welcome drink before settling in for an afternoon of generous food, good company and the excitement of Cup Day.','melbournecup_page','Restaurant - paragraph 2','textarea',17),
 ('mcup_rest_date','Tuesday, 3 November 2026','melbournecup_page','Restaurant - date line','text',18),
-('mcup_rest_price_eyebrow','Three-Course Lunch','melbournecup_page','Restaurant - price eyebrow','text',19),
-('mcup_rest_price','$120 PP','melbournecup_page','Restaurant - big price','text',19),
-('mcup_rest_price_note','Includes a welcome drink.','melbournecup_page','Restaurant - price note','text',20),
-('mcup_rest_btn_label','BOOK THE RESTAURANT','melbournecup_page','Restaurant - button label','text',21),
-('mcup_rest_btn_url','reserve.php','melbournecup_page','Restaurant - button URL','text',22),
+('mcup_rest_price_eyebrow','Three-Course Shared Set Menu','melbournecup_page','Restaurant - price eyebrow','text',19),
+('mcup_rest_price','$120pp','melbournecup_page','Restaurant - big price','text',19),
+('mcup_rest_price_note','Welcome drink included','melbournecup_page','Restaurant - price note','text',20),
+('mcup_rest_btn_label','BOOK THE RESTAURANT','melbournecup_page','Restaurant - button label (not currently shown)','text',21),
+('mcup_rest_btn_url','reserve.php','melbournecup_page','Restaurant - button URL (not currently shown)','text',22),
+('mcup_rest_expander1_label','View Three-Course Menu','melbournecup_page','Restaurant - expander 1 button label','text',22),
+('mcup_rest_expander2_label','View Beverage Packages','melbournecup_page','Restaurant - expander 2 button label','text',22),
 
 ('mcup_rest_bev_lede','Make an afternoon of it.','melbournecup_page','Beverage Packages - lede','text',23),
 ('mcup_rest_bev_intro','Complete your Melbourne Cup experience with an optional three-hour beverage package.','melbournecup_page','Beverage Packages - intro','textarea',24),
@@ -93,10 +101,12 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('mcup_below_p1','This Melbourne Cup, Below opens its doors for an afternoon of champagne, cocktails and canapés in the House''s intimate Basement.','melbournecup_page','Below - paragraph 1','textarea',34),
 ('mcup_below_p2','Enjoy two hours of flowing drinks and a selection of canapés from the House of Bungalow kitchen, with the atmosphere and energy that make Below distinctly its own.','melbournecup_page','Below - paragraph 2','textarea',35),
 ('mcup_below_date','Tuesday, 3 November 2026','melbournecup_page','Below - date line','text',36),
-('mcup_below_price_eyebrow','Two Hours Of Canapés & Drinks','melbournecup_page','Below - price eyebrow','text',37),
-('mcup_below_price','$160 PP','melbournecup_page','Below - big price','text',37),
-('mcup_below_btn_label','BOOK BELOW','melbournecup_page','Below - button label','text',38),
-('mcup_below_btn_url','reserve.php','melbournecup_page','Below - button URL','text',39),
+('mcup_below_price_eyebrow','Two Hours of Canapés & Drinks','melbournecup_page','Below - price eyebrow','text',37),
+('mcup_below_price','$160pp','melbournecup_page','Below - big price','text',37),
+('mcup_below_btn_label','BOOK BELOW','melbournecup_page','Below - button label (not currently shown)','text',38),
+('mcup_below_btn_url','reserve.php','melbournecup_page','Below - button URL (not currently shown)','text',39),
+('mcup_below_expander1_label','View Canapé Menu','melbournecup_page','Below - expander 1 button label','text',39),
+('mcup_below_expander2_label','View Drinks Package','melbournecup_page','Below - expander 2 button label','text',39),
 
 ('mcup_below_drinks_lede','Champagne, cocktails and a considered selection of wines.','melbournecup_page','The Drinks - lede','text',40),
 ('mcup_below_drinks_champagne_items','Moët & Chandon Impérial Brut','melbournecup_page','The Drinks - Champagne (one per line)','textarea',41),

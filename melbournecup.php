@@ -90,36 +90,6 @@ function render_mini_accordion(string $wrapperClass, string $headingClass, strin
     <?php
 }
 
-/** One "label | value" row inside a beverage/drinks card. */
-function render_bev_row(string $label, string $value): void
-{
-    if ($value === '') {
-        return;
-    }
-    ?>
-    <div class="cup-bev-row">
-      <span class="cup-bev-row-label"><?= e($label) ?></span>
-      <span class="cup-bev-row-value"><?= enl($value) ?></span>
-    </div>
-    <?php
-}
-
-/**
- * Renders the rows for a beverage package whose setting value holds one
- * "Label | Value" pair per line (admin-editable as plain text).
- */
-function render_bev_rows(string $settingKey): void
-{
-    $lines = preg_split('/\r?\n/', trim(setting($settingKey)));
-    foreach ($lines as $line) {
-        if (trim($line) === '') {
-            continue;
-        }
-        $parts = explode('|', $line, 2);
-        render_bev_row(trim($parts[0] ?? ''), trim($parts[1] ?? ''));
-    }
-}
-
 /**
  * Renders a simple bullet list for a setting whose value holds one drink
  * per line (used for the Beverage Packages block inside "The Menu" column).
@@ -133,6 +103,29 @@ function render_bev_list(string $settingKey): void
         <li><?= e(trim($line)) ?></li>
       <?php endforeach; ?>
     </ul>
+    <?php
+}
+
+/**
+ * One full-width bordered expander button on the dark Restaurant/Below
+ * menu section - click toggles the panel underneath it open/closed.
+ */
+function render_dark_expander(string $label, callable $renderContent): void
+{
+    ?>
+    <div class="cup-dark-expander">
+      <button type="button" class="cup-dark-expander-toggle">
+        <span><?= e($label) ?></span>
+        <span class="cup-dark-expander-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </span>
+      </button>
+      <div class="cup-dark-expander-panel">
+        <div class="cup-dark-expander-panel-inner">
+          <?php $renderContent(); ?>
+        </div>
+      </div>
+    </div>
     <?php
 }
 ?>
@@ -168,233 +161,52 @@ function render_bev_list(string $settingKey): void
 </section>
 <?php endif; ?>
 
-<?php
-/*
- * "At The Restaurant" and "At Below" sections removed from the live page per
- * request (headings, descriptions, pricing and the Beverage Packages / Drinks
- * Package panels). The markup is kept below, disabled behind `if (false)`, so
- * it's a quick restore - just change `false` to `true`. Nothing in the
- * database was touched.
- */
-if (false): ?>
-<?php if (section_visible('mcup_restaurant')): ?>
-<section class="cup-offer-v2 reveal">
-  <div class="container">
-    <div class="cup-offer-v2-head">
-      <p class="cup-offer-v2-eyebrow"><?= e(setting('mcup_rest_eyebrow', 'Melbourne Cup At')) ?></p>
-      <h2><?= e(setting('mcup_rest_heading', 'The Restaurant')) ?></h2>
-      <p class="cup-offer-v2-subheading"><?= e(setting('mcup_rest_subheading')) ?></p>
-      <p class="cup-offer-v2-lede"><?= e(setting('mcup_rest_lede')) ?></p>
-      <p class="cup-offer-v2-copy"><?= enl(setting('mcup_rest_p1')) ?></p>
-      <p class="cup-offer-v2-copy"><?= enl(setting('mcup_rest_p2')) ?></p>
-      <?php if (setting('mcup_rest_date')): ?><p class="cup-offer-v2-date"><?= e(setting('mcup_rest_date')) ?></p><?php endif; ?>
-      <hr class="cup-offer-v2-rule">
-      <?php if (setting('mcup_rest_price_eyebrow')): ?><p class="cup-offer-v2-price-eyebrow"><?= e(setting('mcup_rest_price_eyebrow')) ?></p><?php endif; ?>
-      <?php if (setting('mcup_rest_price')): ?><p class="cup-offer-v2-price"><?= e(setting('mcup_rest_price')) ?></p><?php endif; ?>
-      <?php if (setting('mcup_rest_price_note')): ?><p class="cup-offer-v2-price-note"><?= e(setting('mcup_rest_price_note')) ?></p><?php endif; ?>
-    </div>
-
-    <div class="cup-browser-panel active" data-browser-panel="bev">
-      <?php if (setting('mcup_rest_bev_intro')): ?><p class="cup-bev-intro"><?= enl(setting('mcup_rest_bev_intro')) ?></p><?php endif; ?>
-      <div class="cup-bev-grid-v2">
-        <div class="cup-bev-card">
-          <p class="cup-bev-card-label"><?= e(setting('mcup_rest_bev_standard_heading', 'Standard')) ?></p>
-          <?php if (setting('mcup_rest_bev_standard_price')): ?><p class="cup-bev-card-price"><?= e(setting('mcup_rest_bev_standard_price')) ?></p><?php endif; ?>
-          <?php render_bev_rows('mcup_rest_bev_standard_items'); ?>
-        </div>
-        <div class="cup-bev-card">
-          <p class="cup-bev-card-label"><?= e(setting('mcup_rest_bev_premium_heading', 'Premium')) ?></p>
-          <?php if (setting('mcup_rest_bev_premium_price')): ?><p class="cup-bev-card-price"><?= e(setting('mcup_rest_bev_premium_price')) ?></p><?php endif; ?>
-          <?php render_bev_rows('mcup_rest_bev_premium_items'); ?>
-        </div>
-      </div>
-      <?php if (setting('mcup_rest_bev_note1')): ?><p class="cup-bev-footnote"><?= e(setting('mcup_rest_bev_note1')) ?></p><?php endif; ?>
-    </div>
-
-    <?php if (setting('mcup_rest_btn_label')): ?>
-      <div class="cup-offer-v2-btn-wrap">
-        <a class="cup-offer-v2-btn" href="<?= e(url(setting('mcup_rest_btn_url', '#'))) ?>">
-          <?= e(setting('mcup_rest_btn_label')) ?>
-          <?php cup_icon('arrow'); ?>
-        </a>
-      </div>
-    <?php endif; ?>
-  </div>
-</section>
-<?php endif; ?>
-
-<?php if (section_visible('mcup_below')): ?>
-<section class="cup-offer-v2 reveal">
-  <div class="container">
-    <div class="cup-offer-v2-head">
-      <p class="cup-offer-v2-eyebrow"><?= e(setting('mcup_below_eyebrow', 'Melbourne Cup At')) ?></p>
-      <h2><?= e(setting('mcup_below_heading', 'Below')) ?></h2>
-      <p class="cup-offer-v2-subheading"><?= e(setting('mcup_below_subheading')) ?></p>
-      <p class="cup-offer-v2-lede"><?= e(setting('mcup_below_lede')) ?></p>
-      <p class="cup-offer-v2-copy"><?= enl(setting('mcup_below_p1')) ?></p>
-      <p class="cup-offer-v2-copy"><?= enl(setting('mcup_below_p2')) ?></p>
-      <?php if (setting('mcup_below_date')): ?><p class="cup-offer-v2-date"><?= e(setting('mcup_below_date')) ?></p><?php endif; ?>
-      <hr class="cup-offer-v2-rule">
-      <?php if (setting('mcup_below_price_eyebrow')): ?><p class="cup-offer-v2-price-eyebrow"><?= e(setting('mcup_below_price_eyebrow')) ?></p><?php endif; ?>
-      <?php if (setting('mcup_below_price')): ?><p class="cup-offer-v2-price"><?= e(setting('mcup_below_price')) ?></p><?php endif; ?>
-    </div>
-
-    <div class="cup-browser-panel active" data-browser-panel="bev">
-      <?php if (setting('mcup_below_drinks_lede')): ?><p class="cup-bev-intro"><?= e(setting('mcup_below_drinks_lede', 'Champagne, cocktails and a considered selection of wines.')) ?></p><?php endif; ?>
-      <div class="cup-bev-grid-v2 single">
-        <div class="cup-bev-card">
-          <?php
-            render_bev_row('Champagne', setting('mcup_below_drinks_champagne_items'));
-            render_bev_row('White Wine', setting('mcup_below_drinks_white_items'));
-            render_bev_row('Rosé', setting('mcup_below_drinks_rose_items'));
-            render_bev_row('Red Wine', setting('mcup_below_drinks_red_items'));
-            render_bev_row('Beer', setting('mcup_below_drinks_beer_items'));
-            render_bev_row('Signature Cocktails', setting('mcup_below_drinks_cocktails_items'));
-          ?>
-        </div>
-      </div>
-    </div>
-
-    <?php if (setting('mcup_below_btn_label')): ?>
-      <div class="cup-offer-v2-btn-wrap">
-        <a class="cup-offer-v2-btn" href="<?= e(url(setting('mcup_below_btn_url', '#'))) ?>">
-          <?= e(setting('mcup_below_btn_label')) ?>
-          <?php cup_icon('arrow'); ?>
-        </a>
-      </div>
-    <?php endif; ?>
-  </div>
-</section>
-<?php endif; ?>
-<?php endif; // if (false) ?>
-
-<!-- The Menu - single column, switch between "The Table" and "The Menu" -->
+<!-- Melbourne Cup - dark expander menu: At The Restaurant / At Below -->
 <?php if (section_visible('mcup_menus')): ?>
-<section class="cup-menu-section reveal">
+<section class="cup-dark-menu reveal">
   <div class="container">
-    <h2><?= e(setting('mcup_menus_heading', 'The Menu')) ?></h2>
 
-    <div class="cup-menu-tabs">
-      <button type="button" class="cup-menu-tab active" data-menu-tab="table"><?= e(setting('mcup_menus_rest_label', 'The Table')) ?></button>
-      <button type="button" class="cup-menu-tab" data-menu-tab="menu"><?= e(setting('mcup_menus_below_label', 'The Menu')) ?></button>
+    <?php if (section_visible('mcup_restaurant')): ?>
+    <div class="cup-dark-offer">
+      <p class="cup-dark-eyebrow"><?= e(trim(setting('mcup_rest_eyebrow', 'Melbourne Cup At') . ' ' . setting('mcup_rest_heading', 'The Restaurant'))) ?></p>
+      <h2 class="cup-dark-heading"><?= e(setting('mcup_rest_heading', 'The Restaurant')) ?></h2>
+      <?php $restSub = array_filter([setting('mcup_rest_price_eyebrow'), setting('mcup_rest_price'), setting('mcup_rest_price_note')], 'strlen'); ?>
+      <?php if ($restSub): ?><p class="cup-dark-subtext"><?= e(implode(' · ', $restSub)) ?></p><?php endif; ?>
+
+      <?php render_dark_expander(setting('mcup_rest_expander1_label', 'View Three-Course Menu'), function () { ?>
+        <p class="cup-dark-dummy">Menu details coming soon.</p>
+      <?php }); ?>
+      <?php render_dark_expander(setting('mcup_rest_expander2_label', 'View Beverage Packages'), function () { ?>
+        <p class="cup-dark-dummy">Beverage package details coming soon.</p>
+      <?php }); ?>
     </div>
+    <?php endif; ?>
 
-    <div class="cup-menu-single">
-      <div class="cup-menu-panel active" data-menu-panel="table">
-        <?php render_menu_stack($rest_menu_cats, $rest_menu_items_by_cat); ?>
+    <?php if (section_visible('mcup_below')): ?>
+    <div class="cup-dark-offer">
+      <p class="cup-dark-eyebrow"><?= e(trim(setting('mcup_below_eyebrow', 'Melbourne Cup At') . ' ' . setting('mcup_below_heading', 'Below'))) ?></p>
+      <h2 class="cup-dark-heading"><?= e(setting('mcup_below_heading', 'Below')) ?></h2>
+      <?php $belowSub = array_filter([setting('mcup_below_price_eyebrow'), setting('mcup_below_price')], 'strlen'); ?>
+      <?php if ($belowSub): ?><p class="cup-dark-subtext"><?= e(implode(' · ', $belowSub)) ?></p><?php endif; ?>
 
-        <div class="cup-menu-bev">
-          <p class="cup-menu-bev-heading">Beverage Packages</p>
-          <?php if (setting('mcup_rest_bev_lede')): ?><p class="cup-menu-bev-lede"><?= e(setting('mcup_rest_bev_lede')) ?></p><?php endif; ?>
-          <?php if (setting('mcup_rest_bev_intro')): ?><p class="cup-menu-bev-intro"><?= enl(setting('mcup_rest_bev_intro')) ?></p><?php endif; ?>
-
-          <?php
-            render_mini_accordion('cup-menu-bev-pkg', 'cup-menu-bev-pkg-heading', e(setting('mcup_rest_bev_standard_heading', 'Standard')) . ' — Add ' . e(setting('mcup_rest_bev_standard_price', '$55 PP')), true, function () {
-                render_bev_list('mcup_rest_bev_standard_items');
-            });
-            render_mini_accordion('cup-menu-bev-pkg', 'cup-menu-bev-pkg-heading', e(setting('mcup_rest_bev_premium_heading', 'Premium')) . ' — Add ' . e(setting('mcup_rest_bev_premium_price', '$85 PP')), false, function () {
-                render_bev_list('mcup_rest_bev_premium_items');
-            });
-          ?>
-
-          <?php if (setting('mcup_rest_bev_note1')): ?><p class="cup-menu-bev-note"><?= e(setting('mcup_rest_bev_note1')) ?></p><?php endif; ?>
-          <?php if (setting('mcup_rest_bev_note2')): ?><p class="cup-menu-bev-note"><?= enl(setting('mcup_rest_bev_note2')) ?></p><?php endif; ?>
-        </div>
-      </div>
-      <div class="cup-menu-panel" data-menu-panel="menu">
-        <?php render_menu_stack($themenu_cats, $themenu_items_by_cat); ?>
-      </div>
+      <?php render_dark_expander(setting('mcup_below_expander1_label', 'View Canapé Menu'), function () { ?>
+        <p class="cup-dark-dummy">Menu details coming soon.</p>
+      <?php }); ?>
+      <?php render_dark_expander(setting('mcup_below_expander2_label', 'View Drinks Package'), function () { ?>
+        <p class="cup-dark-dummy">Drinks package details coming soon.</p>
+      <?php }); ?>
     </div>
+    <?php endif; ?>
+
   </div>
 </section>
 <?php endif; ?>
 
 <script>
 (function () {
-  var menuTabs = document.querySelectorAll('.cup-menu-tab');
-  menuTabs.forEach(function (btn) {
+  document.querySelectorAll('.cup-dark-expander-toggle').forEach(function (btn) {
     btn.addEventListener('click', function () {
-      menuTabs.forEach(function (b) { b.classList.remove('active'); });
-      document.querySelectorAll('.cup-menu-panel').forEach(function (p) { p.classList.remove('active'); });
-      btn.classList.add('active');
-      var panel = document.querySelector('.cup-menu-panel[data-menu-panel="' + btn.dataset.menuTab + '"]');
-      if (panel) panel.classList.add('active');
-    });
-  });
-
-  document.querySelectorAll('.cup-mini-accordion-toggle').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      btn.closest('.cup-mini-accordion').classList.toggle('open');
-    });
-  });
-})();
-</script>
-
-<?php
-/*
- * "Two Experiences. One House." closing summary section removed from the
- * live page per request. Markup kept below, disabled behind `if (false)`,
- * for a quick restore - just change `false` to `true`. Nothing in the
- * database was touched.
- */
-if (false): ?>
-<?php if (section_visible('mcup_summary')): ?>
-<section class="textblock reveal">
-  <div class="container">
-    <h2><?= e(setting('mcup_summary_heading', 'Two Experiences. One House.')) ?></h2>
-    <p class="subheading" style="text-align:center;"><?= e(setting('mcup_summary_subheading')) ?></p>
-    <p><?= enl(setting('mcup_summary_p1')) ?></p>
-    <?php if (setting('mcup_summary_date')): ?><p class="hours-line" style="text-align:center;"><?= e(setting('mcup_summary_date')) ?></p><?php endif; ?>
-
-    <div class="cup-summary-grid">
-      <div class="cup-summary-card">
-        <h3>The Restaurant</h3>
-        <?php if (setting('mcup_summary_rest_detail1')): ?><p><?= e(setting('mcup_summary_rest_detail1')) ?></p><?php endif; ?>
-        <?php if (setting('mcup_summary_rest_detail2')): ?><p><?= e(setting('mcup_summary_rest_detail2')) ?></p><?php endif; ?>
-        <div class="btn-wrap">
-          <?php if (setting('mcup_summary_rest_btn_label')): ?>
-            <a class="link-underline" href="<?= e(url(setting('mcup_summary_rest_btn_url', '#'))) ?>"><?= e(setting('mcup_summary_rest_btn_label')) ?></a>
-          <?php endif; ?>
-        </div>
-      </div>
-      <div class="cup-summary-card">
-        <h3>Below</h3>
-        <?php if (setting('mcup_summary_below_detail1')): ?><p><?= e(setting('mcup_summary_below_detail1')) ?></p><?php endif; ?>
-        <div class="btn-wrap">
-          <?php if (setting('mcup_summary_below_btn_label')): ?>
-            <a class="link-underline" href="<?= e(url(setting('mcup_summary_below_btn_url', '#'))) ?>"><?= e(setting('mcup_summary_below_btn_label')) ?></a>
-          <?php endif; ?>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<?php endif; ?>
-<?php endif; // if (false) ?>
-
-<script>
-(function () {
-  document.querySelectorAll('.cup-offer-v2').forEach(function (offer) {
-    var browserTabs = offer.querySelectorAll('.cup-browser-tab');
-    browserTabs.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        browserTabs.forEach(function (b) { b.classList.remove('active'); });
-        offer.querySelectorAll('.cup-browser-panel').forEach(function (p) { p.classList.remove('active'); });
-        btn.classList.add('active');
-        var panel = offer.querySelector('.cup-browser-panel[data-browser-panel="' + btn.dataset.browserTab + '"]');
-        if (panel) panel.classList.add('active');
-      });
-    });
-
-    var catBtns = offer.querySelectorAll('.cup-browser-cat-btn');
-    catBtns.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        catBtns.forEach(function (b) { b.classList.remove('active'); });
-        offer.querySelectorAll('.cup-browser-cat-panel').forEach(function (p) { p.classList.remove('active'); });
-        btn.classList.add('active');
-        var panel = offer.querySelector('.cup-browser-cat-panel[data-cat-panel="' + btn.dataset.cat + '"]');
-        if (panel) panel.classList.add('active');
-      });
+      btn.closest('.cup-dark-expander').classList.toggle('open');
     });
   });
 })();

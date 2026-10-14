@@ -769,141 +769,48 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .hours-footnote{font-family:var(--sans);font-weight:300;font-size:13px;letter-spacing:.4px;color:var(--ink-mute);margin:0 auto 6px;max-width:700px;}
 
 /* ------------------------------------------------------------------ */
-/* Melbourne Cup - offer block v2: title + Menu/Beverage browser      */
+/* Melbourne Cup - dark expander menu (At The Restaurant / At Below)  */
 /* ------------------------------------------------------------------ */
-.cup-offer-v2{padding:70px 0;}
-.cup-offer-v2 + .cup-offer-v2{border-top:1px solid #e5dbcd;}
-.cup-offer-v2-head{max-width:700px;margin:0 auto;text-align:center;}
-.cup-offer-v2-eyebrow{
-  font-family:var(--sans);font-weight:600;font-size:12px;letter-spacing:1.5px;
-  text-transform:uppercase;color:var(--maroon);margin:0 0 8px;
-}
-.cup-offer-v2-head h2{
-  font-family:var(--serif);font-weight:500;font-size:46px;letter-spacing:.5px;
-  text-transform:uppercase;color:var(--maroon);margin:0 0 16px;
-}
-.cup-offer-v2-subheading{
-  font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:1.2px;
-  text-transform:uppercase;color:var(--ink);margin:0 0 10px;
-}
-.cup-offer-v2-lede{
-  font-family:var(--serif);font-style:italic;font-weight:400;font-size:16px;
-  color:var(--ink-soft);margin:0 0 14px;
-}
-.cup-offer-v2-copy{
-  font-family:var(--sans);font-weight:300;font-size:14px;line-height:1.65;
-  color:var(--ink-soft);margin:0 0 10px;
-}
-.cup-offer-v2-date{
-  font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:2px;
-  text-transform:uppercase;color:var(--ink-mute);margin:20px 0 20px;
-}
-.cup-offer-v2-rule{width:40px;height:2px;background:var(--maroon);border:0;margin:0 auto 24px;}
-.cup-offer-v2-price-eyebrow{
-  font-family:var(--sans);font-weight:600;font-size:12px;letter-spacing:1.8px;
-  text-transform:uppercase;color:var(--ink-mute);margin:0 0 6px;
-}
-.cup-offer-v2-price{font-family:var(--serif);font-weight:600;font-size:44px;color:var(--maroon);margin:0 0 6px;}
-.cup-offer-v2-price-note{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--ink-mute);margin:0;}
-
-/* Pill tab switcher (Menu / Beverage Packages) */
-.cup-browser-tabs{
-  display:flex;max-width:460px;margin:34px auto 0;background:#ede1d2;
-  border-radius:999px;padding:6px;gap:4px;
-}
-.cup-browser-tab{
-  flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
-  background:none;border:0;cursor:pointer;padding:13px 16px;border-radius:999px;
-  font-family:var(--sans);font-weight:600;font-size:12px;letter-spacing:1px;
-  text-transform:uppercase;color:var(--ink-soft);
-  transition:background-color .2s ease,color .2s ease;
-}
-.cup-browser-tab svg{width:16px;height:16px;flex-shrink:0;}
-.cup-browser-tab.active{background:var(--dark);color:#f3ece4;}
-
-/* Panel shell */
-.cup-browser-panel{display:none;margin:20px auto 0;max-width:900px;border:1px solid #e5dbcd;border-radius:20px;background:#fbf6f0;overflow:hidden;}
-.cup-browser-panel.active{display:block;}
-
-/* Menu browser: left category nav + right detail */
-.cup-browser-menu{display:grid;grid-template-columns:230px 1fr;}
-.cup-browser-menu-nav{border-right:1px solid #e5dbcd;padding:16px;display:flex;flex-direction:column;gap:4px;}
-.cup-browser-cat-btn{
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
-  background:none;border:0;cursor:pointer;text-align:left;padding:13px 16px;border-radius:10px;
-  font-family:var(--serif);font-weight:500;font-size:15px;color:var(--ink);
-  transition:background-color .2s ease,color .2s ease;
-}
-.cup-browser-cat-btn svg{width:15px;height:15px;flex-shrink:0;opacity:.5;}
-.cup-browser-cat-btn:hover{background:#f1e7d9;}
-.cup-browser-cat-btn.active{background:var(--maroon);color:#fff;}
-.cup-browser-cat-btn.active svg{opacity:1;}
-.cup-browser-menu-detail{padding:32px 36px;}
-.cup-browser-cat-panel{display:none;}
-.cup-browser-cat-panel.active{display:block;}
-.cup-browser-cat-panel h3{font-family:var(--serif);font-weight:500;font-size:28px;color:var(--ink);margin:0 0 6px;}
-.cup-browser-cat-note{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--ink-mute);margin:0 0 14px;}
-.cup-browser-divider{width:36px;height:2px;background:var(--maroon);border:0;margin:0 0 20px;}
-.cup-browser-item{font-family:var(--serif);font-weight:500;font-size:16px;color:var(--ink);margin:0 0 2px;}
-.cup-browser-item-desc{font-family:var(--sans);font-weight:300;font-size:13px;color:var(--ink-soft);margin:0 0 16px;}
-.cup-browser-menu-footnote{padding:0 36px 28px;font-family:var(--serif);font-style:italic;font-size:13px;color:var(--ink-mute);}
-
-/* Beverage / drinks cards */
-.cup-bev-grid-v2{display:grid;grid-template-columns:1fr 1fr;}
-.cup-bev-grid-v2.single{grid-template-columns:1fr;max-width:460px;margin:0 auto;}
-.cup-bev-intro{
-  font-family:var(--sans);font-weight:300;font-size:14px;line-height:1.5;
-  color:var(--ink-soft);text-align:center;max-width:460px;margin:0 auto;padding:28px 32px 0;
-}
-.cup-bev-card{padding:30px 32px 32px;}
-.cup-bev-card + .cup-bev-card{border-left:1px solid #e5dbcd;}
-.cup-bev-card-label{
+.cup-dark-menu{background:var(--dark);padding:80px 0;}
+.cup-dark-offer{max-width:760px;margin:0 auto;}
+.cup-dark-offer + .cup-dark-offer{margin-top:70px;}
+.cup-dark-eyebrow{
   font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:1.5px;
-  text-transform:uppercase;color:var(--maroon);text-align:center;margin:0 0 4px;
+  text-transform:uppercase;color:#d9975f;margin:0 0 10px;
 }
-.cup-bev-card-price{font-family:var(--serif);font-weight:600;font-size:28px;color:var(--maroon);text-align:center;margin:0 0 18px;}
-.cup-bev-row{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid #e5dbcd;}
-.cup-bev-row:last-child{border-bottom:0;}
-.cup-bev-row-label{
-  font-family:var(--sans);font-weight:700;font-size:11px;letter-spacing:1px;
-  text-transform:uppercase;color:var(--maroon);flex-shrink:0;max-width:42%;
+.cup-dark-heading{
+  font-family:var(--sans);font-weight:800;font-size:34px;letter-spacing:.3px;
+  text-transform:uppercase;color:#fff;margin:0 0 14px;
 }
-.cup-bev-row-value{font-family:var(--sans);font-weight:300;font-size:13px;color:var(--ink-soft);text-align:right;}
-.cup-bev-footnote{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--ink-mute);text-align:center;padding:18px 32px 28px;}
-
-.cup-offer-v2-btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:10px;
-  background:var(--dark);color:#f3ece4;text-decoration:none;
-  font-family:var(--sans);font-weight:600;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;
-  padding:16px 34px;border-radius:999px;margin-top:30px;transition:background-color .2s ease;
+.cup-dark-subtext{
+  font-family:var(--sans);font-weight:300;font-size:16px;
+  color:rgba(255,255,255,.65);margin:0 0 34px;
 }
-.cup-offer-v2-btn:hover{background:var(--maroon);}
-.cup-offer-v2-btn svg{width:14px;height:14px;flex-shrink:0;}
-.cup-offer-v2-btn-wrap{text-align:center;}
+.cup-dark-expander{border:1px solid rgba(255,255,255,.25);border-radius:6px;margin-bottom:16px;overflow:hidden;}
+.cup-dark-expander:last-child{margin-bottom:0;}
+.cup-dark-expander-toggle{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  background:none;border:0;cursor:pointer;padding:20px 26px;text-align:left;
+  font-family:var(--sans);font-weight:700;font-size:14px;letter-spacing:1px;
+  text-transform:uppercase;color:#fff;
+}
+.cup-dark-expander-icon{flex-shrink:0;color:#fff;transition:transform .25s ease;}
+.cup-dark-expander-icon svg{width:18px;height:18px;display:block;}
+.cup-dark-expander.open .cup-dark-expander-icon{transform:rotate(45deg);}
+.cup-dark-expander-panel{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+.cup-dark-expander.open .cup-dark-expander-panel{max-height:1000px;}
+.cup-dark-expander-panel-inner{padding:0 26px 24px;}
+.cup-dark-dummy{
+  font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.6;
+  color:rgba(255,255,255,.6);margin:0;
+}
 
 /* ------------------------------------------------------------------ */
-/* Melbourne Cup - "The Menu" section: single column, switch between       */
-/* "The Table" and "The Menu" (each independently managed in admin)        */
+/* Melbourne Cup - menu category / beverage package content styles,   */
+/* reused by render_menu_stack()/render_mini_accordion() helpers      */
+/* (currently not called on the live page - kept for the next content */
+/* pass on the dark expander menu above).                             */
 /* ------------------------------------------------------------------ */
-.cup-menu-section{padding:70px 0;text-align:center;}
-.cup-menu-section h2{
-  font-family:var(--serif);font-weight:500;font-size:40px;
-  color:var(--ink);margin:0 0 36px;
-}
-.cup-menu-tabs{
-  display:flex;max-width:420px;margin:0 auto 40px;background:#ede1d2;
-  border-radius:999px;padding:6px;gap:4px;
-}
-.cup-menu-tab{
-  flex:1;background:none;border:0;cursor:pointer;padding:14px 16px;border-radius:999px;
-  font-family:var(--sans);font-weight:600;font-size:14px;letter-spacing:1px;
-  text-transform:uppercase;color:var(--ink-soft);
-  transition:background-color .2s ease,color .2s ease;
-}
-.cup-menu-tab.active{background:var(--dark);color:#f3ece4;}
-.cup-menu-single{max-width:680px;margin:0 auto;text-align:center;}
-.cup-menu-panel{display:none;}
-.cup-menu-panel.active{display:block;}
 .cup-menu-category{margin-bottom:26px;}
 .cup-menu-category:last-child{margin-bottom:0;}
 .cup-menu-category-heading{
@@ -961,21 +868,6 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   font-family:var(--serif);font-style:italic;font-weight:400;font-size:15px;
   color:var(--ink-mute);margin:0 0 8px;
 }
-
-/* ------------------------------------------------------------------ */
-/* Melbourne Cup - closing comparison cards                           */
-/* ------------------------------------------------------------------ */
-.cup-summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:800px;margin:34px auto 0;}
-.cup-summary-card{background:#ede1d2;border-radius:20px;padding:40px 36px;text-align:center;}
-.cup-summary-card h3{
-  font-family:var(--serif);font-weight:500;font-size:22px;
-  color:var(--ink);margin:0 0 14px;text-transform:uppercase;letter-spacing:.5px;
-}
-.cup-summary-card p{
-  font-family:var(--sans);font-weight:300;font-size:14px;
-  color:var(--ink-soft);margin:0 0 8px;max-width:none;
-}
-.cup-summary-card .btn-wrap{margin-top:20px;}
 
 .cocktails-copy p{margin:0 auto 26px;}
 .cocktails-copy p.tight{margin-bottom:8px;}
@@ -1405,8 +1297,6 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .dj-card{flex-basis:260px;}
   .maroon-band h1,.maroon-band h2{font-size:32px;}
   .lineup-section p{white-space:normal;max-width:600px;}
-  .cup-browser-menu-nav{padding:14px;}
-  .cup-browser-cat-btn{font-size:14px;padding:12px 14px;}
 }
 @media (max-width:640px){
   body{font-size:21px;}
@@ -1479,25 +1369,11 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .page-header-band{padding-top:140px;}
   .maroon-band .subheading{font-size:19px;}
   .lineup-section h2{font-size:26px;}
-  .cup-summary-grid{grid-template-columns:1fr;gap:20px;}
-  .cup-summary-card{padding:30px 22px;}
-  .cup-offer-v2-head h2{font-size:28px;}
-  .cup-offer-v2-price{font-size:32px;}
-  .cup-browser-tabs{max-width:100%;}
-  .cup-browser-tab{font-size:10px;letter-spacing:.5px;padding:12px 8px;}
-  .cup-browser-menu{grid-template-columns:1fr;}
-  .cup-browser-menu-nav{border-right:0;border-bottom:1px solid #e5dbcd;flex-direction:row;overflow-x:auto;gap:8px;}
-  .cup-browser-cat-btn{flex-shrink:0;}
-  .cup-browser-menu-detail{padding:24px 20px;}
-  .cup-browser-menu-footnote{padding:0 20px 22px;}
-  .cup-bev-grid-v2{grid-template-columns:1fr;}
-  .cup-bev-card + .cup-bev-card{border-left:0;border-top:1px solid #e5dbcd;}
-  .cup-bev-card{padding:24px 20px 26px;}
-  .cup-bev-intro{padding:22px 20px 0;}
-  .cup-bev-footnote{padding:16px 20px 22px;}
-  .cup-menu-section h2{font-size:28px;}
-  .cup-menu-tabs{max-width:100%;}
-  .cup-menu-tab{font-size:10px;letter-spacing:.5px;padding:12px 8px;}
+  .cup-dark-menu{padding:56px 0;}
+  .cup-dark-offer + .cup-dark-offer{margin-top:50px;}
+  .cup-dark-heading{font-size:26px;}
+  .cup-dark-expander-toggle{padding:16px 18px;font-size:12px;}
+  .cup-dark-expander-panel-inner{padding:0 18px 20px;}
 }
 
 /* Hide desktop-only nav labels on very small screens if needed */

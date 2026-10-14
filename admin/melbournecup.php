@@ -6,25 +6,22 @@ require_once __DIR__ . '/helpers.php';
 $fieldGroups = [
     'herovideo' => ['mcup_hero_image', 'mcup_hero_video'],
     'intro'     => ['mcup_heading', 'mcup_subheading', 'mcup_lede', 'mcup_p1', 'mcup_p2', 'mcup_p3', 'mcup_date', 'mcup_btn1_label', 'mcup_btn1_url', 'mcup_btn2_label', 'mcup_btn2_url'],
-    'restaurant' => ['mcup_rest_eyebrow', 'mcup_rest_heading', 'mcup_rest_subheading', 'mcup_rest_lede', 'mcup_rest_p1', 'mcup_rest_p2', 'mcup_rest_date', 'mcup_rest_price_eyebrow', 'mcup_rest_price', 'mcup_rest_price_note', 'mcup_rest_btn_label', 'mcup_rest_btn_url'],
+    'restaurant' => ['mcup_rest_eyebrow', 'mcup_rest_heading', 'mcup_rest_price_eyebrow', 'mcup_rest_price', 'mcup_rest_price_note', 'mcup_rest_expander1_label', 'mcup_rest_expander2_label'],
     'restbev'   => ['mcup_rest_bev_lede', 'mcup_rest_bev_intro', 'mcup_rest_bev_standard_heading', 'mcup_rest_bev_standard_price', 'mcup_rest_bev_standard_items', 'mcup_rest_bev_premium_heading', 'mcup_rest_bev_premium_price', 'mcup_rest_bev_premium_items', 'mcup_rest_bev_note1', 'mcup_rest_bev_note2'],
-    'below'     => ['mcup_below_eyebrow', 'mcup_below_heading', 'mcup_below_subheading', 'mcup_below_lede', 'mcup_below_p1', 'mcup_below_p2', 'mcup_below_date', 'mcup_below_price_eyebrow', 'mcup_below_price', 'mcup_below_btn_label', 'mcup_below_btn_url'],
+    'below'     => ['mcup_below_eyebrow', 'mcup_below_heading', 'mcup_below_price_eyebrow', 'mcup_below_price', 'mcup_below_expander1_label', 'mcup_below_expander2_label'],
     'belowdrinks' => ['mcup_below_drinks_lede', 'mcup_below_drinks_champagne_items', 'mcup_below_drinks_white_items', 'mcup_below_drinks_rose_items', 'mcup_below_drinks_red_items', 'mcup_below_drinks_beer_items', 'mcup_below_drinks_cocktails_items'],
-    'menus'     => ['mcup_menus_heading', 'mcup_menus_rest_label', 'mcup_menus_below_label'],
-    'summary'   => ['mcup_summary_heading', 'mcup_summary_subheading', 'mcup_summary_p1', 'mcup_summary_date', 'mcup_summary_rest_detail1', 'mcup_summary_rest_detail2', 'mcup_summary_rest_btn_label', 'mcup_summary_rest_btn_url', 'mcup_summary_below_detail1', 'mcup_summary_below_btn_label', 'mcup_summary_below_btn_url'],
 ];
 $menuFamilies = [
     'restmenu'  => ['label' => 'The Table', 'catType' => 'mcup_rest_menu_cat',  'itemPrefix' => 'mcup_rest_menu_item_'],
     'themenu'   => ['label' => 'The Menu',  'catType' => 'mcup_themenu_cat',    'itemPrefix' => 'mcup_themenu_item_'],
-    'belowmenu' => ['label' => 'Below Menu (not currently shown on the live page)', 'catType' => 'mcup_below_menu_cat', 'itemPrefix' => 'mcup_below_menu_item_'],
+    'belowmenu' => ['label' => 'Below Menu (not currently wired to an expander)', 'catType' => 'mcup_below_menu_cat', 'itemPrefix' => 'mcup_below_menu_item_'],
 ];
 $visibilitySections = [
     'mcup_hero'       => 'Hero',
     'mcup_intro'      => 'Top Intro',
-    'mcup_restaurant' => 'At The Restaurant (pricing & beverage packages)',
-    'mcup_below'      => 'At Below (pricing & drinks)',
-    'mcup_menus'      => 'The Menu (switches between "The Table" and "The Menu")',
-    'mcup_summary'    => 'Two Experiences. One House.',
+    'mcup_restaurant' => 'At The Restaurant (heading, pricing & its two expanders)',
+    'mcup_below'      => 'At Below (heading, pricing & its two expanders)',
+    'mcup_menus'      => 'The whole dark menu section (both of the above)',
 ];
 
 $error = '';
@@ -170,14 +167,12 @@ $tabs = [
     'herovideo'   => 'Hero Video',
     'intro'       => 'Top Intro',
     'restaurant'  => 'At The Restaurant',
-    'restmenu'    => 'The Table - Items',
-    'restbev'     => 'Beverage Packages',
+    'restbev'     => 'Beverage Packages (dummy for now)',
     'below'       => 'At Below',
-    'belowmenu'   => 'Below Menu - Items (unused)',
-    'belowdrinks' => 'The Drinks',
-    'themenu'     => 'The Menu - Items',
-    'menus'       => 'Menu Section Settings',
-    'summary'     => 'Closing Summary',
+    'belowdrinks' => 'The Drinks (dummy for now)',
+    'restmenu'    => 'The Table - Items (not yet wired up)',
+    'themenu'     => 'The Menu - Items (not yet wired up)',
+    'belowmenu'   => 'Below Menu - Items (not yet wired up)',
     'visibility'  => 'Section Visibility',
 ];
 $activeTab = $_GET['tab'] ?? 'herovideo';
@@ -345,10 +340,10 @@ include __DIR__ . '/layout.php';
 <?php foreach ($fieldGroups as $group => $keys): ?>
   <div class="tab-panel settings-group<?= $activeTab === $group ? ' active' : '' ?>" data-tab="<?= e($group) ?>">
     <h3><?= e($tabs[$group]) ?></h3>
-    <?php if ($group === 'restaurant' || $group === 'below'): ?><p class="group-help">This section is currently not shown on the live page (removed per request) - these fields aren't visible until it's switched back on.</p><?php endif; ?>
-    <?php if ($group === 'restbev'): ?><p class="group-help">This content now appears inside "The Menu" section, under "The Table", below the food menu. Standard / Premium items: one drink per line.</p><?php endif; ?>
-    <?php if ($group === 'belowdrinks'): ?><p class="group-help">Each field is the value shown next to its drink category - this content is currently not shown on the live page (removed per request) along with the rest of the "At Below" section.</p><?php endif; ?>
-    <?php if ($group === 'menus'): ?><p class="group-help">This is "The Menu" section further down the page - a single switcher between two independently-managed menus. The heading here is the section's own title; the two labels below are the switcher button text. Edit the actual categories/dishes under the "The Table - Items" and "The Menu - Items" tabs, and the Beverage Packages shown under "The Table" via the "Beverage Packages" tab.</p><?php endif; ?>
+    <?php if ($group === 'restaurant'): ?><p class="group-help">The heading block and the two expander buttons on the dark menu section. Each expander currently shows placeholder text - let me know what should go inside them and I'll wire it in.</p><?php endif; ?>
+    <?php if ($group === 'below'): ?><p class="group-help">The heading block and the two expander buttons on the dark menu section. Each expander currently shows placeholder text - let me know what should go inside them and I'll wire it in.</p><?php endif; ?>
+    <?php if ($group === 'restbev'): ?><p class="group-help">Not shown on the live page yet - the "View Beverage Packages" expander currently has placeholder text instead. Once you're ready, this content (Standard / Premium, one drink per line) can be wired into that expander.</p><?php endif; ?>
+    <?php if ($group === 'belowdrinks'): ?><p class="group-help">Not shown on the live page yet - the "View Drinks Package" expander currently has placeholder text instead. Once you're ready, this content can be wired into that expander.</p><?php endif; ?>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
       <input type="hidden" name="action" value="save_section">
@@ -361,17 +356,19 @@ include __DIR__ . '/layout.php';
 
 <!-- The Table - menu items tab -->
 <div class="tab-panel settings-group<?= $activeTab === 'restmenu' ? ' active' : '' ?>" data-tab="restmenu">
+  <p class="group-help">Not shown on the live page yet - the "View Three-Course Menu" expander currently has placeholder text instead. Add categories and dishes here now so it's ready whenever you want it wired into that expander.</p>
   <?php render_menu_family('restmenu', $menuFamilies['restmenu'], $menuData['restmenu'], $activeCat, $csrf); ?>
 </div>
 
 <!-- The Menu - menu items tab -->
 <div class="tab-panel settings-group<?= $activeTab === 'themenu' ? ' active' : '' ?>" data-tab="themenu">
-  <p class="group-help">This is the second switcher option on the live page. Add categories and dishes here the same way as "The Table".</p>
+  <p class="group-help">A second, independent menu - not yet linked to anything on the live page. Add categories and dishes here the same way as "The Table".</p>
   <?php render_menu_family('themenu', $menuFamilies['themenu'], $menuData['themenu'], $activeCat, $csrf); ?>
 </div>
 
 <!-- Below Menu tab (not currently linked from the live page) -->
 <div class="tab-panel settings-group<?= $activeTab === 'belowmenu' ? ' active' : '' ?>" data-tab="belowmenu">
+  <p class="group-help">Not shown on the live page yet - the "View Canapé Menu" expander currently has placeholder text instead.</p>
   <?php render_menu_family('belowmenu', $menuFamilies['belowmenu'], $menuData['belowmenu'], $activeCat, $csrf); ?>
 </div>
 
