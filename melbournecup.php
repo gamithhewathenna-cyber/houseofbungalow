@@ -55,8 +55,7 @@ function render_menu_stack(array $cats, array $itemsByCat): void
           <p class="cup-menu-category-heading"><?= e($cat['title']) ?></p>
           <?php if ($cat['subtitle']): ?><p class="cup-menu-category-note"><?= e($cat['subtitle']) ?></p><?php endif; ?>
           <?php foreach ($itemsByCat[$cat['id']] as $item): ?>
-            <p class="cup-menu-item"><?= e($item['title']) ?></p>
-            <?php if ($item['body']): ?><p class="cup-menu-item-desc"><?= enl($item['body']) ?></p><?php endif; ?>
+            <p class="cup-menu-item"><?= e($item['title']) ?><?php if ($item['body']): ?>, <?= enl($item['body']) ?><?php endif; ?></p>
           <?php endforeach; ?>
         </div>
         <?php

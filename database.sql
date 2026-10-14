@@ -921,13 +921,13 @@ INSERT INTO `blocks` (`block_type`,`title`,`subtitle`,`sort`,`active`) VALUES ('
 SET @mcup_rest_cat_main := LAST_INSERT_ID();
 
 INSERT INTO `blocks` (`block_type`,`title`,`body`,`sort`,`active`) VALUES
-(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_table),'Pan De Cristal','Crushed vine tomato, EVOO',1,1),
-(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_table),'Smoked Eel Gilda','Gordal olive, guindilla, kabayaki glaze',2,1),
-(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_entree),'Kingfish Sashimi','Chilled ajoblanco, rockfruit, green almonds, makrut kosho oil',1,1),
-(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_entree),'Hand Chopped Wagyu','Karashi sabayon, smoked soy, pickled chillies, potato crisp',2,1),
-(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Bundarra Pork Secreto','Yuzu kosho mojo verde, butter beans, pickled turnips',1,1),
-(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Rangers Valley Bavette MS5+','Black garlic sofrito, piquillo ponzu',2,1),
-(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Crispy Smashed Potatoes','Mixed bitter leaves, to share',3,1);
+(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_table),'Pan de cristal','crushed vine tomato, EVOO',1,1),
+(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_table),'Smoked eel gilda','Gordal olive, guindilla, kabayaki glaze',2,1),
+(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_entree),'Kingfish sashimi','chilled ajoblanco, rockfruit, green almonds, makrut kosho oil',1,1),
+(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_entree),'Hand chopped Wagyu','karashi sabayon, smoked soy, pickled chillies, potato crisp',2,1),
+(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Bundarra pork secreto','yuzu kosho mojo verde, butter beans, pickled turnips',1,1),
+(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Rangers Valley bavette MS5+','black garlic sofrito, piquillo ponzu',2,1),
+(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Crispy smashed potatoes','mixed bitter leaves, to share',3,1);
 
 -- Below Cup Day menu (own dataset - edit via admin > Melbourne Cup > Below Menu)
 INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('mcup_below_menu_cat','On Arrival',1,1);
@@ -942,13 +942,13 @@ INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('mcup_below_
 SET @mcup_below_cat_sweet := LAST_INSERT_ID();
 
 INSERT INTO `blocks` (`block_type`,`title`,`body`,`sort`,`active`) VALUES
-(CONCAT('mcup_below_menu_item_', @mcup_below_cat_arrival),'Rock Oysters','Sudachi, cured Wagyu',1,1),
-(CONCAT('mcup_below_menu_item_', @mcup_below_cat_arrival),'Smoked Eel Gilda','Gordal olive, guindilla',2,1),
-(CONCAT('mcup_below_menu_item_', @mcup_below_cat_cold),'Sea Urchin Pie Tee','Egg yolk emulsion, caramelised onions, chive flower',1,1),
-(CONCAT('mcup_below_menu_item_', @mcup_below_cat_cold),'Hand Chopped Wagyu','Karashi sabayon, potato pave',2,1),
-(CONCAT('mcup_below_menu_item_', @mcup_below_cat_hot),'Kimchi Croqueta','Bluefin tuna, jamón XO',1,1),
-(CONCAT('mcup_below_menu_item_', @mcup_below_cat_hot),'House Won-Ton','Spicy carbonara, Abrolhos Island scallops',2,1),
-(CONCAT('mcup_below_menu_item_', @mcup_below_cat_hot),'King Prawn Spring Roll','Chorizo, burnt mandarin sweet and sour',3,1),
-(CONCAT('mcup_below_menu_item_', @mcup_below_cat_substantial),'Dry-Aged Beef Mini Burger','Mature cheddar, smoked Idiazabal, karashi sumiso mayo, PX caramelised onions, pickles',1,1),
-(CONCAT('mcup_below_menu_item_', @mcup_below_cat_sweet),'Rocher','Foie, Jivara chocolate, PX drunken raisins, hazelnut',1,1);
+(CONCAT('mcup_below_menu_item_', @mcup_below_cat_arrival),'Rock oysters','sudachi, cured Wagyu',1,1),
+(CONCAT('mcup_below_menu_item_', @mcup_below_cat_arrival),'Smoked eel gilda','Gordal olive, guindilla',2,1),
+(CONCAT('mcup_below_menu_item_', @mcup_below_cat_cold),'Sea urchin pie tee','egg yolk emulsion, caramelised onions, chive flower',1,1),
+(CONCAT('mcup_below_menu_item_', @mcup_below_cat_cold),'Hand chopped Wagyu','karashi sabayon, potato pave',2,1),
+(CONCAT('mcup_below_menu_item_', @mcup_below_cat_hot),'Kimchi croqueta','bluefin tuna, jamón XO',1,1),
+(CONCAT('mcup_below_menu_item_', @mcup_below_cat_hot),'House Won-Ton','spicy carbonara, Abrolhos Island scallops',2,1),
+(CONCAT('mcup_below_menu_item_', @mcup_below_cat_hot),'King prawn spring roll','chorizo, burnt mandarin sweet and sour',3,1),
+(CONCAT('mcup_below_menu_item_', @mcup_below_cat_substantial),'Dry-aged beef mini burger','mature cheddar, smoked Idiazabal, karashi sumiso mayo, PX caramelised onions, pickles',1,1),
+(CONCAT('mcup_below_menu_item_', @mcup_below_cat_sweet),'Rocher','foie, Jivara chocolate, PX drunken raisins, hazelnut',1,1);
 

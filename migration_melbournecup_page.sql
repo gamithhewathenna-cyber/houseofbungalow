@@ -144,15 +144,26 @@ SET @mcup_rest_cat_main := (SELECT id FROM `blocks` WHERE block_type='mcup_rest_
 
 INSERT INTO `blocks` (`block_type`,`title`,`body`,`sort`,`active`)
 SELECT * FROM (
-  SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_table) AS block_type,'Pan De Cristal' AS title,'Crushed vine tomato, EVOO' AS body,1 AS sort,1 AS active
-  UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_table),'Smoked Eel Gilda','Gordal olive, guindilla, kabayaki glaze',2,1
-  UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_entree),'Kingfish Sashimi','Chilled ajoblanco, rockfruit, green almonds, makrut kosho oil',1,1
-  UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_entree),'Hand Chopped Wagyu','Karashi sabayon, smoked soy, pickled chillies, potato crisp',2,1
-  UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Bundarra Pork Secreto','Yuzu kosho mojo verde, butter beans, pickled turnips',1,1
-  UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Rangers Valley Bavette MS5+','Black garlic sofrito, piquillo ponzu',2,1
-  UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Crispy Smashed Potatoes','Mixed bitter leaves, to share',3,1
+  SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_table) AS block_type,'Pan de cristal' AS title,'crushed vine tomato, EVOO' AS body,1 AS sort,1 AS active
+  UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_table),'Smoked eel gilda','Gordal olive, guindilla, kabayaki glaze',2,1
+  UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_entree),'Kingfish sashimi','chilled ajoblanco, rockfruit, green almonds, makrut kosho oil',1,1
+  UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_entree),'Hand chopped Wagyu','karashi sabayon, smoked soy, pickled chillies, potato crisp',2,1
+  UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Bundarra pork secreto','yuzu kosho mojo verde, butter beans, pickled turnips',1,1
+  UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Rangers Valley bavette MS5+','black garlic sofrito, piquillo ponzu',2,1
+  UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Crispy smashed potatoes','mixed bitter leaves, to share',3,1
 ) AS seed
 WHERE NOT EXISTS (SELECT 1 FROM `blocks` WHERE block_type LIKE 'mcup_rest_menu_item_%');
+
+-- If the Restaurant Cup Day dishes above were already seeded by an earlier run
+-- (with Title Case names), switch them to sentence case so each dish now reads
+-- as one combined "Name, description" line on the live page.
+UPDATE `blocks` SET `title` = 'Pan de cristal', `body` = 'crushed vine tomato, EVOO' WHERE `block_type` LIKE 'mcup_rest_menu_item_%' AND `title` = 'Pan De Cristal';
+UPDATE `blocks` SET `title` = 'Smoked eel gilda' WHERE `block_type` LIKE 'mcup_%_menu_item_%' AND `title` = 'Smoked Eel Gilda';
+UPDATE `blocks` SET `title` = 'Kingfish sashimi', `body` = 'chilled ajoblanco, rockfruit, green almonds, makrut kosho oil' WHERE `block_type` LIKE 'mcup_rest_menu_item_%' AND `title` = 'Kingfish Sashimi';
+UPDATE `blocks` SET `title` = 'Hand chopped Wagyu', `body` = 'karashi sabayon, smoked soy, pickled chillies, potato crisp' WHERE `block_type` = CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_entree) AND `title` = 'Hand Chopped Wagyu';
+UPDATE `blocks` SET `title` = 'Bundarra pork secreto', `body` = 'yuzu kosho mojo verde, butter beans, pickled turnips' WHERE `block_type` LIKE 'mcup_rest_menu_item_%' AND `title` = 'Bundarra Pork Secreto';
+UPDATE `blocks` SET `title` = 'Rangers Valley bavette MS5+', `body` = 'black garlic sofrito, piquillo ponzu' WHERE `block_type` LIKE 'mcup_rest_menu_item_%' AND `title` = 'Rangers Valley Bavette MS5+';
+UPDATE `blocks` SET `title` = 'Crispy smashed potatoes', `body` = 'mixed bitter leaves, to share' WHERE `block_type` LIKE 'mcup_rest_menu_item_%' AND `title` = 'Crispy Smashed Potatoes';
 
 -- Below Cup Day menu - only seeded if no mcup_below_menu_cat rows exist yet.
 INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`)
@@ -182,14 +193,24 @@ SET @mcup_below_cat_sweet := (SELECT id FROM `blocks` WHERE block_type='mcup_bel
 
 INSERT INTO `blocks` (`block_type`,`title`,`body`,`sort`,`active`)
 SELECT * FROM (
-  SELECT CONCAT('mcup_below_menu_item_', @mcup_below_cat_arrival) AS block_type,'Rock Oysters' AS title,'Sudachi, cured Wagyu' AS body,1 AS sort,1 AS active
-  UNION ALL SELECT CONCAT('mcup_below_menu_item_', @mcup_below_cat_arrival),'Smoked Eel Gilda','Gordal olive, guindilla',2,1
-  UNION ALL SELECT CONCAT('mcup_below_menu_item_', @mcup_below_cat_cold),'Sea Urchin Pie Tee','Egg yolk emulsion, caramelised onions, chive flower',1,1
-  UNION ALL SELECT CONCAT('mcup_below_menu_item_', @mcup_below_cat_cold),'Hand Chopped Wagyu','Karashi sabayon, potato pave',2,1
-  UNION ALL SELECT CONCAT('mcup_below_menu_item_', @mcup_below_cat_hot),'Kimchi Croqueta','Bluefin tuna, jamón XO',1,1
-  UNION ALL SELECT CONCAT('mcup_below_menu_item_', @mcup_below_cat_hot),'House Won-Ton','Spicy carbonara, Abrolhos Island scallops',2,1
-  UNION ALL SELECT CONCAT('mcup_below_menu_item_', @mcup_below_cat_hot),'King Prawn Spring Roll','Chorizo, burnt mandarin sweet and sour',3,1
-  UNION ALL SELECT CONCAT('mcup_below_menu_item_', @mcup_below_cat_substantial),'Dry-Aged Beef Mini Burger','Mature cheddar, smoked Idiazabal, karashi sumiso mayo, PX caramelised onions, pickles',1,1
-  UNION ALL SELECT CONCAT('mcup_below_menu_item_', @mcup_below_cat_sweet),'Rocher','Foie, Jivara chocolate, PX drunken raisins, hazelnut',1,1
+  SELECT CONCAT('mcup_below_menu_item_', @mcup_below_cat_arrival) AS block_type,'Rock oysters' AS title,'sudachi, cured Wagyu' AS body,1 AS sort,1 AS active
+  UNION ALL SELECT CONCAT('mcup_below_menu_item_', @mcup_below_cat_arrival),'Smoked eel gilda','Gordal olive, guindilla',2,1
+  UNION ALL SELECT CONCAT('mcup_below_menu_item_', @mcup_below_cat_cold),'Sea urchin pie tee','egg yolk emulsion, caramelised onions, chive flower',1,1
+  UNION ALL SELECT CONCAT('mcup_below_menu_item_', @mcup_below_cat_cold),'Hand chopped Wagyu','karashi sabayon, potato pave',2,1
+  UNION ALL SELECT CONCAT('mcup_below_menu_item_', @mcup_below_cat_hot),'Kimchi croqueta','bluefin tuna, jamón XO',1,1
+  UNION ALL SELECT CONCAT('mcup_below_menu_item_', @mcup_below_cat_hot),'House Won-Ton','spicy carbonara, Abrolhos Island scallops',2,1
+  UNION ALL SELECT CONCAT('mcup_below_menu_item_', @mcup_below_cat_hot),'King prawn spring roll','chorizo, burnt mandarin sweet and sour',3,1
+  UNION ALL SELECT CONCAT('mcup_below_menu_item_', @mcup_below_cat_substantial),'Dry-aged beef mini burger','mature cheddar, smoked Idiazabal, karashi sumiso mayo, PX caramelised onions, pickles',1,1
+  UNION ALL SELECT CONCAT('mcup_below_menu_item_', @mcup_below_cat_sweet),'Rocher','foie, Jivara chocolate, PX drunken raisins, hazelnut',1,1
 ) AS seed
 WHERE NOT EXISTS (SELECT 1 FROM `blocks` WHERE block_type LIKE 'mcup_below_menu_item_%');
+
+-- Same sentence-case fix for the Below Cup Day dishes, if already seeded.
+UPDATE `blocks` SET `title` = 'Rock oysters', `body` = 'sudachi, cured Wagyu' WHERE `block_type` LIKE 'mcup_below_menu_item_%' AND `title` = 'Rock Oysters';
+UPDATE `blocks` SET `title` = 'Sea urchin pie tee', `body` = 'egg yolk emulsion, caramelised onions, chive flower' WHERE `block_type` LIKE 'mcup_below_menu_item_%' AND `title` = 'Sea Urchin Pie Tee';
+UPDATE `blocks` SET `title` = 'Hand chopped Wagyu', `body` = 'karashi sabayon, potato pave' WHERE `block_type` = CONCAT('mcup_below_menu_item_', @mcup_below_cat_cold) AND `title` = 'Hand Chopped Wagyu';
+UPDATE `blocks` SET `title` = 'Kimchi croqueta', `body` = 'bluefin tuna, jamón XO' WHERE `block_type` LIKE 'mcup_below_menu_item_%' AND `title` = 'Kimchi Croqueta';
+UPDATE `blocks` SET `body` = 'spicy carbonara, Abrolhos Island scallops' WHERE `block_type` LIKE 'mcup_below_menu_item_%' AND `title` = 'House Won-Ton';
+UPDATE `blocks` SET `title` = 'King prawn spring roll', `body` = 'chorizo, burnt mandarin sweet and sour' WHERE `block_type` LIKE 'mcup_below_menu_item_%' AND `title` = 'King Prawn Spring Roll';
+UPDATE `blocks` SET `title` = 'Dry-aged beef mini burger', `body` = 'mature cheddar, smoked Idiazabal, karashi sumiso mayo, PX caramelised onions, pickles' WHERE `block_type` LIKE 'mcup_below_menu_item_%' AND `title` = 'Dry-Aged Beef Mini Burger';
+UPDATE `blocks` SET `body` = 'foie, Jivara chocolate, PX drunken raisins, hazelnut' WHERE `block_type` LIKE 'mcup_below_menu_item_%' AND `title` = 'Rocher';

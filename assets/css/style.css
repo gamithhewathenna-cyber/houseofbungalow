@@ -908,8 +908,10 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   font-family:var(--serif);font-style:italic;font-weight:400;font-size:12px;
   color:var(--ink-mute);margin:0 0 10px;
 }
-.cup-menu-item{font-family:var(--serif);font-weight:500;font-size:15px;color:var(--ink);margin:0;}
-.cup-menu-item-desc{font-family:var(--sans);font-weight:300;font-size:12px;color:var(--ink-soft);margin:0 0 12px;}
+.cup-menu-item{
+  font-family:var(--sans);font-weight:300;font-size:13px;line-height:1.5;
+  color:var(--ink-soft);margin:0 0 10px;
+}
 .cup-menu-empty{font-family:var(--sans);font-size:13px;color:var(--ink-mute);text-align:center;}
 
 .cup-menu-bev{margin-top:30px;padding-top:28px;border-top:1px solid #e5dbcd;}
