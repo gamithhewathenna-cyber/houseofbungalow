@@ -6,6 +6,7 @@ require_once __DIR__ . '/helpers.php';
 $fieldGroups = [
     'herovideo' => ['wo_hero_video'],
     'intro'     => ['wo_heading', 'wo_subheading', 'wo_lede', 'wo_tag2_label', 'wo_tag2_url', 'wo_tag3_label', 'wo_tag3_url'],
+    'mcup'      => ['wo_mcup_eyebrow', 'wo_mcup_heading', 'wo_mcup_p1', 'wo_mcup_p2', 'wo_mcup_btn_label', 'wo_mcup_btn_url', 'wo_mcup_image'],
     'happyhour' => ['wo_happyhour_eyebrow', 'wo_happyhour_heading', 'wo_happyhour_p1', 'wo_happyhour_p2', 'wo_happyhour_btn_label', 'wo_happyhour_btn_url', 'wo_happyhour_image'],
     'friday'    => ['wo_friday_eyebrow', 'wo_friday_heading', 'wo_friday_p1', 'wo_friday_p2', 'wo_friday_btn_label', 'wo_friday_btn_url', 'wo_friday_image'],
     'brunch'    => ['wo_brunch_eyebrow', 'wo_brunch_heading', 'wo_brunch_hours', 'wo_brunch_p1', 'wo_brunch_btn_label', 'wo_brunch_btn_url', 'wo_brunch_image'],
@@ -13,6 +14,7 @@ $fieldGroups = [
 $visibilitySections = [
     'wo_hero'      => 'Hero',
     'wo_intro'     => 'Intro',
+    'wo_mcup'      => 'Melbourne Cup',
     'wo_happyhour' => 'Happy Hour',
     'wo_friday'    => 'Friday & Saturday Dinner Party',
     'wo_brunch'    => 'Weekend Bottomless Brunch',
@@ -100,6 +102,7 @@ $faqs = db()->query("SELECT * FROM blocks WHERE block_type='whatson_faq' ORDER B
 $tabs = [
     'herovideo' => 'Hero Video',
     'intro'     => 'Intro',
+    'mcup'      => 'Melbourne Cup',
     'happyhour' => 'Happy Hour',
     'friday'    => 'Friday & Saturday Dinner Party',
     'brunch'    => 'Weekend Bottomless Brunch',
@@ -160,7 +163,7 @@ include __DIR__ . '/layout.php';
 <?php foreach ($fieldGroups as $group => $keys): ?>
   <div class="tab-panel settings-group<?= $activeTab === $group ? ' active' : '' ?>" data-tab="<?= e($group) ?>">
     <h3><?= e($tabs[$group]) ?></h3>
-    <?php if ($group === 'happyhour' || $group === 'friday' || $group === 'brunch'): ?>
+    <?php if ($group === 'mcup' || $group === 'happyhour' || $group === 'friday' || $group === 'brunch'): ?>
       <p class="group-help">"INFORMATION" is the small bold label shown under the title - leave it as-is or customise it.</p>
     <?php endif; ?>
     <form method="post" enctype="multipart/form-data">

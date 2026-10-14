@@ -513,6 +513,14 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('wo_tag3_label','BELOW','whatson_page','Tag button 3 label','text',9),
 ('wo_tag3_url','#lineup-section','whatson_page','Tag button 3 URL (use #lineup-section to scroll to the Line-Up section on this page)','text',10),
 
+('wo_mcup_eyebrow','','whatson_page','Melbourne Cup - eyebrow label (optional)','text',10),
+('wo_mcup_heading','Melbourne Cup','whatson_page','Melbourne Cup - heading','text',10),
+('wo_mcup_p1','Celebrate Melbourne Cup at House of Bungalow - a long lunch at the Restaurant or champagne and canapés Below, the choice is yours.','whatson_page','Melbourne Cup - paragraph 1','textarea',10),
+('wo_mcup_p2','Tuesday, 3 November 2026. Two spaces, two different ways to spend Cup Day.','whatson_page','Melbourne Cup - paragraph 2','textarea',10),
+('wo_mcup_btn_label','DISCOVER','whatson_page','Melbourne Cup - button label','text',10),
+('wo_mcup_btn_url','melbournecup.php','whatson_page','Melbourne Cup - button URL','text',10),
+('wo_mcup_image','assets/img/restaurant.jpg','whatson_page','Melbourne Cup - image','image',10),
+
 ('wo_happyhour_eyebrow','Happy Hour','whatson_page','Happy Hour - eyebrow label','text',11),
 ('wo_happyhour_heading','INFORMATION','whatson_page','Happy Hour - heading','text',12),
 ('wo_happyhour_p1','Cocktails, wine and something from the kitchen as the House moves into the evening.','whatson_page','Happy Hour - paragraph 1','textarea',13),

@@ -40,6 +40,30 @@ $faqs = blocks('whatson_faq');
 </section>
 <?php endif; ?>
 
+<!-- Melbourne Cup ------------------------------------------------------- -->
+<?php if (section_visible('wo_mcup')): ?>
+<section class="split-section reveal">
+  <div class="container">
+    <div class="split-grid">
+      <div class="split-copy">
+        <p class="eyebrow"><?= e(setting('wo_mcup_eyebrow')) ?></p>
+        <h2><?= e(setting('wo_mcup_heading', 'Melbourne Cup')) ?></h2>
+        <p><?= enl(setting('wo_mcup_p1')) ?></p>
+        <p><?= enl(setting('wo_mcup_p2')) ?></p>
+        <?php if (setting('wo_mcup_btn_label')): ?>
+          <div class="btn-wrap">
+            <a class="link-underline" href="<?= e(url(setting('wo_mcup_btn_url', '#'))) ?>"><?= e(setting('wo_mcup_btn_label')) ?></a>
+          </div>
+        <?php endif; ?>
+      </div>
+      <div class="split-media">
+        <img src="<?= e(asset(setting('wo_mcup_image', 'assets/img/restaurant.jpg'))) ?>" alt="<?= e(setting('wo_mcup_heading', 'Melbourne Cup')) ?>">
+      </div>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
+
 <!-- Happy Hour ----------------------------------------------------------- -->
 <?php if (section_visible('wo_happyhour')): ?>
 <section class="split-section reveal">

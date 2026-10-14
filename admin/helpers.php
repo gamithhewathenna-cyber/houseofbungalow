@@ -131,6 +131,7 @@ function crop_ratio_for_key(string $key): string
         'rest_chef_image'         => '3:2',
         'below_guest_image'       => '3:2',
         'below_vip_image'         => '3:2',
+        'wo_mcup_image'           => '3:2',
         'wo_happyhour_image'      => '3:2',
         'wo_friday_image'         => '3:2',
         'wo_brunch_image'         => '3:2',
