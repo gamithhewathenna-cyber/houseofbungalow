@@ -62,11 +62,24 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=39614423908148518&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
+<?php
+  // Current page's filename (without .php), used to look up its SEO
+  // overrides. CURRENT_PAGE_FILE is set by seo-router.php when a page is
+  // reached through a custom SEO slug instead of its default filename.
+  $__seo_page_key = basename(defined('CURRENT_PAGE_FILE') ? CURRENT_PAGE_FILE : ($_SERVER['SCRIPT_NAME'] ?? ''), '.php');
+  $__seo = seo_meta_for($__seo_page_key);
+  $__seo_title = $__seo['seo_title'] !== '' ? $__seo['seo_title'] : ($page_meta_title ?? setting('intro_heading', SITE_NAME));
+  $__seo_description = $__seo['seo_description'] !== '' ? $__seo['seo_description'] : ($page_meta_description ?? setting('intro_p1'));
+?>
 <?php if (setting('seo_visible', '1') !== '1'): ?>
 <meta name="robots" content="noindex,nofollow">
 <?php endif; ?>
-<title><?= e($page_meta_title ?? setting('intro_heading', SITE_NAME)) ?> - <?= e(SITE_NAME) ?></title>
-<meta name="description" content="<?= e($page_meta_description ?? setting('intro_p1')) ?>">
+<title><?= e($__seo_title) ?> - <?= e(SITE_NAME) ?></title>
+<meta name="description" content="<?= e($__seo_description) ?>">
+<?php if ($__seo['seo_keyphrase'] !== ''): ?>
+<meta name="keywords" content="<?= e($__seo['seo_keyphrase']) ?>">
+<?php endif; ?>
+<link rel="canonical" href="<?= e(site_origin() . url($__seo_page_key . '.php')) ?>">
 <link rel="icon" type="image/png" href="<?= e(asset('assets/img/favicon.png')) ?>">
 <link rel="apple-touch-icon" href="<?= e(asset('assets/img/favicon.png')) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">

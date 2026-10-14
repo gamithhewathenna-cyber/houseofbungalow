@@ -51,6 +51,43 @@ CREATE TABLE IF NOT EXISTS `activity_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ---------------------------------------------------------------------
+-- SEO - per-page title, keyphrase, meta description and URL slug,
+-- managed from admin > SEO. `page_key` is the page's filename without
+-- ".php" (also used to look up its row from includes/header.php).
+-- An empty `seo_title`/`seo_description` falls back to that page's own
+-- normal heading/intro text; an empty `seo_slug` keeps the page at its
+-- default clean URL (e.g. /whatson).
+-- ---------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `seo_meta` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `page_key` VARCHAR(40) NOT NULL,
+  `page_file` VARCHAR(60) NOT NULL,
+  `page_label` VARCHAR(80) NOT NULL,
+  `seo_title` VARCHAR(160) NOT NULL DEFAULT '',
+  `seo_keyphrase` VARCHAR(160) NOT NULL DEFAULT '',
+  `seo_description` VARCHAR(320) NOT NULL DEFAULT '',
+  `seo_slug` VARCHAR(80) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `page_key` (`page_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `seo_meta` (`page_key`, `page_file`, `page_label`) VALUES
+('index',         'index.php',         'Home'),
+('restaurant',     'restaurant.php',    'Restaurant & Menus'),
+('below',          'below.php',         'Below'),
+('whatson',        'whatson.php',       "What's On"),
+('melbournecup',   'melbournecup.php',  'Melbourne Cup'),
+('brunch',         'brunch.php',        'Bottomless Brunch'),
+('dinnerparty',    'dinnerparty.php',   'Dinner Party'),
+('privateevents',  'privateevents.php', 'Private Events'),
+('cafe',           'cafe.php',          'Café'),
+('reserve',        'reserve.php',       'Reserve'),
+('careers',        'careers.php',       'Join Our Team'),
+('contact',        'contact.php',       'Contact'),
+('faq',            'faq.php',           'FAQ'),
+('privacy',        'privacy.php',       'Privacy & Terms');
+
+-- ---------------------------------------------------------------------
 -- Key/value content store for simple singular fields
 -- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `settings` (

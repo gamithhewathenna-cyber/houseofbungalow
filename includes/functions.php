@@ -81,9 +81,56 @@ function enl(?string $v): string
 }
 
 /**
+ * Every page.php file that has a custom SEO slug set (admin > SEO),
+ * loaded once per request. Pages with no custom slug are left out, so
+ * url() falls back to its default filename-based clean URL for them.
+ */
+function seo_slug_map(): array
+{
+    static $cache = null;
+    if ($cache !== null) {
+        return $cache;
+    }
+    $cache = [];
+    try {
+        $rows = db()->query("SELECT page_file, seo_slug FROM seo_meta WHERE seo_slug != ''")->fetchAll();
+        foreach ($rows as $r) {
+            $cache[$r['page_file']] = $r['seo_slug'];
+        }
+    } catch (Throwable $e) {
+        // seo_meta table may not exist yet (migration not run) - fail quietly.
+    }
+    return $cache;
+}
+
+/**
+ * The SEO title/keyphrase/description/slug set for one page (admin > SEO),
+ * keyed by its filename without ".php" (e.g. "whatson", "index"). Falls
+ * back to all-empty values if nothing has been set for that page yet.
+ */
+function seo_meta_for(string $pageKey): array
+{
+    static $cache = [];
+    if (isset($cache[$pageKey])) {
+        return $cache[$pageKey];
+    }
+    $empty = ['seo_title' => '', 'seo_keyphrase' => '', 'seo_description' => '', 'seo_slug' => ''];
+    try {
+        $stmt = db()->prepare('SELECT seo_title, seo_keyphrase, seo_description, seo_slug FROM seo_meta WHERE page_key = ? LIMIT 1');
+        $stmt->execute([$pageKey]);
+        $row = $stmt->fetch();
+        $cache[$pageKey] = $row ?: $empty;
+    } catch (Throwable $e) {
+        $cache[$pageKey] = $empty;
+    }
+    return $cache[$pageKey];
+}
+
+/**
  * Build a URL that respects BASE_URL. Absolute URLs and anchors pass through.
  * Strips a trailing ".php" (and "index.php" -> root) so every link site-wide
  * is a clean URL - matches the .htaccess rewrite that serves page.php for /page.
+ * Uses a page's custom SEO slug (admin > SEO) instead, when one is set.
  */
 function url(string $path): string
 {
@@ -100,9 +147,20 @@ function url(string $path): string
     if ($path === 'index.php') {
         $path = '';
     } elseif (str_ends_with($path, '.php')) {
-        $path = substr($path, 0, -4);
+        $slugs = seo_slug_map();
+        $path = $slugs[$path] ?? substr($path, 0, -4);
     }
     return rtrim(BASE_URL, '/') . '/' . ltrim($path, '/') . $suffix;
+}
+
+/**
+ * The current request's scheme + host, e.g. "https://houseofbungalow.com.au"
+ * with no trailing slash. Used to build absolute URLs (e.g. canonical tags).
+ */
+function site_origin(): string
+{
+    $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || ($_SERVER['SERVER_PORT'] ?? '') == 443;
+    return ($https ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? '');
 }
 
 /**

@@ -23,3 +23,12 @@ RewriteRule ^ /%1 [R=301,L]
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{DOCUMENT_ROOT}/$1.php -f
 RewriteRule ^([^/]+)/?$ $1.php [L]
+
+# Custom SEO slugs (admin > SEO) that don't match a real file or a default
+# page filename - look them up in the database and serve the matching
+# page (or a 404 if there's no match). Never fires for a request that
+# matches a real file (e.g. sitemap.xml, robots.txt) - those are served
+# normally.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)/?$ seo-router.php?slug=$1 [L,QSA]
