@@ -2,14 +2,16 @@
 require_once __DIR__ . '/auth.php';
 require_login();
 
-$subCount   = (int) db()->query('SELECT COUNT(*) FROM subscribers')->fetchColumn();
-$spaceCount = (int) db()->query("SELECT COUNT(*) FROM blocks WHERE block_type='space' AND active=1")->fetchColumn();
-$navCount   = (int) db()->query("SELECT COUNT(*) FROM blocks WHERE block_type='footer_nav' AND active=1")->fetchColumn();
-
 $page_title = 'Dashboard';
 include __DIR__ . '/layout.php';
 ?>
+<?php if (admin_can('content')): ?>
 <div class="dash-grid">
+  <?php
+    $subCount   = (int) db()->query('SELECT COUNT(*) FROM subscribers')->fetchColumn();
+    $spaceCount = (int) db()->query("SELECT COUNT(*) FROM blocks WHERE block_type='space' AND active=1")->fetchColumn();
+    $navCount   = (int) db()->query("SELECT COUNT(*) FROM blocks WHERE block_type='footer_nav' AND active=1")->fetchColumn();
+  ?>
   <div class="dash-card"><div class="num"><?= $subCount ?></div><div class="lbl">Subscribers</div></div>
   <div class="dash-card"><div class="num"><?= $spaceCount ?></div><div class="lbl">Space Cards</div></div>
   <div class="dash-card"><div class="num"><?= $navCount ?></div><div class="lbl">Footer Links</div></div>
@@ -124,12 +126,25 @@ include __DIR__ . '/layout.php';
 <div class="dash-links">
   <a href="popup.php">Manage the "Book A Table" Popup</a>
 </div>
+<?php endif; ?>
+
+<?php if (admin_can('enquiries')): ?>
+<h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">Enquiries</h2>
+<div class="dash-links">
+  <a href="enquiries.php">Private Event Enquiries</a>
+  <a href="vip-bottle-enquiries.php">VIP Enquiries</a>
+  <a href="career-applications.php">Job Applications</a>
+  <a href="subscribers.php">Subscribers</a>
+</div>
+<?php endif; ?>
 
 <h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">System</h2>
 <div class="dash-links">
-  <a href="section.php?s=website">Website Settings</a>
-  <a href="users.php">Admin Users</a>
-  <a href="subscribers.php">Subscribers</a>
+  <?php if (admin_can('admin')): ?>
+    <a href="section.php?s=website">Website Settings</a>
+    <a href="users.php">Admin Users</a>
+    <a href="activity.php">Activity Log</a>
+  <?php endif; ?>
   <a href="account.php">Account</a>
 </div>
 

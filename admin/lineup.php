@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/auth.php';
-require_login();
+require_role('content');
 require_once __DIR__ . '/helpers.php';
 
 $keys = ['below_lineup_image', 'below_lineup_heading', 'below_lineup_p1'];

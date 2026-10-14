@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS `admins` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(60) NOT NULL,
   `password_hash` VARCHAR(255) NOT NULL,
+  `role` VARCHAR(20) NOT NULL DEFAULT 'admin',
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
@@ -21,8 +22,31 @@ CREATE TABLE IF NOT EXISTS `admins` (
 
 -- Default admin: username = admin / password = admin123
 -- (CHANGE THIS after first login from the admin panel)
-INSERT INTO `admins` (`username`, `password_hash`) VALUES
-('admin', '$2y$10$hXTcgdCzP3.OCqEnPoQ/Ke4cDb/jWhcA/YlYHkMu/TJpFAloo3Y8W');
+INSERT INTO `admins` (`username`, `password_hash`, `role`) VALUES
+('admin', '$2y$10$hXTcgdCzP3.OCqEnPoQ/Ke4cDb/jWhcA/YlYHkMu/TJpFAloo3Y8W', 'admin');
+
+-- `role` is one of:
+--   admin     - full access, including Admin Users and Website Settings
+--   content   - can edit page content across the site only
+--   enquiries - can view/manage enquiries, VIP enquiries, applications and subscribers only
+
+-- ---------------------------------------------------------------------
+-- Admin activity log - "work history" of every admin form submission,
+-- recorded automatically (see require_login() in admin/auth.php).
+-- ---------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `activity_log` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `admin_id` INT(11) NULL,
+  `username` VARCHAR(60) NOT NULL,
+  `page` VARCHAR(80) NOT NULL,
+  `action` VARCHAR(80) NOT NULL,
+  `details` VARCHAR(255) NOT NULL DEFAULT '',
+  `ip_address` VARCHAR(45) NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `admin_id` (`admin_id`),
+  KEY `created_at` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ---------------------------------------------------------------------
 -- Key/value content store for simple singular fields

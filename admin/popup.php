@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/auth.php';
-require_login();
+require_role('content');
 require_once __DIR__ . '/helpers.php';
 
 $keys = ['popup_heading', 'popup_subheading', 'popup_btn1_label', 'popup_btn1_url', 'popup_btn2_label', 'popup_btn2_url'];

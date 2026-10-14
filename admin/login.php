@@ -15,7 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $admin = $stmt->fetch();
     if ($admin && password_verify($password, $admin['password_hash'])) {
         session_regenerate_id(true);
-        $_SESSION['admin'] = ['id' => $admin['id'], 'username' => $admin['username']];
+        $_SESSION['admin'] = ['id' => $admin['id'], 'username' => $admin['username'], 'role' => $admin['role'] ?? 'admin'];
+        log_activity('login');
         header('Location: index.php');
         exit;
     }

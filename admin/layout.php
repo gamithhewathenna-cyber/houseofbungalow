@@ -13,33 +13,36 @@ $page_title = $page_title ?? 'Admin';
 $current    = basename($_SERVER['PHP_SELF']);
 
 $mainNav = [
-    ['href' => 'index.php',       'label' => 'Dashboard',          'icon' => 'grid'],
-    ['href' => 'homepage.php',    'label' => 'Home Page',          'icon' => 'home'],
-    ['href' => 'reserve.php',     'label' => 'Reserve',            'icon' => 'reserve'],
-    ['href' => 'restaurant.php',  'label' => 'Restaurant & Menus', 'icon' => 'fork'],
-    ['href' => 'cafe.php',        'label' => 'Café',               'icon' => 'cup'],
-    ['href' => 'below.php',       'label' => 'Below',              'icon' => 'moon'],
-    ['href' => 'whatson.php',     'label' => "What's On",          'icon' => 'ticket'],
-    ['href' => 'brunch.php',      'label' => 'Bottomless Brunch',  'icon' => 'coffee'],
-    ['href' => 'dinnerparty.php', 'label' => 'Dinner Party',       'icon' => 'glass'],
-    ['href' => 'melbournecup.php', 'label' => 'Melbourne Cup',    'icon' => 'ticket'],
-    ['href' => 'privateevents.php', 'label' => 'Private Events',  'icon' => 'gift'],
-    ['href' => 'lineup.php',      'label' => "Week's Line-Up",     'icon' => 'calendar'],
-    ['href' => 'popup.php',       'label' => 'Popup Booking',      'icon' => 'popup'],
-    ['href' => 'faq.php',         'label' => 'FAQ',                'icon' => 'question'],
-    ['href' => 'contact.php',     'label' => 'Contact',            'icon' => 'pin'],
-    ['href' => 'careers.php',     'label' => 'Join Our Team',      'icon' => 'briefcase'],
-    ['href' => 'privacy.php',     'label' => 'Privacy & Terms',    'icon' => 'question'],
-    ['href' => 'subscribers.php', 'label' => 'Subscribers',        'icon' => 'mail'],
-    ['href' => 'enquiries.php',   'label' => 'Enquiries',          'icon' => 'inbox'],
-    ['href' => 'vip-bottle-enquiries.php', 'label' => 'VIP Enquiries', 'icon' => 'inbox'],
-    ['href' => 'career-applications.php', 'label' => 'Applications', 'icon' => 'inbox'],
+    ['href' => 'index.php',       'label' => 'Dashboard',          'icon' => 'grid',  'area' => null],
+    ['href' => 'homepage.php',    'label' => 'Home Page',          'icon' => 'home',  'area' => 'content'],
+    ['href' => 'reserve.php',     'label' => 'Reserve',            'icon' => 'reserve', 'area' => 'content'],
+    ['href' => 'restaurant.php',  'label' => 'Restaurant & Menus', 'icon' => 'fork',  'area' => 'content'],
+    ['href' => 'cafe.php',        'label' => 'Café',               'icon' => 'cup',   'area' => 'content'],
+    ['href' => 'below.php',       'label' => 'Below',              'icon' => 'moon',  'area' => 'content'],
+    ['href' => 'whatson.php',     'label' => "What's On",          'icon' => 'ticket', 'area' => 'content'],
+    ['href' => 'brunch.php',      'label' => 'Bottomless Brunch',  'icon' => 'coffee', 'area' => 'content'],
+    ['href' => 'dinnerparty.php', 'label' => 'Dinner Party',       'icon' => 'glass', 'area' => 'content'],
+    ['href' => 'melbournecup.php', 'label' => 'Melbourne Cup',    'icon' => 'ticket', 'area' => 'content'],
+    ['href' => 'privateevents.php', 'label' => 'Private Events',  'icon' => 'gift',  'area' => 'content'],
+    ['href' => 'lineup.php',      'label' => "Week's Line-Up",     'icon' => 'calendar', 'area' => 'content'],
+    ['href' => 'popup.php',       'label' => 'Popup Booking',      'icon' => 'popup', 'area' => 'content'],
+    ['href' => 'faq.php',         'label' => 'FAQ',                'icon' => 'question', 'area' => 'content'],
+    ['href' => 'contact.php',     'label' => 'Contact',            'icon' => 'pin',   'area' => 'content'],
+    ['href' => 'careers.php',     'label' => 'Join Our Team',      'icon' => 'briefcase', 'area' => 'content'],
+    ['href' => 'privacy.php',     'label' => 'Privacy & Terms',    'icon' => 'question', 'area' => 'content'],
+    ['href' => 'subscribers.php', 'label' => 'Subscribers',        'icon' => 'mail',  'area' => 'enquiries'],
+    ['href' => 'enquiries.php',   'label' => 'Enquiries',          'icon' => 'inbox', 'area' => 'enquiries'],
+    ['href' => 'vip-bottle-enquiries.php', 'label' => 'VIP Enquiries', 'icon' => 'inbox', 'area' => 'enquiries'],
+    ['href' => 'career-applications.php', 'label' => 'Applications', 'icon' => 'inbox', 'area' => 'enquiries'],
 ];
 $systemNav = [
-    ['href' => 'section.php?s=website', 'label' => 'Website Settings', 'icon' => 'gear'],
-    ['href' => 'users.php',             'label' => 'Admin Users',      'icon' => 'users'],
-    ['href' => 'account.php',           'label' => 'Account',          'icon' => 'user'],
+    ['href' => 'section.php?s=website', 'label' => 'Website Settings', 'icon' => 'gear', 'area' => 'admin'],
+    ['href' => 'users.php',             'label' => 'Admin Users',      'icon' => 'users', 'area' => 'admin'],
+    ['href' => 'activity.php',          'label' => 'Activity Log',     'icon' => 'calendar', 'area' => 'admin'],
+    ['href' => 'account.php',           'label' => 'Account',          'icon' => 'user', 'area' => null],
 ];
+$mainNav = array_values(array_filter($mainNav, fn($item) => $item['area'] === null || admin_can($item['area'])));
+$systemNav = array_values(array_filter($systemNav, fn($item) => $item['area'] === null || admin_can($item['area'])));
 
 function nav_icon(string $key): void
 {
@@ -105,7 +108,7 @@ function nav_link(array $item, string $current): void
     <h1><?= e($page_title) ?></h1>
     <div class="topbar-right">
       <a href="../index.php" target="_blank" class="btn btn-ghost">View Site ↗</a>
-      <span class="who"><?= e(current_admin()['username']) ?></span>
+      <span class="who"><?= e(current_admin()['username']) ?> <span class="muted" style="font-size:11px;text-transform:capitalize;">(<?= e(admin_role()) ?>)</span></span>
     </div>
   </div>
   <div class="panel">

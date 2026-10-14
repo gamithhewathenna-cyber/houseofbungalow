@@ -1,6 +1,12 @@
 <?php
 require_once __DIR__ . '/auth.php';
-require_login();
+require_role('admin');
+
+$roles = [
+    'admin'     => 'Admin (full access)',
+    'content'   => 'Content Editor (page content only)',
+    'enquiries' => 'Enquiries (enquiries, VIP enquiries, applications, subscribers)',
+];
 
 $error = '';
 $ok    = '';
@@ -16,6 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = trim($_POST['new_username'] ?? '');
             $password = $_POST['new_password'] ?? '';
             $confirm  = $_POST['new_password_confirm'] ?? '';
+            $role     = $_POST['new_role'] ?? 'content';
+            if (!isset($roles[$role])) {
+                $role = 'content';
+            }
             if ($username === '') {
                 $error = 'Username cannot be empty.';
             } elseif (strlen($password) < 6) {
@@ -25,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 try {
                     $hash = password_hash($password, PASSWORD_DEFAULT);
-                    $q = db()->prepare('INSERT INTO admins (username, password_hash) VALUES (?, ?)');
-                    $q->execute([$username, $hash]);
+                    $q = db()->prepare('INSERT INTO admins (username, password_hash, role) VALUES (?, ?, ?)');
+                    $q->execute([$username, $hash, $role]);
                     header('Location: users.php?saved=1'); exit;
                 } catch (PDOException $ex) {
                     $error = $ex->getCode() === '23000'
@@ -37,45 +47,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($action === 'update') {
-            foreach (($_POST['username'] ?? []) as $id => $username) {
-                $id       = (int) $id;
-                $username = trim($username);
-                $password = $_POST['password'][$id] ?? '';
-                if ($username === '') {
-                    continue;
-                }
-                try {
-                    if ($password !== '') {
-                        if (strlen($password) < 6) {
-                            $error = 'New passwords must be at least 6 characters (skipped for "' . $username . '").';
-                            continue;
-                        }
-                        $hash = password_hash($password, PASSWORD_DEFAULT);
-                        $q = db()->prepare('UPDATE admins SET username=?, password_hash=? WHERE id=?');
-                        $q->execute([$username, $hash, $id]);
-                    } else {
-                        $q = db()->prepare('UPDATE admins SET username=? WHERE id=?');
-                        $q->execute([$username, $id]);
-                    }
-                    if ($id === (int) $me['id']) {
-                        $_SESSION['admin']['username'] = $username;
-                    }
-                } catch (PDOException $ex) {
-                    $error = $ex->getCode() === '23000' ? 'Username already taken.' : 'Update failed.';
+            // Guard against saving a form state that would leave zero "admin" role accounts.
+            $wouldBeAdminCount = 0;
+            foreach (($_POST['role'] ?? []) as $id => $role) {
+                if ($role === 'admin') {
+                    $wouldBeAdminCount++;
                 }
             }
-            if ($error === '') {
-                header('Location: users.php?saved=1'); exit;
+            if ($wouldBeAdminCount < 1) {
+                $error = 'At least one account must keep the "Admin" role.';
+            } else {
+                foreach (($_POST['username'] ?? []) as $id => $username) {
+                    $id       = (int) $id;
+                    $username = trim($username);
+                    $password = $_POST['password'][$id] ?? '';
+                    $role     = $_POST['role'][$id] ?? 'content';
+                    if (!isset($roles[$role])) {
+                        $role = 'content';
+                    }
+                    if ($username === '') {
+                        continue;
+                    }
+                    try {
+                        if ($password !== '') {
+                            if (strlen($password) < 6) {
+                                $error = 'New passwords must be at least 6 characters (skipped for "' . $username . '").';
+                                continue;
+                            }
+                            $hash = password_hash($password, PASSWORD_DEFAULT);
+                            $q = db()->prepare('UPDATE admins SET username=?, password_hash=?, role=? WHERE id=?');
+                            $q->execute([$username, $hash, $role, $id]);
+                        } else {
+                            $q = db()->prepare('UPDATE admins SET username=?, role=? WHERE id=?');
+                            $q->execute([$username, $role, $id]);
+                        }
+                        if ($id === (int) $me['id']) {
+                            $_SESSION['admin']['username'] = $username;
+                            $_SESSION['admin']['role']     = $role;
+                        }
+                    } catch (PDOException $ex) {
+                        $error = $ex->getCode() === '23000' ? 'Username already taken.' : 'Update failed.';
+                    }
+                }
+                if ($error === '') {
+                    header('Location: users.php?saved=1'); exit;
+                }
             }
         }
 
         if ($action === 'delete') {
             $id = (int) ($_POST['id'] ?? 0);
             $total = (int) db()->query('SELECT COUNT(*) FROM admins')->fetchColumn();
+            $adminRoleCount = (int) db()->query("SELECT COUNT(*) FROM admins WHERE role='admin'")->fetchColumn();
+            $stmt = db()->prepare('SELECT role, username FROM admins WHERE id=?');
+            $stmt->execute([$id]);
+            $target = $stmt->fetch();
             if ($id === (int) $me['id']) {
                 $error = "You can't delete your own account while logged in.";
             } elseif ($total <= 1) {
                 $error = 'At least one admin account must remain.';
+            } elseif ($target && $target['role'] === 'admin' && $adminRoleCount <= 1) {
+                $error = 'At least one account must keep the "Admin" role.';
             } else {
                 $q = db()->prepare('DELETE FROM admins WHERE id=?');
                 $q->execute([$id]);
@@ -93,16 +125,23 @@ include __DIR__ . '/layout.php';
 <?php if ($error): ?><div class="alert err"><?= e($error) ?></div><?php endif; ?>
 <?php if ($ok): ?><div class="alert ok"><?= e($ok) ?></div><?php endif; ?>
 
-<p class="muted" style="margin-bottom:18px;">Everyone listed here can log into this admin panel. Leave a password field blank to keep that account's current password.</p>
+<p class="muted" style="margin-bottom:18px;">Everyone listed here can log into this admin panel. Leave a password field blank to keep that account's current password. "Content Editor" and "Enquiries" roles only see the pages their role covers, in the sidebar and directly - only "Admin" can reach this page, Website Settings, and every page.</p>
 
 <form method="post">
   <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
   <input type="hidden" name="action" value="update">
   <table>
-    <tr><th>Username</th><th>New Password</th><th style="width:140px;">Created</th><th style="width:90px;"></th></tr>
+    <tr><th>Username</th><th style="width:230px;">Role</th><th>New Password</th><th style="width:100px;">Created</th><th style="width:90px;"></th></tr>
     <?php foreach ($admins as $a): ?>
       <tr>
         <td><input type="text" name="username[<?= $a['id'] ?>]" value="<?= e($a['username']) ?>"></td>
+        <td>
+          <select name="role[<?= $a['id'] ?>]">
+            <?php foreach ($roles as $rkey => $rlabel): ?>
+              <option value="<?= e($rkey) ?>"<?= ($a['role'] ?? 'admin') === $rkey ? ' selected' : '' ?>><?= e($rlabel) ?></option>
+            <?php endforeach; ?>
+          </select>
+        </td>
         <td><input type="password" name="password[<?= $a['id'] ?>]" placeholder="Leave blank to keep"></td>
         <td class="muted"><?= e(substr($a['created_at'] ?? '', 0, 10)) ?></td>
         <td>
@@ -132,6 +171,13 @@ include __DIR__ . '/layout.php';
   <input type="hidden" name="action" value="add">
   <div class="field-row"><label>Username
     <input type="text" name="new_username" required></label></div>
+  <div class="field-row"><label>Role
+    <select name="new_role">
+      <?php foreach ($roles as $rkey => $rlabel): ?>
+        <option value="<?= e($rkey) ?>"<?= $rkey === 'content' ? ' selected' : '' ?>><?= e($rlabel) ?></option>
+      <?php endforeach; ?>
+    </select>
+  </label></div>
   <div class="field-row"><label>Password
     <input type="password" name="new_password" required></label></div>
   <div class="field-row"><label>Confirm password

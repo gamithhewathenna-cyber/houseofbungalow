@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/auth.php';
-require_login();
+require_role('content');
 require_once __DIR__ . '/helpers.php';
 
 $fieldGroups = [
