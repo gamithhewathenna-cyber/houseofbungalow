@@ -6,9 +6,9 @@ require_once __DIR__ . '/helpers.php';
 $fieldGroups = [
     'herovideo' => ['mcup_hero_image', 'mcup_hero_video'],
     'intro'     => ['mcup_heading', 'mcup_subheading', 'mcup_lede', 'mcup_p1', 'mcup_p2', 'mcup_p3', 'mcup_date', 'mcup_btn1_label', 'mcup_btn1_url', 'mcup_btn2_label', 'mcup_btn2_url'],
-    'restaurant' => ['mcup_rest_image', 'mcup_rest_eyebrow', 'mcup_rest_heading', 'mcup_rest_subheading', 'mcup_rest_lede', 'mcup_rest_p1', 'mcup_rest_p2', 'mcup_rest_date', 'mcup_rest_price', 'mcup_rest_price_note', 'mcup_rest_btn_label', 'mcup_rest_btn_url'],
-    'restbev'   => ['mcup_rest_bev_intro', 'mcup_rest_bev_standard_heading', 'mcup_rest_bev_standard_items', 'mcup_rest_bev_premium_heading', 'mcup_rest_bev_premium_items', 'mcup_rest_bev_note1', 'mcup_rest_bev_note2'],
-    'below'     => ['mcup_below_image', 'mcup_below_eyebrow', 'mcup_below_heading', 'mcup_below_subheading', 'mcup_below_lede', 'mcup_below_p1', 'mcup_below_p2', 'mcup_below_date', 'mcup_below_price', 'mcup_below_btn_label', 'mcup_below_btn_url'],
+    'restaurant' => ['mcup_rest_eyebrow', 'mcup_rest_heading', 'mcup_rest_subheading', 'mcup_rest_lede', 'mcup_rest_p1', 'mcup_rest_p2', 'mcup_rest_date', 'mcup_rest_price_eyebrow', 'mcup_rest_price', 'mcup_rest_price_note', 'mcup_rest_btn_label', 'mcup_rest_btn_url'],
+    'restbev'   => ['mcup_rest_bev_intro', 'mcup_rest_bev_standard_heading', 'mcup_rest_bev_standard_price', 'mcup_rest_bev_standard_items', 'mcup_rest_bev_premium_heading', 'mcup_rest_bev_premium_price', 'mcup_rest_bev_premium_items', 'mcup_rest_bev_note1', 'mcup_rest_bev_note2'],
+    'below'     => ['mcup_below_eyebrow', 'mcup_below_heading', 'mcup_below_subheading', 'mcup_below_lede', 'mcup_below_p1', 'mcup_below_p2', 'mcup_below_date', 'mcup_below_price_eyebrow', 'mcup_below_price', 'mcup_below_btn_label', 'mcup_below_btn_url'],
     'belowdrinks' => ['mcup_below_drinks_lede', 'mcup_below_drinks_champagne_items', 'mcup_below_drinks_white_items', 'mcup_below_drinks_rose_items', 'mcup_below_drinks_red_items', 'mcup_below_drinks_beer_items', 'mcup_below_drinks_cocktails_items'],
     'summary'   => ['mcup_summary_heading', 'mcup_summary_subheading', 'mcup_summary_p1', 'mcup_summary_date', 'mcup_summary_rest_detail1', 'mcup_summary_rest_detail2', 'mcup_summary_rest_btn_label', 'mcup_summary_rest_btn_url', 'mcup_summary_below_detail1', 'mcup_summary_below_btn_label', 'mcup_summary_below_btn_url'],
 ];
@@ -340,8 +340,8 @@ include __DIR__ . '/layout.php';
 <?php foreach ($fieldGroups as $group => $keys): ?>
   <div class="tab-panel settings-group<?= $activeTab === $group ? ' active' : '' ?>" data-tab="<?= e($group) ?>">
     <h3><?= e($tabs[$group]) ?></h3>
-    <?php if ($group === 'restbev'): ?><p class="group-help">Standard / Premium lists: one drink per line.</p><?php endif; ?>
-    <?php if ($group === 'belowdrinks'): ?><p class="group-help">Each category's list: one drink per line.</p><?php endif; ?>
+    <?php if ($group === 'restbev'): ?><p class="group-help">Standard / Premium rows: one per line, as <code>Label | Value</code> - e.g. <code>Champagne | Moët &amp; Chandon Impérial Brut</code>.</p><?php endif; ?>
+    <?php if ($group === 'belowdrinks'): ?><p class="group-help">Each field is the value shown next to its drink category on the live page (e.g. the White Wine field lists the white wines). Multiple items: one per line.</p><?php endif; ?>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
       <input type="hidden" name="action" value="save_section">

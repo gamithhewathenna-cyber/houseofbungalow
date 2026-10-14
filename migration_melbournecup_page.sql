@@ -13,12 +13,12 @@
 -- and safe to run more than once.
 -- =====================================================================
 
--- Remove placeholder content from the earlier version of this migration (if present).
+-- Remove placeholder/superseded content from earlier versions of this migration (if present).
 DELETE FROM `settings` WHERE `skey` IN (
   'mcup_lede1','mcup_lede2','mcup_hours','mcup_menu_heading','mcup_menu_lede',
   'mcup_guest_eyebrow','mcup_guest_heading','mcup_guest_p1','mcup_guest_p2',
   'mcup_guest_btn_label','mcup_guest_btn_url','mcup_guest_image',
-  'mcup_rest_bev_lede'
+  'mcup_rest_bev_lede','mcup_rest_image','mcup_below_image'
 );
 DELETE FROM `blocks` WHERE `block_type` = 'mcup_gallery';
 DELETE FROM `blocks` WHERE `block_type` IN (
@@ -26,10 +26,19 @@ DELETE FROM `blocks` WHERE `block_type` IN (
 );
 DELETE FROM `blocks` WHERE `block_type` = 'mcup_menu_cat';
 
--- If an earlier run of this migration already inserted the old long-form headings,
--- shorten them to match the new card layout (eyebrow + heading, shown separately).
+-- If an earlier run of this migration already inserted the old long-form headings
+-- or combined price/package strings, shorten/restructure them to match the new
+-- "Menu / Beverage Packages" browser layout.
 UPDATE `settings` SET `svalue` = 'The Restaurant' WHERE `skey` = 'mcup_rest_heading' AND `svalue` = 'Melbourne Cup At The Restaurant';
 UPDATE `settings` SET `svalue` = 'Below' WHERE `skey` = 'mcup_below_heading' AND `svalue` = 'Melbourne Cup At Below';
+UPDATE `settings` SET `svalue` = '$120 PP' WHERE `skey` = 'mcup_rest_price' AND `svalue` = '$120 per person | Three-Course Shared Set Menu';
+UPDATE `settings` SET `svalue` = '$160 PP' WHERE `skey` = 'mcup_below_price' AND `svalue` = '$160 per person | Two Hours of Canapés & Drinks';
+UPDATE `settings` SET `svalue` = 'Standard' WHERE `skey` = 'mcup_rest_bev_standard_heading' AND `svalue` = 'Standard - Add $55pp';
+UPDATE `settings` SET `svalue` = 'Premium' WHERE `skey` = 'mcup_rest_bev_premium_heading' AND `svalue` = 'Premium - Add $85pp';
+UPDATE `settings` SET `svalue` = 'Champagne | Moët & Chandon Impérial Brut\nWhite & Red Wine | House white and red wine\nCocktail | Mimosa\nBeer | Asahi\nSoft Drinks | Coke, Diet Coke, Sprite, Ginger Ale'
+  WHERE `skey` = 'mcup_rest_bev_standard_items' AND `svalue` = 'Moët & Chandon Impérial Brut\nHouse white and red wine\nMimosas\nAsahi\nSoft drinks';
+UPDATE `settings` SET `svalue` = 'Champagne | Moët & Chandon Impérial Brut\nWhite Wine | Cloudy Bay Sauvignon Blanc, Scorpo Pinot Gris\nRosé | Le Fauve Rosé\nRed Wine | Maison Piron Beaujolais, Leeuwin Estate Cabernet Sauvignon\nCocktails | Mimosa, Hugo Spritz, Negroni\nBeer & Cider | Asahi, Somersby Apple Cider\nSoft Drinks | Coke, Diet Coke, Sprite, Ginger Ale'
+  WHERE `skey` = 'mcup_rest_bev_premium_items' AND `svalue` = 'Moët & Chandon Impérial Brut\nMaison Piron Beaujolais\nLeeuwin Estate Cabernet Sauvignon\nLe Fauve Rosé\nCloudy Bay Sauvignon Blanc\nScorpo Pinot Gris\nMimosas, Hugo Spritz and Negroni\nAsahi\nSomersby Apple Cider\nSoft drinks';
 
 -- New settings (safe to re-run - existing rows are left untouched).
 INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) VALUES
@@ -48,7 +57,6 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('mcup_btn2_label','BOOK BELOW','melbournecup_page','Top Intro - button 2 label','text',11),
 ('mcup_btn2_url','reserve.php','melbournecup_page','Top Intro - button 2 URL','text',12),
 
-('mcup_rest_image','assets/img/restaurant.jpg','melbournecup_page','Restaurant - card image','image',13),
 ('mcup_rest_eyebrow','Melbourne Cup At','melbournecup_page','Restaurant - eyebrow label','text',13),
 ('mcup_rest_heading','The Restaurant','melbournecup_page','Restaurant - heading','text',13),
 ('mcup_rest_subheading','A Long Lunch Worth Dressing Up For.','melbournecup_page','Restaurant - subheading','text',14),
@@ -56,20 +64,22 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('mcup_rest_p1','Celebrate Melbourne Cup at the Restaurant with a three-course menu designed for sharing, bringing together Spanish inspiration, Asian influences and the best of Australian produce.','melbournecup_page','Restaurant - paragraph 1','textarea',16),
 ('mcup_rest_p2','Begin with a welcome drink before settling in for an afternoon of generous food, good company and the excitement of Cup Day.','melbournecup_page','Restaurant - paragraph 2','textarea',17),
 ('mcup_rest_date','Tuesday, 3 November 2026','melbournecup_page','Restaurant - date line','text',18),
-('mcup_rest_price','$120 per person | Three-Course Shared Set Menu','melbournecup_page','Restaurant - price line','text',19),
+('mcup_rest_price_eyebrow','Three-Course Lunch','melbournecup_page','Restaurant - price eyebrow','text',19),
+('mcup_rest_price','$120 PP','melbournecup_page','Restaurant - big price','text',19),
 ('mcup_rest_price_note','Includes a welcome drink.','melbournecup_page','Restaurant - price note','text',20),
 ('mcup_rest_btn_label','BOOK THE RESTAURANT','melbournecup_page','Restaurant - button label','text',21),
 ('mcup_rest_btn_url','reserve.php','melbournecup_page','Restaurant - button URL','text',22),
 
-('mcup_rest_bev_intro','Complete your Melbourne Cup experience with an optional three-hour beverage package.','melbournecup_page','Beverage Packages accordion - intro','textarea',24),
-('mcup_rest_bev_standard_heading','Standard - Add $55pp','melbournecup_page','Beverage Packages accordion - Standard heading','text',25),
-('mcup_rest_bev_standard_items','Moët & Chandon Impérial Brut\nHouse white and red wine\nMimosas\nAsahi\nSoft drinks','melbournecup_page','Beverage Packages accordion - Standard items (one per line)','textarea',26),
-('mcup_rest_bev_premium_heading','Premium - Add $85pp','melbournecup_page','Beverage Packages accordion - Premium heading','text',27),
-('mcup_rest_bev_premium_items','Moët & Chandon Impérial Brut\nMaison Piron Beaujolais\nLeeuwin Estate Cabernet Sauvignon\nLe Fauve Rosé\nCloudy Bay Sauvignon Blanc\nScorpo Pinot Gris\nMimosas, Hugo Spritz and Negroni\nAsahi\nSomersby Apple Cider\nSoft drinks','melbournecup_page','Beverage Packages accordion - Premium items (one per line)','textarea',28),
-('mcup_rest_bev_note1','All guests at the same table must select the same beverage package.','melbournecup_page','Beverage Packages accordion - note (shown under the packages)','text',29),
-('mcup_rest_bev_note2','Vegetarian and vegan options are available with advance notice. Please advise us of dietary requirements when booking.','melbournecup_page','Dietary note (shown under The Menu accordion)','textarea',30),
+('mcup_rest_bev_intro','Complete your Melbourne Cup experience with an optional three-hour beverage package.','melbournecup_page','Beverage Packages tab - intro','textarea',24),
+('mcup_rest_bev_standard_heading','Standard','melbournecup_page','Beverage Packages tab - Standard label','text',25),
+('mcup_rest_bev_standard_price','$55 PP','melbournecup_page','Beverage Packages tab - Standard price','text',25),
+('mcup_rest_bev_standard_items','Champagne | Moët & Chandon Impérial Brut\nWhite & Red Wine | House white and red wine\nCocktail | Mimosa\nBeer | Asahi\nSoft Drinks | Coke, Diet Coke, Sprite, Ginger Ale','melbournecup_page','Beverage Packages tab - Standard rows (one "Label | Value" per line)','textarea',26),
+('mcup_rest_bev_premium_heading','Premium','melbournecup_page','Beverage Packages tab - Premium label','text',27),
+('mcup_rest_bev_premium_price','$85 PP','melbournecup_page','Beverage Packages tab - Premium price','text',27),
+('mcup_rest_bev_premium_items','Champagne | Moët & Chandon Impérial Brut\nWhite Wine | Cloudy Bay Sauvignon Blanc, Scorpo Pinot Gris\nRosé | Le Fauve Rosé\nRed Wine | Maison Piron Beaujolais, Leeuwin Estate Cabernet Sauvignon\nCocktails | Mimosa, Hugo Spritz, Negroni\nBeer & Cider | Asahi, Somersby Apple Cider\nSoft Drinks | Coke, Diet Coke, Sprite, Ginger Ale','melbournecup_page','Beverage Packages tab - Premium rows (one "Label | Value" per line)','textarea',28),
+('mcup_rest_bev_note1','All guests at the same table must select the same beverage package.','melbournecup_page','Beverage Packages tab - note (shown under the packages)','text',29),
+('mcup_rest_bev_note2','Vegetarian and vegan options are available with advance notice. Please advise us of dietary requirements when booking.','melbournecup_page','Dietary note (shown under The Menu tab)','textarea',30),
 
-('mcup_below_image','assets/img/below.jpg','melbournecup_page','Below - card image','image',31),
 ('mcup_below_eyebrow','Melbourne Cup At','melbournecup_page','Below - eyebrow label','text',31),
 ('mcup_below_heading','Below','melbournecup_page','Below - heading','text',31),
 ('mcup_below_subheading','Champagne. Canapés. Cup Day Below.','melbournecup_page','Below - subheading','text',32),
@@ -77,7 +87,8 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('mcup_below_p1','This Melbourne Cup, Below opens its doors for an afternoon of champagne, cocktails and canapés in the House''s intimate Basement.','melbournecup_page','Below - paragraph 1','textarea',34),
 ('mcup_below_p2','Enjoy two hours of flowing drinks and a selection of canapés from the House of Bungalow kitchen, with the atmosphere and energy that make Below distinctly its own.','melbournecup_page','Below - paragraph 2','textarea',35),
 ('mcup_below_date','Tuesday, 3 November 2026','melbournecup_page','Below - date line','text',36),
-('mcup_below_price','$160 per person | Two Hours of Canapés & Drinks','melbournecup_page','Below - price line','text',37),
+('mcup_below_price_eyebrow','Two Hours Of Canapés & Drinks','melbournecup_page','Below - price eyebrow','text',37),
+('mcup_below_price','$160 PP','melbournecup_page','Below - big price','text',37),
 ('mcup_below_btn_label','BOOK BELOW','melbournecup_page','Below - button label','text',38),
 ('mcup_below_btn_url','reserve.php','melbournecup_page','Below - button URL','text',39),
 
