@@ -142,7 +142,7 @@ function render_bev_rows(string $settingKey): void
 </section>
 <?php endif; ?>
 
-<!-- Melbourne Cup At The Restaurant - Menu / Beverage Packages browser -->
+<!-- Melbourne Cup At The Restaurant - Beverage Packages (Menu temporarily hidden) -->
 <?php if (section_visible('mcup_restaurant')): ?>
 <section class="cup-offer-v2 reveal">
   <div class="container">
@@ -160,16 +160,7 @@ function render_bev_rows(string $settingKey): void
       <?php if (setting('mcup_rest_price_note')): ?><p class="cup-offer-v2-price-note"><?= e(setting('mcup_rest_price_note')) ?></p><?php endif; ?>
     </div>
 
-    <div class="cup-browser-tabs">
-      <button type="button" class="cup-browser-tab active" data-browser-tab="menu"><?php cup_icon('fork'); ?> Menu</button>
-      <button type="button" class="cup-browser-tab" data-browser-tab="bev"><?php cup_icon('glass'); ?> Beverage Packages</button>
-    </div>
-
-    <div class="cup-browser-panel active" data-browser-panel="menu">
-      <?php render_menu_browser($rest_menu_cats, $rest_menu_items_by_cat, 'mcup_rest_bev_note2'); ?>
-    </div>
-
-    <div class="cup-browser-panel" data-browser-panel="bev">
+    <div class="cup-browser-panel active" data-browser-panel="bev">
       <?php if (setting('mcup_rest_bev_intro')): ?><p class="cup-bev-intro"><?= enl(setting('mcup_rest_bev_intro')) ?></p><?php endif; ?>
       <div class="cup-bev-grid-v2">
         <div class="cup-bev-card">
@@ -198,7 +189,7 @@ function render_bev_rows(string $settingKey): void
 </section>
 <?php endif; ?>
 
-<!-- Melbourne Cup At Below - Menu / Drinks Package browser -->
+<!-- Melbourne Cup At Below - Drinks Package (Menu temporarily hidden) -->
 <?php if (section_visible('mcup_below')): ?>
 <section class="cup-offer-v2 reveal">
   <div class="container">
@@ -215,16 +206,7 @@ function render_bev_rows(string $settingKey): void
       <?php if (setting('mcup_below_price')): ?><p class="cup-offer-v2-price"><?= e(setting('mcup_below_price')) ?></p><?php endif; ?>
     </div>
 
-    <div class="cup-browser-tabs">
-      <button type="button" class="cup-browser-tab active" data-browser-tab="menu"><?php cup_icon('canape'); ?> Menu</button>
-      <button type="button" class="cup-browser-tab" data-browser-tab="bev"><?php cup_icon('cocktail'); ?> Drinks Package</button>
-    </div>
-
-    <div class="cup-browser-panel active" data-browser-panel="menu">
-      <?php render_menu_browser($below_menu_cats, $below_menu_items_by_cat); ?>
-    </div>
-
-    <div class="cup-browser-panel" data-browser-panel="bev">
+    <div class="cup-browser-panel active" data-browser-panel="bev">
       <?php if (setting('mcup_below_drinks_lede')): ?><p class="cup-bev-intro"><?= e(setting('mcup_below_drinks_lede', 'Champagne, cocktails and a considered selection of wines.')) ?></p><?php endif; ?>
       <div class="cup-bev-grid-v2 single">
         <div class="cup-bev-card">
