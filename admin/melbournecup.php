@@ -10,6 +10,7 @@ $fieldGroups = [
     'restbev'   => ['mcup_rest_bev_intro', 'mcup_rest_bev_standard_heading', 'mcup_rest_bev_standard_price', 'mcup_rest_bev_standard_items', 'mcup_rest_bev_premium_heading', 'mcup_rest_bev_premium_price', 'mcup_rest_bev_premium_items', 'mcup_rest_bev_note1', 'mcup_rest_bev_note2'],
     'below'     => ['mcup_below_eyebrow', 'mcup_below_heading', 'mcup_below_subheading', 'mcup_below_lede', 'mcup_below_p1', 'mcup_below_p2', 'mcup_below_date', 'mcup_below_price_eyebrow', 'mcup_below_price', 'mcup_below_btn_label', 'mcup_below_btn_url'],
     'belowdrinks' => ['mcup_below_drinks_lede', 'mcup_below_drinks_champagne_items', 'mcup_below_drinks_white_items', 'mcup_below_drinks_rose_items', 'mcup_below_drinks_red_items', 'mcup_below_drinks_beer_items', 'mcup_below_drinks_cocktails_items'],
+    'menus'     => ['mcup_menus_heading', 'mcup_menus_rest_label', 'mcup_menus_below_label'],
     'summary'   => ['mcup_summary_heading', 'mcup_summary_subheading', 'mcup_summary_p1', 'mcup_summary_date', 'mcup_summary_rest_detail1', 'mcup_summary_rest_detail2', 'mcup_summary_rest_btn_label', 'mcup_summary_rest_btn_url', 'mcup_summary_below_detail1', 'mcup_summary_below_btn_label', 'mcup_summary_below_btn_url'],
 ];
 $menuFamilies = [
@@ -19,8 +20,9 @@ $menuFamilies = [
 $visibilitySections = [
     'mcup_hero'       => 'Hero',
     'mcup_intro'      => 'Top Intro',
-    'mcup_restaurant' => 'At The Restaurant (incl. menu & beverage packages)',
-    'mcup_below'      => 'At Below (incl. menu & drinks)',
+    'mcup_restaurant' => 'At The Restaurant (pricing & beverage packages)',
+    'mcup_below'      => 'At Below (pricing & drinks)',
+    'mcup_menus'      => 'The Menu (two-column Restaurant/Below menus)',
     'mcup_summary'    => 'Two Experiences. One House.',
 ];
 
@@ -172,6 +174,7 @@ $tabs = [
     'below'       => 'At Below',
     'belowmenu'   => 'Below Menu',
     'belowdrinks' => 'The Drinks',
+    'menus'       => 'The Menu',
     'summary'     => 'Closing Summary',
     'visibility'  => 'Section Visibility',
 ];
@@ -342,6 +345,7 @@ include __DIR__ . '/layout.php';
     <h3><?= e($tabs[$group]) ?></h3>
     <?php if ($group === 'restbev'): ?><p class="group-help">Standard / Premium rows: one per line, as <code>Label | Value</code> - e.g. <code>Champagne | Moët &amp; Chandon Impérial Brut</code>.</p><?php endif; ?>
     <?php if ($group === 'belowdrinks'): ?><p class="group-help">Each field is the value shown next to its drink category on the live page (e.g. the White Wine field lists the white wines). Multiple items: one per line.</p><?php endif; ?>
+    <?php if ($group === 'menus'): ?><p class="group-help">This is the two-column section further down the page showing both menus side by side. Edit the actual categories/dishes under the "Restaurant Menu" and "Below Menu" tabs - they're fully independent of each other.</p><?php endif; ?>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
       <input type="hidden" name="action" value="save_section">

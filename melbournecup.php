@@ -37,44 +37,30 @@ function cup_icon(string $name): void
 }
 
 /**
- * Renders the "Menu" browser tab: a left-hand list of course categories and
- * a right-hand detail panel, one category visible at a time (JS-toggled).
- * A category's optional "subtitle" shows as a small italic note under its
- * heading (e.g. "Served as an alternate drop.").
+ * Renders one menu column: every category stacked top to bottom with its
+ * dishes underneath - used for the two-column "The Menu" section (Restaurant
+ * menu in one column, Below menu in the other). A category's optional
+ * "subtitle" shows as a small italic note under its heading (e.g. "Served
+ * as an alternate drop.").
  */
-function render_menu_browser(array $cats, array $itemsByCat, string $footnoteSettingKey = ''): void
+function render_menu_stack(array $cats, array $itemsByCat): void
 {
     if (!$cats) {
+        echo '<p class="cup-menu-empty">Menu coming soon.</p>';
         return;
     }
-    ?>
-    <div class="cup-browser-menu">
-      <div class="cup-browser-menu-nav">
-        <?php foreach ($cats as $i => $cat): ?>
-          <button type="button" class="cup-browser-cat-btn<?= $i === 0 ? ' active' : '' ?>" data-cat="<?= $cat['id'] ?>">
-            <span><?= e($cat['title']) ?></span>
-            <?php cup_icon('chevron-right'); ?>
-          </button>
-        <?php endforeach; ?>
-      </div>
-      <div class="cup-browser-menu-detail">
-        <?php foreach ($cats as $i => $cat): ?>
-          <div class="cup-browser-cat-panel<?= $i === 0 ? ' active' : '' ?>" data-cat-panel="<?= $cat['id'] ?>">
-            <h3><?= e($cat['title']) ?></h3>
-            <?php if ($cat['subtitle']): ?><p class="cup-browser-cat-note"><?= e($cat['subtitle']) ?></p><?php endif; ?>
-            <hr class="cup-browser-divider">
-            <?php foreach ($itemsByCat[$cat['id']] as $item): ?>
-              <p class="cup-browser-item"><?= e($item['title']) ?></p>
-              <?php if ($item['body']): ?><p class="cup-browser-item-desc"><?= enl($item['body']) ?></p><?php endif; ?>
-            <?php endforeach; ?>
-          </div>
-        <?php endforeach; ?>
-      </div>
-    </div>
-    <?php if ($footnoteSettingKey && setting($footnoteSettingKey)): ?>
-      <p class="cup-browser-menu-footnote"><?= enl(setting($footnoteSettingKey)) ?></p>
-    <?php endif; ?>
-    <?php
+    foreach ($cats as $cat) {
+        ?>
+        <div class="cup-menu-category">
+          <p class="cup-menu-category-heading"><?= e($cat['title']) ?></p>
+          <?php if ($cat['subtitle']): ?><p class="cup-menu-category-note"><?= e($cat['subtitle']) ?></p><?php endif; ?>
+          <?php foreach ($itemsByCat[$cat['id']] as $item): ?>
+            <p class="cup-menu-item"><?= e($item['title']) ?></p>
+            <?php if ($item['body']): ?><p class="cup-menu-item-desc"><?= enl($item['body']) ?></p><?php endif; ?>
+          <?php endforeach; ?>
+        </div>
+        <?php
+    }
 }
 
 /** One "label | value" row inside a beverage/drinks card. */
@@ -230,6 +216,26 @@ function render_bev_rows(string $settingKey): void
         </a>
       </div>
     <?php endif; ?>
+  </div>
+</section>
+<?php endif; ?>
+
+<!-- The Menu - two columns, Restaurant menu and Below menu side by side -->
+<?php if (section_visible('mcup_menus')): ?>
+<section class="cup-menu-section reveal">
+  <div class="container">
+    <h2><?= e(setting('mcup_menus_heading', 'The Menu')) ?></h2>
+    <div class="cup-menu-columns">
+      <div class="cup-menu-col">
+        <p class="cup-menu-col-label"><?= e(setting('mcup_menus_rest_label', 'At The Restaurant')) ?></p>
+        <?php render_menu_stack($rest_menu_cats, $rest_menu_items_by_cat); ?>
+        <?php if (setting('mcup_rest_bev_note2')): ?><p class="cup-menu-footnote"><?= enl(setting('mcup_rest_bev_note2')) ?></p><?php endif; ?>
+      </div>
+      <div class="cup-menu-col">
+        <p class="cup-menu-col-label"><?= e(setting('mcup_menus_below_label', 'At Below')) ?></p>
+        <?php render_menu_stack($below_menu_cats, $below_menu_items_by_cat); ?>
+      </div>
+    </div>
   </div>
 </section>
 <?php endif; ?>

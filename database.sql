@@ -895,6 +895,10 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('mcup_below_drinks_beer_items','Asahi','melbournecup_page','The Drinks - Beer (one per line)','textarea',45),
 ('mcup_below_drinks_cocktails_items','A selection of two signature cocktails','melbournecup_page','The Drinks - Signature Cocktails (one per line)','textarea',46),
 
+('mcup_menus_heading','The Menu','melbournecup_page','The Menu section - heading','text',46),
+('mcup_menus_rest_label','At The Restaurant','melbournecup_page','The Menu section - Restaurant column label','text',46),
+('mcup_menus_below_label','At Below','melbournecup_page','The Menu section - Below column label','text',46),
+
 ('mcup_summary_heading','Two Experiences. One House.','melbournecup_page','Closing Summary - heading','text',47),
 ('mcup_summary_subheading','Your Cup Day, Your Way.','melbournecup_page','Closing Summary - subheading','text',48),
 ('mcup_summary_p1','Whether it''s a long lunch at the Restaurant or champagne and canapés Below, make House of Bungalow your destination this Melbourne Cup.','melbournecup_page','Closing Summary - paragraph','textarea',49),
