@@ -775,7 +775,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .cup-dark-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;max-width:1200px;margin:0 auto;}
 .cup-dark-offer{max-width:none;margin:0;}
 .cup-dark-offer-btn-wrap{text-align:center;margin-top:30px;}
-.cup-dark-offer-media{aspect-ratio:16/9;overflow:hidden;border-radius:6px;margin:0 0 24px;}
+.cup-dark-offer-media{aspect-ratio:16/9;overflow:hidden;border-radius:20px;margin:0 0 24px;}
 .cup-dark-offer-media img{width:100%;height:100%;object-fit:cover;display:block;}
 .cup-dark-eyebrow{
   font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:1.5px;
