@@ -14,11 +14,13 @@
 -- =====================================================================
 
 -- Remove placeholder/superseded content from earlier versions of this migration (if present).
+-- NOTE: mcup_rest_image/mcup_below_image used to be listed here (they were briefly
+-- removed in an earlier design), but they're back in active use - deleting them on
+-- every re-run would wipe out any image you've since uploaded, so they're no longer here.
 DELETE FROM `settings` WHERE `skey` IN (
   'mcup_lede1','mcup_lede2','mcup_hours','mcup_menu_heading','mcup_menu_lede',
   'mcup_guest_eyebrow','mcup_guest_heading','mcup_guest_p1','mcup_guest_p2',
-  'mcup_guest_btn_label','mcup_guest_btn_url','mcup_guest_image',
-  'mcup_rest_image','mcup_below_image'
+  'mcup_guest_btn_label','mcup_guest_btn_url','mcup_guest_image'
 );
 DELETE FROM `blocks` WHERE `block_type` = 'mcup_gallery';
 DELETE FROM `blocks` WHERE `block_type` IN (
@@ -78,6 +80,7 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('mcup_btn2_label','BOOK BELOW','melbournecup_page','Top Intro - button 2 label','text',11),
 ('mcup_btn2_url','reserve.php','melbournecup_page','Top Intro - button 2 URL','text',12),
 
+('mcup_rest_image','assets/img/restaurant.jpg','melbournecup_page','Restaurant - top image (rectangle, 16:9)','image',12),
 ('mcup_rest_eyebrow','Melbourne Cup At','melbournecup_page','Restaurant - eyebrow label','text',13),
 ('mcup_rest_heading','The Restaurant','melbournecup_page','Restaurant - heading','text',13),
 ('mcup_rest_subheading','A Long Lunch Worth Dressing Up For.','melbournecup_page','Restaurant - subheading','text',14),
@@ -104,6 +107,7 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('mcup_rest_bev_note1','All guests at the same table must select the same beverage package.','melbournecup_page','Beverage Packages - note (shown under the packages)','text',29),
 ('mcup_rest_bev_note2','Vegetarian and vegan options are available with advance notice. Please advise us of dietary requirements when booking.','melbournecup_page','Beverage Packages - dietary note','textarea',30),
 
+('mcup_below_image','assets/img/below.jpg','melbournecup_page','Below - top image (rectangle, 16:9)','image',30),
 ('mcup_below_eyebrow','Melbourne Cup At','melbournecup_page','Below - eyebrow label','text',31),
 ('mcup_below_heading','Below','melbournecup_page','Below - heading','text',31),
 ('mcup_below_subheading','Champagne. Canapés. Cup Day Below.','melbournecup_page','Below - subheading','text',32),

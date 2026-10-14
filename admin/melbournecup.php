@@ -6,9 +6,9 @@ require_once __DIR__ . '/helpers.php';
 $fieldGroups = [
     'herovideo' => ['mcup_hero_image', 'mcup_hero_video'],
     'intro'     => ['mcup_heading', 'mcup_subheading', 'mcup_lede', 'mcup_p1', 'mcup_p2', 'mcup_p3', 'mcup_date', 'mcup_btn2_label', 'mcup_btn2_url'],
-    'restaurant' => ['mcup_rest_eyebrow', 'mcup_rest_heading', 'mcup_rest_price_eyebrow', 'mcup_rest_price', 'mcup_rest_price_note', 'mcup_rest_expander1_label', 'mcup_rest_expander2_label', 'mcup_rest_btn_label', 'mcup_rest_btn_url'],
+    'restaurant' => ['mcup_rest_image', 'mcup_rest_eyebrow', 'mcup_rest_heading', 'mcup_rest_price_eyebrow', 'mcup_rest_price', 'mcup_rest_price_note', 'mcup_rest_expander1_label', 'mcup_rest_expander2_label', 'mcup_rest_btn_label', 'mcup_rest_btn_url'],
     'restbev'   => ['mcup_rest_bev_intro', 'mcup_rest_bev_standard_heading', 'mcup_rest_bev_standard_price', 'mcup_rest_bev_standard_items', 'mcup_rest_bev_premium_heading', 'mcup_rest_bev_premium_price', 'mcup_rest_bev_premium_items', 'mcup_rest_bev_note1', 'mcup_rest_bev_note2'],
-    'below'     => ['mcup_below_eyebrow', 'mcup_below_heading', 'mcup_below_price_eyebrow', 'mcup_below_price', 'mcup_below_expander1_label', 'mcup_below_expander2_label', 'mcup_below_btn_label', 'mcup_below_btn_url'],
+    'below'     => ['mcup_below_image', 'mcup_below_eyebrow', 'mcup_below_heading', 'mcup_below_price_eyebrow', 'mcup_below_price', 'mcup_below_expander1_label', 'mcup_below_expander2_label', 'mcup_below_btn_label', 'mcup_below_btn_url'],
     'belowdrinks' => ['mcup_below_drinks_lede', 'mcup_below_drinks_champagne_items', 'mcup_below_drinks_white_items', 'mcup_below_drinks_rose_items', 'mcup_below_drinks_red_items', 'mcup_below_drinks_beer_items', 'mcup_below_drinks_cocktails_items'],
 ];
 $menuFamilies = [
