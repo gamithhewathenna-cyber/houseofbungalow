@@ -22,12 +22,6 @@ foreach ($below_menu_cats as $cat) {
     $below_menu_items_by_cat[$cat['id']] = blocks('mcup_below_menu_item_' . $cat['id']);
 }
 
-$themenu_cats = blocks('mcup_themenu_cat');
-$themenu_items_by_cat = [];
-foreach ($themenu_cats as $cat) {
-    $themenu_items_by_cat[$cat['id']] = blocks('mcup_themenu_item_' . $cat['id']);
-}
-
 /** Small inline icon set used by the Cup Day menu browser. */
 function cup_icon(string $name): void
 {
