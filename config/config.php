@@ -11,7 +11,7 @@
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'intujzmw_houseofbungalow26');
 define('DB_USER', 'intujzmw_houseofbungalow26admin');
-define('DB_PASS', '{X?m8V!fGrCG3esl');
+define('DB_PASS', 'e%yslF*~y;?![45?');
 
 // ---- Site ----
 define('SITE_NAME', 'House of Bungalow');
