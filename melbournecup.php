@@ -290,6 +290,12 @@ function render_drinks_category(string $label, string $itemsSettingKey): void
       <?php render_dark_expander(setting('mcup_rest_expander2_label', 'View Beverage Packages'), function () {
           render_rest_bev_packages();
       }); ?>
+
+      <?php if (setting('mcup_rest_btn_label')): ?>
+        <div class="cup-dark-offer-btn-wrap">
+          <a class="link-underline" href="<?= e(url(setting('mcup_rest_btn_url', '#'))) ?>"><?= e(setting('mcup_rest_btn_label')) ?></a>
+        </div>
+      <?php endif; ?>
     </div>
     <?php endif; ?>
 
@@ -309,18 +315,15 @@ function render_drinks_category(string $label, string $itemsSettingKey): void
       <?php render_dark_expander(setting('mcup_below_expander2_label', 'View Drinks Package'), function () {
           render_below_drinks_package();
       }); ?>
+
+      <?php if (setting('mcup_below_btn_label')): ?>
+        <div class="cup-dark-offer-btn-wrap">
+          <a class="link-underline" href="<?= e(url(setting('mcup_below_btn_url', '#'))) ?>"><?= e(setting('mcup_below_btn_label')) ?></a>
+        </div>
+      <?php endif; ?>
     </div>
     <?php endif; ?>
 
-    </div>
-
-    <div class="cup-menu-cta-row">
-      <?php if (section_visible('mcup_restaurant') && setting('mcup_rest_btn_label')): ?>
-        <a class="link-underline" href="<?= e(url(setting('mcup_rest_btn_url', '#'))) ?>"><?= e(setting('mcup_rest_btn_label')) ?></a>
-      <?php endif; ?>
-      <?php if (section_visible('mcup_below') && setting('mcup_below_btn_label')): ?>
-        <a class="link-underline" href="<?= e(url(setting('mcup_below_btn_url', '#'))) ?>"><?= e(setting('mcup_below_btn_label')) ?></a>
-      <?php endif; ?>
     </div>
   </div>
 </section>
