@@ -515,9 +515,9 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 
 ('wo_mcup_eyebrow','','whatson_page','Melbourne Cup - eyebrow label (optional)','text',10),
 ('wo_mcup_heading','Melbourne Cup','whatson_page','Melbourne Cup - heading','text',10),
-('wo_mcup_p1','Celebrate Melbourne Cup at House of Bungalow - a long lunch at the Restaurant or champagne and canapés Below, the choice is yours.','whatson_page','Melbourne Cup - paragraph 1','textarea',10),
-('wo_mcup_p2','Tuesday, 3 November 2026. Two spaces, two different ways to spend Cup Day.','whatson_page','Melbourne Cup - paragraph 2','textarea',10),
-('wo_mcup_btn_label','DISCOVER','whatson_page','Melbourne Cup - button label','text',10),
+('wo_mcup_p1','A Melbourne Cup afternoon at the House, with good food, flowing drinks and the excitement of race day.','whatson_page','Melbourne Cup - paragraph 1','textarea',10),
+('wo_mcup_p2','Settle in for the race, stay for the atmosphere and let the afternoon unfold into the evening.','whatson_page','Melbourne Cup - paragraph 2','textarea',10),
+('wo_mcup_btn_label','DISCOVER MORE','whatson_page','Melbourne Cup - button label','text',10),
 ('wo_mcup_btn_url','melbournecup.php','whatson_page','Melbourne Cup - button URL','text',10),
 ('wo_mcup_image','assets/img/restaurant.jpg','whatson_page','Melbourne Cup - image','image',10),
 
