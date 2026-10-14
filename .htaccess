@@ -1,0 +1,25 @@
+# =====================================================================
+# Clean URLs for SEO - removes the ".php" from every public page's URL.
+# e.g. /whatson.php becomes /whatson (admin, assets, uploads, includes
+# and config are left untouched - they don't need clean URLs).
+# =====================================================================
+RewriteEngine On
+
+# Leave these folders exactly as they are - stop processing here.
+RewriteRule ^(admin|assets|uploads|includes|config)($|/) - [L]
+
+# index.php or /index -> / (the homepage should only ever have one URL)
+RewriteCond %{REQUEST_METHOD} GET
+RewriteRule ^index(\.php)?/?$ / [R=301,L]
+
+# Anyone linking/bookmarking the old page.php -> redirect to the clean /page
+# (GET only, so form POSTs to a .php endpoint still work and keep their data).
+RewriteCond %{REQUEST_METHOD} GET
+RewriteCond %{THE_REQUEST} ^[A-Z]+\s/+([^?\s]+)\.php[\s?] [NC]
+RewriteRule ^ /%1 [R=301,L]
+
+# Serve /page (no extension) from the matching page.php file, without
+# changing what shows in the browser's address bar.
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/$1.php -f
+RewriteRule ^([^/]+)/?$ $1.php [L]

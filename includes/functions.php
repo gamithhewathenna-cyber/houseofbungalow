@@ -82,6 +82,8 @@ function enl(?string $v): string
 
 /**
  * Build a URL that respects BASE_URL. Absolute URLs and anchors pass through.
+ * Strips a trailing ".php" (and "index.php" -> root) so every link site-wide
+ * is a clean URL - matches the .htaccess rewrite that serves page.php for /page.
  */
 function url(string $path): string
 {
@@ -89,7 +91,18 @@ function url(string $path): string
     if (preg_match('#^(https?:)?//#i', $path) || str_starts_with($path, '#') || str_starts_with($path, 'mailto:') || str_starts_with($path, 'tel:')) {
         return $path;
     }
-    return rtrim(BASE_URL, '/') . '/' . ltrim($path, '/');
+    $suffix = '';
+    $cut = strcspn($path, '?#');
+    if ($cut < strlen($path)) {
+        $suffix = substr($path, $cut);
+        $path = substr($path, 0, $cut);
+    }
+    if ($path === 'index.php') {
+        $path = '';
+    } elseif (str_ends_with($path, '.php')) {
+        $path = substr($path, 0, -4);
+    }
+    return rtrim(BASE_URL, '/') . '/' . ltrim($path, '/') . $suffix;
 }
 
 /**
