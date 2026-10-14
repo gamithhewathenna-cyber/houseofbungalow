@@ -6,7 +6,6 @@ require_once __DIR__ . '/helpers.php';
 $fieldGroups = [
     'herovideo' => ['wo_hero_video'],
     'intro'     => ['wo_heading', 'wo_subheading', 'wo_lede', 'wo_tag2_label', 'wo_tag2_url', 'wo_tag3_label', 'wo_tag3_url'],
-    'mcup'      => ['wo_mcup_eyebrow', 'wo_mcup_heading', 'wo_mcup_p1', 'wo_mcup_p2', 'wo_mcup_btn_label', 'wo_mcup_btn_url', 'wo_mcup_image'],
     'happyhour' => ['wo_happyhour_eyebrow', 'wo_happyhour_heading', 'wo_happyhour_p1', 'wo_happyhour_p2', 'wo_happyhour_btn_label', 'wo_happyhour_btn_url', 'wo_happyhour_image'],
     'friday'    => ['wo_friday_eyebrow', 'wo_friday_heading', 'wo_friday_p1', 'wo_friday_p2', 'wo_friday_btn_label', 'wo_friday_btn_url', 'wo_friday_image'],
     'brunch'    => ['wo_brunch_eyebrow', 'wo_brunch_heading', 'wo_brunch_hours', 'wo_brunch_p1', 'wo_brunch_btn_label', 'wo_brunch_btn_url', 'wo_brunch_image'],
@@ -14,7 +13,7 @@ $fieldGroups = [
 $visibilitySections = [
     'wo_hero'      => 'Hero',
     'wo_intro'     => 'Intro',
-    'wo_mcup'      => 'Melbourne Cup',
+    'wo_features'  => 'Melbourne Cup / Featured Sections',
     'wo_happyhour' => 'Happy Hour',
     'wo_friday'    => 'Friday & Saturday Dinner Party',
     'wo_brunch'    => 'Weekend Bottomless Brunch',
@@ -68,6 +67,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Location: whatson.php?tab=' . urlencode($group) . '&saved=1'); exit;
             }
 
+            if ($action === 'save_features') {
+                foreach (($_POST['title'] ?? []) as $id => $title) {
+                    $id  = (int) $id;
+                    $img = handle_upload('file_' . $id);
+                    $fields = ['title=?', 'subtitle=?', 'body=?', 'link_url=?', 'link_url2=?', 'sort=?'];
+                    $params = [trim($title), trim($_POST['subtitle'][$id] ?? ''), trim($_POST['desc'][$id] ?? ''), trim($_POST['link'][$id] ?? ''), trim($_POST['link2'][$id] ?? ''), (int) ($_POST['sort'][$id] ?? 0)];
+                    if ($img !== null) {
+                        $fields[] = 'image=?';
+                        $params[] = $img;
+                    }
+                    $params[] = $id;
+                    $q = db()->prepare('UPDATE blocks SET ' . implode(',', $fields) . ' WHERE id=? AND block_type="wo_feature"');
+                    $q->execute($params);
+                }
+                header('Location: whatson.php?tab=features&saved=1'); exit;
+            }
+            if ($action === 'add_feature') {
+                $img = handle_upload('new_file');
+                $q = db()->prepare('INSERT INTO blocks (block_type,title,subtitle,body,link_url,link_url2,image,sort,active) VALUES ("wo_feature",?,?,?,?,?,?,?,1)');
+                $q->execute([trim($_POST['new_title'] ?? 'New Section'), trim($_POST['new_subtitle'] ?? ''), trim($_POST['new_desc'] ?? ''), trim($_POST['new_link'] ?? '#'), trim($_POST['new_link2'] ?? ''), $img ?? '', (int) ($_POST['new_sort'] ?? 99)]);
+                header('Location: whatson.php?tab=features&saved=1'); exit;
+            }
+            if ($action === 'delete_feature') {
+                $q = db()->prepare('DELETE FROM blocks WHERE id=? AND block_type="wo_feature"');
+                $q->execute([(int) ($_POST['id'] ?? 0)]);
+                header('Location: whatson.php?tab=features&saved=1'); exit;
+            }
+
             if ($action === 'save_faqs') {
                 foreach (($_POST['title'] ?? []) as $id => $title) {
                     $id = (int) $id;
@@ -98,11 +125,12 @@ foreach ($allRows as $r) {
     $bySkey[$r['skey']] = $r;
 }
 $faqs = db()->query("SELECT * FROM blocks WHERE block_type='whatson_faq' ORDER BY sort ASC, id ASC")->fetchAll();
+$features = db()->query("SELECT * FROM blocks WHERE block_type='wo_feature' ORDER BY sort ASC, id ASC")->fetchAll();
 
 $tabs = [
     'herovideo' => 'Hero Video',
     'intro'     => 'Intro',
-    'mcup'      => 'Melbourne Cup',
+    'features'  => 'Melbourne Cup / Featured Sections',
     'happyhour' => 'Happy Hour',
     'friday'    => 'Friday & Saturday Dinner Party',
     'brunch'    => 'Weekend Bottomless Brunch',
@@ -163,7 +191,7 @@ include __DIR__ . '/layout.php';
 <?php foreach ($fieldGroups as $group => $keys): ?>
   <div class="tab-panel settings-group<?= $activeTab === $group ? ' active' : '' ?>" data-tab="<?= e($group) ?>">
     <h3><?= e($tabs[$group]) ?></h3>
-    <?php if ($group === 'mcup' || $group === 'happyhour' || $group === 'friday' || $group === 'brunch'): ?>
+    <?php if ($group === 'happyhour' || $group === 'friday' || $group === 'brunch'): ?>
       <p class="group-help">"INFORMATION" is the small bold label shown under the title - leave it as-is or customise it.</p>
     <?php endif; ?>
     <form method="post" enctype="multipart/form-data">
@@ -175,6 +203,109 @@ include __DIR__ . '/layout.php';
     </form>
   </div>
 <?php endforeach; ?>
+
+<!-- Melbourne Cup / Featured Sections tab -->
+<div class="tab-panel settings-group<?= $activeTab === 'features' ? ' active' : '' ?>" data-tab="features">
+  <h3>Melbourne Cup / Featured Sections</h3>
+  <p class="group-help">Shown as image + text sections on the What's On page, between the intro and "Happy Hour". Add as many as you like, in any order - each alternates image-left/image-right automatically. Leave the button label empty to hide the button on that section.</p>
+
+  <form method="post" enctype="multipart/form-data">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="save_features">
+    <div class="dj-admin-list">
+      <?php foreach ($features as $feature): ?>
+        <div class="dj-admin-card">
+          <div class="dj-admin-media">
+            <div class="thumb-preview<?= $feature['image'] ? '' : ' empty' ?>">
+              <?php if ($feature['image']): ?><img src="<?= e(asset($feature['image'])) ?>" alt=""><?php else: ?>No photo yet<?php endif; ?>
+            </div>
+            <input type="file" name="file_<?= $feature['id'] ?>" accept="image/*" data-crop-ratio="3:2">
+            <span class="help">Replace photo</span>
+          </div>
+          <div class="dj-admin-fields">
+            <div class="field-grid">
+              <label>Eyebrow label (optional)
+                <input type="text" name="subtitle[<?= $feature['id'] ?>]" value="<?= e($feature['subtitle']) ?>">
+              </label>
+              <label>Heading
+                <input type="text" name="title[<?= $feature['id'] ?>]" value="<?= e($feature['title']) ?>">
+              </label>
+            </div>
+            <div class="field-row">
+              <label>Paragraph text (leave a blank line between paragraphs)
+                <textarea name="desc[<?= $feature['id'] ?>]" rows="4"><?= e($feature['body']) ?></textarea>
+              </label>
+            </div>
+            <div class="field-grid">
+              <label>Button label (leave empty to hide the button)
+                <input type="text" name="link2[<?= $feature['id'] ?>]" value="<?= e($feature['link_url2']) ?>">
+              </label>
+              <label>Button URL
+                <input type="text" name="link[<?= $feature['id'] ?>]" value="<?= e($feature['link_url']) ?>">
+              </label>
+            </div>
+            <div class="field-row">
+              <label>Order
+                <input type="text" name="sort[<?= $feature['id'] ?>]" value="<?= (int)$feature['sort'] ?>" style="max-width:100px;">
+              </label>
+            </div>
+          </div>
+          <div class="dj-admin-actions">
+            <button form="delfeature<?= $feature['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this section?')">Delete</button>
+          </div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+    <div class="form-actions"><button class="btn">Save Changes</button></div>
+  </form>
+  <?php foreach ($features as $feature): ?>
+    <form id="delfeature<?= $feature['id'] ?>" method="post" class="inline-form">
+      <input type="hidden" name="csrf" value="<?= e($csrf) ?>"><input type="hidden" name="action" value="delete_feature"><input type="hidden" name="id" value="<?= $feature['id'] ?>">
+    </form>
+  <?php endforeach; ?>
+
+  <h3 style="margin-top:30px;">Add a Section</h3>
+  <form method="post" enctype="multipart/form-data" class="dj-admin-card dj-admin-add">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="add_feature">
+    <div class="dj-admin-media">
+      <div class="thumb-preview empty">No photo yet</div>
+      <input type="file" name="new_file" accept="image/*" data-crop-ratio="3:2">
+      <span class="help">Upload photo</span>
+    </div>
+    <div class="dj-admin-fields">
+      <div class="field-grid">
+        <label>Eyebrow label (optional)
+          <input type="text" name="new_subtitle" placeholder="e.g. Melbourne Cup">
+        </label>
+        <label>Heading
+          <input type="text" name="new_title" placeholder="e.g. Melbourne Cup">
+        </label>
+      </div>
+      <div class="field-row">
+        <label>Paragraph text (leave a blank line between paragraphs)
+          <textarea name="new_desc" rows="4"></textarea>
+        </label>
+      </div>
+      <div class="field-grid">
+        <label>Button label (leave empty to hide the button)
+          <input type="text" name="new_link2" placeholder="e.g. DISCOVER MORE">
+        </label>
+        <label>Button URL
+          <input type="text" name="new_link" placeholder="#">
+        </label>
+      </div>
+      <div class="field-row">
+        <label>Order
+          <input type="text" name="new_sort" value="99" style="max-width:100px;">
+        </label>
+      </div>
+    </div>
+    <div class="dj-admin-actions">
+      <button class="btn btn-sm">Add Section</button>
+    </div>
+  </form>
+</div>
 
 <!-- FAQs tab -->
 <div class="tab-panel settings-group<?= $activeTab === 'faqs' ? ' active' : '' ?>" data-tab="faqs">

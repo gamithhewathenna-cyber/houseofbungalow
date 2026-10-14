@@ -513,14 +513,6 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('wo_tag3_label','BELOW','whatson_page','Tag button 3 label','text',9),
 ('wo_tag3_url','#lineup-section','whatson_page','Tag button 3 URL (use #lineup-section to scroll to the Line-Up section on this page)','text',10),
 
-('wo_mcup_eyebrow','','whatson_page','Melbourne Cup - eyebrow label (optional)','text',10),
-('wo_mcup_heading','Melbourne Cup','whatson_page','Melbourne Cup - heading','text',10),
-('wo_mcup_p1','A Melbourne Cup afternoon at the House, with good food, flowing drinks and the excitement of race day.','whatson_page','Melbourne Cup - paragraph 1','textarea',10),
-('wo_mcup_p2','Settle in for the race, stay for the atmosphere and let the afternoon unfold into the evening.','whatson_page','Melbourne Cup - paragraph 2','textarea',10),
-('wo_mcup_btn_label','DISCOVER MORE','whatson_page','Melbourne Cup - button label','text',10),
-('wo_mcup_btn_url','melbournecup.php','whatson_page','Melbourne Cup - button URL','text',10),
-('wo_mcup_image','assets/img/restaurant.jpg','whatson_page','Melbourne Cup - image','image',10),
-
 ('wo_happyhour_eyebrow','Happy Hour','whatson_page','Happy Hour - eyebrow label','text',11),
 ('wo_happyhour_heading','INFORMATION','whatson_page','Happy Hour - heading','text',12),
 ('wo_happyhour_p1','Cocktails, wine and something from the kitchen as the House moves into the evening.','whatson_page','Happy Hour - paragraph 1','textarea',13),
@@ -551,6 +543,11 @@ INSERT INTO `blocks` (`block_type`,`title`,`body`,`sort`,`active`) VALUES
 ('whatson_faq','Lorem ipsum dolor sit amet consectetur?','Augue sed nec non donec nam.',2,1),
 ('whatson_faq','Lorem ipsum dolor sit.','Lorem fringilla pretium.',3,1),
 ('whatson_faq','Lorem ipsum dolor sit amet consectetur.','Lorem fringilla pretium.',4,1);
+
+-- Melbourne Cup / Featured Sections - repeatable image+text sections, manageable
+-- (add/edit/delete) via admin/whatson.php > "Melbourne Cup / Featured Sections" tab.
+INSERT INTO `blocks` (`block_type`,`title`,`subtitle`,`body`,`link_url`,`link_url2`,`image`,`sort`,`active`) VALUES
+('wo_feature','Melbourne Cup','','A Melbourne Cup afternoon at the House, with good food, flowing drinks and the excitement of race day.\n\nSettle in for the race, stay for the atmosphere and let the afternoon unfold into the evening.','melbournecup.php','DISCOVER MORE','assets/img/restaurant.jpg',10,1);
 
 -- =====================================================================
 -- Brunch page

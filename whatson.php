@@ -11,6 +11,7 @@ $wo_hero_video = setting('wo_hero_video');
 $wo_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'video/quicktime'][strtolower(pathinfo($wo_hero_video, PATHINFO_EXTENSION))] ?? 'video/mp4';
 
 $faqs = blocks('whatson_faq');
+$features = blocks('wo_feature');
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
@@ -40,28 +41,38 @@ $faqs = blocks('whatson_faq');
 </section>
 <?php endif; ?>
 
-<!-- Melbourne Cup ------------------------------------------------------- -->
-<?php if (section_visible('wo_mcup')): ?>
+<!-- Melbourne Cup / Featured Sections (repeatable) ------------------------ -->
+<?php if (section_visible('wo_features')): ?>
+<?php foreach ($features as $i => $feature): ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
-      <div class="split-media">
-        <img src="<?= e(asset(setting('wo_mcup_image', 'assets/img/restaurant.jpg'))) ?>" alt="<?= e(setting('wo_mcup_heading', 'Melbourne Cup')) ?>">
-      </div>
+      <?php if ($i % 2 === 0): ?>
+        <div class="split-media">
+          <img src="<?= e(asset($feature['image'] ?: 'assets/img/restaurant.jpg')) ?>" alt="<?= e($feature['title']) ?>">
+        </div>
+      <?php endif; ?>
       <div class="split-copy">
-        <p class="eyebrow"><?= e(setting('wo_mcup_eyebrow')) ?></p>
-        <h2><?= e(setting('wo_mcup_heading', 'Melbourne Cup')) ?></h2>
-        <p><?= enl(setting('wo_mcup_p1')) ?></p>
-        <p><?= enl(setting('wo_mcup_p2')) ?></p>
-        <?php if (setting('wo_mcup_btn_label')): ?>
+        <?php if ($feature['subtitle']): ?><p class="eyebrow"><?= e($feature['subtitle']) ?></p><?php endif; ?>
+        <h2><?= e($feature['title']) ?></h2>
+        <?php foreach (array_filter(array_map('trim', preg_split('/\n\s*\n/', (string) $feature['body']))) as $para): ?>
+          <p><?= enl($para) ?></p>
+        <?php endforeach; ?>
+        <?php if ($feature['link_url2']): ?>
           <div class="btn-wrap">
-            <a class="link-underline" href="<?= e(url(setting('wo_mcup_btn_url', '#'))) ?>"><?= e(setting('wo_mcup_btn_label')) ?></a>
+            <a class="link-underline" href="<?= e(url($feature['link_url'] ?: '#')) ?>"><?= e($feature['link_url2']) ?></a>
           </div>
         <?php endif; ?>
       </div>
+      <?php if ($i % 2 !== 0): ?>
+        <div class="split-media">
+          <img src="<?= e(asset($feature['image'] ?: 'assets/img/restaurant.jpg')) ?>" alt="<?= e($feature['title']) ?>">
+        </div>
+      <?php endif; ?>
     </div>
   </div>
 </section>
+<?php endforeach; ?>
 <?php endif; ?>
 
 <!-- Happy Hour ----------------------------------------------------------- -->
