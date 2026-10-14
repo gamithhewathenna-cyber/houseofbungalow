@@ -14,15 +14,16 @@ $fieldGroups = [
     'summary'   => ['mcup_summary_heading', 'mcup_summary_subheading', 'mcup_summary_p1', 'mcup_summary_date', 'mcup_summary_rest_detail1', 'mcup_summary_rest_detail2', 'mcup_summary_rest_btn_label', 'mcup_summary_rest_btn_url', 'mcup_summary_below_detail1', 'mcup_summary_below_btn_label', 'mcup_summary_below_btn_url'],
 ];
 $menuFamilies = [
-    'restmenu'  => ['label' => 'Restaurant Menu', 'catType' => 'mcup_rest_menu_cat',  'itemPrefix' => 'mcup_rest_menu_item_'],
-    'belowmenu' => ['label' => 'Below Menu',       'catType' => 'mcup_below_menu_cat', 'itemPrefix' => 'mcup_below_menu_item_'],
+    'restmenu'  => ['label' => 'The Table', 'catType' => 'mcup_rest_menu_cat',  'itemPrefix' => 'mcup_rest_menu_item_'],
+    'themenu'   => ['label' => 'The Menu',  'catType' => 'mcup_themenu_cat',    'itemPrefix' => 'mcup_themenu_item_'],
+    'belowmenu' => ['label' => 'Below Menu (not currently shown on the live page)', 'catType' => 'mcup_below_menu_cat', 'itemPrefix' => 'mcup_below_menu_item_'],
 ];
 $visibilitySections = [
     'mcup_hero'       => 'Hero',
     'mcup_intro'      => 'Top Intro',
     'mcup_restaurant' => 'At The Restaurant (pricing & beverage packages)',
     'mcup_below'      => 'At Below (pricing & drinks)',
-    'mcup_menus'      => 'The Menu (two-column Restaurant/Below menus)',
+    'mcup_menus'      => 'The Menu (switches between "The Table" and "The Menu")',
     'mcup_summary'    => 'Two Experiences. One House.',
 ];
 
@@ -169,12 +170,13 @@ $tabs = [
     'herovideo'   => 'Hero Video',
     'intro'       => 'Top Intro',
     'restaurant'  => 'At The Restaurant',
-    'restmenu'    => 'Restaurant Menu',
+    'restmenu'    => 'The Table - Items',
     'restbev'     => 'Beverage Packages',
     'below'       => 'At Below',
-    'belowmenu'   => 'Below Menu',
+    'belowmenu'   => 'Below Menu - Items (unused)',
     'belowdrinks' => 'The Drinks',
-    'menus'       => 'The Menu',
+    'themenu'     => 'The Menu - Items',
+    'menus'       => 'Menu Section Settings',
     'summary'     => 'Closing Summary',
     'visibility'  => 'Section Visibility',
 ];
@@ -344,9 +346,9 @@ include __DIR__ . '/layout.php';
   <div class="tab-panel settings-group<?= $activeTab === $group ? ' active' : '' ?>" data-tab="<?= e($group) ?>">
     <h3><?= e($tabs[$group]) ?></h3>
     <?php if ($group === 'restaurant' || $group === 'below'): ?><p class="group-help">This section is currently not shown on the live page (removed per request) - these fields aren't visible until it's switched back on.</p><?php endif; ?>
-    <?php if ($group === 'restbev'): ?><p class="group-help">This content now appears inside "The Menu" section, under the Restaurant column, below the food menu. Standard / Premium items: one drink per line.</p><?php endif; ?>
+    <?php if ($group === 'restbev'): ?><p class="group-help">This content now appears inside "The Menu" section, under "The Table", below the food menu. Standard / Premium items: one drink per line.</p><?php endif; ?>
     <?php if ($group === 'belowdrinks'): ?><p class="group-help">Each field is the value shown next to its drink category - this content is currently not shown on the live page (removed per request) along with the rest of the "At Below" section.</p><?php endif; ?>
-    <?php if ($group === 'menus'): ?><p class="group-help">This is the two-column section further down the page showing both menus side by side. Edit the actual categories/dishes under the "Restaurant Menu" and "Below Menu" tabs, and the Restaurant's Beverage Packages content under the "Beverage Packages" tab - they're fully independent of each other.</p><?php endif; ?>
+    <?php if ($group === 'menus'): ?><p class="group-help">This is "The Menu" section further down the page - a single switcher between two independently-managed menus. The heading here is the section's own title; the two labels below are the switcher button text. Edit the actual categories/dishes under the "The Table - Items" and "The Menu - Items" tabs, and the Beverage Packages shown under "The Table" via the "Beverage Packages" tab.</p><?php endif; ?>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
       <input type="hidden" name="action" value="save_section">
@@ -357,12 +359,18 @@ include __DIR__ . '/layout.php';
   </div>
 <?php endforeach; ?>
 
-<!-- Restaurant Menu tab -->
+<!-- The Table - menu items tab -->
 <div class="tab-panel settings-group<?= $activeTab === 'restmenu' ? ' active' : '' ?>" data-tab="restmenu">
   <?php render_menu_family('restmenu', $menuFamilies['restmenu'], $menuData['restmenu'], $activeCat, $csrf); ?>
 </div>
 
-<!-- Below Menu tab -->
+<!-- The Menu - menu items tab -->
+<div class="tab-panel settings-group<?= $activeTab === 'themenu' ? ' active' : '' ?>" data-tab="themenu">
+  <p class="group-help">This is the second switcher option on the live page. Add categories and dishes here the same way as "The Table".</p>
+  <?php render_menu_family('themenu', $menuFamilies['themenu'], $menuData['themenu'], $activeCat, $csrf); ?>
+</div>
+
+<!-- Below Menu tab (not currently linked from the live page) -->
 <div class="tab-panel settings-group<?= $activeTab === 'belowmenu' ? ' active' : '' ?>" data-tab="belowmenu">
   <?php render_menu_family('belowmenu', $menuFamilies['belowmenu'], $menuData['belowmenu'], $activeCat, $csrf); ?>
 </div>

@@ -882,22 +882,28 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .cup-offer-v2-btn-wrap{text-align:center;}
 
 /* ------------------------------------------------------------------ */
-/* Melbourne Cup - "The Menu" two-column section (one menu per side)  */
+/* Melbourne Cup - "The Menu" section: single column, switch between       */
+/* "The Table" and "The Menu" (each independently managed in admin)        */
 /* ------------------------------------------------------------------ */
 .cup-menu-section{padding:70px 0;text-align:center;}
 .cup-menu-section h2{
   font-family:var(--serif);font-weight:500;font-size:40px;
-  color:var(--ink);margin:0 0 44px;
+  color:var(--ink);margin:0 0 36px;
 }
-.cup-menu-columns{
-  display:grid;grid-template-columns:1fr 1fr;gap:60px;
-  max-width:1000px;margin:0 auto;text-align:left;
+.cup-menu-tabs{
+  display:flex;max-width:420px;margin:0 auto 40px;background:#ede1d2;
+  border-radius:999px;padding:6px;gap:4px;
 }
-.cup-menu-col-label{
-  font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:1.5px;
-  text-transform:uppercase;color:var(--maroon);text-align:center;
-  margin:0 0 24px;padding-bottom:16px;border-bottom:1px solid #e5dbcd;
+.cup-menu-tab{
+  flex:1;background:none;border:0;cursor:pointer;padding:13px 16px;border-radius:999px;
+  font-family:var(--sans);font-weight:600;font-size:12px;letter-spacing:1px;
+  text-transform:uppercase;color:var(--ink-soft);
+  transition:background-color .2s ease,color .2s ease;
 }
+.cup-menu-tab.active{background:var(--dark);color:#f3ece4;}
+.cup-menu-single{max-width:640px;margin:0 auto;text-align:left;}
+.cup-menu-panel{display:none;}
+.cup-menu-panel.active{display:block;}
 .cup-menu-category{margin-bottom:26px;}
 .cup-menu-category:last-child{margin-bottom:0;}
 .cup-menu-category-heading{
@@ -1471,8 +1477,9 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .cup-bev-card{padding:24px 20px 26px;}
   .cup-bev-intro{padding:22px 20px 0;}
   .cup-bev-footnote{padding:16px 20px 22px;}
-  .cup-menu-columns{grid-template-columns:1fr;gap:34px;}
   .cup-menu-section h2{font-size:28px;}
+  .cup-menu-tabs{max-width:100%;}
+  .cup-menu-tab{font-size:10px;letter-spacing:.5px;padding:12px 8px;}
 }
 
 /* Hide desktop-only nav labels on very small screens if needed */

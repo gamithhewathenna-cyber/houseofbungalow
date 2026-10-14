@@ -22,6 +22,12 @@ foreach ($below_menu_cats as $cat) {
     $below_menu_items_by_cat[$cat['id']] = blocks('mcup_below_menu_item_' . $cat['id']);
 }
 
+$themenu_cats = blocks('mcup_themenu_cat');
+$themenu_items_by_cat = [];
+foreach ($themenu_cats as $cat) {
+    $themenu_items_by_cat[$cat['id']] = blocks('mcup_themenu_item_' . $cat['id']);
+}
+
 /** Small inline icon set used by the Cup Day menu browser. */
 function cup_icon(string $name): void
 {
@@ -240,14 +246,19 @@ if (false): ?>
 <?php endif; ?>
 <?php endif; // if (false) ?>
 
-<!-- The Menu - two columns, Restaurant menu and Below menu side by side -->
+<!-- The Menu - single column, switch between "The Table" and "The Menu" -->
 <?php if (section_visible('mcup_menus')): ?>
 <section class="cup-menu-section reveal">
   <div class="container">
     <h2><?= e(setting('mcup_menus_heading', 'The Menu')) ?></h2>
-    <div class="cup-menu-columns">
-      <div class="cup-menu-col">
-        <p class="cup-menu-col-label"><?= e(setting('mcup_menus_rest_label', 'For The Table')) ?></p>
+
+    <div class="cup-menu-tabs">
+      <button type="button" class="cup-menu-tab active" data-menu-tab="table"><?= e(setting('mcup_menus_rest_label', 'The Table')) ?></button>
+      <button type="button" class="cup-menu-tab" data-menu-tab="menu"><?= e(setting('mcup_menus_below_label', 'The Menu')) ?></button>
+    </div>
+
+    <div class="cup-menu-single">
+      <div class="cup-menu-panel active" data-menu-panel="table">
         <?php render_menu_stack($rest_menu_cats, $rest_menu_items_by_cat); ?>
 
         <div class="cup-menu-bev">
@@ -265,14 +276,28 @@ if (false): ?>
           <?php if (setting('mcup_rest_bev_note2')): ?><p class="cup-menu-bev-note"><?= enl(setting('mcup_rest_bev_note2')) ?></p><?php endif; ?>
         </div>
       </div>
-      <div class="cup-menu-col">
-        <p class="cup-menu-col-label"><?= e(setting('mcup_menus_below_label', 'The Menu')) ?></p>
-        <?php render_menu_stack($below_menu_cats, $below_menu_items_by_cat); ?>
+      <div class="cup-menu-panel" data-menu-panel="menu">
+        <?php render_menu_stack($themenu_cats, $themenu_items_by_cat); ?>
       </div>
     </div>
   </div>
 </section>
 <?php endif; ?>
+
+<script>
+(function () {
+  var menuTabs = document.querySelectorAll('.cup-menu-tab');
+  menuTabs.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      menuTabs.forEach(function (b) { b.classList.remove('active'); });
+      document.querySelectorAll('.cup-menu-panel').forEach(function (p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      var panel = document.querySelector('.cup-menu-panel[data-menu-panel="' + btn.dataset.menuTab + '"]');
+      if (panel) panel.classList.add('active');
+    });
+  });
+})();
+</script>
 
 <?php
 /*
