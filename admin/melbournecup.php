@@ -167,7 +167,7 @@ $tabs = [
     'herovideo'   => 'Hero Video',
     'intro'       => 'Top Intro',
     'restaurant'  => 'At The Restaurant',
-    'restbev'     => 'Beverage Packages (dummy for now)',
+    'restbev'     => 'Beverage Packages',
     'below'       => 'At Below',
     'belowdrinks' => 'The Drinks (dummy for now)',
     'restmenu'    => 'The Table - Items (shown in "View Three-Course Menu")',
@@ -342,7 +342,7 @@ include __DIR__ . '/layout.php';
     <h3><?= e($tabs[$group]) ?></h3>
     <?php if ($group === 'restaurant'): ?><p class="group-help">The heading block and the two expander buttons on the dark menu section. Each expander currently shows placeholder text - let me know what should go inside them and I'll wire it in.</p><?php endif; ?>
     <?php if ($group === 'below'): ?><p class="group-help">The heading block and the two expander buttons on the dark menu section. Each expander currently shows placeholder text - let me know what should go inside them and I'll wire it in.</p><?php endif; ?>
-    <?php if ($group === 'restbev'): ?><p class="group-help">Not shown on the live page yet - the "View Beverage Packages" expander currently has placeholder text instead. Once you're ready, this content (Standard / Premium, one drink per line) can be wired into that expander.</p><?php endif; ?>
+    <?php if ($group === 'restbev'): ?><p class="group-help">Shown live on the page inside the "View Beverage Packages" expander. Standard / Premium items: one drink per line. The "Lede" field isn't currently shown, and the dietary note (bottom field) appears in "View Three-Course Menu" instead, not here.</p><?php endif; ?>
     <?php if ($group === 'belowdrinks'): ?><p class="group-help">Not shown on the live page yet - the "View Drinks Package" expander currently has placeholder text instead. Once you're ready, this content can be wired into that expander.</p><?php endif; ?>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">

@@ -164,6 +164,46 @@ function render_rest_set_menu(array $cats, array $itemsByCat): void
         <?php
     }
 }
+
+/**
+ * Renders the Restaurant's beverage packages inside the "View Beverage
+ * Packages" expander: an intro line, then each package as a heading row
+ * (package name left, price right) followed by its plain item list, with
+ * a divider after every package (including the last, before the closing
+ * note).
+ */
+function render_rest_bev_packages(): void
+{
+    if (setting('mcup_rest_bev_intro')) {
+        ?><p class="cup-expbev-intro"><?= enl(setting('mcup_rest_bev_intro')) ?></p><?php
+    }
+    render_bev_package(setting('mcup_rest_bev_standard_heading', 'Standard Package'), setting('mcup_rest_bev_standard_price', '+$55PP'), 'mcup_rest_bev_standard_items');
+    render_bev_package(setting('mcup_rest_bev_premium_heading', 'Premium Package'), setting('mcup_rest_bev_premium_price', '+$85PP'), 'mcup_rest_bev_premium_items');
+    if (setting('mcup_rest_bev_note1')) {
+        ?><p class="cup-expmenu-note"><?= e(setting('mcup_rest_bev_note1')) ?></p><?php
+    }
+}
+
+/** One beverage package block (heading + price row, then its item list) plus a trailing divider. */
+function render_bev_package(string $heading, string $price, string $itemsSettingKey): void
+{
+    ?>
+    <div class="cup-expbev-package">
+      <div class="cup-expbev-package-head">
+        <span class="cup-expbev-package-heading"><?= e($heading) ?></span>
+        <span class="cup-expbev-package-price"><?= e($price) ?></span>
+      </div>
+      <?php
+        $lines = preg_split('/\r?\n/', trim(setting($itemsSettingKey)));
+        foreach ($lines as $line):
+            if (trim($line) === '') continue;
+      ?>
+        <p class="cup-expbev-item"><?= e(trim($line)) ?></p>
+      <?php endforeach; ?>
+    </div>
+    <hr class="cup-expmenu-divider">
+    <?php
+}
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
@@ -212,9 +252,9 @@ function render_rest_set_menu(array $cats, array $itemsByCat): void
       <?php render_dark_expander(setting('mcup_rest_expander1_label', 'View Three-Course Menu'), function () use ($rest_menu_cats, $rest_menu_items_by_cat) {
           render_rest_set_menu($rest_menu_cats, $rest_menu_items_by_cat);
       }); ?>
-      <?php render_dark_expander(setting('mcup_rest_expander2_label', 'View Beverage Packages'), function () { ?>
-        <p class="cup-dark-dummy">Beverage package details coming soon.</p>
-      <?php }); ?>
+      <?php render_dark_expander(setting('mcup_rest_expander2_label', 'View Beverage Packages'), function () {
+          render_rest_bev_packages();
+      }); ?>
     </div>
     <?php endif; ?>
 

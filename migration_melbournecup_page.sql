@@ -33,8 +33,10 @@ UPDATE `settings` SET `svalue` = 'The Restaurant' WHERE `skey` = 'mcup_rest_head
 UPDATE `settings` SET `svalue` = 'Below' WHERE `skey` = 'mcup_below_heading' AND `svalue` = 'Melbourne Cup At Below';
 UPDATE `settings` SET `svalue` = '$120 PP' WHERE `skey` = 'mcup_rest_price' AND `svalue` = '$120 per person | Three-Course Shared Set Menu';
 UPDATE `settings` SET `svalue` = '$160 PP' WHERE `skey` = 'mcup_below_price' AND `svalue` = '$160 per person | Two Hours of Canapés & Drinks';
-UPDATE `settings` SET `svalue` = 'Standard' WHERE `skey` = 'mcup_rest_bev_standard_heading' AND `svalue` = 'Standard - Add $55pp';
-UPDATE `settings` SET `svalue` = 'Premium' WHERE `skey` = 'mcup_rest_bev_premium_heading' AND `svalue` = 'Premium - Add $85pp';
+UPDATE `settings` SET `svalue` = 'Standard Package' WHERE `skey` = 'mcup_rest_bev_standard_heading' AND `svalue` IN ('Standard - Add $55pp', 'Standard');
+UPDATE `settings` SET `svalue` = 'Premium Package' WHERE `skey` = 'mcup_rest_bev_premium_heading' AND `svalue` IN ('Premium - Add $85pp', 'Premium');
+UPDATE `settings` SET `svalue` = '+$55PP' WHERE `skey` = 'mcup_rest_bev_standard_price' AND `svalue` = '$55 PP';
+UPDATE `settings` SET `svalue` = '+$85PP' WHERE `skey` = 'mcup_rest_bev_premium_price' AND `svalue` = '$85 PP';
 UPDATE `settings` SET `svalue` = 'The Table' WHERE `skey` = 'mcup_menus_rest_label' AND `svalue` IN ('At The Restaurant', 'For The Table');
 UPDATE `settings` SET `svalue` = 'The Menu' WHERE `skey` = 'mcup_menus_below_label' AND `svalue` = 'At Below';
 
@@ -85,11 +87,11 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 
 ('mcup_rest_bev_lede','Make an afternoon of it.','melbournecup_page','Beverage Packages - lede','text',23),
 ('mcup_rest_bev_intro','Complete your Melbourne Cup experience with an optional three-hour beverage package.','melbournecup_page','Beverage Packages - intro','textarea',24),
-('mcup_rest_bev_standard_heading','Standard','melbournecup_page','Beverage Packages - Standard label','text',25),
-('mcup_rest_bev_standard_price','$55 PP','melbournecup_page','Beverage Packages - Standard price','text',25),
+('mcup_rest_bev_standard_heading','Standard Package','melbournecup_page','Beverage Packages - Standard label','text',25),
+('mcup_rest_bev_standard_price','+$55PP','melbournecup_page','Beverage Packages - Standard price','text',25),
 ('mcup_rest_bev_standard_items','Moët & Chandon Impérial Brut\nHouse white and red wine\nMimosas\nAsahi\nSoft drinks','melbournecup_page','Beverage Packages - Standard items (one per line)','textarea',26),
-('mcup_rest_bev_premium_heading','Premium','melbournecup_page','Beverage Packages - Premium label','text',27),
-('mcup_rest_bev_premium_price','$85 PP','melbournecup_page','Beverage Packages - Premium price','text',27),
+('mcup_rest_bev_premium_heading','Premium Package','melbournecup_page','Beverage Packages - Premium label','text',27),
+('mcup_rest_bev_premium_price','+$85PP','melbournecup_page','Beverage Packages - Premium price','text',27),
 ('mcup_rest_bev_premium_items','Moët & Chandon Impérial Brut\nMaison Piron Beaujolais\nLeeuwin Estate Cabernet Sauvignon\nLe Fauve Rosé\nCloudy Bay Sauvignon Blanc\nScorpo Pinot Gris\nMimosas, Hugo Spritz and Negroni\nAsahi\nSomersby Apple Cider\nSoft drinks','melbournecup_page','Beverage Packages - Premium items (one per line)','textarea',28),
 ('mcup_rest_bev_note1','All guests at the same table must select the same beverage package.','melbournecup_page','Beverage Packages - note (shown under the packages)','text',29),
 ('mcup_rest_bev_note2','Vegetarian and vegan options are available with advance notice. Please advise us of dietary requirements when booking.','melbournecup_page','Beverage Packages - dietary note','textarea',30),
