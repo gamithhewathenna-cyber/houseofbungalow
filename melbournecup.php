@@ -272,6 +272,7 @@ function render_drinks_category(string $label, string $itemsSettingKey): void
 <?php if (section_visible('mcup_menus')): ?>
 <section class="cup-dark-menu reveal">
   <div class="container">
+    <div class="cup-dark-grid">
 
     <?php if (section_visible('mcup_restaurant')): ?>
     <div class="cup-dark-offer">
@@ -305,6 +306,7 @@ function render_drinks_category(string $label, string $itemsSettingKey): void
     </div>
     <?php endif; ?>
 
+    </div>
   </div>
 </section>
 <?php endif; ?>

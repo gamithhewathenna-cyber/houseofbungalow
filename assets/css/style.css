@@ -772,8 +772,8 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 /* Melbourne Cup - expander menu (At The Restaurant / At Below)       */
 /* ------------------------------------------------------------------ */
 .cup-dark-menu{background:var(--cream);padding:80px 0;}
-.cup-dark-offer{max-width:760px;margin:0 auto;}
-.cup-dark-offer + .cup-dark-offer{margin-top:70px;}
+.cup-dark-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;max-width:1200px;margin:0 auto;}
+.cup-dark-offer{max-width:none;margin:0;}
 .cup-dark-eyebrow{
   font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:1.5px;
   text-transform:uppercase;color:var(--maroon);margin:0 0 10px;
@@ -1332,6 +1332,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .dj-card{flex-basis:260px;}
   .maroon-band h1,.maroon-band h2{font-size:32px;}
   .lineup-section p{white-space:normal;max-width:600px;}
+  .cup-dark-grid{grid-template-columns:1fr;max-width:600px;gap:50px;}
 }
 @media (max-width:640px){
   body{font-size:21px;}
@@ -1405,7 +1406,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .maroon-band .subheading{font-size:19px;}
   .lineup-section h2{font-size:26px;}
   .cup-dark-menu{padding:56px 0;}
-  .cup-dark-offer + .cup-dark-offer{margin-top:50px;}
+  .cup-dark-grid{grid-template-columns:1fr;gap:50px;}
   .cup-dark-heading{font-size:26px;}
   .cup-dark-expander-toggle{padding:16px 18px;font-size:12px;}
   .cup-dark-expander-panel-inner{padding:0 18px 20px;}
