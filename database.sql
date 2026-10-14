@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `admins` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(60) NOT NULL,
   `password_hash` VARCHAR(255) NOT NULL,
-  `role` VARCHAR(20) NOT NULL DEFAULT 'admin',
+  `role` VARCHAR(60) NOT NULL DEFAULT 'admin',
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
@@ -25,10 +25,12 @@ CREATE TABLE IF NOT EXISTS `admins` (
 INSERT INTO `admins` (`username`, `password_hash`, `role`) VALUES
 ('admin', '$2y$10$hXTcgdCzP3.OCqEnPoQ/Ke4cDb/jWhcA/YlYHkMu/TJpFAloo3Y8W', 'admin');
 
--- `role` is one of:
+-- `role` holds a comma-separated list of one or more of:
 --   admin     - full access, including Admin Users and Website Settings
---   content   - can edit page content across the site only
---   enquiries - can view/manage enquiries, VIP enquiries, applications and subscribers only
+--   content   - can edit page content across the site
+--   enquiries - can view/manage enquiries, VIP enquiries, applications and subscribers
+-- e.g. 'content,enquiries' for an account that covers both areas.
+-- An account with 'admin' always has full access regardless of what else is listed.
 
 -- ---------------------------------------------------------------------
 -- Admin activity log - "work history" of every admin form submission,

@@ -3,14 +3,21 @@ require_once __DIR__ . '/auth.php';
 require_role('admin');
 
 $roles = [
-    'admin'     => 'Admin (full access)',
-    'content'   => 'Content Editor (page content only)',
-    'enquiries' => 'Enquiries (enquiries, VIP enquiries, applications, subscribers)',
+    'admin'     => role_label('admin'),
+    'content'   => role_label('content'),
+    'enquiries' => role_label('enquiries'),
 ];
 
 $error = '';
 $ok    = '';
 $me    = current_admin();
+
+/** Clean a submitted roles[] array down to known, de-duplicated role keys. */
+function clean_roles(array $submitted, array $known): array
+{
+    $clean = array_values(array_unique(array_intersect($submitted, array_keys($known))));
+    return $clean ?: ['content'];
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!csrf_check()) {
@@ -22,10 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = trim($_POST['new_username'] ?? '');
             $password = $_POST['new_password'] ?? '';
             $confirm  = $_POST['new_password_confirm'] ?? '';
-            $role     = $_POST['new_role'] ?? 'content';
-            if (!isset($roles[$role])) {
-                $role = 'content';
-            }
+            $roleList = clean_roles((array) ($_POST['new_roles'] ?? []), $roles);
             if ($username === '') {
                 $error = 'Username cannot be empty.';
             } elseif (strlen($password) < 6) {
@@ -36,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 try {
                     $hash = password_hash($password, PASSWORD_DEFAULT);
                     $q = db()->prepare('INSERT INTO admins (username, password_hash, role) VALUES (?, ?, ?)');
-                    $q->execute([$username, $hash, $role]);
+                    $q->execute([$username, $hash, implode(',', $roleList)]);
                     header('Location: users.php?saved=1'); exit;
                 } catch (PDOException $ex) {
                     $error = $ex->getCode() === '23000'
@@ -47,10 +51,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($action === 'update') {
-            // Guard against saving a form state that would leave zero "admin" role accounts.
+            // Guard against saving a form state that would leave zero accounts with the "Admin" role.
             $wouldBeAdminCount = 0;
-            foreach (($_POST['role'] ?? []) as $id => $role) {
-                if ($role === 'admin') {
+            foreach (($_POST['roles'] ?? []) as $id => $submitted) {
+                if (in_array('admin', (array) $submitted, true)) {
                     $wouldBeAdminCount++;
                 }
             }
@@ -61,10 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $id       = (int) $id;
                     $username = trim($username);
                     $password = $_POST['password'][$id] ?? '';
-                    $role     = $_POST['role'][$id] ?? 'content';
-                    if (!isset($roles[$role])) {
-                        $role = 'content';
-                    }
+                    $roleList = clean_roles((array) ($_POST['roles'][$id] ?? []), $roles);
                     if ($username === '') {
                         continue;
                     }
@@ -76,14 +77,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             }
                             $hash = password_hash($password, PASSWORD_DEFAULT);
                             $q = db()->prepare('UPDATE admins SET username=?, password_hash=?, role=? WHERE id=?');
-                            $q->execute([$username, $hash, $role, $id]);
+                            $q->execute([$username, $hash, implode(',', $roleList), $id]);
                         } else {
                             $q = db()->prepare('UPDATE admins SET username=?, role=? WHERE id=?');
-                            $q->execute([$username, $role, $id]);
+                            $q->execute([$username, implode(',', $roleList), $id]);
                         }
                         if ($id === (int) $me['id']) {
                             $_SESSION['admin']['username'] = $username;
-                            $_SESSION['admin']['role']     = $role;
+                            $_SESSION['admin']['role']     = implode(',', $roleList);
                         }
                     } catch (PDOException $ex) {
                         $error = $ex->getCode() === '23000' ? 'Username already taken.' : 'Update failed.';
@@ -98,15 +99,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($action === 'delete') {
             $id = (int) ($_POST['id'] ?? 0);
             $total = (int) db()->query('SELECT COUNT(*) FROM admins')->fetchColumn();
-            $adminRoleCount = (int) db()->query("SELECT COUNT(*) FROM admins WHERE role='admin'")->fetchColumn();
+            $adminRoleCount = (int) db()->query("SELECT COUNT(*) FROM admins WHERE FIND_IN_SET('admin', role) > 0")->fetchColumn();
             $stmt = db()->prepare('SELECT role, username FROM admins WHERE id=?');
             $stmt->execute([$id]);
             $target = $stmt->fetch();
+            $targetIsAdmin = $target && in_array('admin', array_filter(array_map('trim', explode(',', $target['role'] ?? ''))), true);
             if ($id === (int) $me['id']) {
                 $error = "You can't delete your own account while logged in.";
             } elseif ($total <= 1) {
                 $error = 'At least one admin account must remain.';
-            } elseif ($target && $target['role'] === 'admin' && $adminRoleCount <= 1) {
+            } elseif ($targetIsAdmin && $adminRoleCount <= 1) {
                 $error = 'At least one account must keep the "Admin" role.';
             } else {
                 $q = db()->prepare('DELETE FROM admins WHERE id=?');
@@ -118,6 +120,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $admins = db()->query('SELECT * FROM admins ORDER BY id ASC')->fetchAll();
+foreach ($admins as &$a) {
+    $a['role_list'] = array_filter(array_map('trim', explode(',', $a['role'] ?? 'admin')));
+}
+unset($a);
 
 $page_title = 'Admin Users';
 include __DIR__ . '/layout.php';
@@ -125,35 +131,51 @@ include __DIR__ . '/layout.php';
 <?php if ($error): ?><div class="alert err"><?= e($error) ?></div><?php endif; ?>
 <?php if ($ok): ?><div class="alert ok"><?= e($ok) ?></div><?php endif; ?>
 
-<p class="muted" style="margin-bottom:18px;">Everyone listed here can log into this admin panel. Leave a password field blank to keep that account's current password. "Content Editor" and "Enquiries" roles only see the pages their role covers, in the sidebar and directly - only "Admin" can reach this page, Website Settings, and every page.</p>
+<p class="muted" style="margin-bottom:18px;">Everyone listed here can log into this admin panel. Tick as many access roles as an account needs - e.g. someone can be both "Content Editor" and "Enquiries" at once. "Admin" always includes full access regardless of what else is ticked. Leave the password field blank to keep an account's current password.</p>
 
 <form method="post">
   <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
   <input type="hidden" name="action" value="update">
-  <table>
-    <tr><th>Username</th><th style="width:230px;">Role</th><th>New Password</th><th style="width:100px;">Created</th><th style="width:90px;"></th></tr>
+  <div class="dj-admin-list">
     <?php foreach ($admins as $a): ?>
-      <tr>
-        <td><input type="text" name="username[<?= $a['id'] ?>]" value="<?= e($a['username']) ?>"></td>
-        <td>
-          <select name="role[<?= $a['id'] ?>]">
-            <?php foreach ($roles as $rkey => $rlabel): ?>
-              <option value="<?= e($rkey) ?>"<?= ($a['role'] ?? 'admin') === $rkey ? ' selected' : '' ?>><?= e($rlabel) ?></option>
-            <?php endforeach; ?>
-          </select>
-        </td>
-        <td><input type="password" name="password[<?= $a['id'] ?>]" placeholder="Leave blank to keep"></td>
-        <td class="muted"><?= e(substr($a['created_at'] ?? '', 0, 10)) ?></td>
-        <td>
+      <div class="dj-admin-card no-media">
+        <div class="dj-admin-fields">
+          <div class="user-card-head">
+            <span class="user-avatar"><?= e(strtoupper(substr($a['username'], 0, 1))) ?></span>
+            <div class="field-row">
+              <label>Username
+                <input type="text" name="username[<?= $a['id'] ?>]" value="<?= e($a['username']) ?>">
+              </label>
+            </div>
+          </div>
+          <div class="field-row">
+            <span class="help" style="display:block;margin-bottom:6px;font-weight:600;color:#5a544e;">Access</span>
+            <div class="role-checks">
+              <?php foreach ($roles as $rkey => $rlabel): ?>
+                <label class="checkbox-row">
+                  <input type="checkbox" name="roles[<?= $a['id'] ?>][]" value="<?= e($rkey) ?>"<?= in_array($rkey, $a['role_list'], true) ? ' checked' : '' ?>>
+                  <?= e($rlabel) ?>
+                </label>
+              <?php endforeach; ?>
+            </div>
+          </div>
+          <div class="field-row">
+            <label>New Password <span class="help">(optional - leave blank to keep the current one)</span>
+              <input type="password" name="password[<?= $a['id'] ?>]" placeholder="Leave blank to keep">
+            </label>
+          </div>
+          <p class="muted" style="font-size:11px;margin:0;">Created <?= e(substr($a['created_at'] ?? '', 0, 10)) ?></p>
+        </div>
+        <div class="dj-admin-actions">
           <?php if ((int)$a['id'] !== (int)$me['id']): ?>
             <button form="del<?= $a['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this admin account?')">Delete</button>
           <?php else: ?>
             <span class="muted">You</span>
           <?php endif; ?>
-        </td>
-      </tr>
+        </div>
+      </div>
     <?php endforeach; ?>
-  </table>
+  </div>
   <div class="form-actions"><button class="btn">Save Changes</button></div>
 </form>
 
@@ -166,22 +188,32 @@ include __DIR__ . '/layout.php';
 <?php endforeach; ?>
 
 <h2 style="font-size:15px;margin:34px 0 12px;color:#5a544e;">Add an Admin</h2>
-<form method="post" style="max-width:420px;">
+<form method="post" class="dj-admin-card no-media dj-admin-add">
   <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
   <input type="hidden" name="action" value="add">
-  <div class="field-row"><label>Username
-    <input type="text" name="new_username" required></label></div>
-  <div class="field-row"><label>Role
-    <select name="new_role">
-      <?php foreach ($roles as $rkey => $rlabel): ?>
-        <option value="<?= e($rkey) ?>"<?= $rkey === 'content' ? ' selected' : '' ?>><?= e($rlabel) ?></option>
-      <?php endforeach; ?>
-    </select>
-  </label></div>
-  <div class="field-row"><label>Password
-    <input type="password" name="new_password" required></label></div>
-  <div class="field-row"><label>Confirm password
-    <input type="password" name="new_password_confirm" required></label></div>
-  <div class="form-actions"><button class="btn">Add Admin</button></div>
+  <div class="dj-admin-fields">
+    <div class="field-row"><label>Username
+      <input type="text" name="new_username" required></label></div>
+    <div class="field-row">
+      <span class="help" style="display:block;margin-bottom:6px;font-weight:600;color:#5a544e;">Access</span>
+      <div class="role-checks">
+        <?php foreach ($roles as $rkey => $rlabel): ?>
+          <label class="checkbox-row">
+            <input type="checkbox" name="new_roles[]" value="<?= e($rkey) ?>"<?= $rkey === 'content' ? ' checked' : '' ?>>
+            <?= e($rlabel) ?>
+          </label>
+        <?php endforeach; ?>
+      </div>
+    </div>
+    <div class="field-grid">
+      <label>Password
+        <input type="password" name="new_password" required></label>
+      <label>Confirm password
+        <input type="password" name="new_password_confirm" required></label>
+    </div>
+  </div>
+  <div class="dj-admin-actions">
+    <button class="btn btn-sm">Add Admin</button>
+  </div>
 </form>
 <?php include __DIR__ . '/layout_end.php'; ?>

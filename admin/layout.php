@@ -108,7 +108,10 @@ function nav_link(array $item, string $current): void
     <h1><?= e($page_title) ?></h1>
     <div class="topbar-right">
       <a href="../index.php" target="_blank" class="btn btn-ghost">View Site ↗</a>
-      <span class="who"><?= e(current_admin()['username']) ?> <span class="muted" style="font-size:11px;text-transform:capitalize;">(<?= e(admin_role()) ?>)</span></span>
+      <span class="who">
+        <?= e(current_admin()['username']) ?>
+        <?php foreach (admin_roles() as $r): ?><span class="role-badge"><?= e(role_label($r)) ?></span><?php endforeach; ?>
+      </span>
     </div>
   </div>
   <div class="panel">

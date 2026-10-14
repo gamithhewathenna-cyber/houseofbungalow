@@ -29,26 +29,36 @@ function require_login(): void
 }
 
 /**
- * Admin roles:
+ * Admin roles (an account can hold more than one at once, stored as a
+ * comma-separated list in admins.role, e.g. "content,enquiries"):
  *   admin     - full access to everything, including Admin Users and Website Settings
- *   content   - can edit page content across the site, but not enquiries or system settings
- *   enquiries - can view/manage enquiries, VIP enquiries, applications and subscribers only
+ *   content   - can edit page content across the site
+ *   enquiries - can view/manage enquiries, VIP enquiries, applications and subscribers
  */
-function admin_role(): string
+function role_label(string $key): string
 {
-    return current_admin()['role'] ?? 'admin';
+    $labels = ['admin' => 'Admin', 'content' => 'Content Editor', 'enquiries' => 'Enquiries'];
+    return $labels[$key] ?? ucfirst($key);
 }
 
 /**
- * $area is one of: 'content', 'enquiries', 'admin'.
+ * The current admin's roles, parsed from the comma-separated session value.
+ */
+function admin_roles(): array
+{
+    $raw = current_admin()['role'] ?? 'admin';
+    $list = array_filter(array_map('trim', explode(',', $raw)));
+    return $list ?: ['admin'];
+}
+
+/**
+ * $area is one of: 'content', 'enquiries', 'admin'. An account with the
+ * 'admin' role always has access to every area.
  */
 function admin_can(string $area): bool
 {
-    $role = admin_role();
-    if ($role === 'admin') {
-        return true;
-    }
-    return $role === $area;
+    $roles = admin_roles();
+    return in_array('admin', $roles, true) || in_array($area, $roles, true);
 }
 
 /**

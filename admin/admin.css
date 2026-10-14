@@ -182,6 +182,14 @@ td input[type=text]{margin-top:0;}
 .dj-admin-fields .checkbox-row{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px;color:#5a544e;margin-bottom:12px;}
 .dj-admin-fields .checkbox-row input{margin:0;width:auto;}
 
+/* ---- Role checkboxes & badges (Admin Users) ---- */
+.role-checks{display:flex;flex-wrap:wrap;gap:8px 20px;padding:12px 14px;background:#faf6f0;border:1px solid var(--line);border-radius:6px;}
+.role-checks .checkbox-row{margin-bottom:0 !important;}
+.role-badge{display:inline-block;margin-left:6px;padding:2px 9px;border-radius:99px;background:rgba(98,14,21,.1);color:var(--maroon);font-size:10px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;vertical-align:middle;}
+.user-avatar{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--maroon);color:#fff;font-weight:700;font-size:14px;flex-shrink:0;}
+.user-card-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.user-card-head .field-row{flex:1;margin-bottom:0;}
+
 /* ---- Section Visibility tab (every page) ---- */
 .visibility-list{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:18px;}
 .visibility-row{
