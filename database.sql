@@ -831,41 +831,114 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('career_cc_email','','career_page','CC email (optional - comma-separate for more than one)','text',10);
 
 -- ---------------------------------------------------------------------
--- Melbourne Cup page (melbournecup.php) - same layout as the Brunch
--- page, but with its own entirely separate content (mcup_* / own menu
--- and gallery datasets, nothing shared with Brunch)
+-- Melbourne Cup page (melbournecup.php) - dual Restaurant / Below Cup
+-- Day offers, each with its own fixed set menu, plus a beverage-package
+-- section (Restaurant) and a drinks list (Below), and a closing
+-- comparison section. Fully separate admin at admin/melbournecup.php.
 -- ---------------------------------------------------------------------
 INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) VALUES
 ('mcup_hero_image','assets/img/restaurant.jpg','melbournecup_page','Hero image (poster/fallback)','image',1),
 ('mcup_hero_video','','melbournecup_page','Hero video (mp4/webm, ideally 1280×720)','video',1),
-('mcup_heading','Melbourne Cup At The House','melbournecup_page','Heading','text',2),
-('mcup_subheading','The Race That Stops A Nation.','melbournecup_page','Subheading','text',3),
-('mcup_lede1','Fascinators, frocks and a flutter on the first Tuesday of November.','melbournecup_page','Lede line 1','text',4),
-('mcup_lede2','Bubbles, a feast-style menu and the race live on the big screen.','melbournecup_page','Lede line 2','text',5),
-('mcup_p1','House of Bungalow marks Melbourne Cup with a long lunch built around bottomless drinks, shared plates and the race itself - because nothing pairs better with a sweepstake than a table full of friends.','melbournecup_page','Paragraph','textarea',6),
-('mcup_hours','**Tuesday 3 November:** 11:00 AM - Late','melbournecup_page','Hours line (use **word** for bold)','text',7),
-('mcup_btn1_label','VIEW MENU','melbournecup_page','Button 1 label','text',8),
-('mcup_btn1_url','#','melbournecup_page','Button 1 URL','text',9),
-('mcup_btn2_label','BOOK YOUR TABLE','melbournecup_page','Button 2 label','text',10),
-('mcup_btn2_url','reserve.php','melbournecup_page','Button 2 URL','text',11),
-('mcup_menu_heading','Discover Our Menus','melbournecup_page','Menu - heading','text',12),
-('mcup_menu_lede','','melbournecup_page','Menu - lede (optional)','textarea',13),
-('mcup_guest_eyebrow','Live Entertainment','melbournecup_page','Guest Artists - eyebrow label','text',14),
-('mcup_guest_heading','Sweeps, Style & A Live Band','melbournecup_page','Guest Artists - heading','text',15),
-('mcup_guest_p1','Enter our Melbourne Cup sweep, dress to impress for best-dressed prizes and soak up live entertainment as the Cup unfolds.','melbournecup_page','Guest Artists - paragraph 1','textarea',16),
-('mcup_guest_p2','Doors open early - get in before the first race to secure your table.','melbournecup_page','Guest Artists - paragraph 2','textarea',17),
-('mcup_guest_btn_label','','melbournecup_page','Guest Artists - button label (optional)','text',18),
-('mcup_guest_btn_url','#','melbournecup_page','Guest Artists - button URL','text',19),
-('mcup_guest_image','assets/img/below.jpg','melbournecup_page','Guest Artists - image','image',20);
 
--- Melbourne Cup gallery (placeholder photos - replace via admin)
-INSERT INTO `blocks` (`block_type`,`title`,`image`,`sort`,`active`) VALUES
-('mcup_gallery','','assets/img/restaurant.jpg',1,1),
-('mcup_gallery','','assets/img/cafe.jpg',2,1),
-('mcup_gallery','','assets/img/below.jpg',3,1),
-('mcup_gallery','','assets/img/hero.jpg',4,1),
-('mcup_gallery','','assets/img/building.png',5,1);
+('mcup_heading','Melbourne Cup At House Of Bungalow','melbournecup_page','Top Intro - heading','text',2),
+('mcup_subheading','One Race. Two Ways To Celebrate.','melbournecup_page','Top Intro - subheading','text',3),
+('mcup_lede','Make an afternoon of it.','melbournecup_page','Top Intro - lede','text',4),
+('mcup_p1','This Melbourne Cup, House of Bungalow brings two distinct celebrations to Surry Hills.','melbournecup_page','Top Intro - paragraph 1','textarea',5),
+('mcup_p2','Settle in at the Restaurant for a three-course shared dining experience, or head Below for an afternoon of champagne, cocktails and canapés.','melbournecup_page','Top Intro - paragraph 2','textarea',6),
+('mcup_p3','Two spaces. Two different ways to spend Cup Day.','melbournecup_page','Top Intro - paragraph 3','textarea',7),
+('mcup_date','Tuesday, 3 November 2026','melbournecup_page','Top Intro - date line','text',8),
+('mcup_btn1_label','BOOK THE RESTAURANT','melbournecup_page','Top Intro - button 1 label','text',9),
+('mcup_btn1_url','reserve.php','melbournecup_page','Top Intro - button 1 URL','text',10),
+('mcup_btn2_label','BOOK BELOW','melbournecup_page','Top Intro - button 2 label','text',11),
+('mcup_btn2_url','reserve.php','melbournecup_page','Top Intro - button 2 URL','text',12),
 
--- Melbourne Cup menu category (own dataset - empty to start, add items via admin)
-INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('mcup_menu_cat','Cup Day Menu',1,1);
+('mcup_rest_heading','Melbourne Cup At The Restaurant','melbournecup_page','Restaurant - heading','text',13),
+('mcup_rest_subheading','A Long Lunch Worth Dressing Up For.','melbournecup_page','Restaurant - subheading','text',14),
+('mcup_rest_lede','Good food, flowing drinks and a table worth staying at.','melbournecup_page','Restaurant - lede','text',15),
+('mcup_rest_p1','Celebrate Melbourne Cup at the Restaurant with a three-course menu designed for sharing, bringing together Spanish inspiration, Asian influences and the best of Australian produce.','melbournecup_page','Restaurant - paragraph 1','textarea',16),
+('mcup_rest_p2','Begin with a welcome drink before settling in for an afternoon of generous food, good company and the excitement of Cup Day.','melbournecup_page','Restaurant - paragraph 2','textarea',17),
+('mcup_rest_date','Tuesday, 3 November 2026','melbournecup_page','Restaurant - date line','text',18),
+('mcup_rest_price','$120 per person | Three-Course Shared Set Menu','melbournecup_page','Restaurant - price line','text',19),
+('mcup_rest_price_note','Includes a welcome drink.','melbournecup_page','Restaurant - price note','text',20),
+('mcup_rest_btn_label','BOOK THE RESTAURANT','melbournecup_page','Restaurant - button label','text',21),
+('mcup_rest_btn_url','reserve.php','melbournecup_page','Restaurant - button URL','text',22),
+
+('mcup_rest_bev_lede','Make an afternoon of it.','melbournecup_page','Beverage Packages - lede','text',23),
+('mcup_rest_bev_intro','Complete your Melbourne Cup experience with an optional three-hour beverage package.','melbournecup_page','Beverage Packages - intro','textarea',24),
+('mcup_rest_bev_standard_heading','Standard - Add $55pp','melbournecup_page','Beverage Packages - Standard heading','text',25),
+('mcup_rest_bev_standard_items','Moët & Chandon Impérial Brut\nHouse white and red wine\nMimosas\nAsahi\nSoft drinks','melbournecup_page','Beverage Packages - Standard items (one per line)','textarea',26),
+('mcup_rest_bev_premium_heading','Premium - Add $85pp','melbournecup_page','Beverage Packages - Premium heading','text',27),
+('mcup_rest_bev_premium_items','Moët & Chandon Impérial Brut\nMaison Piron Beaujolais\nLeeuwin Estate Cabernet Sauvignon\nLe Fauve Rosé\nCloudy Bay Sauvignon Blanc\nScorpo Pinot Gris\nMimosas, Hugo Spritz and Negroni\nAsahi\nSomersby Apple Cider\nSoft drinks','melbournecup_page','Beverage Packages - Premium items (one per line)','textarea',28),
+('mcup_rest_bev_note1','All guests at the same table must select the same beverage package.','melbournecup_page','Beverage Packages - note 1','text',29),
+('mcup_rest_bev_note2','Vegetarian and vegan options are available with advance notice. Please advise us of dietary requirements when booking.','melbournecup_page','Beverage Packages - note 2','textarea',30),
+
+('mcup_below_heading','Melbourne Cup At Below','melbournecup_page','Below - heading','text',31),
+('mcup_below_subheading','Champagne. Canapés. Cup Day Below.','melbournecup_page','Below - subheading','text',32),
+('mcup_below_lede','A different way to spend the afternoon.','melbournecup_page','Below - lede','text',33),
+('mcup_below_p1','This Melbourne Cup, Below opens its doors for an afternoon of champagne, cocktails and canapés in the House''s intimate Basement.','melbournecup_page','Below - paragraph 1','textarea',34),
+('mcup_below_p2','Enjoy two hours of flowing drinks and a selection of canapés from the House of Bungalow kitchen, with the atmosphere and energy that make Below distinctly its own.','melbournecup_page','Below - paragraph 2','textarea',35),
+('mcup_below_date','Tuesday, 3 November 2026','melbournecup_page','Below - date line','text',36),
+('mcup_below_price','$160 per person | Two Hours of Canapés & Drinks','melbournecup_page','Below - price line','text',37),
+('mcup_below_btn_label','BOOK BELOW','melbournecup_page','Below - button label','text',38),
+('mcup_below_btn_url','reserve.php','melbournecup_page','Below - button URL','text',39),
+
+('mcup_below_drinks_lede','Champagne, cocktails and a considered selection of wines.','melbournecup_page','The Drinks - lede','text',40),
+('mcup_below_drinks_champagne_items','Moët & Chandon Impérial Brut','melbournecup_page','The Drinks - Champagne (one per line)','textarea',41),
+('mcup_below_drinks_white_items','Cloudy Bay Sauvignon Blanc\nScorpo Pinot Gris','melbournecup_page','The Drinks - White Wine (one per line)','textarea',42),
+('mcup_below_drinks_rose_items','Provence Rosé\nCharteris Le Fauve Rosé','melbournecup_page','The Drinks - Rosé (one per line)','textarea',43),
+('mcup_below_drinks_red_items','Otago Pinot Noir\nLeeuwin Estate Prelude Cabernet Sauvignon','melbournecup_page','The Drinks - Red Wine (one per line)','textarea',44),
+('mcup_below_drinks_beer_items','Asahi','melbournecup_page','The Drinks - Beer (one per line)','textarea',45),
+('mcup_below_drinks_cocktails_items','A selection of two signature cocktails','melbournecup_page','The Drinks - Signature Cocktails (one per line)','textarea',46),
+
+('mcup_summary_heading','Two Experiences. One House.','melbournecup_page','Closing Summary - heading','text',47),
+('mcup_summary_subheading','Your Cup Day, Your Way.','melbournecup_page','Closing Summary - subheading','text',48),
+('mcup_summary_p1','Whether it''s a long lunch at the Restaurant or champagne and canapés Below, make House of Bungalow your destination this Melbourne Cup.','melbournecup_page','Closing Summary - paragraph','textarea',49),
+('mcup_summary_date','Tuesday, 3 November 2026','melbournecup_page','Closing Summary - date line','text',50),
+('mcup_summary_rest_detail1','Three-Course Shared Set Menu · $120pp','melbournecup_page','Closing Summary - Restaurant detail 1','text',51),
+('mcup_summary_rest_detail2','Optional Three-Hour Beverage Packages','melbournecup_page','Closing Summary - Restaurant detail 2','text',52),
+('mcup_summary_rest_btn_label','BOOK THE RESTAURANT','melbournecup_page','Closing Summary - Restaurant button label','text',53),
+('mcup_summary_rest_btn_url','reserve.php','melbournecup_page','Closing Summary - Restaurant button URL','text',54),
+('mcup_summary_below_detail1','Two Hours of Canapés & Drinks · $160pp','melbournecup_page','Closing Summary - Below detail','text',55),
+('mcup_summary_below_btn_label','BOOK BELOW','melbournecup_page','Closing Summary - Below button label','text',56),
+('mcup_summary_below_btn_url','reserve.php','melbournecup_page','Closing Summary - Below button URL','text',57);
+
+-- Restaurant Cup Day menu (own dataset - edit via admin > Melbourne Cup > Restaurant Menu)
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('mcup_rest_menu_cat','For The Table',1,1);
+SET @mcup_rest_cat_table := LAST_INSERT_ID();
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('mcup_rest_menu_cat','Entrée',2,1);
+SET @mcup_rest_cat_entree := LAST_INSERT_ID();
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('mcup_rest_menu_cat','Main (Served As An Alternate Drop)',3,1);
+SET @mcup_rest_cat_main := LAST_INSERT_ID();
+
+INSERT INTO `blocks` (`block_type`,`title`,`body`,`sort`,`active`) VALUES
+(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_table),'Pan De Cristal','Crushed vine tomato, EVOO',1,1),
+(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_table),'Smoked Eel Gilda','Gordal olive, guindilla, kabayaki glaze',2,1),
+(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_entree),'Kingfish Sashimi','Chilled ajoblanco, rockfruit, green almonds, makrut kosho oil',1,1),
+(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_entree),'Hand Chopped Wagyu','Karashi sabayon, smoked soy, pickled chillies, potato crisp',2,1),
+(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Bundarra Pork Secreto','Yuzu kosho mojo verde, butter beans, pickled turnips',1,1),
+(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Rangers Valley Bavette MS5+','Black garlic sofrito, piquillo ponzu',2,1),
+(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Crispy Smashed Potatoes','Mixed bitter leaves, to share',3,1);
+
+-- Below Cup Day menu (own dataset - edit via admin > Melbourne Cup > Below Menu)
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('mcup_below_menu_cat','On Arrival',1,1);
+SET @mcup_below_cat_arrival := LAST_INSERT_ID();
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('mcup_below_menu_cat','Cold',2,1);
+SET @mcup_below_cat_cold := LAST_INSERT_ID();
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('mcup_below_menu_cat','Hot',3,1);
+SET @mcup_below_cat_hot := LAST_INSERT_ID();
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('mcup_below_menu_cat','Substantial',4,1);
+SET @mcup_below_cat_substantial := LAST_INSERT_ID();
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('mcup_below_menu_cat','Sweet',5,1);
+SET @mcup_below_cat_sweet := LAST_INSERT_ID();
+
+INSERT INTO `blocks` (`block_type`,`title`,`body`,`sort`,`active`) VALUES
+(CONCAT('mcup_below_menu_item_', @mcup_below_cat_arrival),'Rock Oysters','Sudachi, cured Wagyu',1,1),
+(CONCAT('mcup_below_menu_item_', @mcup_below_cat_arrival),'Smoked Eel Gilda','Gordal olive, guindilla',2,1),
+(CONCAT('mcup_below_menu_item_', @mcup_below_cat_cold),'Sea Urchin Pie Tee','Egg yolk emulsion, caramelised onions, chive flower',1,1),
+(CONCAT('mcup_below_menu_item_', @mcup_below_cat_cold),'Hand Chopped Wagyu','Karashi sabayon, potato pave',2,1),
+(CONCAT('mcup_below_menu_item_', @mcup_below_cat_hot),'Kimchi Croqueta','Bluefin tuna, jamón XO',1,1),
+(CONCAT('mcup_below_menu_item_', @mcup_below_cat_hot),'House Won-Ton','Spicy carbonara, Abrolhos Island scallops',2,1),
+(CONCAT('mcup_below_menu_item_', @mcup_below_cat_hot),'King Prawn Spring Roll','Chorizo, burnt mandarin sweet and sour',3,1),
+(CONCAT('mcup_below_menu_item_', @mcup_below_cat_substantial),'Dry-Aged Beef Mini Burger','Mature cheddar, smoked Idiazabal, karashi sumiso mayo, PX caramelised onions, pickles',1,1),
+(CONCAT('mcup_below_menu_item_', @mcup_below_cat_sweet),'Rocher','Foie, Jivara chocolate, PX drunken raisins, hazelnut',1,1);
 

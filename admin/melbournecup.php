@@ -4,18 +4,24 @@ require_login();
 require_once __DIR__ . '/helpers.php';
 
 $fieldGroups = [
-    'herovideo' => ['mcup_hero_video'],
-    'intro'     => ['mcup_heading', 'mcup_subheading', 'mcup_lede1', 'mcup_lede2', 'mcup_p1', 'mcup_hours', 'mcup_btn1_label', 'mcup_btn1_url', 'mcup_btn2_label', 'mcup_btn2_url'],
-    'menu'      => ['mcup_menu_heading', 'mcup_menu_lede'],
-    'guest'     => ['mcup_guest_eyebrow', 'mcup_guest_heading', 'mcup_guest_p1', 'mcup_guest_p2', 'mcup_guest_btn_label', 'mcup_guest_btn_url', 'mcup_guest_image'],
+    'herovideo' => ['mcup_hero_image', 'mcup_hero_video'],
+    'intro'     => ['mcup_heading', 'mcup_subheading', 'mcup_lede', 'mcup_p1', 'mcup_p2', 'mcup_p3', 'mcup_date', 'mcup_btn1_label', 'mcup_btn1_url', 'mcup_btn2_label', 'mcup_btn2_url'],
+    'restaurant' => ['mcup_rest_heading', 'mcup_rest_subheading', 'mcup_rest_lede', 'mcup_rest_p1', 'mcup_rest_p2', 'mcup_rest_date', 'mcup_rest_price', 'mcup_rest_price_note', 'mcup_rest_btn_label', 'mcup_rest_btn_url'],
+    'restbev'   => ['mcup_rest_bev_lede', 'mcup_rest_bev_intro', 'mcup_rest_bev_standard_heading', 'mcup_rest_bev_standard_items', 'mcup_rest_bev_premium_heading', 'mcup_rest_bev_premium_items', 'mcup_rest_bev_note1', 'mcup_rest_bev_note2'],
+    'below'     => ['mcup_below_heading', 'mcup_below_subheading', 'mcup_below_lede', 'mcup_below_p1', 'mcup_below_p2', 'mcup_below_date', 'mcup_below_price', 'mcup_below_btn_label', 'mcup_below_btn_url'],
+    'belowdrinks' => ['mcup_below_drinks_lede', 'mcup_below_drinks_champagne_items', 'mcup_below_drinks_white_items', 'mcup_below_drinks_rose_items', 'mcup_below_drinks_red_items', 'mcup_below_drinks_beer_items', 'mcup_below_drinks_cocktails_items'],
+    'summary'   => ['mcup_summary_heading', 'mcup_summary_subheading', 'mcup_summary_p1', 'mcup_summary_date', 'mcup_summary_rest_detail1', 'mcup_summary_rest_detail2', 'mcup_summary_rest_btn_label', 'mcup_summary_rest_btn_url', 'mcup_summary_below_detail1', 'mcup_summary_below_btn_label', 'mcup_summary_below_btn_url'],
 ];
-$catBlockType = 'mcup_menu_cat';
+$menuFamilies = [
+    'restmenu'  => ['label' => 'Restaurant Menu', 'catType' => 'mcup_rest_menu_cat',  'itemPrefix' => 'mcup_rest_menu_item_'],
+    'belowmenu' => ['label' => 'Below Menu',       'catType' => 'mcup_below_menu_cat', 'itemPrefix' => 'mcup_below_menu_item_'],
+];
 $visibilitySections = [
-    'mcup_hero'    => 'Hero',
-    'mcup_intro'   => 'Intro',
-    'mcup_gallery' => 'Gallery',
-    'mcup_menu'    => 'Menu',
-    'mcup_guest'   => 'Guest Artists',
+    'mcup_hero'       => 'Hero',
+    'mcup_intro'      => 'Top Intro',
+    'mcup_restaurant' => 'At The Restaurant (incl. menu & beverage packages)',
+    'mcup_below'      => 'At Below (incl. menu & drinks)',
+    'mcup_summary'    => 'Two Experiences. One House.',
 ];
 
 $error = '';
@@ -64,86 +70,75 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Location: melbournecup.php?tab=' . urlencode($group) . '&saved=1'); exit;
             }
 
-            // ---- Menu categories ----
+            // ---- Menu categories (shared by both menu families) ----
             if ($action === 'save_categories') {
-                foreach (($_POST['cat_title'] ?? []) as $id => $title) {
-                    $id = (int) $id;
-                    $q = db()->prepare('UPDATE blocks SET title=?, sort=? WHERE id=? AND block_type=?');
-                    $q->execute([trim($title), (int) ($_POST['cat_sort'][$id] ?? 0), $id, $catBlockType]);
+                $fam = $_POST['fam'] ?? '';
+                if (isset($menuFamilies[$fam])) {
+                    $catType = $menuFamilies[$fam]['catType'];
+                    foreach (($_POST['cat_title'] ?? []) as $id => $title) {
+                        $id = (int) $id;
+                        $q = db()->prepare('UPDATE blocks SET title=?, sort=? WHERE id=? AND block_type=?');
+                        $q->execute([trim($title), (int) ($_POST['cat_sort'][$id] ?? 0), $id, $catType]);
+                    }
                 }
-                header('Location: melbournecup.php?tab=menu&saved=1'); exit;
+                header('Location: melbournecup.php?tab=' . urlencode($fam) . '&saved=1'); exit;
             }
             if ($action === 'add_category') {
+                $fam = $_POST['fam'] ?? '';
                 $label = trim($_POST['new_cat_title'] ?? '');
-                if ($label === '') {
+                if ($label === '' || !isset($menuFamilies[$fam])) {
                     $error = 'Enter a category name.';
                 } else {
+                    $catType = $menuFamilies[$fam]['catType'];
                     $q = db()->prepare('INSERT INTO blocks (block_type,title,sort,active) VALUES (?,?,?,1)');
-                    $q->execute([$catBlockType, $label, (int) ($_POST['new_cat_sort'] ?? 99)]);
+                    $q->execute([$catType, $label, (int) ($_POST['new_cat_sort'] ?? 99)]);
                     $newId = (int) db()->lastInsertId();
-                    header('Location: melbournecup.php?tab=menu&cat=' . $newId . '&saved=1'); exit;
+                    header('Location: melbournecup.php?tab=' . urlencode($fam) . '&cat=' . $newId . '&saved=1'); exit;
                 }
             }
             if ($action === 'delete_category') {
-                $catId = (int) ($_POST['cat_id'] ?? 0);
-                db()->prepare('DELETE FROM blocks WHERE id=? AND block_type=?')->execute([$catId, $catBlockType]);
-                db()->prepare('DELETE FROM blocks WHERE block_type=?')->execute(['mcup_menu_item_' . $catId]);
-                header('Location: melbournecup.php?tab=menu&saved=1'); exit;
+                $fam = $_POST['fam'] ?? '';
+                if (isset($menuFamilies[$fam])) {
+                    $catType = $menuFamilies[$fam]['catType'];
+                    $itemPrefix = $menuFamilies[$fam]['itemPrefix'];
+                    $catId = (int) ($_POST['cat_id'] ?? 0);
+                    db()->prepare('DELETE FROM blocks WHERE id=? AND block_type=?')->execute([$catId, $catType]);
+                    db()->prepare('DELETE FROM blocks WHERE block_type=?')->execute([$itemPrefix . $catId]);
+                }
+                header('Location: melbournecup.php?tab=' . urlencode($fam) . '&saved=1'); exit;
             }
 
             // ---- Menu items (per category) ----
             if ($action === 'save_menu_items') {
+                $fam = $_POST['fam'] ?? '';
                 $catId = (int) ($_POST['cat'] ?? 0);
-                $blockType = 'mcup_menu_item_' . $catId;
-                foreach (($_POST['title'] ?? []) as $id => $title) {
-                    $id = (int) $id;
-                    $q = db()->prepare('UPDATE blocks SET title=?, subtitle=?, body=?, sort=? WHERE id=? AND block_type=?');
-                    $q->execute([trim($title), trim($_POST['price'][$id] ?? ''), trim($_POST['desc'][$id] ?? ''), (int) ($_POST['sort'][$id] ?? 0), $id, $blockType]);
-                }
-                header('Location: melbournecup.php?tab=menu&cat=' . $catId . '&saved=1'); exit;
-            }
-            if ($action === 'add_menu_item') {
-                $catId = (int) ($_POST['cat'] ?? 0);
-                $q = db()->prepare('INSERT INTO blocks (block_type,title,subtitle,body,sort,active) VALUES (?,?,?,?,?,1)');
-                $q->execute(['mcup_menu_item_' . $catId, trim($_POST['new_title'] ?? 'New Item'), trim($_POST['new_price'] ?? ''), trim($_POST['new_desc'] ?? ''), (int) ($_POST['new_sort'] ?? 99)]);
-                header('Location: melbournecup.php?tab=menu&cat=' . $catId . '&saved=1'); exit;
-            }
-            if ($action === 'delete_menu_item') {
-                $catId = (int) ($_POST['cat'] ?? 0);
-                $q = db()->prepare('DELETE FROM blocks WHERE id=? AND block_type=?');
-                $q->execute([(int) ($_POST['id'] ?? 0), 'mcup_menu_item_' . $catId]);
-                header('Location: melbournecup.php?tab=menu&cat=' . $catId . '&saved=1'); exit;
-            }
-
-            // ---- Gallery ----
-            if ($action === 'save_gallery') {
-                foreach (($_POST['g_sort'] ?? []) as $id => $sort) {
-                    $id  = (int) $id;
-                    $img = handle_upload('file_' . $id);
-                    if ($img !== null) {
-                        $q = db()->prepare('UPDATE blocks SET sort=?, image=? WHERE id=? AND block_type="mcup_gallery"');
-                        $q->execute([(int) $sort, $img, $id]);
-                    } else {
-                        $q = db()->prepare('UPDATE blocks SET sort=? WHERE id=? AND block_type="mcup_gallery"');
-                        $q->execute([(int) $sort, $id]);
+                if (isset($menuFamilies[$fam])) {
+                    $blockType = $menuFamilies[$fam]['itemPrefix'] . $catId;
+                    foreach (($_POST['title'] ?? []) as $id => $title) {
+                        $id = (int) $id;
+                        $q = db()->prepare('UPDATE blocks SET title=?, body=?, sort=? WHERE id=? AND block_type=?');
+                        $q->execute([trim($title), trim($_POST['desc'][$id] ?? ''), (int) ($_POST['sort'][$id] ?? 0), $id, $blockType]);
                     }
                 }
-                header('Location: melbournecup.php?tab=gallery&saved=1'); exit;
+                header('Location: melbournecup.php?tab=' . urlencode($fam) . '&cat=' . $catId . '&saved=1'); exit;
             }
-            if ($action === 'add_gallery') {
-                $img = handle_upload('new_file');
-                if ($img === null) {
-                    $error = 'Choose an image to add to the gallery.';
-                } else {
-                    $q = db()->prepare('INSERT INTO blocks (block_type,title,image,sort,active) VALUES ("mcup_gallery","",?,?,1)');
-                    $q->execute([$img, (int) ($_POST['new_sort'] ?? 99)]);
-                    header('Location: melbournecup.php?tab=gallery&saved=1'); exit;
+            if ($action === 'add_menu_item') {
+                $fam = $_POST['fam'] ?? '';
+                $catId = (int) ($_POST['cat'] ?? 0);
+                if (isset($menuFamilies[$fam])) {
+                    $q = db()->prepare('INSERT INTO blocks (block_type,title,body,sort,active) VALUES (?,?,?,?,1)');
+                    $q->execute([$menuFamilies[$fam]['itemPrefix'] . $catId, trim($_POST['new_title'] ?? 'New Dish'), trim($_POST['new_desc'] ?? ''), (int) ($_POST['new_sort'] ?? 99)]);
                 }
+                header('Location: melbournecup.php?tab=' . urlencode($fam) . '&cat=' . $catId . '&saved=1'); exit;
             }
-            if ($action === 'delete_gallery') {
-                $q = db()->prepare('DELETE FROM blocks WHERE id=? AND block_type="mcup_gallery"');
-                $q->execute([(int) ($_POST['id'] ?? 0)]);
-                header('Location: melbournecup.php?tab=gallery&saved=1'); exit;
+            if ($action === 'delete_menu_item') {
+                $fam = $_POST['fam'] ?? '';
+                $catId = (int) ($_POST['cat'] ?? 0);
+                if (isset($menuFamilies[$fam])) {
+                    $q = db()->prepare('DELETE FROM blocks WHERE id=? AND block_type=?');
+                    $q->execute([(int) ($_POST['id'] ?? 0), $menuFamilies[$fam]['itemPrefix'] . $catId]);
+                }
+                header('Location: melbournecup.php?tab=' . urlencode($fam) . '&cat=' . $catId . '&saved=1'); exit;
             }
         } catch (RuntimeException $ex) {
             $error = $ex->getMessage();
@@ -156,27 +151,35 @@ $bySkey = [];
 foreach ($allRows as $r) {
     $bySkey[$r['skey']] = $r;
 }
-$menuCats = db()->query("SELECT * FROM blocks WHERE block_type='mcup_menu_cat' ORDER BY sort ASC, id ASC")->fetchAll();
-$menuItemsByCat = [];
-foreach ($menuCats as $cat) {
-    $catId = (int) $cat['id'];
-    $menuItemsByCat[$catId] = db()->query("SELECT * FROM blocks WHERE block_type='mcup_menu_item_$catId' ORDER BY sort ASC, id ASC")->fetchAll();
+
+$menuData = [];
+foreach ($menuFamilies as $famKey => $fam) {
+    $cats = db()->query("SELECT * FROM blocks WHERE block_type='" . $fam['catType'] . "' ORDER BY sort ASC, id ASC")->fetchAll();
+    $itemsByCat = [];
+    foreach ($cats as $cat) {
+        $catId = (int) $cat['id'];
+        $itemsByCat[$catId] = db()->query("SELECT * FROM blocks WHERE block_type='" . $fam['itemPrefix'] . $catId . "' ORDER BY sort ASC, id ASC")->fetchAll();
+    }
+    $menuData[$famKey] = ['cats' => $cats, 'itemsByCat' => $itemsByCat];
 }
-$gallery = db()->query("SELECT * FROM blocks WHERE block_type='mcup_gallery' ORDER BY sort ASC, id ASC")->fetchAll();
 
 $tabs = [
-    'herovideo' => 'Hero Video',
-    'intro'     => 'Intro',
-    'gallery'   => 'Gallery',
-    'menu'      => 'Menu',
-    'guest'     => 'Guest Artists',
-    'visibility' => 'Section Visibility',
+    'herovideo'   => 'Hero Video',
+    'intro'       => 'Top Intro',
+    'restaurant'  => 'At The Restaurant',
+    'restmenu'    => 'Restaurant Menu',
+    'restbev'     => 'Beverage Packages',
+    'below'       => 'At Below',
+    'belowmenu'   => 'Below Menu',
+    'belowdrinks' => 'The Drinks',
+    'summary'     => 'Closing Summary',
+    'visibility'  => 'Section Visibility',
 ];
 $activeTab = $_GET['tab'] ?? 'herovideo';
 if (!isset($tabs[$activeTab])) {
     $activeTab = 'herovideo';
 }
-$activeCat = isset($_GET['cat']) ? (int) $_GET['cat'] : ($menuCats[0]['id'] ?? 0);
+$activeCat = isset($_GET['cat']) ? (int) $_GET['cat'] : null;
 
 function render_mcup_field(array $f): void
 {
@@ -212,6 +215,114 @@ function render_mcup_field(array $f): void
     <?php
 }
 
+/**
+ * Renders a menu-category CRUD block (categories table + add form + per-category
+ * item CRUD) for one of the two independent menu families (Restaurant / Below).
+ */
+function render_menu_family(string $famKey, array $fam, array $data, ?int $activeCat, string $csrf): void
+{
+    $cats = $data['cats'];
+    $itemsByCat = $data['itemsByCat'];
+    $activeCat = $activeCat ?? ($cats[0]['id'] ?? 0);
+    ?>
+    <h3><?= e($fam['label']) ?> - Categories</h3>
+    <p class="group-help">These are the course headings shown on the live page (e.g. "For The Table", "Entrée"). Deleting a category also deletes its dishes.</p>
+    <form method="post">
+      <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+      <input type="hidden" name="action" value="save_categories">
+      <input type="hidden" name="fam" value="<?= e($famKey) ?>">
+      <table>
+        <tr><th>Category Name</th><th style="width:140px;">Order</th><th style="width:90px;"></th></tr>
+        <?php foreach ($cats as $cat): ?>
+          <tr>
+            <td><input type="text" name="cat_title[<?= $cat['id'] ?>]" value="<?= e($cat['title']) ?>"></td>
+            <td><input type="text" name="cat_sort[<?= $cat['id'] ?>]" value="<?= (int)$cat['sort'] ?>"></td>
+            <td><button form="delcat<?= e($famKey) ?><?= $cat['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this category and ALL its dishes? This cannot be undone.')">Delete</button></td>
+          </tr>
+        <?php endforeach; ?>
+      </table>
+      <div class="form-actions"><button class="btn">Save Categories</button></div>
+    </form>
+    <?php foreach ($cats as $cat): ?>
+      <form id="delcat<?= e($famKey) ?><?= $cat['id'] ?>" method="post" class="inline-form">
+        <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+        <input type="hidden" name="action" value="delete_category">
+        <input type="hidden" name="fam" value="<?= e($famKey) ?>">
+        <input type="hidden" name="cat_id" value="<?= $cat['id'] ?>">
+      </form>
+    <?php endforeach; ?>
+
+    <h4 style="margin-top:20px;font-size:14px;">Add a Category</h4>
+    <form method="post">
+      <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+      <input type="hidden" name="action" value="add_category">
+      <input type="hidden" name="fam" value="<?= e($famKey) ?>">
+      <div class="row-actions">
+        <input type="text" name="new_cat_title" placeholder="e.g. Dessert" style="max-width:220px;">
+        <input type="text" name="new_cat_sort" placeholder="Order" value="99" style="width:70px;">
+        <button class="btn btn-sm">+ Add Category</button>
+      </div>
+    </form>
+
+    <h3 style="margin-top:30px;"><?= e($fam['label']) ?> - Dishes</h3>
+    <?php if (!$cats): ?>
+      <p class="group-help">Add a category above first - its dishes will appear here once it exists.</p>
+    <?php else: ?>
+      <div class="tab-nav" style="margin-bottom:18px;">
+        <?php foreach ($cats as $cat): ?>
+          <button type="button" class="tab-btn menu-cat-btn menu-cat-btn-<?= e($famKey) ?><?= $activeCat === (int)$cat['id'] ? ' active' : '' ?>" data-fam="<?= e($famKey) ?>" data-menu-cat="<?= $cat['id'] ?>"><?= e($cat['title']) ?></button>
+        <?php endforeach; ?>
+      </div>
+
+      <?php foreach ($cats as $cat): $catId = (int) $cat['id']; ?>
+        <div class="menu-cat-panel menu-cat-panel-<?= e($famKey) ?>" data-fam="<?= e($famKey) ?>" data-menu-cat-panel="<?= $catId ?>" style="<?= $activeCat === $catId ? '' : 'display:none;' ?>">
+          <form method="post">
+            <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+            <input type="hidden" name="action" value="save_menu_items">
+            <input type="hidden" name="fam" value="<?= e($famKey) ?>">
+            <input type="hidden" name="cat" value="<?= $catId ?>">
+            <table>
+              <tr><th>Dish</th><th>Description</th><th style="width:90px;">Order</th><th style="width:90px;"></th></tr>
+              <?php foreach ($itemsByCat[$catId] as $item): ?>
+                <tr>
+                  <td><input type="text" name="title[<?= $item['id'] ?>]" value="<?= e($item['title']) ?>"></td>
+                  <td><textarea name="desc[<?= $item['id'] ?>]" rows="2" style="min-height:0;"><?= e($item['body']) ?></textarea></td>
+                  <td><input type="text" name="sort[<?= $item['id'] ?>]" value="<?= (int)$item['sort'] ?>"></td>
+                  <td><button form="delmenu<?= e($famKey) ?><?= $item['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this dish?')">Delete</button></td>
+                </tr>
+              <?php endforeach; ?>
+            </table>
+            <div class="form-actions"><button class="btn">Save <?= e($cat['title']) ?> Dishes</button></div>
+          </form>
+          <?php foreach ($itemsByCat[$catId] as $item): ?>
+            <form id="delmenu<?= e($famKey) ?><?= $item['id'] ?>" method="post" class="inline-form">
+              <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+              <input type="hidden" name="action" value="delete_menu_item">
+              <input type="hidden" name="fam" value="<?= e($famKey) ?>">
+              <input type="hidden" name="cat" value="<?= $catId ?>">
+              <input type="hidden" name="id" value="<?= $item['id'] ?>">
+            </form>
+          <?php endforeach; ?>
+
+          <h3 style="margin-top:24px;font-size:14px;">Add a Dish to <?= e($cat['title']) ?></h3>
+          <form method="post">
+            <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+            <input type="hidden" name="action" value="add_menu_item">
+            <input type="hidden" name="fam" value="<?= e($famKey) ?>">
+            <input type="hidden" name="cat" value="<?= $catId ?>">
+            <div class="row-actions">
+              <input type="text" name="new_title" placeholder="Dish name" style="max-width:220px;">
+              <input type="text" name="new_desc" placeholder="Description" style="max-width:300px;">
+              <input type="text" name="new_sort" placeholder="Order" value="99" style="width:70px;">
+              <button class="btn btn-sm">+ Add Dish</button>
+            </div>
+          </form>
+        </div>
+      <?php endforeach; ?>
+    <?php endif; ?>
+    <?php
+}
+
 $csrf = csrf_token();
 $page_title = 'Melbourne Cup';
 include __DIR__ . '/layout.php';
@@ -224,9 +335,11 @@ include __DIR__ . '/layout.php';
   <?php endforeach; ?>
 </div>
 
-<?php foreach ($fieldGroups as $group => $keys): if ($group === 'menu') continue; ?>
+<?php foreach ($fieldGroups as $group => $keys): ?>
   <div class="tab-panel settings-group<?= $activeTab === $group ? ' active' : '' ?>" data-tab="<?= e($group) ?>">
     <h3><?= e($tabs[$group]) ?></h3>
+    <?php if ($group === 'restbev'): ?><p class="group-help">Standard / Premium lists: one drink per line.</p><?php endif; ?>
+    <?php if ($group === 'belowdrinks'): ?><p class="group-help">Each category's list: one drink per line.</p><?php endif; ?>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
       <input type="hidden" name="action" value="save_section">
@@ -237,145 +350,14 @@ include __DIR__ . '/layout.php';
   </div>
 <?php endforeach; ?>
 
-<!-- Gallery tab -->
-<div class="tab-panel settings-group<?= $activeTab === 'gallery' ? ' active' : '' ?>" data-tab="gallery">
-  <h3>Gallery</h3>
-  <p class="group-help">The photo grid near the top of the Melbourne Cup page.</p>
-  <form method="post" enctype="multipart/form-data">
-    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
-    <input type="hidden" name="action" value="save_gallery">
-    <table>
-      <tr><th style="width:110px;">Image</th><th style="width:70px;">Order</th><th style="width:220px;">Replace image</th><th style="width:80px;"></th></tr>
-      <?php foreach ($gallery as $g): ?>
-        <tr>
-          <td><?php if ($g['image']): ?><img src="<?= e(asset($g['image'])) ?>" alt=""><?php endif; ?></td>
-          <td><input type="text" name="g_sort[<?= $g['id'] ?>]" value="<?= (int)$g['sort'] ?>" style="width:56px;"></td>
-          <td><input type="file" name="file_<?= $g['id'] ?>" accept="image/*" data-crop-ratio="3:2"></td>
-          <td><button form="delgal<?= $g['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Remove this photo?')">Delete</button></td>
-        </tr>
-      <?php endforeach; ?>
-    </table>
-    <div class="form-actions"><button class="btn">Save Changes</button></div>
-  </form>
-  <?php foreach ($gallery as $g): ?>
-    <form id="delgal<?= $g['id'] ?>" method="post" class="inline-form">
-      <input type="hidden" name="csrf" value="<?= e($csrf) ?>"><input type="hidden" name="action" value="delete_gallery"><input type="hidden" name="id" value="<?= $g['id'] ?>">
-    </form>
-  <?php endforeach; ?>
-  <h3 style="margin-top:30px;">Add a Photo</h3>
-  <form method="post" enctype="multipart/form-data">
-    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
-    <input type="hidden" name="action" value="add_gallery">
-    <div class="row-actions">
-      <input type="file" name="new_file" accept="image/*" data-crop-ratio="3:2">
-      <input type="text" name="new_sort" placeholder="Order" value="99" style="width:70px;">
-      <button class="btn btn-sm">Add</button>
-    </div>
-  </form>
+<!-- Restaurant Menu tab -->
+<div class="tab-panel settings-group<?= $activeTab === 'restmenu' ? ' active' : '' ?>" data-tab="restmenu">
+  <?php render_menu_family('restmenu', $menuFamilies['restmenu'], $menuData['restmenu'], $activeCat, $csrf); ?>
 </div>
 
-<!-- Menu tab: settings + per-category item CRUD -->
-<div class="tab-panel settings-group<?= $activeTab === 'menu' ? ' active' : '' ?>" data-tab="menu">
-  <h3>Menu</h3>
-  <form method="post">
-    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
-    <input type="hidden" name="action" value="save_section">
-    <input type="hidden" name="group" value="menu">
-    <?php foreach ($fieldGroups['menu'] as $key): if (!isset($bySkey[$key])) continue; render_mcup_field($bySkey[$key]); endforeach; ?>
-    <div class="form-actions"><button type="submit" class="btn">Save Changes</button></div>
-  </form>
-
-  <h3 style="margin-top:30px;">Menu Categories</h3>
-  <p class="group-help">These become the tabs shown in the "Discover Our Menus" section. This is a separate menu from every other page's menu - editing one does not affect the others. Deleting a category also deletes its menu items.</p>
-  <form method="post">
-    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
-    <input type="hidden" name="action" value="save_categories">
-    <table>
-      <tr><th>Category Name</th><th style="width:140px;">Order</th><th style="width:90px;"></th></tr>
-      <?php foreach ($menuCats as $cat): ?>
-        <tr>
-          <td><input type="text" name="cat_title[<?= $cat['id'] ?>]" value="<?= e($cat['title']) ?>"></td>
-          <td><input type="text" name="cat_sort[<?= $cat['id'] ?>]" value="<?= (int)$cat['sort'] ?>"></td>
-          <td><button form="delcat<?= $cat['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this category and ALL its menu items? This cannot be undone.')">Delete</button></td>
-        </tr>
-      <?php endforeach; ?>
-    </table>
-    <div class="form-actions"><button class="btn">Save Categories</button></div>
-  </form>
-  <?php foreach ($menuCats as $cat): ?>
-    <form id="delcat<?= $cat['id'] ?>" method="post" class="inline-form">
-      <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
-      <input type="hidden" name="action" value="delete_category">
-      <input type="hidden" name="cat_id" value="<?= $cat['id'] ?>">
-    </form>
-  <?php endforeach; ?>
-
-  <h4 style="margin-top:20px;font-size:14px;">Add a Category</h4>
-  <form method="post">
-    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
-    <input type="hidden" name="action" value="add_category">
-    <div class="row-actions">
-      <input type="text" name="new_cat_title" placeholder="e.g. Cup Day Menu" style="max-width:220px;">
-      <input type="text" name="new_cat_sort" placeholder="Order" value="99" style="width:70px;">
-      <button class="btn btn-sm">+ Add Category</button>
-    </div>
-  </form>
-
-  <h3 style="margin-top:30px;">Menu Items</h3>
-  <?php if (!$menuCats): ?>
-    <p class="group-help">Add a category above first - its items will appear here once it exists.</p>
-  <?php else: ?>
-    <div class="tab-nav" style="margin-bottom:18px;">
-      <?php foreach ($menuCats as $cat): ?>
-        <button type="button" class="tab-btn menu-cat-btn<?= $activeCat === (int)$cat['id'] ? ' active' : '' ?>" data-menu-cat="<?= $cat['id'] ?>"><?= e($cat['title']) ?></button>
-      <?php endforeach; ?>
-    </div>
-
-    <?php foreach ($menuCats as $cat): $catId = (int) $cat['id']; ?>
-      <div class="menu-cat-panel<?= $activeCat === $catId ? ' active' : '' ?>" data-menu-cat-panel="<?= $catId ?>" style="<?= $activeCat === $catId ? '' : 'display:none;' ?>">
-        <form method="post">
-          <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
-          <input type="hidden" name="action" value="save_menu_items">
-          <input type="hidden" name="cat" value="<?= $catId ?>">
-          <table>
-            <tr><th>Item</th><th style="width:100px;">Price</th><th>Description</th><th style="width:90px;">Order</th><th style="width:90px;"></th></tr>
-            <?php foreach ($menuItemsByCat[$catId] as $item): ?>
-              <tr>
-                <td><input type="text" name="title[<?= $item['id'] ?>]" value="<?= e($item['title']) ?>"></td>
-                <td><input type="text" name="price[<?= $item['id'] ?>]" value="<?= e($item['subtitle']) ?>"></td>
-                <td><textarea name="desc[<?= $item['id'] ?>]" rows="2" style="min-height:0;"><?= e($item['body']) ?></textarea></td>
-                <td><input type="text" name="sort[<?= $item['id'] ?>]" value="<?= (int)$item['sort'] ?>"></td>
-                <td><button form="delmenu<?= $item['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this item?')">Delete</button></td>
-              </tr>
-            <?php endforeach; ?>
-          </table>
-          <div class="form-actions"><button class="btn">Save <?= e($cat['title']) ?> Items</button></div>
-        </form>
-        <?php foreach ($menuItemsByCat[$catId] as $item): ?>
-          <form id="delmenu<?= $item['id'] ?>" method="post" class="inline-form">
-            <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
-            <input type="hidden" name="action" value="delete_menu_item">
-            <input type="hidden" name="cat" value="<?= $catId ?>">
-            <input type="hidden" name="id" value="<?= $item['id'] ?>">
-          </form>
-        <?php endforeach; ?>
-
-        <h3 style="margin-top:24px;font-size:14px;">Add an Item to <?= e($cat['title']) ?></h3>
-        <form method="post">
-          <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
-          <input type="hidden" name="action" value="add_menu_item">
-          <input type="hidden" name="cat" value="<?= $catId ?>">
-          <div class="row-actions">
-            <input type="text" name="new_title" placeholder="Item name" style="max-width:200px;">
-            <input type="text" name="new_price" placeholder="Price" style="width:80px;">
-            <input type="text" name="new_desc" placeholder="Description" style="max-width:260px;">
-            <input type="text" name="new_sort" placeholder="Order" value="99" style="width:70px;">
-            <button class="btn btn-sm">+ Add Item</button>
-          </div>
-        </form>
-      </div>
-    <?php endforeach; ?>
-  <?php endif; ?>
+<!-- Below Menu tab -->
+<div class="tab-panel settings-group<?= $activeTab === 'belowmenu' ? ' active' : '' ?>" data-tab="belowmenu">
+  <?php render_menu_family('belowmenu', $menuFamilies['belowmenu'], $menuData['belowmenu'], $activeCat, $csrf); ?>
 </div>
 
 <!-- Section Visibility tab -->
@@ -412,13 +394,14 @@ document.querySelectorAll('.tab-btn:not(.menu-cat-btn)').forEach(function (btn) 
 });
 document.querySelectorAll('.menu-cat-btn').forEach(function (btn) {
   btn.addEventListener('click', function () {
-    document.querySelectorAll('.menu-cat-btn').forEach(function (b) { b.classList.remove('active'); });
-    document.querySelectorAll('.menu-cat-panel').forEach(function (p) { p.style.display = 'none'; });
+    var fam = btn.dataset.fam;
+    document.querySelectorAll('.menu-cat-btn[data-fam="' + fam + '"]').forEach(function (b) { b.classList.remove('active'); });
+    document.querySelectorAll('.menu-cat-panel[data-fam="' + fam + '"]').forEach(function (p) { p.style.display = 'none'; });
     btn.classList.add('active');
-    var panel = document.querySelector('.menu-cat-panel[data-menu-cat-panel="' + btn.dataset.menuCat + '"]');
+    var panel = document.querySelector('.menu-cat-panel[data-fam="' + fam + '"][data-menu-cat-panel="' + btn.dataset.menuCat + '"]');
     if (panel) panel.style.display = 'block';
     if (window.history && window.history.replaceState) {
-      window.history.replaceState(null, '', '?tab=menu&cat=' + btn.dataset.menuCat);
+      window.history.replaceState(null, '', '?tab=' + fam + '&cat=' + btn.dataset.menuCat);
     }
   });
 });
