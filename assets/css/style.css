@@ -895,30 +895,30 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   border-radius:999px;padding:6px;gap:4px;
 }
 .cup-menu-tab{
-  flex:1;background:none;border:0;cursor:pointer;padding:13px 16px;border-radius:999px;
-  font-family:var(--sans);font-weight:600;font-size:12px;letter-spacing:1px;
+  flex:1;background:none;border:0;cursor:pointer;padding:14px 16px;border-radius:999px;
+  font-family:var(--sans);font-weight:600;font-size:14px;letter-spacing:1px;
   text-transform:uppercase;color:var(--ink-soft);
   transition:background-color .2s ease,color .2s ease;
 }
 .cup-menu-tab.active{background:var(--dark);color:#f3ece4;}
-.cup-menu-single{max-width:640px;margin:0 auto;text-align:left;}
+.cup-menu-single{max-width:680px;margin:0 auto;text-align:left;}
 .cup-menu-panel{display:none;}
 .cup-menu-panel.active{display:block;}
 .cup-menu-category{margin-bottom:26px;}
 .cup-menu-category:last-child{margin-bottom:0;}
 .cup-menu-category-heading{
-  font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:1.3px;
+  font-family:var(--sans);font-weight:700;font-size:15px;letter-spacing:1.3px;
   text-transform:uppercase;color:var(--maroon);margin:0;
 }
 .cup-menu-category-note{
-  font-family:var(--serif);font-style:italic;font-weight:400;font-size:12px;
+  font-family:var(--serif);font-style:italic;font-weight:400;font-size:15px;
   color:var(--ink-mute);margin:0 0 10px;
 }
 .cup-menu-item{
-  font-family:var(--sans);font-weight:300;font-size:13px;line-height:1.5;
-  color:var(--ink-soft);margin:0 0 10px;
+  font-family:var(--sans);font-weight:300;font-size:16px;line-height:1.6;
+  color:var(--ink-soft);margin:0 0 12px;
 }
-.cup-menu-empty{font-family:var(--sans);font-size:13px;color:var(--ink-mute);text-align:center;}
+.cup-menu-empty{font-family:var(--sans);font-size:16px;color:var(--ink-mute);text-align:center;}
 
 /* Shared expand/collapse accordion (menu categories + beverage packages) */
 .cup-mini-accordion-toggle{
@@ -926,7 +926,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   width:100%;background:none;border:0;cursor:pointer;padding:0;text-align:left;
 }
 .cup-mini-accordion-chevron{color:var(--ink-mute);flex-shrink:0;transition:transform .25s ease;}
-.cup-mini-accordion-chevron svg{width:13px;height:13px;display:block;}
+.cup-mini-accordion-chevron svg{width:15px;height:15px;display:block;}
 .cup-mini-accordion.open .cup-mini-accordion-chevron{transform:rotate(90deg);}
 .cup-mini-accordion-panel{max-height:0;overflow:hidden;transition:max-height .35s ease;}
 .cup-mini-accordion.open .cup-mini-accordion-panel{max-height:1000px;}
@@ -934,31 +934,31 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 
 .cup-menu-bev{margin-top:30px;padding-top:28px;border-top:1px solid #e5dbcd;}
 .cup-menu-bev-heading{
-  font-family:var(--serif);font-weight:500;font-size:26px;
+  font-family:var(--serif);font-weight:500;font-size:28px;
   color:var(--ink);margin:0 0 10px;
 }
 .cup-menu-bev-lede{
-  font-family:var(--serif);font-style:italic;font-weight:400;font-size:13px;
+  font-family:var(--serif);font-style:italic;font-weight:400;font-size:16px;
   color:var(--ink-mute);margin:0 0 10px;
 }
 .cup-menu-bev-intro{
-  font-family:var(--sans);font-weight:300;font-size:13px;line-height:1.6;
+  font-family:var(--sans);font-weight:300;font-size:16px;line-height:1.6;
   color:var(--ink-soft);margin:0 0 20px;
 }
 .cup-menu-bev-pkg{margin-bottom:20px;}
 .cup-menu-bev-pkg:last-of-type{margin-bottom:0;}
 .cup-menu-bev-pkg-heading{
-  font-family:var(--serif);font-weight:600;font-size:15px;
+  font-family:var(--serif);font-weight:600;font-size:18px;
   color:var(--maroon);margin:0;
 }
 .cup-menu-bev-list{list-style:none;padding:0;margin:0 0 22px;}
 .cup-menu-bev-list li{
-  font-family:var(--sans);font-weight:300;font-size:13px;line-height:1.4;
-  color:var(--ink-soft);padding:6px 0;border-bottom:1px solid #efe6d9;
+  font-family:var(--sans);font-weight:300;font-size:16px;line-height:1.5;
+  color:var(--ink-soft);padding:7px 0;border-bottom:1px solid #efe6d9;
 }
 .cup-menu-bev-list li:last-child{border-bottom:0;}
 .cup-menu-bev-note{
-  font-family:var(--serif);font-style:italic;font-weight:400;font-size:12px;
+  font-family:var(--serif);font-style:italic;font-weight:400;font-size:15px;
   color:var(--ink-mute);margin:0 0 8px;
 }
 
