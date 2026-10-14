@@ -7,7 +7,7 @@ $fieldGroups = [
     'herovideo' => ['mcup_hero_image', 'mcup_hero_video'],
     'intro'     => ['mcup_heading', 'mcup_subheading', 'mcup_lede', 'mcup_p1', 'mcup_p2', 'mcup_p3', 'mcup_date', 'mcup_btn1_label', 'mcup_btn1_url', 'mcup_btn2_label', 'mcup_btn2_url'],
     'restaurant' => ['mcup_rest_eyebrow', 'mcup_rest_heading', 'mcup_rest_subheading', 'mcup_rest_lede', 'mcup_rest_p1', 'mcup_rest_p2', 'mcup_rest_date', 'mcup_rest_price_eyebrow', 'mcup_rest_price', 'mcup_rest_price_note', 'mcup_rest_btn_label', 'mcup_rest_btn_url'],
-    'restbev'   => ['mcup_rest_bev_intro', 'mcup_rest_bev_standard_heading', 'mcup_rest_bev_standard_price', 'mcup_rest_bev_standard_items', 'mcup_rest_bev_premium_heading', 'mcup_rest_bev_premium_price', 'mcup_rest_bev_premium_items', 'mcup_rest_bev_note1', 'mcup_rest_bev_note2'],
+    'restbev'   => ['mcup_rest_bev_lede', 'mcup_rest_bev_intro', 'mcup_rest_bev_standard_heading', 'mcup_rest_bev_standard_price', 'mcup_rest_bev_standard_items', 'mcup_rest_bev_premium_heading', 'mcup_rest_bev_premium_price', 'mcup_rest_bev_premium_items', 'mcup_rest_bev_note1', 'mcup_rest_bev_note2'],
     'below'     => ['mcup_below_eyebrow', 'mcup_below_heading', 'mcup_below_subheading', 'mcup_below_lede', 'mcup_below_p1', 'mcup_below_p2', 'mcup_below_date', 'mcup_below_price_eyebrow', 'mcup_below_price', 'mcup_below_btn_label', 'mcup_below_btn_url'],
     'belowdrinks' => ['mcup_below_drinks_lede', 'mcup_below_drinks_champagne_items', 'mcup_below_drinks_white_items', 'mcup_below_drinks_rose_items', 'mcup_below_drinks_red_items', 'mcup_below_drinks_beer_items', 'mcup_below_drinks_cocktails_items'],
     'menus'     => ['mcup_menus_heading', 'mcup_menus_rest_label', 'mcup_menus_below_label'],
@@ -343,9 +343,10 @@ include __DIR__ . '/layout.php';
 <?php foreach ($fieldGroups as $group => $keys): ?>
   <div class="tab-panel settings-group<?= $activeTab === $group ? ' active' : '' ?>" data-tab="<?= e($group) ?>">
     <h3><?= e($tabs[$group]) ?></h3>
-    <?php if ($group === 'restbev'): ?><p class="group-help">Standard / Premium rows: one per line, as <code>Label | Value</code> - e.g. <code>Champagne | Moët &amp; Chandon Impérial Brut</code>.</p><?php endif; ?>
-    <?php if ($group === 'belowdrinks'): ?><p class="group-help">Each field is the value shown next to its drink category on the live page (e.g. the White Wine field lists the white wines). Multiple items: one per line.</p><?php endif; ?>
-    <?php if ($group === 'menus'): ?><p class="group-help">This is the two-column section further down the page showing both menus side by side. Edit the actual categories/dishes under the "Restaurant Menu" and "Below Menu" tabs - they're fully independent of each other.</p><?php endif; ?>
+    <?php if ($group === 'restaurant' || $group === 'below'): ?><p class="group-help">This section is currently not shown on the live page (removed per request) - these fields aren't visible until it's switched back on.</p><?php endif; ?>
+    <?php if ($group === 'restbev'): ?><p class="group-help">This content now appears inside "The Menu" section, under the Restaurant column, below the food menu. Standard / Premium items: one drink per line.</p><?php endif; ?>
+    <?php if ($group === 'belowdrinks'): ?><p class="group-help">Each field is the value shown next to its drink category - this content is currently not shown on the live page (removed per request) along with the rest of the "At Below" section.</p><?php endif; ?>
+    <?php if ($group === 'menus'): ?><p class="group-help">This is the two-column section further down the page showing both menus side by side. Edit the actual categories/dishes under the "Restaurant Menu" and "Below Menu" tabs, and the Restaurant's Beverage Packages content under the "Beverage Packages" tab - they're fully independent of each other.</p><?php endif; ?>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
       <input type="hidden" name="action" value="save_section">

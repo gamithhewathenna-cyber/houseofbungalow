@@ -92,6 +92,22 @@ function render_bev_rows(string $settingKey): void
         render_bev_row(trim($parts[0] ?? ''), trim($parts[1] ?? ''));
     }
 }
+
+/**
+ * Renders a simple bullet list for a setting whose value holds one drink
+ * per line (used for the Beverage Packages block inside "The Menu" column).
+ */
+function render_bev_list(string $settingKey): void
+{
+    $lines = preg_split('/\r?\n/', trim(setting($settingKey)));
+    ?>
+    <ul class="cup-menu-bev-list">
+      <?php foreach ($lines as $line): if (trim($line) === '') continue; ?>
+        <li><?= e(trim($line)) ?></li>
+      <?php endforeach; ?>
+    </ul>
+    <?php
+}
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
@@ -234,7 +250,21 @@ if (false): ?>
       <div class="cup-menu-col">
         <p class="cup-menu-col-label"><?= e(setting('mcup_menus_rest_label', 'At The Restaurant')) ?></p>
         <?php render_menu_stack($rest_menu_cats, $rest_menu_items_by_cat); ?>
-        <?php if (setting('mcup_rest_bev_note2')): ?><p class="cup-menu-footnote"><?= enl(setting('mcup_rest_bev_note2')) ?></p><?php endif; ?>
+
+        <div class="cup-menu-bev">
+          <p class="cup-menu-category-heading">Beverage Packages</p>
+          <?php if (setting('mcup_rest_bev_lede')): ?><p class="cup-menu-bev-lede"><?= e(setting('mcup_rest_bev_lede')) ?></p><?php endif; ?>
+          <?php if (setting('mcup_rest_bev_intro')): ?><p class="cup-menu-bev-intro"><?= enl(setting('mcup_rest_bev_intro')) ?></p><?php endif; ?>
+
+          <p class="cup-menu-bev-pkg-heading"><?= e(setting('mcup_rest_bev_standard_heading', 'Standard')) ?> — Add <?= e(setting('mcup_rest_bev_standard_price', '$55 PP')) ?></p>
+          <?php render_bev_list('mcup_rest_bev_standard_items'); ?>
+
+          <p class="cup-menu-bev-pkg-heading"><?= e(setting('mcup_rest_bev_premium_heading', 'Premium')) ?> — Add <?= e(setting('mcup_rest_bev_premium_price', '$85 PP')) ?></p>
+          <?php render_bev_list('mcup_rest_bev_premium_items'); ?>
+
+          <?php if (setting('mcup_rest_bev_note1')): ?><p class="cup-menu-bev-note"><?= e(setting('mcup_rest_bev_note1')) ?></p><?php endif; ?>
+          <?php if (setting('mcup_rest_bev_note2')): ?><p class="cup-menu-bev-note"><?= enl(setting('mcup_rest_bev_note2')) ?></p><?php endif; ?>
+        </div>
       </div>
       <div class="cup-menu-col">
         <p class="cup-menu-col-label"><?= e(setting('mcup_menus_below_label', 'At Below')) ?></p>

@@ -911,9 +911,29 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .cup-menu-item{font-family:var(--serif);font-weight:500;font-size:15px;color:var(--ink);margin:0;}
 .cup-menu-item-desc{font-family:var(--sans);font-weight:300;font-size:12px;color:var(--ink-soft);margin:0 0 12px;}
 .cup-menu-empty{font-family:var(--sans);font-size:13px;color:var(--ink-mute);text-align:center;}
-.cup-menu-footnote{
-  font-family:var(--serif);font-style:italic;font-size:12px;color:var(--ink-mute);
-  text-align:center;margin:20px 0 0;padding-top:16px;border-top:1px solid #e5dbcd;
+
+.cup-menu-bev{margin-top:30px;padding-top:28px;border-top:1px solid #e5dbcd;}
+.cup-menu-bev-lede{
+  font-family:var(--serif);font-style:italic;font-weight:400;font-size:13px;
+  color:var(--ink-mute);margin:0 0 10px;
+}
+.cup-menu-bev-intro{
+  font-family:var(--sans);font-weight:300;font-size:13px;line-height:1.6;
+  color:var(--ink-soft);margin:0 0 20px;
+}
+.cup-menu-bev-pkg-heading{
+  font-family:var(--serif);font-weight:600;font-size:15px;
+  color:var(--maroon);margin:0 0 8px;
+}
+.cup-menu-bev-list{list-style:none;padding:0;margin:0 0 22px;}
+.cup-menu-bev-list li{
+  font-family:var(--sans);font-weight:300;font-size:13px;line-height:1.4;
+  color:var(--ink-soft);padding:6px 0;border-bottom:1px solid #efe6d9;
+}
+.cup-menu-bev-list li:last-child{border-bottom:0;}
+.cup-menu-bev-note{
+  font-family:var(--serif);font-style:italic;font-weight:400;font-size:12px;
+  color:var(--ink-mute);margin:0 0 8px;
 }
 
 /* ------------------------------------------------------------------ */

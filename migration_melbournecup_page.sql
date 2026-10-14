@@ -18,7 +18,7 @@ DELETE FROM `settings` WHERE `skey` IN (
   'mcup_lede1','mcup_lede2','mcup_hours','mcup_menu_heading','mcup_menu_lede',
   'mcup_guest_eyebrow','mcup_guest_heading','mcup_guest_p1','mcup_guest_p2',
   'mcup_guest_btn_label','mcup_guest_btn_url','mcup_guest_image',
-  'mcup_rest_bev_lede','mcup_rest_image','mcup_below_image'
+  'mcup_rest_image','mcup_below_image'
 );
 DELETE FROM `blocks` WHERE `block_type` = 'mcup_gallery';
 DELETE FROM `blocks` WHERE `block_type` IN (
@@ -35,10 +35,13 @@ UPDATE `settings` SET `svalue` = '$120 PP' WHERE `skey` = 'mcup_rest_price' AND 
 UPDATE `settings` SET `svalue` = '$160 PP' WHERE `skey` = 'mcup_below_price' AND `svalue` = '$160 per person | Two Hours of Canapés & Drinks';
 UPDATE `settings` SET `svalue` = 'Standard' WHERE `skey` = 'mcup_rest_bev_standard_heading' AND `svalue` = 'Standard - Add $55pp';
 UPDATE `settings` SET `svalue` = 'Premium' WHERE `skey` = 'mcup_rest_bev_premium_heading' AND `svalue` = 'Premium - Add $85pp';
-UPDATE `settings` SET `svalue` = 'Champagne | Moët & Chandon Impérial Brut\nWhite & Red Wine | House white and red wine\nCocktail | Mimosa\nBeer | Asahi\nSoft Drinks | Coke, Diet Coke, Sprite, Ginger Ale'
-  WHERE `skey` = 'mcup_rest_bev_standard_items' AND `svalue` = 'Moët & Chandon Impérial Brut\nHouse white and red wine\nMimosas\nAsahi\nSoft drinks';
-UPDATE `settings` SET `svalue` = 'Champagne | Moët & Chandon Impérial Brut\nWhite Wine | Cloudy Bay Sauvignon Blanc, Scorpo Pinot Gris\nRosé | Le Fauve Rosé\nRed Wine | Maison Piron Beaujolais, Leeuwin Estate Cabernet Sauvignon\nCocktails | Mimosa, Hugo Spritz, Negroni\nBeer & Cider | Asahi, Somersby Apple Cider\nSoft Drinks | Coke, Diet Coke, Sprite, Ginger Ale'
-  WHERE `skey` = 'mcup_rest_bev_premium_items' AND `svalue` = 'Moët & Chandon Impérial Brut\nMaison Piron Beaujolais\nLeeuwin Estate Cabernet Sauvignon\nLe Fauve Rosé\nCloudy Bay Sauvignon Blanc\nScorpo Pinot Gris\nMimosas, Hugo Spritz and Negroni\nAsahi\nSomersby Apple Cider\nSoft drinks';
+
+-- If an earlier run of this migration already converted the beverage items to
+-- the "Label | Value" row format, revert them back to a plain one-per-line list.
+UPDATE `settings` SET `svalue` = 'Moët & Chandon Impérial Brut\nHouse white and red wine\nMimosas\nAsahi\nSoft drinks'
+  WHERE `skey` = 'mcup_rest_bev_standard_items' AND `svalue` = 'Champagne | Moët & Chandon Impérial Brut\nWhite & Red Wine | House white and red wine\nCocktail | Mimosa\nBeer | Asahi\nSoft Drinks | Coke, Diet Coke, Sprite, Ginger Ale';
+UPDATE `settings` SET `svalue` = 'Moët & Chandon Impérial Brut\nMaison Piron Beaujolais\nLeeuwin Estate Cabernet Sauvignon\nLe Fauve Rosé\nCloudy Bay Sauvignon Blanc\nScorpo Pinot Gris\nMimosas, Hugo Spritz and Negroni\nAsahi\nSomersby Apple Cider\nSoft drinks'
+  WHERE `skey` = 'mcup_rest_bev_premium_items' AND `svalue` = 'Champagne | Moët & Chandon Impérial Brut\nWhite Wine | Cloudy Bay Sauvignon Blanc, Scorpo Pinot Gris\nRosé | Le Fauve Rosé\nRed Wine | Maison Piron Beaujolais, Leeuwin Estate Cabernet Sauvignon\nCocktails | Mimosa, Hugo Spritz, Negroni\nBeer & Cider | Asahi, Somersby Apple Cider\nSoft Drinks | Coke, Diet Coke, Sprite, Ginger Ale';
 
 -- New settings (safe to re-run - existing rows are left untouched).
 INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) VALUES
@@ -70,15 +73,16 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('mcup_rest_btn_label','BOOK THE RESTAURANT','melbournecup_page','Restaurant - button label','text',21),
 ('mcup_rest_btn_url','reserve.php','melbournecup_page','Restaurant - button URL','text',22),
 
-('mcup_rest_bev_intro','Complete your Melbourne Cup experience with an optional three-hour beverage package.','melbournecup_page','Beverage Packages tab - intro','textarea',24),
-('mcup_rest_bev_standard_heading','Standard','melbournecup_page','Beverage Packages tab - Standard label','text',25),
-('mcup_rest_bev_standard_price','$55 PP','melbournecup_page','Beverage Packages tab - Standard price','text',25),
-('mcup_rest_bev_standard_items','Champagne | Moët & Chandon Impérial Brut\nWhite & Red Wine | House white and red wine\nCocktail | Mimosa\nBeer | Asahi\nSoft Drinks | Coke, Diet Coke, Sprite, Ginger Ale','melbournecup_page','Beverage Packages tab - Standard rows (one "Label | Value" per line)','textarea',26),
-('mcup_rest_bev_premium_heading','Premium','melbournecup_page','Beverage Packages tab - Premium label','text',27),
-('mcup_rest_bev_premium_price','$85 PP','melbournecup_page','Beverage Packages tab - Premium price','text',27),
-('mcup_rest_bev_premium_items','Champagne | Moët & Chandon Impérial Brut\nWhite Wine | Cloudy Bay Sauvignon Blanc, Scorpo Pinot Gris\nRosé | Le Fauve Rosé\nRed Wine | Maison Piron Beaujolais, Leeuwin Estate Cabernet Sauvignon\nCocktails | Mimosa, Hugo Spritz, Negroni\nBeer & Cider | Asahi, Somersby Apple Cider\nSoft Drinks | Coke, Diet Coke, Sprite, Ginger Ale','melbournecup_page','Beverage Packages tab - Premium rows (one "Label | Value" per line)','textarea',28),
-('mcup_rest_bev_note1','All guests at the same table must select the same beverage package.','melbournecup_page','Beverage Packages tab - note (shown under the packages)','text',29),
-('mcup_rest_bev_note2','Vegetarian and vegan options are available with advance notice. Please advise us of dietary requirements when booking.','melbournecup_page','Dietary note (shown under The Menu tab)','textarea',30),
+('mcup_rest_bev_lede','Make an afternoon of it.','melbournecup_page','Beverage Packages - lede','text',23),
+('mcup_rest_bev_intro','Complete your Melbourne Cup experience with an optional three-hour beverage package.','melbournecup_page','Beverage Packages - intro','textarea',24),
+('mcup_rest_bev_standard_heading','Standard','melbournecup_page','Beverage Packages - Standard label','text',25),
+('mcup_rest_bev_standard_price','$55 PP','melbournecup_page','Beverage Packages - Standard price','text',25),
+('mcup_rest_bev_standard_items','Moët & Chandon Impérial Brut\nHouse white and red wine\nMimosas\nAsahi\nSoft drinks','melbournecup_page','Beverage Packages - Standard items (one per line)','textarea',26),
+('mcup_rest_bev_premium_heading','Premium','melbournecup_page','Beverage Packages - Premium label','text',27),
+('mcup_rest_bev_premium_price','$85 PP','melbournecup_page','Beverage Packages - Premium price','text',27),
+('mcup_rest_bev_premium_items','Moët & Chandon Impérial Brut\nMaison Piron Beaujolais\nLeeuwin Estate Cabernet Sauvignon\nLe Fauve Rosé\nCloudy Bay Sauvignon Blanc\nScorpo Pinot Gris\nMimosas, Hugo Spritz and Negroni\nAsahi\nSomersby Apple Cider\nSoft drinks','melbournecup_page','Beverage Packages - Premium items (one per line)','textarea',28),
+('mcup_rest_bev_note1','All guests at the same table must select the same beverage package.','melbournecup_page','Beverage Packages - note (shown under the packages)','text',29),
+('mcup_rest_bev_note2','Vegetarian and vegan options are available with advance notice. Please advise us of dietary requirements when booking.','melbournecup_page','Beverage Packages - dietary note','textarea',30),
 
 ('mcup_below_eyebrow','Melbourne Cup At','melbournecup_page','Below - eyebrow label','text',31),
 ('mcup_below_heading','Below','melbournecup_page','Below - heading','text',31),
