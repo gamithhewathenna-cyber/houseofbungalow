@@ -173,7 +173,7 @@ SELECT * FROM (
   UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_entree),'Hand chopped Wagyu','karashi sabayon, smoked soy, pickled chillies, potato crisp',2,1
   UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Bundarra pork secreto','yuzu kosho mojo verde, butter beans, pickled turnips',1,1
   UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Rangers Valley bavette MS5+','black garlic sofrito, piquillo ponzu',2,1
-  UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_sides),'Crispy smashed potatoes and mixed bitter leaves','',1,1
+  UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_sides),'Crispy smashed potatoes','mixed bitter leaves, to share',1,1
 ) AS seed
 WHERE NOT EXISTS (SELECT 1 FROM `blocks` WHERE block_type LIKE 'mcup_rest_menu_item_%');
 
@@ -189,8 +189,13 @@ UPDATE `blocks` SET `title` = 'Rangers Valley bavette MS5+', `body` = 'black gar
 
 -- Move the "Crispy smashed potatoes" side dish out of Main and into its own
 -- "Sides To Share" category, if it was already seeded directly under Main by an earlier run.
-UPDATE `blocks` SET `block_type` = CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_sides), `title` = 'Crispy smashed potatoes and mixed bitter leaves', `body` = '', `sort` = 1
+UPDATE `blocks` SET `block_type` = CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_sides), `title` = 'Crispy smashed potatoes', `body` = 'mixed bitter leaves, to share', `sort` = 1
 WHERE `block_type` = CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main) AND `title` IN ('Crispy Smashed Potatoes','Crispy smashed potatoes');
+
+-- If it was already seeded under Sides To Share with the name/description combined
+-- into one title (from an earlier run), split it back into name + description.
+UPDATE `blocks` SET `title` = 'Crispy smashed potatoes', `body` = 'mixed bitter leaves, to share'
+WHERE `block_type` = CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_sides) AND `title` = 'Crispy smashed potatoes and mixed bitter leaves';
 
 -- Below Cup Day menu - only seeded if no mcup_below_menu_cat rows exist yet.
 INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`)

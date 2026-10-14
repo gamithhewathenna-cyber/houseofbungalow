@@ -933,7 +933,7 @@ INSERT INTO `blocks` (`block_type`,`title`,`body`,`sort`,`active`) VALUES
 (CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_entree),'Hand chopped Wagyu','karashi sabayon, smoked soy, pickled chillies, potato crisp',2,1),
 (CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Bundarra pork secreto','yuzu kosho mojo verde, butter beans, pickled turnips',1,1),
 (CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Rangers Valley bavette MS5+','black garlic sofrito, piquillo ponzu',2,1),
-(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_sides),'Crispy smashed potatoes and mixed bitter leaves','',1,1);
+(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_sides),'Crispy smashed potatoes','mixed bitter leaves, to share',1,1);
 
 -- Below Cup Day menu (own dataset - edit via admin > Melbourne Cup > Below Menu)
 INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('mcup_below_menu_cat','On Arrival',1,1);
