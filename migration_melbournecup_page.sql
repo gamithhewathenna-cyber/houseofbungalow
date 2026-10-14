@@ -17,13 +17,19 @@
 DELETE FROM `settings` WHERE `skey` IN (
   'mcup_lede1','mcup_lede2','mcup_hours','mcup_menu_heading','mcup_menu_lede',
   'mcup_guest_eyebrow','mcup_guest_heading','mcup_guest_p1','mcup_guest_p2',
-  'mcup_guest_btn_label','mcup_guest_btn_url','mcup_guest_image'
+  'mcup_guest_btn_label','mcup_guest_btn_url','mcup_guest_image',
+  'mcup_rest_bev_lede'
 );
 DELETE FROM `blocks` WHERE `block_type` = 'mcup_gallery';
 DELETE FROM `blocks` WHERE `block_type` IN (
   SELECT CONCAT('mcup_menu_item_', id) FROM (SELECT id FROM `blocks` WHERE `block_type` = 'mcup_menu_cat') AS t
 );
 DELETE FROM `blocks` WHERE `block_type` = 'mcup_menu_cat';
+
+-- If an earlier run of this migration already inserted the old long-form headings,
+-- shorten them to match the new card layout (eyebrow + heading, shown separately).
+UPDATE `settings` SET `svalue` = 'The Restaurant' WHERE `skey` = 'mcup_rest_heading' AND `svalue` = 'Melbourne Cup At The Restaurant';
+UPDATE `settings` SET `svalue` = 'Below' WHERE `skey` = 'mcup_below_heading' AND `svalue` = 'Melbourne Cup At Below';
 
 -- New settings (safe to re-run - existing rows are left untouched).
 INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) VALUES
@@ -42,7 +48,9 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('mcup_btn2_label','BOOK BELOW','melbournecup_page','Top Intro - button 2 label','text',11),
 ('mcup_btn2_url','reserve.php','melbournecup_page','Top Intro - button 2 URL','text',12),
 
-('mcup_rest_heading','Melbourne Cup At The Restaurant','melbournecup_page','Restaurant - heading','text',13),
+('mcup_rest_image','assets/img/restaurant.jpg','melbournecup_page','Restaurant - card image','image',13),
+('mcup_rest_eyebrow','Melbourne Cup At','melbournecup_page','Restaurant - eyebrow label','text',13),
+('mcup_rest_heading','The Restaurant','melbournecup_page','Restaurant - heading','text',13),
 ('mcup_rest_subheading','A Long Lunch Worth Dressing Up For.','melbournecup_page','Restaurant - subheading','text',14),
 ('mcup_rest_lede','Good food, flowing drinks and a table worth staying at.','melbournecup_page','Restaurant - lede','text',15),
 ('mcup_rest_p1','Celebrate Melbourne Cup at the Restaurant with a three-course menu designed for sharing, bringing together Spanish inspiration, Asian influences and the best of Australian produce.','melbournecup_page','Restaurant - paragraph 1','textarea',16),
@@ -53,16 +61,17 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('mcup_rest_btn_label','BOOK THE RESTAURANT','melbournecup_page','Restaurant - button label','text',21),
 ('mcup_rest_btn_url','reserve.php','melbournecup_page','Restaurant - button URL','text',22),
 
-('mcup_rest_bev_lede','Make an afternoon of it.','melbournecup_page','Beverage Packages - lede','text',23),
-('mcup_rest_bev_intro','Complete your Melbourne Cup experience with an optional three-hour beverage package.','melbournecup_page','Beverage Packages - intro','textarea',24),
-('mcup_rest_bev_standard_heading','Standard - Add $55pp','melbournecup_page','Beverage Packages - Standard heading','text',25),
-('mcup_rest_bev_standard_items','Moët & Chandon Impérial Brut\nHouse white and red wine\nMimosas\nAsahi\nSoft drinks','melbournecup_page','Beverage Packages - Standard items (one per line)','textarea',26),
-('mcup_rest_bev_premium_heading','Premium - Add $85pp','melbournecup_page','Beverage Packages - Premium heading','text',27),
-('mcup_rest_bev_premium_items','Moët & Chandon Impérial Brut\nMaison Piron Beaujolais\nLeeuwin Estate Cabernet Sauvignon\nLe Fauve Rosé\nCloudy Bay Sauvignon Blanc\nScorpo Pinot Gris\nMimosas, Hugo Spritz and Negroni\nAsahi\nSomersby Apple Cider\nSoft drinks','melbournecup_page','Beverage Packages - Premium items (one per line)','textarea',28),
-('mcup_rest_bev_note1','All guests at the same table must select the same beverage package.','melbournecup_page','Beverage Packages - note 1','text',29),
-('mcup_rest_bev_note2','Vegetarian and vegan options are available with advance notice. Please advise us of dietary requirements when booking.','melbournecup_page','Beverage Packages - note 2','textarea',30),
+('mcup_rest_bev_intro','Complete your Melbourne Cup experience with an optional three-hour beverage package.','melbournecup_page','Beverage Packages accordion - intro','textarea',24),
+('mcup_rest_bev_standard_heading','Standard - Add $55pp','melbournecup_page','Beverage Packages accordion - Standard heading','text',25),
+('mcup_rest_bev_standard_items','Moët & Chandon Impérial Brut\nHouse white and red wine\nMimosas\nAsahi\nSoft drinks','melbournecup_page','Beverage Packages accordion - Standard items (one per line)','textarea',26),
+('mcup_rest_bev_premium_heading','Premium - Add $85pp','melbournecup_page','Beverage Packages accordion - Premium heading','text',27),
+('mcup_rest_bev_premium_items','Moët & Chandon Impérial Brut\nMaison Piron Beaujolais\nLeeuwin Estate Cabernet Sauvignon\nLe Fauve Rosé\nCloudy Bay Sauvignon Blanc\nScorpo Pinot Gris\nMimosas, Hugo Spritz and Negroni\nAsahi\nSomersby Apple Cider\nSoft drinks','melbournecup_page','Beverage Packages accordion - Premium items (one per line)','textarea',28),
+('mcup_rest_bev_note1','All guests at the same table must select the same beverage package.','melbournecup_page','Beverage Packages accordion - note (shown under the packages)','text',29),
+('mcup_rest_bev_note2','Vegetarian and vegan options are available with advance notice. Please advise us of dietary requirements when booking.','melbournecup_page','Dietary note (shown under The Menu accordion)','textarea',30),
 
-('mcup_below_heading','Melbourne Cup At Below','melbournecup_page','Below - heading','text',31),
+('mcup_below_image','assets/img/below.jpg','melbournecup_page','Below - card image','image',31),
+('mcup_below_eyebrow','Melbourne Cup At','melbournecup_page','Below - eyebrow label','text',31),
+('mcup_below_heading','Below','melbournecup_page','Below - heading','text',31),
 ('mcup_below_subheading','Champagne. Canapés. Cup Day Below.','melbournecup_page','Below - subheading','text',32),
 ('mcup_below_lede','A different way to spend the afternoon.','melbournecup_page','Below - lede','text',33),
 ('mcup_below_p1','This Melbourne Cup, Below opens its doors for an afternoon of champagne, cocktails and canapés in the House''s intimate Basement.','melbournecup_page','Below - paragraph 1','textarea',34),
@@ -104,10 +113,15 @@ SELECT 'mcup_rest_menu_cat','Entrée',2,1 FROM (SELECT 1) AS d
 WHERE NOT EXISTS (SELECT 1 FROM `blocks` WHERE block_type = 'mcup_rest_menu_cat' AND title = 'Entrée');
 SET @mcup_rest_cat_entree := (SELECT id FROM `blocks` WHERE block_type='mcup_rest_menu_cat' AND title='Entrée' LIMIT 1);
 
-INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`)
-SELECT 'mcup_rest_menu_cat','Main (Served As An Alternate Drop)',3,1 FROM (SELECT 1) AS d
-WHERE NOT EXISTS (SELECT 1 FROM `blocks` WHERE block_type = 'mcup_rest_menu_cat' AND title = 'Main (Served As An Alternate Drop)');
-SET @mcup_rest_cat_main := (SELECT id FROM `blocks` WHERE block_type='mcup_rest_menu_cat' AND title='Main (Served As An Alternate Drop)' LIMIT 1);
+-- Rename an already-seeded "Main (Served As An Alternate Drop)" category (from an
+-- earlier run) to the shorter "Main" + a separate italic note, matching the card layout.
+UPDATE `blocks` SET `title` = 'Main', `subtitle` = 'Served as an alternate drop.'
+WHERE `block_type` = 'mcup_rest_menu_cat' AND `title` = 'Main (Served As An Alternate Drop)';
+
+INSERT INTO `blocks` (`block_type`,`title`,`subtitle`,`sort`,`active`)
+SELECT 'mcup_rest_menu_cat','Main','Served as an alternate drop.',3,1 FROM (SELECT 1) AS d
+WHERE NOT EXISTS (SELECT 1 FROM `blocks` WHERE block_type = 'mcup_rest_menu_cat' AND title IN ('Main','Main (Served As An Alternate Drop)'));
+SET @mcup_rest_cat_main := (SELECT id FROM `blocks` WHERE block_type='mcup_rest_menu_cat' AND title='Main' LIMIT 1);
 
 INSERT INTO `blocks` (`block_type`,`title`,`body`,`sort`,`active`)
 SELECT * FROM (

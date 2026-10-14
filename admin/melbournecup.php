@@ -6,9 +6,9 @@ require_once __DIR__ . '/helpers.php';
 $fieldGroups = [
     'herovideo' => ['mcup_hero_image', 'mcup_hero_video'],
     'intro'     => ['mcup_heading', 'mcup_subheading', 'mcup_lede', 'mcup_p1', 'mcup_p2', 'mcup_p3', 'mcup_date', 'mcup_btn1_label', 'mcup_btn1_url', 'mcup_btn2_label', 'mcup_btn2_url'],
-    'restaurant' => ['mcup_rest_heading', 'mcup_rest_subheading', 'mcup_rest_lede', 'mcup_rest_p1', 'mcup_rest_p2', 'mcup_rest_date', 'mcup_rest_price', 'mcup_rest_price_note', 'mcup_rest_btn_label', 'mcup_rest_btn_url'],
-    'restbev'   => ['mcup_rest_bev_lede', 'mcup_rest_bev_intro', 'mcup_rest_bev_standard_heading', 'mcup_rest_bev_standard_items', 'mcup_rest_bev_premium_heading', 'mcup_rest_bev_premium_items', 'mcup_rest_bev_note1', 'mcup_rest_bev_note2'],
-    'below'     => ['mcup_below_heading', 'mcup_below_subheading', 'mcup_below_lede', 'mcup_below_p1', 'mcup_below_p2', 'mcup_below_date', 'mcup_below_price', 'mcup_below_btn_label', 'mcup_below_btn_url'],
+    'restaurant' => ['mcup_rest_image', 'mcup_rest_eyebrow', 'mcup_rest_heading', 'mcup_rest_subheading', 'mcup_rest_lede', 'mcup_rest_p1', 'mcup_rest_p2', 'mcup_rest_date', 'mcup_rest_price', 'mcup_rest_price_note', 'mcup_rest_btn_label', 'mcup_rest_btn_url'],
+    'restbev'   => ['mcup_rest_bev_intro', 'mcup_rest_bev_standard_heading', 'mcup_rest_bev_standard_items', 'mcup_rest_bev_premium_heading', 'mcup_rest_bev_premium_items', 'mcup_rest_bev_note1', 'mcup_rest_bev_note2'],
+    'below'     => ['mcup_below_image', 'mcup_below_eyebrow', 'mcup_below_heading', 'mcup_below_subheading', 'mcup_below_lede', 'mcup_below_p1', 'mcup_below_p2', 'mcup_below_date', 'mcup_below_price', 'mcup_below_btn_label', 'mcup_below_btn_url'],
     'belowdrinks' => ['mcup_below_drinks_lede', 'mcup_below_drinks_champagne_items', 'mcup_below_drinks_white_items', 'mcup_below_drinks_rose_items', 'mcup_below_drinks_red_items', 'mcup_below_drinks_beer_items', 'mcup_below_drinks_cocktails_items'],
     'summary'   => ['mcup_summary_heading', 'mcup_summary_subheading', 'mcup_summary_p1', 'mcup_summary_date', 'mcup_summary_rest_detail1', 'mcup_summary_rest_detail2', 'mcup_summary_rest_btn_label', 'mcup_summary_rest_btn_url', 'mcup_summary_below_detail1', 'mcup_summary_below_btn_label', 'mcup_summary_below_btn_url'],
 ];
@@ -77,8 +77,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $catType = $menuFamilies[$fam]['catType'];
                     foreach (($_POST['cat_title'] ?? []) as $id => $title) {
                         $id = (int) $id;
-                        $q = db()->prepare('UPDATE blocks SET title=?, sort=? WHERE id=? AND block_type=?');
-                        $q->execute([trim($title), (int) ($_POST['cat_sort'][$id] ?? 0), $id, $catType]);
+                        $q = db()->prepare('UPDATE blocks SET title=?, subtitle=?, sort=? WHERE id=? AND block_type=?');
+                        $q->execute([trim($title), trim($_POST['cat_note'][$id] ?? ''), (int) ($_POST['cat_sort'][$id] ?? 0), $id, $catType]);
                     }
                 }
                 header('Location: melbournecup.php?tab=' . urlencode($fam) . '&saved=1'); exit;
@@ -90,8 +90,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $error = 'Enter a category name.';
                 } else {
                     $catType = $menuFamilies[$fam]['catType'];
-                    $q = db()->prepare('INSERT INTO blocks (block_type,title,sort,active) VALUES (?,?,?,1)');
-                    $q->execute([$catType, $label, (int) ($_POST['new_cat_sort'] ?? 99)]);
+                    $q = db()->prepare('INSERT INTO blocks (block_type,title,subtitle,sort,active) VALUES (?,?,?,?,1)');
+                    $q->execute([$catType, $label, trim($_POST['new_cat_note'] ?? ''), (int) ($_POST['new_cat_sort'] ?? 99)]);
                     $newId = (int) db()->lastInsertId();
                     header('Location: melbournecup.php?tab=' . urlencode($fam) . '&cat=' . $newId . '&saved=1'); exit;
                 }
@@ -226,16 +226,17 @@ function render_menu_family(string $famKey, array $fam, array $data, ?int $activ
     $activeCat = $activeCat ?? ($cats[0]['id'] ?? 0);
     ?>
     <h3><?= e($fam['label']) ?> - Categories</h3>
-    <p class="group-help">These are the course headings shown on the live page (e.g. "For The Table", "Entrée"). Deleting a category also deletes its dishes.</p>
+    <p class="group-help">These are the course headings shown on the live page (e.g. "For The Table", "Entrée"). The optional note shows as a small italic line under the heading (e.g. "Served as an alternate drop."). Deleting a category also deletes its dishes.</p>
     <form method="post">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
       <input type="hidden" name="action" value="save_categories">
       <input type="hidden" name="fam" value="<?= e($famKey) ?>">
       <table>
-        <tr><th>Category Name</th><th style="width:140px;">Order</th><th style="width:90px;"></th></tr>
+        <tr><th>Category Name</th><th>Note (optional)</th><th style="width:100px;">Order</th><th style="width:90px;"></th></tr>
         <?php foreach ($cats as $cat): ?>
           <tr>
             <td><input type="text" name="cat_title[<?= $cat['id'] ?>]" value="<?= e($cat['title']) ?>"></td>
+            <td><input type="text" name="cat_note[<?= $cat['id'] ?>]" value="<?= e($cat['subtitle']) ?>"></td>
             <td><input type="text" name="cat_sort[<?= $cat['id'] ?>]" value="<?= (int)$cat['sort'] ?>"></td>
             <td><button form="delcat<?= e($famKey) ?><?= $cat['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this category and ALL its dishes? This cannot be undone.')">Delete</button></td>
           </tr>
@@ -258,7 +259,8 @@ function render_menu_family(string $famKey, array $fam, array $data, ?int $activ
       <input type="hidden" name="action" value="add_category">
       <input type="hidden" name="fam" value="<?= e($famKey) ?>">
       <div class="row-actions">
-        <input type="text" name="new_cat_title" placeholder="e.g. Dessert" style="max-width:220px;">
+        <input type="text" name="new_cat_title" placeholder="e.g. Dessert" style="max-width:200px;">
+        <input type="text" name="new_cat_note" placeholder="Note (optional)" style="max-width:220px;">
         <input type="text" name="new_cat_sort" placeholder="Order" value="99" style="width:70px;">
         <button class="btn btn-sm">+ Add Category</button>
       </div>

@@ -778,6 +778,86 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:1.5px;
   text-transform:uppercase;color:var(--maroon);text-align:center;margin:0 0 14px;
 }
+.set-menu-category-note{
+  font-family:var(--serif);font-style:italic;font-weight:400;font-size:13px;
+  color:var(--ink-mute);text-align:center;margin:-8px 0 12px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Melbourne Cup - Restaurant vs Below comparison cards + accordions  */
+/* ------------------------------------------------------------------ */
+.cup-compare{padding:60px 0;}
+.cup-compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
+.cup-offer{background:#ede1d2;border-radius:20px;overflow:hidden;}
+.cup-offer-media{aspect-ratio:16/9;overflow:hidden;}
+.cup-offer-media img{width:100%;height:100%;object-fit:cover;display:block;}
+.cup-offer-body{padding:34px 32px 30px;text-align:center;}
+.cup-offer-eyebrow{
+  font-family:var(--sans);font-weight:600;font-size:11px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--maroon);margin:0 0 6px;
+}
+.cup-offer-body h2{
+  font-family:var(--serif);font-weight:500;font-size:34px;letter-spacing:.5px;
+  text-transform:uppercase;color:var(--ink);margin:0 0 14px;
+}
+.cup-offer-subheading{
+  font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:1.2px;
+  text-transform:uppercase;color:var(--ink);margin:0 0 10px;
+}
+.cup-offer-lede{
+  font-family:var(--serif);font-style:italic;font-weight:400;font-size:15px;
+  color:var(--ink-soft);margin:0 0 14px;
+}
+.cup-offer-body p{
+  font-family:var(--sans);font-weight:300;font-size:14px;line-height:1.6;
+  color:var(--ink-soft);max-width:460px;margin:0 auto 10px;
+}
+.cup-offer-body p.cup-offer-date{
+  font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:1.2px;
+  text-transform:uppercase;color:var(--ink);margin:16px auto 6px;
+}
+.cup-offer-body p.cup-offer-price{
+  font-family:var(--serif);font-weight:600;font-size:17px;
+  color:var(--ink);margin:4px auto 2px;
+}
+.cup-offer-body p.cup-offer-price-note{
+  font-family:var(--serif);font-style:italic;font-weight:400;font-size:13px;
+  color:var(--ink-mute);margin:0 auto 6px;
+}
+.cup-offer-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;background:var(--dark);color:#f3ece4;text-decoration:none;
+  font-family:var(--sans);font-weight:600;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;
+  padding:17px 20px;border-radius:999px;margin-top:20px;transition:background-color .2s ease;
+}
+.cup-offer-btn:hover{background:var(--maroon);}
+.cup-offer-btn svg{width:14px;height:14px;flex-shrink:0;}
+
+.cup-accordion{border-top:1px solid #ddcdba;}
+.cup-accordion-header{
+  width:100%;display:flex;align-items:center;gap:12px;
+  background:none;border:0;cursor:pointer;padding:20px 32px;text-align:left;
+}
+.cup-accordion-icon{color:var(--maroon);flex-shrink:0;}
+.cup-accordion-icon svg{width:20px;height:20px;display:block;}
+.cup-accordion-label{
+  flex:1;font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:1.3px;
+  text-transform:uppercase;color:var(--ink);
+}
+.cup-accordion-chevron{color:var(--ink-mute);flex-shrink:0;transition:transform .3s ease;}
+.cup-accordion-chevron svg{width:16px;height:16px;display:block;}
+.cup-accordion.open .cup-accordion-chevron{transform:rotate(180deg);}
+.cup-accordion-panel{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+.cup-accordion.open .cup-accordion-panel{max-height:3000px;}
+.cup-accordion-panel-inner{padding:0 32px 30px;}
+.cup-accordion-intro{
+  font-family:var(--sans);font-weight:300;font-size:14px;line-height:1.5;
+  color:var(--ink-soft);text-align:center;max-width:460px;margin:0 auto 20px;
+}
+.cup-accordion-note{
+  font-family:var(--serif);font-style:italic;font-weight:400;font-size:13px;
+  color:var(--ink-mute);text-align:center;max-width:460px;margin:18px auto 0;
+}
 
 /* ------------------------------------------------------------------ */
 /* Melbourne Cup - beverage packages / drinks lists                   */
@@ -1238,6 +1318,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .dj-card{flex-basis:260px;}
   .maroon-band h1,.maroon-band h2{font-size:32px;}
   .lineup-section p{white-space:normal;max-width:600px;}
+  .cup-compare-grid{grid-template-columns:1fr;max-width:600px;margin:0 auto;gap:30px;}
 }
 @media (max-width:640px){
   body{font-size:21px;}
@@ -1313,6 +1394,11 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .bev-grid,.bev-grid.drinks-grid{grid-template-columns:1fr;max-width:380px;gap:28px;}
   .cup-summary-grid{grid-template-columns:1fr;gap:20px;}
   .cup-summary-card{padding:30px 22px;}
+  .cup-compare-grid{grid-template-columns:1fr;gap:26px;}
+  .cup-offer-body{padding:26px 22px 24px;}
+  .cup-offer-body h2{font-size:26px;}
+  .cup-accordion-header{padding:16px 22px;}
+  .cup-accordion-panel-inner{padding:0 22px 24px;}
 }
 
 /* Hide desktop-only nav labels on very small screens if needed */
