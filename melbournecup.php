@@ -262,7 +262,7 @@ if (false): ?>
         <?php render_menu_stack($rest_menu_cats, $rest_menu_items_by_cat); ?>
 
         <div class="cup-menu-bev">
-          <p class="cup-menu-category-heading">Beverage Packages</p>
+          <p class="cup-menu-bev-heading">Beverage Packages</p>
           <?php if (setting('mcup_rest_bev_lede')): ?><p class="cup-menu-bev-lede"><?= e(setting('mcup_rest_bev_lede')) ?></p><?php endif; ?>
           <?php if (setting('mcup_rest_bev_intro')): ?><p class="cup-menu-bev-intro"><?= enl(setting('mcup_rest_bev_intro')) ?></p><?php endif; ?>
 

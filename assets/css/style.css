@@ -921,6 +921,10 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .cup-menu-empty{font-family:var(--sans);font-size:13px;color:var(--ink-mute);text-align:center;}
 
 .cup-menu-bev{margin-top:30px;padding-top:28px;border-top:1px solid #e5dbcd;}
+.cup-menu-bev-heading{
+  font-family:var(--serif);font-weight:500;font-size:26px;
+  color:var(--ink);margin:0 0 10px;
+}
 .cup-menu-bev-lede{
   font-family:var(--serif);font-style:italic;font-weight:400;font-size:13px;
   color:var(--ink-mute);margin:0 0 10px;
