@@ -55,17 +55,39 @@ function render_menu_stack(array $cats, array $itemsByCat): void
         echo '<p class="cup-menu-empty">Menu coming soon.</p>';
         return;
     }
-    foreach ($cats as $cat) {
-        ?>
-        <div class="cup-menu-category">
-          <p class="cup-menu-category-heading"><?= e($cat['title']) ?></p>
-          <?php if ($cat['subtitle']): ?><p class="cup-menu-category-note"><?= e($cat['subtitle']) ?></p><?php endif; ?>
-          <?php foreach ($itemsByCat[$cat['id']] as $item): ?>
-            <p class="cup-menu-item"><?= e($item['title']) ?><?php if ($item['body']): ?>, <?= enl($item['body']) ?><?php endif; ?></p>
-          <?php endforeach; ?>
-        </div>
-        <?php
+    foreach ($cats as $i => $cat) {
+        render_mini_accordion('cup-menu-category', 'cup-menu-category-heading', e($cat['title']), $i === 0, function () use ($cat, $itemsByCat) {
+            if ($cat['subtitle']) {
+                ?><p class="cup-menu-category-note"><?= e($cat['subtitle']) ?></p><?php
+            }
+            foreach ($itemsByCat[$cat['id']] as $item) {
+                ?><p class="cup-menu-item"><?= e($item['title']) ?><?php if ($item['body']): ?>, <?= enl($item['body']) ?><?php endif; ?></p><?php
+            }
+        });
     }
+}
+
+/**
+ * Small expand/collapse accordion shared by menu categories and beverage
+ * packages: a clickable heading with a chevron that toggles the content
+ * below it. `$wrapperClass` controls spacing, `$headingClass` controls the
+ * heading's font styling (category headings vs beverage package headings).
+ */
+function render_mini_accordion(string $wrapperClass, string $headingClass, string $headingHtml, bool $openByDefault, callable $renderContent): void
+{
+    ?>
+    <div class="<?= e($wrapperClass) ?> cup-mini-accordion<?= $openByDefault ? ' open' : '' ?>">
+      <button type="button" class="cup-mini-accordion-toggle">
+        <span class="<?= e($headingClass) ?>"><?= $headingHtml ?></span>
+        <span class="cup-mini-accordion-chevron"><?php cup_icon('chevron-right'); ?></span>
+      </button>
+      <div class="cup-mini-accordion-panel">
+        <div class="cup-mini-accordion-panel-inner">
+          <?php $renderContent(); ?>
+        </div>
+      </div>
+    </div>
+    <?php
 }
 
 /** One "label | value" row inside a beverage/drinks card. */
@@ -266,11 +288,14 @@ if (false): ?>
           <?php if (setting('mcup_rest_bev_lede')): ?><p class="cup-menu-bev-lede"><?= e(setting('mcup_rest_bev_lede')) ?></p><?php endif; ?>
           <?php if (setting('mcup_rest_bev_intro')): ?><p class="cup-menu-bev-intro"><?= enl(setting('mcup_rest_bev_intro')) ?></p><?php endif; ?>
 
-          <p class="cup-menu-bev-pkg-heading"><?= e(setting('mcup_rest_bev_standard_heading', 'Standard')) ?> — Add <?= e(setting('mcup_rest_bev_standard_price', '$55 PP')) ?></p>
-          <?php render_bev_list('mcup_rest_bev_standard_items'); ?>
-
-          <p class="cup-menu-bev-pkg-heading"><?= e(setting('mcup_rest_bev_premium_heading', 'Premium')) ?> — Add <?= e(setting('mcup_rest_bev_premium_price', '$85 PP')) ?></p>
-          <?php render_bev_list('mcup_rest_bev_premium_items'); ?>
+          <?php
+            render_mini_accordion('cup-menu-bev-pkg', 'cup-menu-bev-pkg-heading', e(setting('mcup_rest_bev_standard_heading', 'Standard')) . ' — Add ' . e(setting('mcup_rest_bev_standard_price', '$55 PP')), true, function () {
+                render_bev_list('mcup_rest_bev_standard_items');
+            });
+            render_mini_accordion('cup-menu-bev-pkg', 'cup-menu-bev-pkg-heading', e(setting('mcup_rest_bev_premium_heading', 'Premium')) . ' — Add ' . e(setting('mcup_rest_bev_premium_price', '$85 PP')), false, function () {
+                render_bev_list('mcup_rest_bev_premium_items');
+            });
+          ?>
 
           <?php if (setting('mcup_rest_bev_note1')): ?><p class="cup-menu-bev-note"><?= e(setting('mcup_rest_bev_note1')) ?></p><?php endif; ?>
           <?php if (setting('mcup_rest_bev_note2')): ?><p class="cup-menu-bev-note"><?= enl(setting('mcup_rest_bev_note2')) ?></p><?php endif; ?>
@@ -294,6 +319,12 @@ if (false): ?>
       btn.classList.add('active');
       var panel = document.querySelector('.cup-menu-panel[data-menu-panel="' + btn.dataset.menuTab + '"]');
       if (panel) panel.classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.cup-mini-accordion-toggle').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      btn.closest('.cup-mini-accordion').classList.toggle('open');
     });
   });
 })();

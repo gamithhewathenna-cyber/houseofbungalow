@@ -908,7 +908,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .cup-menu-category:last-child{margin-bottom:0;}
 .cup-menu-category-heading{
   font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:1.3px;
-  text-transform:uppercase;color:var(--maroon);margin:0 0 4px;
+  text-transform:uppercase;color:var(--maroon);margin:0;
 }
 .cup-menu-category-note{
   font-family:var(--serif);font-style:italic;font-weight:400;font-size:12px;
@@ -919,6 +919,18 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   color:var(--ink-soft);margin:0 0 10px;
 }
 .cup-menu-empty{font-family:var(--sans);font-size:13px;color:var(--ink-mute);text-align:center;}
+
+/* Shared expand/collapse accordion (menu categories + beverage packages) */
+.cup-mini-accordion-toggle{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  width:100%;background:none;border:0;cursor:pointer;padding:0;text-align:left;
+}
+.cup-mini-accordion-chevron{color:var(--ink-mute);flex-shrink:0;transition:transform .25s ease;}
+.cup-mini-accordion-chevron svg{width:13px;height:13px;display:block;}
+.cup-mini-accordion.open .cup-mini-accordion-chevron{transform:rotate(90deg);}
+.cup-mini-accordion-panel{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+.cup-mini-accordion.open .cup-mini-accordion-panel{max-height:1000px;}
+.cup-mini-accordion-panel-inner{padding-top:10px;}
 
 .cup-menu-bev{margin-top:30px;padding-top:28px;border-top:1px solid #e5dbcd;}
 .cup-menu-bev-heading{
@@ -933,9 +945,11 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   font-family:var(--sans);font-weight:300;font-size:13px;line-height:1.6;
   color:var(--ink-soft);margin:0 0 20px;
 }
+.cup-menu-bev-pkg{margin-bottom:20px;}
+.cup-menu-bev-pkg:last-of-type{margin-bottom:0;}
 .cup-menu-bev-pkg-heading{
   font-family:var(--serif);font-weight:600;font-size:15px;
-  color:var(--maroon);margin:0 0 8px;
+  color:var(--maroon);margin:0;
 }
 .cup-menu-bev-list{list-style:none;padding:0;margin:0 0 22px;}
 .cup-menu-bev-list li{
