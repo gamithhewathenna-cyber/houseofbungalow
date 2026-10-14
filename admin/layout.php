@@ -14,7 +14,6 @@ $current    = basename($_SERVER['PHP_SELF']);
 
 $mainNav = [
     ['href' => 'index.php',       'label' => 'Dashboard',          'icon' => 'grid',  'area' => null],
-    ['href' => 'seo.php',         'label' => 'SEO',                'icon' => 'search', 'area' => 'content'],
     ['href' => 'homepage.php',    'label' => 'Home Page',          'icon' => 'home',  'area' => 'content'],
     ['href' => 'reserve.php',     'label' => 'Reserve',            'icon' => 'reserve', 'area' => 'content'],
     ['href' => 'restaurant.php',  'label' => 'Restaurant & Menus', 'icon' => 'fork',  'area' => 'content'],
@@ -35,6 +34,7 @@ $mainNav = [
     ['href' => 'enquiries.php',   'label' => 'Enquiries',          'icon' => 'inbox', 'area' => 'enquiries'],
     ['href' => 'vip-bottle-enquiries.php', 'label' => 'VIP Enquiries', 'icon' => 'inbox', 'area' => 'enquiries'],
     ['href' => 'career-applications.php', 'label' => 'Applications', 'icon' => 'inbox', 'area' => 'enquiries'],
+    ['href' => 'seo.php',         'label' => 'SEO',                'icon' => 'search', 'area' => 'content'],
 ];
 $systemNav = [
     ['href' => 'section.php?s=website', 'label' => 'Website Settings', 'icon' => 'gear', 'area' => 'admin'],
