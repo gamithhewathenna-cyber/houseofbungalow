@@ -117,9 +117,6 @@ function render_bev_rows(string $settingKey): void
     <p><?= enl(setting('mcup_p3')) ?></p>
     <?php if (setting('mcup_date')): ?><p class="hours-line" style="text-align:center;"><?= e(setting('mcup_date')) ?></p><?php endif; ?>
     <div class="btn-wrap btn-wrap-row">
-      <?php if (setting('mcup_btn1_label')): ?>
-        <a class="link-underline" href="<?= e(url(setting('mcup_btn1_url', '#'))) ?>"><?= e(setting('mcup_btn1_label')) ?></a>
-      <?php endif; ?>
       <?php if (setting('mcup_btn2_label')): ?>
         <a class="link-underline" href="<?= e(url(setting('mcup_btn2_url', '#'))) ?>"><?= e(setting('mcup_btn2_label')) ?></a>
       <?php endif; ?>
