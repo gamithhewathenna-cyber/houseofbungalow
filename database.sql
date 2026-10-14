@@ -762,6 +762,11 @@ INSERT INTO `blocks` (`block_type`,`title`,`body`,`sort`,`active`) VALUES
 ('faq_page_item','What is the cancellation or no-show policy?','We ask for as much notice as possible for cancellations - please contact us directly to change or cancel a booking.',20,1),
 ('faq_page_item','What is the best way to get to House of Bungalow?','We''re a short walk from Central Station, with street parking and rideshare drop-off nearby on Foveaux Street.',21,1);
 
+-- "Where is House of Bungalow?" gets a "BOOK A TABLE" button that opens the
+-- Book A Table popup (link_url = '#popup' is a special marker read by faq.php).
+UPDATE `blocks` SET `subtitle` = '1', `link_url2` = 'BOOK A TABLE', `link_url` = '#popup'
+  WHERE `block_type` = 'faq_page_item' AND `title` = 'Where is House of Bungalow?';
+
 -- =====================================================================
 -- Reserve page
 -- =====================================================================

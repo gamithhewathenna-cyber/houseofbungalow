@@ -211,8 +211,8 @@ include __DIR__ . '/layout.php';
                 <label>Button label
                   <input type="text" name="link_label[<?= $faq['id'] ?>]" value="<?= e($faq['link_url2']) ?>" placeholder="e.g. VIEW MENU">
                 </label>
-                <label>Button URL
-                  <input type="text" name="link_url[<?= $faq['id'] ?>]" value="<?= e($faq['link_url']) ?>" placeholder="e.g. restaurant.php">
+                <label>Button URL (use <code>#popup</code> to open the Book A Table popup instead of a page)
+                  <input type="text" name="link_url[<?= $faq['id'] ?>]" value="<?= e($faq['link_url']) ?>" placeholder="e.g. restaurant.php or #popup">
                 </label>
               </div>
               <div class="field-row">

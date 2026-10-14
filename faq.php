@@ -40,8 +40,9 @@ $faqs = blocks('faq_page_item');
           <div class="faq-answer">
             <p><?= enl($faq['body']) ?></p>
             <?php if ($faq['subtitle'] === '1' && $faq['link_url2'] && $faq['link_url']): ?>
+              <?php $faqIsPopup = $faq['link_url'] === '#popup'; ?>
               <div class="btn-wrap">
-                <a class="link-underline" href="<?= e(url($faq['link_url'])) ?>"><?= e($faq['link_url2']) ?></a>
+                <a class="link-underline<?= $faqIsPopup ? ' js-booking-popup-trigger' : '' ?>" href="<?= $faqIsPopup ? '#' : e(url($faq['link_url'])) ?>"><?= e($faq['link_url2']) ?></a>
               </div>
             <?php endif; ?>
           </div>
