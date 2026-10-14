@@ -769,32 +769,32 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .hours-footnote{font-family:var(--sans);font-weight:300;font-size:13px;letter-spacing:.4px;color:var(--ink-mute);margin:0 auto 6px;max-width:700px;}
 
 /* ------------------------------------------------------------------ */
-/* Melbourne Cup - dark expander menu (At The Restaurant / At Below)  */
+/* Melbourne Cup - expander menu (At The Restaurant / At Below)       */
 /* ------------------------------------------------------------------ */
-.cup-dark-menu{background:var(--dark);padding:80px 0;}
+.cup-dark-menu{background:var(--cream);padding:80px 0;}
 .cup-dark-offer{max-width:760px;margin:0 auto;}
 .cup-dark-offer + .cup-dark-offer{margin-top:70px;}
 .cup-dark-eyebrow{
   font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:1.5px;
-  text-transform:uppercase;color:#d9975f;margin:0 0 10px;
+  text-transform:uppercase;color:var(--maroon);margin:0 0 10px;
 }
 .cup-dark-heading{
   font-family:var(--sans);font-weight:800;font-size:34px;letter-spacing:.3px;
-  text-transform:uppercase;color:#fff;margin:0 0 14px;
+  text-transform:uppercase;color:var(--ink);margin:0 0 14px;
 }
 .cup-dark-subtext{
   font-family:var(--sans);font-weight:300;font-size:16px;
-  color:rgba(255,255,255,.65);margin:0 0 34px;
+  color:var(--ink-soft);margin:0 0 34px;
 }
-.cup-dark-expander{border:1px solid rgba(255,255,255,.25);border-radius:6px;margin-bottom:16px;overflow:hidden;}
+.cup-dark-expander{border:1px solid #d8cabb;border-radius:6px;margin-bottom:16px;overflow:hidden;}
 .cup-dark-expander:last-child{margin-bottom:0;}
 .cup-dark-expander-toggle{
   width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;
   background:none;border:0;cursor:pointer;padding:20px 26px;text-align:left;
   font-family:var(--sans);font-weight:700;font-size:14px;letter-spacing:1px;
-  text-transform:uppercase;color:#fff;
+  text-transform:uppercase;color:var(--ink);
 }
-.cup-dark-expander-icon{flex-shrink:0;color:#fff;transition:transform .25s ease;}
+.cup-dark-expander-icon{flex-shrink:0;color:var(--maroon);transition:transform .25s ease;}
 .cup-dark-expander-icon svg{width:18px;height:18px;display:block;}
 .cup-dark-expander.open .cup-dark-expander-icon{transform:rotate(45deg);}
 .cup-dark-expander-panel{max-height:0;overflow:hidden;transition:max-height .35s ease;}
@@ -802,7 +802,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .cup-dark-expander-panel-inner{padding:0 26px 24px;}
 .cup-dark-dummy{
   font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.6;
-  color:rgba(255,255,255,.6);margin:0;
+  color:var(--ink-mute);margin:0;
 }
 
 /* ------------------------------------------------------------------ */
