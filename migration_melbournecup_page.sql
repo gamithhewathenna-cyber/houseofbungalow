@@ -192,10 +192,11 @@ UPDATE `blocks` SET `title` = 'Rangers Valley bavette MS5+', `body` = 'black gar
 UPDATE `blocks` SET `block_type` = CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_sides), `title` = 'Crispy smashed potatoes', `body` = 'mixed bitter leaves, to share', `sort` = 1
 WHERE `block_type` = CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main) AND `title` IN ('Crispy Smashed Potatoes','Crispy smashed potatoes');
 
--- If it was already seeded under Sides To Share with the name/description combined
--- into one title (from an earlier run), split it back into name + description.
+-- Whatever is currently sitting under Sides To Share (regardless of its exact text
+-- from an earlier run), force it to the correct name + description. There's only
+-- ever meant to be the one dish in this category.
 UPDATE `blocks` SET `title` = 'Crispy smashed potatoes', `body` = 'mixed bitter leaves, to share'
-WHERE `block_type` = CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_sides) AND `title` = 'Crispy smashed potatoes and mixed bitter leaves';
+WHERE `block_type` = CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_sides);
 
 -- Below Cup Day menu - only seeded if no mcup_below_menu_cat rows exist yet.
 INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`)
