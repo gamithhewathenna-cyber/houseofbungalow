@@ -43,6 +43,8 @@ if (setting('maintenance_mode', '0') === '1') {
 <?php endif; ?>
 <title><?= e($page_meta_title ?? setting('intro_heading', SITE_NAME)) ?> - <?= e(SITE_NAME) ?></title>
 <meta name="description" content="<?= e($page_meta_description ?? setting('intro_p1')) ?>">
+<link rel="icon" type="image/png" href="<?= e(asset('assets/img/favicon.png')) ?>">
+<link rel="apple-touch-icon" href="<?= e(asset('assets/img/favicon.png')) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="<?= e(asset('assets/css/style.css')) ?>">
