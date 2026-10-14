@@ -150,9 +150,18 @@ UPDATE `blocks` SET `title` = 'Main', `subtitle` = 'Served as an alternate drop.
 WHERE `block_type` = 'mcup_rest_menu_cat' AND `title` = 'Main (Served As An Alternate Drop)';
 
 INSERT INTO `blocks` (`block_type`,`title`,`subtitle`,`sort`,`active`)
-SELECT 'mcup_rest_menu_cat','Main','Served as an alternate drop.',3,1 FROM (SELECT 1) AS d
+SELECT 'mcup_rest_menu_cat','Main','Alternate Drop',3,1 FROM (SELECT 1) AS d
 WHERE NOT EXISTS (SELECT 1 FROM `blocks` WHERE block_type = 'mcup_rest_menu_cat' AND title IN ('Main','Main (Served As An Alternate Drop)'));
 SET @mcup_rest_cat_main := (SELECT id FROM `blocks` WHERE block_type='mcup_rest_menu_cat' AND title='Main' LIMIT 1);
+
+-- Shorten the Main category's note to match the expander menu heading ("MAIN — ALTERNATE DROP").
+UPDATE `blocks` SET `subtitle` = 'Alternate Drop' WHERE `block_type` = 'mcup_rest_menu_cat' AND `id` = @mcup_rest_cat_main AND `subtitle` = 'Served as an alternate drop.';
+
+-- New "Sides To Share" category - only seeded if it doesn't exist yet.
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`)
+SELECT 'mcup_rest_menu_cat','Sides To Share',4,1 FROM (SELECT 1) AS d
+WHERE NOT EXISTS (SELECT 1 FROM `blocks` WHERE block_type = 'mcup_rest_menu_cat' AND title = 'Sides To Share');
+SET @mcup_rest_cat_sides := (SELECT id FROM `blocks` WHERE block_type='mcup_rest_menu_cat' AND title='Sides To Share' LIMIT 1);
 
 INSERT INTO `blocks` (`block_type`,`title`,`body`,`sort`,`active`)
 SELECT * FROM (
@@ -162,7 +171,7 @@ SELECT * FROM (
   UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_entree),'Hand chopped Wagyu','karashi sabayon, smoked soy, pickled chillies, potato crisp',2,1
   UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Bundarra pork secreto','yuzu kosho mojo verde, butter beans, pickled turnips',1,1
   UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Rangers Valley bavette MS5+','black garlic sofrito, piquillo ponzu',2,1
-  UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Crispy smashed potatoes','mixed bitter leaves, to share',3,1
+  UNION ALL SELECT CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_sides),'Crispy smashed potatoes and mixed bitter leaves','',1,1
 ) AS seed
 WHERE NOT EXISTS (SELECT 1 FROM `blocks` WHERE block_type LIKE 'mcup_rest_menu_item_%');
 
@@ -175,7 +184,11 @@ UPDATE `blocks` SET `title` = 'Kingfish sashimi', `body` = 'chilled ajoblanco, r
 UPDATE `blocks` SET `title` = 'Hand chopped Wagyu', `body` = 'karashi sabayon, smoked soy, pickled chillies, potato crisp' WHERE `block_type` = CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_entree) AND `title` = 'Hand Chopped Wagyu';
 UPDATE `blocks` SET `title` = 'Bundarra pork secreto', `body` = 'yuzu kosho mojo verde, butter beans, pickled turnips' WHERE `block_type` LIKE 'mcup_rest_menu_item_%' AND `title` = 'Bundarra Pork Secreto';
 UPDATE `blocks` SET `title` = 'Rangers Valley bavette MS5+', `body` = 'black garlic sofrito, piquillo ponzu' WHERE `block_type` LIKE 'mcup_rest_menu_item_%' AND `title` = 'Rangers Valley Bavette MS5+';
-UPDATE `blocks` SET `title` = 'Crispy smashed potatoes', `body` = 'mixed bitter leaves, to share' WHERE `block_type` LIKE 'mcup_rest_menu_item_%' AND `title` = 'Crispy Smashed Potatoes';
+
+-- Move the "Crispy smashed potatoes" side dish out of Main and into its own
+-- "Sides To Share" category, if it was already seeded directly under Main by an earlier run.
+UPDATE `blocks` SET `block_type` = CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_sides), `title` = 'Crispy smashed potatoes and mixed bitter leaves', `body` = '', `sort` = 1
+WHERE `block_type` = CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main) AND `title` IN ('Crispy Smashed Potatoes','Crispy smashed potatoes');
 
 -- Below Cup Day menu - only seeded if no mcup_below_menu_cat rows exist yet.
 INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`)

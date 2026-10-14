@@ -805,6 +805,23 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   color:var(--ink-mute);margin:0;
 }
 
+/* Set-menu content shown inside the "View Three-Course Menu" expander */
+.cup-expmenu-category{padding:18px 0;}
+.cup-expmenu-category:first-child{padding-top:0;}
+.cup-expmenu-category:last-child{padding-bottom:0;}
+.cup-expmenu-cat-heading{
+  font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:1.3px;
+  text-transform:uppercase;color:var(--maroon);margin:0 0 10px;
+}
+.cup-expmenu-item-name{font-family:var(--sans);font-weight:700;font-size:15px;color:var(--ink);margin:0;}
+.cup-expmenu-item-desc{font-family:var(--sans);font-weight:300;font-size:14px;color:var(--ink-soft);margin:2px 0 14px;}
+.cup-expmenu-item-name:last-child{margin-bottom:0;}
+.cup-expmenu-divider{border:0;border-top:1px solid #d8cabb;margin:0;}
+.cup-expmenu-note{
+  font-family:var(--sans);font-weight:300;font-style:italic;font-size:13px;line-height:1.5;
+  color:var(--ink-mute);margin:18px 0 0;
+}
+
 /* ------------------------------------------------------------------ */
 /* Melbourne Cup - menu category / beverage package content styles,   */
 /* reused by render_menu_stack()/render_mini_accordion() helpers      */

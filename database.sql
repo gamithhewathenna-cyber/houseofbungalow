@@ -921,8 +921,10 @@ INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('mcup_rest_m
 SET @mcup_rest_cat_table := LAST_INSERT_ID();
 INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('mcup_rest_menu_cat','Entrée',2,1);
 SET @mcup_rest_cat_entree := LAST_INSERT_ID();
-INSERT INTO `blocks` (`block_type`,`title`,`subtitle`,`sort`,`active`) VALUES ('mcup_rest_menu_cat','Main','Served as an alternate drop.',3,1);
+INSERT INTO `blocks` (`block_type`,`title`,`subtitle`,`sort`,`active`) VALUES ('mcup_rest_menu_cat','Main','Alternate Drop',3,1);
 SET @mcup_rest_cat_main := LAST_INSERT_ID();
+INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('mcup_rest_menu_cat','Sides To Share',4,1);
+SET @mcup_rest_cat_sides := LAST_INSERT_ID();
 
 INSERT INTO `blocks` (`block_type`,`title`,`body`,`sort`,`active`) VALUES
 (CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_table),'Pan de cristal','crushed vine tomato, EVOO',1,1),
@@ -931,7 +933,7 @@ INSERT INTO `blocks` (`block_type`,`title`,`body`,`sort`,`active`) VALUES
 (CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_entree),'Hand chopped Wagyu','karashi sabayon, smoked soy, pickled chillies, potato crisp',2,1),
 (CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Bundarra pork secreto','yuzu kosho mojo verde, butter beans, pickled turnips',1,1),
 (CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Rangers Valley bavette MS5+','black garlic sofrito, piquillo ponzu',2,1),
-(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_main),'Crispy smashed potatoes','mixed bitter leaves, to share',3,1);
+(CONCAT('mcup_rest_menu_item_', @mcup_rest_cat_sides),'Crispy smashed potatoes and mixed bitter leaves','',1,1);
 
 -- Below Cup Day menu (own dataset - edit via admin > Melbourne Cup > Below Menu)
 INSERT INTO `blocks` (`block_type`,`title`,`sort`,`active`) VALUES ('mcup_below_menu_cat','On Arrival',1,1);

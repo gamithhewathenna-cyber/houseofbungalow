@@ -128,6 +128,42 @@ function render_dark_expander(string $label, callable $renderContent): void
     </div>
     <?php
 }
+
+/**
+ * Renders the Restaurant's set menu inside the "View Three-Course Menu"
+ * expander: each category stacked with a divider between groups, every
+ * dish's name bold with its description on the line below (not combined
+ * into one sentence), and the dietary note at the end after a final
+ * divider. A category's optional "subtitle" is appended to its heading
+ * after an em dash (e.g. "Main — Alternate Drop").
+ */
+function render_rest_set_menu(array $cats, array $itemsByCat): void
+{
+    if (!$cats) {
+        ?><p class="cup-dark-dummy">Menu details coming soon.</p><?php
+        return;
+    }
+    foreach ($cats as $i => $cat) {
+        if ($i > 0) {
+            ?><hr class="cup-expmenu-divider"><?php
+        }
+        ?>
+        <div class="cup-expmenu-category">
+          <p class="cup-expmenu-cat-heading"><?= e($cat['title']) ?><?php if ($cat['subtitle']): ?> — <?= e($cat['subtitle']) ?><?php endif; ?></p>
+          <?php foreach ($itemsByCat[$cat['id']] as $item): ?>
+            <p class="cup-expmenu-item-name"><?= e($item['title']) ?></p>
+            <?php if ($item['body']): ?><p class="cup-expmenu-item-desc"><?= enl($item['body']) ?></p><?php endif; ?>
+          <?php endforeach; ?>
+        </div>
+        <?php
+    }
+    if (setting('mcup_rest_bev_note2')) {
+        ?>
+        <hr class="cup-expmenu-divider">
+        <p class="cup-expmenu-note"><?= enl(setting('mcup_rest_bev_note2')) ?></p>
+        <?php
+    }
+}
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
@@ -173,9 +209,9 @@ function render_dark_expander(string $label, callable $renderContent): void
       <?php $restSub = array_filter([setting('mcup_rest_price_eyebrow'), setting('mcup_rest_price'), setting('mcup_rest_price_note')], 'strlen'); ?>
       <?php if ($restSub): ?><p class="cup-dark-subtext"><?= e(implode(' · ', $restSub)) ?></p><?php endif; ?>
 
-      <?php render_dark_expander(setting('mcup_rest_expander1_label', 'View Three-Course Menu'), function () { ?>
-        <p class="cup-dark-dummy">Menu details coming soon.</p>
-      <?php }); ?>
+      <?php render_dark_expander(setting('mcup_rest_expander1_label', 'View Three-Course Menu'), function () use ($rest_menu_cats, $rest_menu_items_by_cat) {
+          render_rest_set_menu($rest_menu_cats, $rest_menu_items_by_cat);
+      }); ?>
       <?php render_dark_expander(setting('mcup_rest_expander2_label', 'View Beverage Packages'), function () { ?>
         <p class="cup-dark-dummy">Beverage package details coming soon.</p>
       <?php }); ?>

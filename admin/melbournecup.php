@@ -170,7 +170,7 @@ $tabs = [
     'restbev'     => 'Beverage Packages (dummy for now)',
     'below'       => 'At Below',
     'belowdrinks' => 'The Drinks (dummy for now)',
-    'restmenu'    => 'The Table - Items (not yet wired up)',
+    'restmenu'    => 'The Table - Items (shown in "View Three-Course Menu")',
     'themenu'     => 'The Menu - Items (not yet wired up)',
     'belowmenu'   => 'Below Menu - Items (not yet wired up)',
     'visibility'  => 'Section Visibility',
@@ -356,7 +356,7 @@ include __DIR__ . '/layout.php';
 
 <!-- The Table - menu items tab -->
 <div class="tab-panel settings-group<?= $activeTab === 'restmenu' ? ' active' : '' ?>" data-tab="restmenu">
-  <p class="group-help">Not shown on the live page yet - the "View Three-Course Menu" expander currently has placeholder text instead. Add categories and dishes here now so it's ready whenever you want it wired into that expander.</p>
+  <p class="group-help">Shown live on the page inside the "View Three-Course Menu" expander. A category's "Note" field (e.g. "Alternate Drop" on Main) is appended to its heading after an em dash. The final item is followed by the dietary note from the Beverage Packages tab.</p>
   <?php render_menu_family('restmenu', $menuFamilies['restmenu'], $menuData['restmenu'], $activeCat, $csrf); ?>
 </div>
 
