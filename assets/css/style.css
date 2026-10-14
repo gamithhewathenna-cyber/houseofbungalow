@@ -901,7 +901,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   transition:background-color .2s ease,color .2s ease;
 }
 .cup-menu-tab.active{background:var(--dark);color:#f3ece4;}
-.cup-menu-single{max-width:680px;margin:0 auto;text-align:left;}
+.cup-menu-single{max-width:680px;margin:0 auto;text-align:center;}
 .cup-menu-panel{display:none;}
 .cup-menu-panel.active{display:block;}
 .cup-menu-category{margin-bottom:26px;}
