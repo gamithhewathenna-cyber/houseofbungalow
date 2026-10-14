@@ -245,7 +245,14 @@ if (false): ?>
 </section>
 <?php endif; ?>
 
-<!-- Two Experiences. One House. ------------------------------------------- -->
+<?php
+/*
+ * "Two Experiences. One House." closing summary section removed from the
+ * live page per request. Markup kept below, disabled behind `if (false)`,
+ * for a quick restore - just change `false` to `true`. Nothing in the
+ * database was touched.
+ */
+if (false): ?>
 <?php if (section_visible('mcup_summary')): ?>
 <section class="textblock reveal">
   <div class="container">
@@ -278,6 +285,7 @@ if (false): ?>
   </div>
 </section>
 <?php endif; ?>
+<?php endif; // if (false) ?>
 
 <script>
 (function () {
