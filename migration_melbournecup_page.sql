@@ -35,6 +35,8 @@ UPDATE `settings` SET `svalue` = '$120 PP' WHERE `skey` = 'mcup_rest_price' AND 
 UPDATE `settings` SET `svalue` = '$160 PP' WHERE `skey` = 'mcup_below_price' AND `svalue` = '$160 per person | Two Hours of Canapés & Drinks';
 UPDATE `settings` SET `svalue` = 'Standard' WHERE `skey` = 'mcup_rest_bev_standard_heading' AND `svalue` = 'Standard - Add $55pp';
 UPDATE `settings` SET `svalue` = 'Premium' WHERE `skey` = 'mcup_rest_bev_premium_heading' AND `svalue` = 'Premium - Add $85pp';
+UPDATE `settings` SET `svalue` = 'For The Table' WHERE `skey` = 'mcup_menus_rest_label' AND `svalue` = 'At The Restaurant';
+UPDATE `settings` SET `svalue` = 'The Menu' WHERE `skey` = 'mcup_menus_below_label' AND `svalue` = 'At Below';
 
 -- If an earlier run of this migration already converted the beverage items to
 -- the "Label | Value" row format, revert them back to a plain one-per-line list.
@@ -105,8 +107,8 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('mcup_below_drinks_cocktails_items','A selection of two signature cocktails','melbournecup_page','The Drinks - Signature Cocktails (one per line)','textarea',46),
 
 ('mcup_menus_heading','The Menu','melbournecup_page','The Menu section - heading','text',46),
-('mcup_menus_rest_label','At The Restaurant','melbournecup_page','The Menu section - Restaurant column label','text',46),
-('mcup_menus_below_label','At Below','melbournecup_page','The Menu section - Below column label','text',46),
+('mcup_menus_rest_label','For The Table','melbournecup_page','The Menu section - Restaurant column label','text',46),
+('mcup_menus_below_label','The Menu','melbournecup_page','The Menu section - Below column label','text',46),
 
 ('mcup_summary_heading','Two Experiences. One House.','melbournecup_page','Closing Summary - heading','text',47),
 ('mcup_summary_subheading','Your Cup Day, Your Way.','melbournecup_page','Closing Summary - subheading','text',48),

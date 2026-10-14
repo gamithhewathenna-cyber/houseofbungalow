@@ -897,8 +897,8 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('mcup_below_drinks_cocktails_items','A selection of two signature cocktails','melbournecup_page','The Drinks - Signature Cocktails (one per line)','textarea',46),
 
 ('mcup_menus_heading','The Menu','melbournecup_page','The Menu section - heading','text',46),
-('mcup_menus_rest_label','At The Restaurant','melbournecup_page','The Menu section - Restaurant column label','text',46),
-('mcup_menus_below_label','At Below','melbournecup_page','The Menu section - Below column label','text',46),
+('mcup_menus_rest_label','For The Table','melbournecup_page','The Menu section - Restaurant column label','text',46),
+('mcup_menus_below_label','The Menu','melbournecup_page','The Menu section - Below column label','text',46),
 
 ('mcup_summary_heading','Two Experiences. One House.','melbournecup_page','Closing Summary - heading','text',47),
 ('mcup_summary_subheading','Your Cup Day, Your Way.','melbournecup_page','Closing Summary - subheading','text',48),

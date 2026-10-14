@@ -247,7 +247,7 @@ if (false): ?>
     <h2><?= e(setting('mcup_menus_heading', 'The Menu')) ?></h2>
     <div class="cup-menu-columns">
       <div class="cup-menu-col">
-        <p class="cup-menu-col-label"><?= e(setting('mcup_menus_rest_label', 'At The Restaurant')) ?></p>
+        <p class="cup-menu-col-label"><?= e(setting('mcup_menus_rest_label', 'For The Table')) ?></p>
         <?php render_menu_stack($rest_menu_cats, $rest_menu_items_by_cat); ?>
 
         <div class="cup-menu-bev">
@@ -266,7 +266,7 @@ if (false): ?>
         </div>
       </div>
       <div class="cup-menu-col">
-        <p class="cup-menu-col-label"><?= e(setting('mcup_menus_below_label', 'At Below')) ?></p>
+        <p class="cup-menu-col-label"><?= e(setting('mcup_menus_below_label', 'The Menu')) ?></p>
         <?php render_menu_stack($below_menu_cats, $below_menu_items_by_cat); ?>
       </div>
     </div>
