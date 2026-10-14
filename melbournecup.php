@@ -130,14 +130,15 @@ function render_dark_expander(string $label, callable $renderContent): void
 }
 
 /**
- * Renders the Restaurant's set menu inside the "View Three-Course Menu"
- * expander: each category stacked with a divider between groups, every
- * dish's name bold with its description on the line below (not combined
- * into one sentence), and the dietary note at the end after a final
- * divider. A category's optional "subtitle" is appended to its heading
- * after an em dash (e.g. "Main — Alternate Drop").
+ * Renders a set menu inside a "View ... Menu" expander: each category
+ * stacked with a divider between groups, every dish's name bold with its
+ * description on the line below (not combined into one sentence), and an
+ * optional closing note after a final divider. A category's optional
+ * "subtitle" is appended to its heading after an em dash (e.g. "Main —
+ * Alternate Drop"). Used for both the Restaurant's Three-Course Menu and
+ * Below's Canapé Menu.
  */
-function render_rest_set_menu(array $cats, array $itemsByCat): void
+function render_set_menu_expander(array $cats, array $itemsByCat, string $noteSettingKey = ''): void
 {
     if (!$cats) {
         ?><p class="cup-dark-dummy">Menu details coming soon.</p><?php
@@ -157,10 +158,10 @@ function render_rest_set_menu(array $cats, array $itemsByCat): void
         </div>
         <?php
     }
-    if (setting('mcup_rest_bev_note2')) {
+    if ($noteSettingKey && setting($noteSettingKey)) {
         ?>
         <hr class="cup-expmenu-divider">
-        <p class="cup-expmenu-note"><?= enl(setting('mcup_rest_bev_note2')) ?></p>
+        <p class="cup-expmenu-note"><?= enl(setting($noteSettingKey)) ?></p>
         <?php
     }
 }
@@ -250,7 +251,7 @@ function render_bev_package(string $heading, string $price, string $itemsSetting
       <?php if ($restSub): ?><p class="cup-dark-subtext"><?= e(implode(' · ', $restSub)) ?></p><?php endif; ?>
 
       <?php render_dark_expander(setting('mcup_rest_expander1_label', 'View Three-Course Menu'), function () use ($rest_menu_cats, $rest_menu_items_by_cat) {
-          render_rest_set_menu($rest_menu_cats, $rest_menu_items_by_cat);
+          render_set_menu_expander($rest_menu_cats, $rest_menu_items_by_cat, 'mcup_rest_bev_note2');
       }); ?>
       <?php render_dark_expander(setting('mcup_rest_expander2_label', 'View Beverage Packages'), function () {
           render_rest_bev_packages();
@@ -265,9 +266,9 @@ function render_bev_package(string $heading, string $price, string $itemsSetting
       <?php $belowSub = array_filter([setting('mcup_below_price_eyebrow'), setting('mcup_below_price')], 'strlen'); ?>
       <?php if ($belowSub): ?><p class="cup-dark-subtext"><?= e(implode(' · ', $belowSub)) ?></p><?php endif; ?>
 
-      <?php render_dark_expander(setting('mcup_below_expander1_label', 'View Canapé Menu'), function () { ?>
-        <p class="cup-dark-dummy">Menu details coming soon.</p>
-      <?php }); ?>
+      <?php render_dark_expander(setting('mcup_below_expander1_label', 'View Canapé Menu'), function () use ($below_menu_cats, $below_menu_items_by_cat) {
+          render_set_menu_expander($below_menu_cats, $below_menu_items_by_cat);
+      }); ?>
       <?php render_dark_expander(setting('mcup_below_expander2_label', 'View Drinks Package'), function () { ?>
         <p class="cup-dark-dummy">Drinks package details coming soon.</p>
       <?php }); ?>

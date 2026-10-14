@@ -14,7 +14,7 @@ $fieldGroups = [
 $menuFamilies = [
     'restmenu'  => ['label' => 'The Table', 'catType' => 'mcup_rest_menu_cat',  'itemPrefix' => 'mcup_rest_menu_item_'],
     'themenu'   => ['label' => 'The Menu',  'catType' => 'mcup_themenu_cat',    'itemPrefix' => 'mcup_themenu_item_'],
-    'belowmenu' => ['label' => 'Below Menu (not currently wired to an expander)', 'catType' => 'mcup_below_menu_cat', 'itemPrefix' => 'mcup_below_menu_item_'],
+    'belowmenu' => ['label' => 'Below Menu', 'catType' => 'mcup_below_menu_cat', 'itemPrefix' => 'mcup_below_menu_item_'],
 ];
 $visibilitySections = [
     'mcup_hero'       => 'Hero',
@@ -172,7 +172,7 @@ $tabs = [
     'belowdrinks' => 'The Drinks (dummy for now)',
     'restmenu'    => 'The Table - Items (shown in "View Three-Course Menu")',
     'themenu'     => 'The Menu - Items (not yet wired up)',
-    'belowmenu'   => 'Below Menu - Items (not yet wired up)',
+    'belowmenu'   => 'Below Menu - Items (shown in "View Canapé Menu")',
     'visibility'  => 'Section Visibility',
 ];
 $activeTab = $_GET['tab'] ?? 'herovideo';
@@ -366,9 +366,9 @@ include __DIR__ . '/layout.php';
   <?php render_menu_family('themenu', $menuFamilies['themenu'], $menuData['themenu'], $activeCat, $csrf); ?>
 </div>
 
-<!-- Below Menu tab (not currently linked from the live page) -->
+<!-- Below Menu tab -->
 <div class="tab-panel settings-group<?= $activeTab === 'belowmenu' ? ' active' : '' ?>" data-tab="belowmenu">
-  <p class="group-help">Not shown on the live page yet - the "View Canapé Menu" expander currently has placeholder text instead.</p>
+  <p class="group-help">Shown live on the page inside the "View Canapé Menu" expander.</p>
   <?php render_menu_family('belowmenu', $menuFamilies['belowmenu'], $menuData['belowmenu'], $activeCat, $csrf); ?>
 </div>
 
