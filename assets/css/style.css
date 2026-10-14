@@ -773,6 +773,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 /* ------------------------------------------------------------------ */
 .cup-dark-menu{background:var(--cream);padding:80px 0;}
 .cup-dark-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;max-width:1200px;margin:0 auto;}
+.cup-menu-cta-row{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-top:60px;}
 .cup-dark-offer{max-width:none;margin:0;}
 .cup-dark-eyebrow{
   font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:1.5px;
@@ -1410,6 +1411,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .cup-dark-heading{font-size:26px;}
   .cup-dark-expander-toggle{padding:16px 18px;font-size:12px;}
   .cup-dark-expander-panel-inner{padding:0 18px 20px;}
+  .cup-menu-cta-row{margin-top:40px;gap:16px;}
 }
 
 /* Hide desktop-only nav labels on very small screens if needed */

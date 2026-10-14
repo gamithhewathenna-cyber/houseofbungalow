@@ -6,9 +6,9 @@ require_once __DIR__ . '/helpers.php';
 $fieldGroups = [
     'herovideo' => ['mcup_hero_image', 'mcup_hero_video'],
     'intro'     => ['mcup_heading', 'mcup_subheading', 'mcup_lede', 'mcup_p1', 'mcup_p2', 'mcup_p3', 'mcup_date', 'mcup_btn2_label', 'mcup_btn2_url'],
-    'restaurant' => ['mcup_rest_eyebrow', 'mcup_rest_heading', 'mcup_rest_price_eyebrow', 'mcup_rest_price', 'mcup_rest_price_note', 'mcup_rest_expander1_label', 'mcup_rest_expander2_label'],
+    'restaurant' => ['mcup_rest_eyebrow', 'mcup_rest_heading', 'mcup_rest_price_eyebrow', 'mcup_rest_price', 'mcup_rest_price_note', 'mcup_rest_expander1_label', 'mcup_rest_expander2_label', 'mcup_rest_btn_label', 'mcup_rest_btn_url'],
     'restbev'   => ['mcup_rest_bev_intro', 'mcup_rest_bev_standard_heading', 'mcup_rest_bev_standard_price', 'mcup_rest_bev_standard_items', 'mcup_rest_bev_premium_heading', 'mcup_rest_bev_premium_price', 'mcup_rest_bev_premium_items', 'mcup_rest_bev_note1', 'mcup_rest_bev_note2'],
-    'below'     => ['mcup_below_eyebrow', 'mcup_below_heading', 'mcup_below_price_eyebrow', 'mcup_below_price', 'mcup_below_expander1_label', 'mcup_below_expander2_label'],
+    'below'     => ['mcup_below_eyebrow', 'mcup_below_heading', 'mcup_below_price_eyebrow', 'mcup_below_price', 'mcup_below_expander1_label', 'mcup_below_expander2_label', 'mcup_below_btn_label', 'mcup_below_btn_url'],
     'belowdrinks' => ['mcup_below_drinks_lede', 'mcup_below_drinks_champagne_items', 'mcup_below_drinks_white_items', 'mcup_below_drinks_rose_items', 'mcup_below_drinks_red_items', 'mcup_below_drinks_beer_items', 'mcup_below_drinks_cocktails_items'],
 ];
 $menuFamilies = [
@@ -338,8 +338,8 @@ include __DIR__ . '/layout.php';
 <?php foreach ($fieldGroups as $group => $keys): ?>
   <div class="tab-panel settings-group<?= $activeTab === $group ? ' active' : '' ?>" data-tab="<?= e($group) ?>">
     <h3><?= e($tabs[$group]) ?></h3>
-    <?php if ($group === 'restaurant'): ?><p class="group-help">The heading block and the two expander button labels on the dark menu section. Expander content itself is edited on the "Three-Course Menu" and "Beverage Packages" tabs.</p><?php endif; ?>
-    <?php if ($group === 'below'): ?><p class="group-help">The heading block and the two expander button labels on the dark menu section. Expander content itself is edited on the "Canapé Menu" and "The Drinks" tabs.</p><?php endif; ?>
+    <?php if ($group === 'restaurant'): ?><p class="group-help">The heading block, the two expander button labels, and the "Book The Restaurant" button shown after the menu section (label + link). Expander content itself is edited on the "Three-Course Menu" and "Beverage Packages" tabs.</p><?php endif; ?>
+    <?php if ($group === 'below'): ?><p class="group-help">The heading block, the two expander button labels, and the "Book Below" button shown after the menu section (label + link). Expander content itself is edited on the "Canapé Menu" and "The Drinks" tabs.</p><?php endif; ?>
     <?php if ($group === 'restbev'): ?><p class="group-help">Shown live on the page inside the "View Beverage Packages" expander. Standard / Premium items: one drink per line. The dietary note (bottom field) appears in "View Three-Course Menu" instead, not here.</p><?php endif; ?>
     <?php if ($group === 'belowdrinks'): ?><p class="group-help">Shown live on the page inside the "View Drinks Package" expander. Each field is the item list for its drink type (e.g. the White Wine field lists the white wines) - one item per line.</p><?php endif; ?>
     <form method="post" enctype="multipart/form-data">

@@ -307,6 +307,15 @@ function render_drinks_category(string $label, string $itemsSettingKey): void
     <?php endif; ?>
 
     </div>
+
+    <div class="cup-menu-cta-row">
+      <?php if (section_visible('mcup_restaurant') && setting('mcup_rest_btn_label')): ?>
+        <a class="link-underline" href="<?= e(url(setting('mcup_rest_btn_url', '#'))) ?>"><?= e(setting('mcup_rest_btn_label')) ?></a>
+      <?php endif; ?>
+      <?php if (section_visible('mcup_below') && setting('mcup_below_btn_label')): ?>
+        <a class="link-underline" href="<?= e(url(setting('mcup_below_btn_url', '#'))) ?>"><?= e(setting('mcup_below_btn_label')) ?></a>
+      <?php endif; ?>
+    </div>
   </div>
 </section>
 <?php endif; ?>

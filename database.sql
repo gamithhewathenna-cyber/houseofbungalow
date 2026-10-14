@@ -862,8 +862,8 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('mcup_rest_price_eyebrow','Three-Course Shared Set Menu','melbournecup_page','Restaurant - price eyebrow','text',19),
 ('mcup_rest_price','$120pp','melbournecup_page','Restaurant - big price','text',19),
 ('mcup_rest_price_note','Welcome drink included','melbournecup_page','Restaurant - price note','text',20),
-('mcup_rest_btn_label','BOOK THE RESTAURANT','melbournecup_page','Restaurant - button label (not currently shown)','text',21),
-('mcup_rest_btn_url','reserve.php','melbournecup_page','Restaurant - button URL (not currently shown)','text',22),
+('mcup_rest_btn_label','BOOK THE RESTAURANT','melbournecup_page','Restaurant - "Book" button label (shown after the menu section)','text',21),
+('mcup_rest_btn_url','reserve.php','melbournecup_page','Restaurant - "Book" button URL','text',22),
 ('mcup_rest_expander1_label','View Three-Course Menu','melbournecup_page','Restaurant - expander 1 button label','text',22),
 ('mcup_rest_expander2_label','View Beverage Packages','melbournecup_page','Restaurant - expander 2 button label','text',22),
 
@@ -887,8 +887,8 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('mcup_below_date','Tuesday, 3 November 2026','melbournecup_page','Below - date line','text',36),
 ('mcup_below_price_eyebrow','Two Hours of Canapés & Drinks','melbournecup_page','Below - price eyebrow','text',37),
 ('mcup_below_price','$160pp','melbournecup_page','Below - big price','text',37),
-('mcup_below_btn_label','BOOK BELOW','melbournecup_page','Below - button label (not currently shown)','text',38),
-('mcup_below_btn_url','reserve.php','melbournecup_page','Below - button URL (not currently shown)','text',39),
+('mcup_below_btn_label','BOOK BELOW','melbournecup_page','Below - "Book" button label (shown after the menu section)','text',38),
+('mcup_below_btn_url','reserve.php','melbournecup_page','Below - "Book" button URL','text',39),
 ('mcup_below_expander1_label','View Canapé Menu','melbournecup_page','Below - expander 1 button label','text',39),
 ('mcup_below_expander2_label','View Drinks Package','melbournecup_page','Below - expander 2 button label','text',39),
 
