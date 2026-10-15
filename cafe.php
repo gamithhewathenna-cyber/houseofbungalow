@@ -121,7 +121,7 @@ foreach ($menu_cats as $cat) {
         <div class="gallery-row gallery-row-<?= count($row) ?>">
           <?php foreach ($row as $g): ?>
             <div class="gallery-item">
-              <img src="<?= e(asset($g['image'])) ?>" alt="<?= e($g['title'] ?: SITE_NAME) ?>">
+              <img loading="lazy" decoding="async" src="<?= e(asset($g['image'])) ?>" alt="<?= e($g['title'] ?: SITE_NAME) ?>">
             </div>
           <?php endforeach; ?>
         </div>

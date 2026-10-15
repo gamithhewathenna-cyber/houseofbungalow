@@ -34,7 +34,7 @@ $msg        = $_GET['sub'] ?? '';
     <div class="brands">
       <?php foreach ($brands as $b): ?>
         <?php if (!empty($b['image'])): ?>
-          <img src="<?= e(asset($b['image'])) ?>" alt="<?= e($b['title']) ?>">
+          <img loading="lazy" decoding="async" src="<?= e(asset($b['image'])) ?>" alt="<?= e($b['title']) ?>">
         <?php else: ?>
           <span class="brand"><?= e($b['title']) ?></span>
         <?php endif; ?>
@@ -43,7 +43,7 @@ $msg        = $_GET['sub'] ?? '';
     <?php endif; ?>
 
     <div class="footer-logo">
-      <img src="<?= e(asset(setting('logo_colour', 'assets/img/logo-maroon.png'))) ?>" alt="<?= e(SITE_NAME) ?>">
+      <img loading="lazy" decoding="async" src="<?= e(asset(setting('logo_colour', 'assets/img/logo-maroon.png'))) ?>" alt="<?= e(SITE_NAME) ?>">
     </div>
 
     <h3 class="newsletter-heading"><?= e(setting('newsletter_heading')) ?></h3>

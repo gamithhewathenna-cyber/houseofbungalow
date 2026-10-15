@@ -46,7 +46,7 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
 <?php if (section_visible('building')): ?>
 <section class="building reveal">
   <div class="container">
-    <img src="<?= e(asset(setting('building_image','assets/img/building.png'))) ?>" alt="House of Bungalow storefront illustration">
+    <img loading="lazy" decoding="async" src="<?= e(asset(setting('building_image','assets/img/building.png'))) ?>" alt="House of Bungalow storefront illustration">
   </div>
 </section>
 <?php endif; ?>
@@ -60,7 +60,7 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
     <div class="cards">
       <?php foreach ($spaces as $i => $s): ?>
         <a class="card reveal" style="transition-delay:<?= $i * 120 ?>ms" href="<?= e(url($s['link_url'] ?: '#')) ?>">
-          <img src="<?= e(asset($s['image'])) ?>" alt="<?= e($s['title']) ?>">
+          <img loading="lazy" decoding="async" src="<?= e(asset($s['image'])) ?>" alt="<?= e($s['title']) ?>">
           <span class="card-label"><?= e($s['title']) ?></span>
         </a>
       <?php endforeach; ?>

@@ -69,9 +69,9 @@ while ($i < count($nights)) {
     </div>
 
     <div class="trio-grid">
-      <div class="trio-item"><img src="<?= e(asset(setting('below_cocktails_image1', 'assets/img/below.jpg'))) ?>" alt=""></div>
-      <div class="trio-item"><img src="<?= e(asset(setting('below_cocktails_image2', 'assets/img/below.jpg'))) ?>" alt=""></div>
-      <div class="trio-item"><img src="<?= e(asset(setting('below_cocktails_image3', 'assets/img/below.jpg'))) ?>" alt=""></div>
+      <div class="trio-item"><img loading="lazy" decoding="async" src="<?= e(asset(setting('below_cocktails_image1', 'assets/img/below.jpg'))) ?>" alt=""></div>
+      <div class="trio-item"><img loading="lazy" decoding="async" src="<?= e(asset(setting('below_cocktails_image2', 'assets/img/below.jpg'))) ?>" alt=""></div>
+      <div class="trio-item"><img loading="lazy" decoding="async" src="<?= e(asset(setting('below_cocktails_image3', 'assets/img/below.jpg'))) ?>" alt=""></div>
     </div>
   </div>
 </section>
@@ -119,7 +119,7 @@ while ($i < count($nights)) {
   <div class="container">
     <div class="split-grid">
       <div class="split-media">
-        <img src="<?= e(asset(setting('below_guest_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('below_guest_heading')) ?>">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('below_guest_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('below_guest_heading')) ?>">
       </div>
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('below_guest_eyebrow', 'Guest Artists')) ?></p>
@@ -154,7 +154,7 @@ while ($i < count($nights)) {
         <?php endif; ?>
       </div>
       <div class="split-media">
-        <img src="<?= e(asset(setting('below_vip_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('below_vip_heading')) ?>">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('below_vip_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('below_vip_heading')) ?>">
       </div>
     </div>
   </div>

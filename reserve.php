@@ -94,7 +94,7 @@ include __DIR__ . '/includes/header.php';
         <?php endif; ?>
       </div>
       <div class="split-media">
-        <img src="<?= e(asset(setting('reserve_fridaysat_image', 'assets/img/restaurant.jpg'))) ?>" alt="<?= e(setting('reserve_fridaysat_heading')) ?>">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('reserve_fridaysat_image', 'assets/img/restaurant.jpg'))) ?>" alt="<?= e(setting('reserve_fridaysat_heading')) ?>">
       </div>
     </div>
   </div>
@@ -107,7 +107,7 @@ include __DIR__ . '/includes/header.php';
   <div class="container">
     <div class="split-grid">
       <div class="split-media">
-        <img src="<?= e(asset(setting('reserve_happyhour_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('reserve_happyhour_heading')) ?>">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('reserve_happyhour_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('reserve_happyhour_heading')) ?>">
       </div>
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('reserve_happyhour_eyebrow', 'Happy Hour')) ?></p>
@@ -143,7 +143,7 @@ include __DIR__ . '/includes/header.php';
         <?php endif; ?>
       </div>
       <div class="split-media">
-        <img src="<?= e(asset(setting('reserve_vip_image', 'assets/img/hero.jpg'))) ?>" alt="<?= e(setting('reserve_vip_heading')) ?>">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('reserve_vip_image', 'assets/img/hero.jpg'))) ?>" alt="<?= e(setting('reserve_vip_heading')) ?>">
       </div>
     </div>
   </div>

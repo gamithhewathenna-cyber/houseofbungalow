@@ -50,7 +50,7 @@ $cards = blocks('pe_event_card');
     <?php foreach ($cards as $c): ?>
       <div class="event-card">
         <div class="event-card-media">
-          <img src="<?= e(asset($c['image'])) ?>" alt="<?= e($c['title']) ?>">
+          <img loading="lazy" decoding="async" src="<?= e(asset($c['image'])) ?>" alt="<?= e($c['title']) ?>">
         </div>
         <div class="event-card-body">
           <h3><?= e($c['title']) ?></h3>

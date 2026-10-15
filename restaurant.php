@@ -71,7 +71,7 @@ while ($i < count($gallery)) {
         <p><?= enl(setting('rest_food_p2')) ?></p>
       </div>
       <div class="split-media">
-        <img src="<?= e(asset(setting('rest_food_image', 'assets/img/restaurant.jpg'))) ?>" alt="<?= e(setting('rest_food_heading')) ?>">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('rest_food_image', 'assets/img/restaurant.jpg'))) ?>" alt="<?= e(setting('rest_food_heading')) ?>">
       </div>
     </div>
   </div>
@@ -122,7 +122,7 @@ while ($i < count($gallery)) {
   <div class="container">
     <div class="split-grid">
       <div class="split-media">
-        <img src="<?= e(asset(setting('rest_room_image', 'assets/img/restaurant.jpg'))) ?>" alt="<?= e(setting('rest_room_heading')) ?>">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('rest_room_image', 'assets/img/restaurant.jpg'))) ?>" alt="<?= e(setting('rest_room_heading')) ?>">
       </div>
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('rest_room_eyebrow', 'The Room')) ?></p>
@@ -152,7 +152,7 @@ while ($i < count($gallery)) {
         <?php endif; ?>
       </div>
       <div class="split-media">
-        <img src="<?= e(asset(setting('rest_fridaysat_image', 'assets/img/restaurant.jpg'))) ?>" alt="<?= e(setting('rest_fridaysat_heading')) ?>">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('rest_fridaysat_image', 'assets/img/restaurant.jpg'))) ?>" alt="<?= e(setting('rest_fridaysat_heading')) ?>">
       </div>
     </div>
   </div>
@@ -165,7 +165,7 @@ while ($i < count($gallery)) {
   <div class="container">
     <div class="split-grid">
       <div class="split-media">
-        <img src="<?= e(asset(setting('rest_happyhour_image', 'assets/img/restaurant.jpg'))) ?>" alt="<?= e(setting('rest_happyhour_heading')) ?>">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('rest_happyhour_image', 'assets/img/restaurant.jpg'))) ?>" alt="<?= e(setting('rest_happyhour_heading')) ?>">
       </div>
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('rest_happyhour_eyebrow', 'Happy Hour')) ?></p>
@@ -197,7 +197,7 @@ while ($i < count($gallery)) {
         <p><?= enl(setting('rest_chef_p3')) ?></p>
       </div>
       <div class="split-media">
-        <img src="<?= e(asset(setting('rest_chef_image', 'assets/img/restaurant.jpg'))) ?>" alt="<?= e(setting('rest_chef_name')) ?>">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('rest_chef_image', 'assets/img/restaurant.jpg'))) ?>" alt="<?= e(setting('rest_chef_name')) ?>">
       </div>
     </div>
   </div>
@@ -235,7 +235,7 @@ while ($i < count($gallery)) {
         <div class="gallery-row gallery-row-<?= count($row) ?>">
           <?php foreach ($row as $g): ?>
             <div class="gallery-item">
-              <img src="<?= e(asset($g['image'])) ?>" alt="<?= e($g['title'] ?: SITE_NAME) ?>">
+              <img loading="lazy" decoding="async" src="<?= e(asset($g['image'])) ?>" alt="<?= e($g['title'] ?: SITE_NAME) ?>">
             </div>
           <?php endforeach; ?>
         </div>

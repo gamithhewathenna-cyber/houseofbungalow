@@ -69,7 +69,7 @@ foreach ($menu_cats as $cat) {
       <?php foreach ($gallery_rows as $row): ?>
         <div class="gallery-row gallery-row-<?= count($row) ?>">
           <?php foreach ($row as $g): ?>
-            <div class="gallery-item"><img src="<?= e(asset($g['image'])) ?>" alt="<?= e($g['title'] ?: SITE_NAME) ?>"></div>
+            <div class="gallery-item"><img loading="lazy" decoding="async" src="<?= e(asset($g['image'])) ?>" alt="<?= e($g['title'] ?: SITE_NAME) ?>"></div>
           <?php endforeach; ?>
         </div>
       <?php endforeach; ?>
@@ -124,7 +124,7 @@ foreach ($menu_cats as $cat) {
   <div class="container">
     <div class="split-grid">
       <div class="split-media">
-        <img src="<?= e(asset(setting('dp_guest_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('dp_guest_heading')) ?>">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('dp_guest_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('dp_guest_heading')) ?>">
       </div>
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('dp_guest_eyebrow', 'Guest Artists')) ?></p>

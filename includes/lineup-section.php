@@ -22,7 +22,7 @@ $djs = blocks('below_dj');
             <?php foreach ($djs as $dj): ?>
               <div class="dj-card">
                 <div class="dj-card-media">
-                  <img src="<?= e(asset($dj['image'])) ?>" alt="<?= e($dj['title']) ?>">
+                  <img loading="lazy" decoding="async" src="<?= e(asset($dj['image'])) ?>" alt="<?= e($dj['title']) ?>">
                   <span class="dj-card-tint"></span>
                 </div>
                 <div class="dj-card-info">

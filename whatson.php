@@ -49,7 +49,7 @@ $features = blocks('wo_feature');
     <div class="split-grid">
       <?php if ($i % 2 === 0): ?>
         <div class="split-media">
-          <img src="<?= e(asset($feature['image'] ?: 'assets/img/restaurant.jpg')) ?>" alt="<?= e($feature['title']) ?>">
+          <img loading="lazy" decoding="async" src="<?= e(asset($feature['image'] ?: 'assets/img/restaurant.jpg')) ?>" alt="<?= e($feature['title']) ?>">
         </div>
       <?php endif; ?>
       <div class="split-copy">
@@ -66,7 +66,7 @@ $features = blocks('wo_feature');
       </div>
       <?php if ($i % 2 !== 0): ?>
         <div class="split-media">
-          <img src="<?= e(asset($feature['image'] ?: 'assets/img/restaurant.jpg')) ?>" alt="<?= e($feature['title']) ?>">
+          <img loading="lazy" decoding="async" src="<?= e(asset($feature['image'] ?: 'assets/img/restaurant.jpg')) ?>" alt="<?= e($feature['title']) ?>">
         </div>
       <?php endif; ?>
     </div>
@@ -92,7 +92,7 @@ $features = blocks('wo_feature');
         <?php endif; ?>
       </div>
       <div class="split-media">
-        <img src="<?= e(asset(setting('wo_happyhour_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('wo_happyhour_eyebrow')) ?>">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('wo_happyhour_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('wo_happyhour_eyebrow')) ?>">
       </div>
     </div>
   </div>
@@ -105,7 +105,7 @@ $features = blocks('wo_feature');
   <div class="container">
     <div class="split-grid">
       <div class="split-media">
-        <img src="<?= e(asset(setting('wo_friday_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('wo_friday_eyebrow')) ?>">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('wo_friday_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('wo_friday_eyebrow')) ?>">
       </div>
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('wo_friday_eyebrow', 'Friday & Saturday Dinner Party')) ?></p>
@@ -140,7 +140,7 @@ $features = blocks('wo_feature');
         <?php endif; ?>
       </div>
       <div class="split-media">
-        <img src="<?= e(asset(setting('wo_brunch_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('wo_brunch_eyebrow')) ?>">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('wo_brunch_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('wo_brunch_eyebrow')) ?>">
       </div>
     </div>
   </div>

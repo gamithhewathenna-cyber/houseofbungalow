@@ -277,7 +277,7 @@ function render_drinks_category(string $label, string $itemsSettingKey): void
     <?php if (section_visible('mcup_restaurant')): ?>
     <div class="cup-dark-offer">
       <?php if (setting('mcup_rest_image')): ?>
-        <div class="cup-dark-offer-media"><img src="<?= e(asset(setting('mcup_rest_image'))) ?>" alt=""></div>
+        <div class="cup-dark-offer-media"><img loading="lazy" decoding="async" src="<?= e(asset(setting('mcup_rest_image'))) ?>" alt=""></div>
       <?php endif; ?>
       <p class="cup-dark-eyebrow"><?= e(trim(setting('mcup_rest_eyebrow', 'Melbourne Cup At') . ' ' . setting('mcup_rest_heading', 'The Restaurant'))) ?></p>
       <h2 class="cup-dark-heading"><?= e(setting('mcup_rest_heading', 'The Restaurant')) ?></h2>
@@ -302,7 +302,7 @@ function render_drinks_category(string $label, string $itemsSettingKey): void
     <?php if (section_visible('mcup_below')): ?>
     <div class="cup-dark-offer">
       <?php if (setting('mcup_below_image')): ?>
-        <div class="cup-dark-offer-media"><img src="<?= e(asset(setting('mcup_below_image'))) ?>" alt=""></div>
+        <div class="cup-dark-offer-media"><img loading="lazy" decoding="async" src="<?= e(asset(setting('mcup_below_image'))) ?>" alt=""></div>
       <?php endif; ?>
       <p class="cup-dark-eyebrow"><?= e(trim(setting('mcup_below_eyebrow', 'Melbourne Cup At') . ' ' . setting('mcup_below_heading', 'Below'))) ?></p>
       <h2 class="cup-dark-heading"><?= e(setting('mcup_below_heading', 'Below')) ?></h2>
