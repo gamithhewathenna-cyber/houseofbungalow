@@ -88,7 +88,9 @@ src="https://www.facebook.com/tr?id=39614423908148518&ev=PageView&noscript=1"
 <link rel="preload" as="style" href="<?= e($__fonts_url) ?>">
 <link rel="stylesheet" href="<?= e($__fonts_url) ?>" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="<?= e($__fonts_url) ?>"></noscript>
-<link rel="stylesheet" href="<?= e(asset('assets/css/style.css')) ?>">
+<style>
+<?php readfile(__DIR__ . '/../assets/css/style.css'); ?>
+</style>
 <style>
 :root{
   --cream:<?= e(setting('theme_cream', '#F2E8DE')) ?>;
