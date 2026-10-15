@@ -84,6 +84,10 @@ src="https://www.facebook.com/tr?id=39614423908148518&ev=PageView&noscript=1"
 <link rel="apple-touch-icon" href="<?= e(asset('assets/img/favicon.png')) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<?php $__fonts_url = 'https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,500;0,600;1,200;1,300;1,400;1,500&family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap'; ?>
+<link rel="preload" as="style" href="<?= e($__fonts_url) ?>">
+<link rel="stylesheet" href="<?= e($__fonts_url) ?>" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="<?= e($__fonts_url) ?>"></noscript>
 <link rel="stylesheet" href="<?= e(asset('assets/css/style.css')) ?>">
 <style>
 :root{

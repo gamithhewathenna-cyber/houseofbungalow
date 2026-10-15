@@ -12,7 +12,10 @@
      Hanken Grotesk  - paragraphs & buttons (free Google Fonts stand-in for Aktiv Grotesk)
    ===================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,500;0,600;1,200;1,300;1,400;1,500&family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+/* Google Fonts are loaded from includes/header.php (preload + async swap),
+   not via @import here - an @import forces the browser to fetch this file,
+   parse it, THEN fetch the font CSS, serially, which was blocking the
+   page's initial render. */
 
 :root{
   --cream:#F2E8DE;
