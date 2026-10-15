@@ -10,6 +10,16 @@
 (function () {
   var RATIO_TOLERANCE = 0.02; // 2% — near-matches skip the modal
   var MIN_BOX = 40; // smallest crop box, in displayed (CSS) pixels
+  var AUTO_MAX_DIM = 2400; // cap for photos that skip the crop modal
+  var AUTO_SKIP_BYTES = 400 * 1024; // already small enough — leave alone
+
+  // These content-image slots never need transparency, so photos are
+  // always re-encoded as JPEG (much smaller than PNG for photographic
+  // content) — except GIF (could be animated) and WebP (already efficient).
+  function outputMime(fileType) {
+    if (fileType === 'image/gif' || fileType === 'image/webp') return fileType;
+    return 'image/jpeg';
+  }
 
   function parseRatio(str) {
     var parts = String(str || '').split(':');
@@ -133,7 +143,7 @@
   function openModal(input, file, ratio) {
     pendingInput = input;
     pendingRatio = ratio;
-    pendingMime = (file.type === 'image/png' || file.type === 'image/webp' || file.type === 'image/gif') ? file.type : 'image/jpeg';
+    pendingMime = outputMime(file.type);
     pendingName = file.name || 'image.jpg';
 
     var reader = new FileReader();
@@ -209,6 +219,38 @@
     }, mime, 0.92);
   }
 
+  // A photo whose aspect ratio already matches skips the crop modal, but a
+  // full-resolution, uncompressed camera/stock photo would otherwise still
+  // upload completely untouched — this quietly downsizes and recompresses
+  // it first, with no modal and no user action needed.
+  function autoOptimize(input, file, img) {
+    var tooBig = file.size > AUTO_SKIP_BYTES;
+    var tooWide = img.naturalWidth > AUTO_MAX_DIM || img.naturalHeight > AUTO_MAX_DIM;
+    if (!tooBig && !tooWide) return; // already small — leave it alone
+
+    var outW = img.naturalWidth, outH = img.naturalHeight;
+    if (outW > AUTO_MAX_DIM || outH > AUTO_MAX_DIM) {
+      var scaleDown = AUTO_MAX_DIM / Math.max(outW, outH);
+      outW = Math.round(outW * scaleDown);
+      outH = Math.round(outH * scaleDown);
+    }
+
+    var canvas = document.createElement('canvas');
+    canvas.width = outW;
+    canvas.height = outH;
+    var ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, outW, outH);
+
+    var mime = outputMime(file.type);
+    canvas.toBlob(function (blob) {
+      if (!blob || blob.size >= file.size) return; // didn't actually help — keep the original
+      var dt = new DataTransfer();
+      var optimizedFile = new File([blob], file.name, { type: mime, lastModified: Date.now() });
+      dt.items.add(optimizedFile);
+      input.files = dt.files;
+    }, mime, 0.82);
+  }
+
   // ---- Wire up every qualifying file input -------------------------------
   function handleChange(e) {
     var input = e.target;
@@ -216,6 +258,7 @@
     if (!ratioAttr || !input.files || !input.files[0]) return;
     var file = input.files[0];
     if (file.type.indexOf('image/') !== 0) return;
+    if (file.type === 'image/gif') return; // could be animated — leave untouched
 
     var target = parseRatio(ratioAttr);
     if (!target) return;
@@ -231,7 +274,8 @@
       }
       var actual = probe.naturalWidth / probe.naturalHeight;
       if (Math.abs(actual - target) / target <= RATIO_TOLERANCE) {
-        return; // close enough — let it upload as-is
+        autoOptimize(input, file, probe); // close enough — skip the modal, still shrink if it's huge
+        return;
       }
       openModal(input, file, target);
     };
