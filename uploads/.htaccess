@@ -1,0 +1,30 @@
+# =====================================================================
+# Cache uploaded images/videos aggressively.
+#
+# Every file in this folder is named with a random hash by
+# admin/helpers.php (handle_upload / handle_video_upload) - replacing a
+# photo always creates a brand-new file with a brand-new name, the old
+# file is never overwritten in place. That means once a URL in here has
+# been served once, its content will NEVER change - so it's always safe
+# for browsers to cache it for a long time.
+#
+# This only affects files inside /uploads/ - page content (.php) is
+# untouched and always loads fresh.
+# =====================================================================
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType video/mp4 "access plus 1 year"
+  ExpiresByType video/webm "access plus 1 year"
+  ExpiresByType video/quicktime "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(jpe?g|png|gif|webp|svg|mp4|webm|mov)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
