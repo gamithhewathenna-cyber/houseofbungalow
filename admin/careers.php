@@ -6,7 +6,6 @@ require_once __DIR__ . '/helpers.php';
 $fieldGroups = [
     'intro'  => ['career_heading', 'career_lede', 'career_p1', 'career_p2', 'career_p3'],
     'form'   => ['career_form_eyebrow', 'career_form_intro', 'career_success_message'],
-    'emails' => ['career_to_email', 'career_cc_email'],
 ];
 $visibilitySections = [
     'career_intro' => 'Intro',
@@ -59,7 +58,6 @@ foreach ($allRows as $r) {
 $tabs = [
     'intro'      => 'Intro',
     'form'       => 'Application Form',
-    'emails'     => 'Application Emails',
     'visibility' => 'Section Visibility',
 ];
 $activeTab = $_GET['tab'] ?? 'intro';
@@ -100,10 +98,7 @@ include __DIR__ . '/layout.php';
   <div class="tab-panel settings-group<?= $activeTab === $group ? ' active' : '' ?>" data-tab="<?= e($group) ?>">
     <h3><?= e($tabs[$group]) ?></h3>
     <?php if ($group === 'form'): ?>
-      <p class="group-help">The application fields themselves (Full Name, Email, Area of Interest, CV upload, etc.) are fixed and not editable here - only this intro text and the thank-you message shown after someone applies.</p>
-    <?php endif; ?>
-    <?php if ($group === 'emails'): ?>
-      <p class="group-help">Controls what happens when someone submits the Join Our Team application form. No email server setup needed - this sends straight from the website, with a link to download the applicant's CV. Leave "Send applications to" empty to only save applications here in the admin (under "Applications") without emailing anyone.</p>
+      <p class="group-help">The application fields themselves (Full Name, Email, Area of Interest, CV upload, etc.) are fixed and not editable here - only this intro text and the thank-you message shown after someone applies. Where applications get emailed to is set under Applications in the sidebar.</p>
     <?php endif; ?>
     <form method="post">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
