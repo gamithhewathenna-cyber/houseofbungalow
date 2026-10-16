@@ -3,6 +3,7 @@ require_once __DIR__ . '/auth.php';
 require_role('admin');
 require_once __DIR__ . '/helpers.php';
 require_once __DIR__ . '/../includes/mailer.php';
+require_once __DIR__ . '/../includes/email-template.php';
 
 $sections = [
     'website' => 'Website Settings',
@@ -42,11 +43,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = 'Enter and save a Workspace email address below first.';
         } else {
             $smtpError = null;
+            $testHtml = email_layout('Test Email', email_p("This is a test email sent from your website's admin panel (Website Settings > Email) to confirm your email settings are working.") . email_p('If you received this, everything is set up correctly.'));
             $sent = app_mail(
                 $testTo,
                 'Test email from ' . SITE_NAME,
-                "This is a test email sent from your website's admin panel (Website Settings > Email) to confirm your email settings are working.\n\nIf you received this, everything is set up correctly.",
-                ['Content-Type: text/plain; charset=UTF-8'],
+                $testHtml,
+                ['Content-Type: text/html; charset=UTF-8'],
                 $smtpError
             );
             if ($sent) {

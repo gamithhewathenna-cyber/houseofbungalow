@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/mailer.php';
+require_once __DIR__ . '/includes/email-template.php';
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -59,32 +60,37 @@ function send_enquiry_notification(array $d): void
     if ($to === '') {
         return;
     }
-    $lines = [
-        'A new enquiry was submitted on the Private Events page.',
-        '',
-        'Name: ' . $d['full_name'],
-        'Phone: ' . $d['phone'],
-        'Email: ' . $d['email'],
-    ];
-    if ($d['company'] !== '') { $lines[] = 'Company: ' . $d['company']; }
-    $lines[] = 'Type of event: ' . $d['event_type'];
-    $lines[] = 'Preferred space: ' . $d['preferred_space'];
-    $lines[] = 'Preferred date: ' . $d['preferred_date'];
-    if ($d['preferred_time'] !== '') { $lines[] = 'Preferred start time: ' . $d['preferred_time']; }
-    $lines[] = 'Estimated guests: ' . $d['guests'];
-    if ($d['source'] !== '') { $lines[] = 'Event card: ' . $d['source']; }
-    if ($d['message'] !== '') { $lines[] = ''; $lines[] = 'Message:'; $lines[] = $d['message']; }
+    $body = email_p('A new enquiry was submitted on the Private Events page.')
+        . email_details_table([
+            'Name'              => $d['full_name'],
+            'Phone'             => $d['phone'],
+            'Email'             => $d['email'],
+            'Company'           => $d['company'],
+            'Type of event'     => $d['event_type'],
+            'Preferred space'   => $d['preferred_space'],
+            'Preferred date'    => $d['preferred_date'],
+            'Preferred time'    => $d['preferred_time'],
+            'Estimated guests'  => $d['guests'],
+            'Event card'        => $d['source'],
+        ]);
+    if ($d['message'] !== '') {
+        $body .= '<p style="margin:0 0 6px;font-size:13px;color:#9a9089;">Message</p>' . email_p($d['message']);
+    }
+    $html = email_layout('New Private Events Enquiry', $body, [
+        'label' => 'Reply to ' . $d['full_name'],
+        'url'   => 'mailto:' . $d['email'],
+    ]);
 
     $headers = [
         'From: ' . SITE_NAME . ' <' . enquiry_mail_from() . '>',
         'Reply-To: ' . header_safe($d['full_name']) . ' <' . header_safe($d['email']) . '>',
-        'Content-Type: text/plain; charset=UTF-8',
+        'Content-Type: text/html; charset=UTF-8',
     ];
     $cc = trim(setting('pe_enquiry_cc_email'));
     if ($cc !== '') {
         $headers[] = 'Cc: ' . $cc;
     }
-    app_mail($to, 'New Private Events Enquiry - ' . header_safe($d['full_name']), implode("\n", $lines), $headers);
+    app_mail($to, 'New Private Events Enquiry - ' . header_safe($d['full_name']), $html, $headers);
 }
 
 /**
@@ -98,12 +104,13 @@ function send_enquiry_thankyou(array $d): void
         return;
     }
     $subject = setting('pe_enquiry_thankyou_subject', 'Thanks for your enquiry');
-    $body = str_replace('{name}', $d['full_name'], $template);
+    $message = str_replace('{name}', $d['full_name'], $template);
+    $html = email_layout($subject, email_p($message));
     $headers = [
         'From: ' . SITE_NAME . ' <' . enquiry_mail_from() . '>',
-        'Content-Type: text/plain; charset=UTF-8',
+        'Content-Type: text/html; charset=UTF-8',
     ];
-    app_mail($d['email'], $subject, $body, $headers);
+    app_mail($d['email'], $subject, $html, $headers);
 }
 
 try {

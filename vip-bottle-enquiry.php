@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/mailer.php';
+require_once __DIR__ . '/includes/email-template.php';
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -54,26 +55,29 @@ function send_vipbottle_notification(array $d): void
     if ($to === '') {
         return;
     }
-    $lines = [
-        'A new VIP Bottle Service enquiry was submitted on the Below page.',
-        '',
-        'Name: ' . $d['full_name'],
-        'Phone: ' . $d['phone'],
-    ];
-    if ($d['company'] !== '') { $lines[] = 'Company: ' . $d['company']; }
-    if ($d['occasion'] !== '') { $lines[] = 'Occasion: ' . $d['occasion']; }
-    $lines[] = 'Number of guests: ' . $d['guests'];
-    $lines[] = 'Preferred date: ' . $d['preferred_date'];
+    $body = email_p('A new VIP Bottle Service enquiry was submitted on the Below page.')
+        . email_details_table([
+            'Name'            => $d['full_name'],
+            'Phone'           => $d['phone'],
+            'Company'         => $d['company'],
+            'Occasion'        => $d['occasion'],
+            'Number of guests'=> $d['guests'],
+            'Preferred date'  => $d['preferred_date'],
+        ]);
+    $html = email_layout('New VIP Bottle Service Enquiry', $body, [
+        'label' => 'Call ' . $d['full_name'],
+        'url'   => 'tel:' . preg_replace('/[^0-9+]/', '', $d['phone']),
+    ]);
 
     $headers = [
         'From: ' . SITE_NAME . ' <' . vipbottle_mail_from() . '>',
-        'Content-Type: text/plain; charset=UTF-8',
+        'Content-Type: text/html; charset=UTF-8',
     ];
     $cc = trim(setting('below_vipbottle_enquiry_cc_email'));
     if ($cc !== '') {
         $headers[] = 'Cc: ' . $cc;
     }
-    app_mail($to, 'New VIP Bottle Service Enquiry - ' . vipbottle_header_safe($d['full_name']), implode("\n", $lines), $headers);
+    app_mail($to, 'New VIP Bottle Service Enquiry - ' . vipbottle_header_safe($d['full_name']), $html, $headers);
 }
 
 try {

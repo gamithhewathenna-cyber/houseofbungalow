@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/../includes/mailer.php';
+require_once __DIR__ . '/../includes/email-template.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -153,13 +154,12 @@ function send_admin_invite_email(array $admin, string $token): bool
         return false;
     }
     $link = admin_set_password_url($token);
-    $body = "Hi " . $admin['username'] . ",\n\n"
-        . "An admin account has been created for you on the " . SITE_NAME . " website admin panel.\n\n"
-        . "Set your password here to activate it (link works for 48 hours):\n" . $link . "\n\n"
-        . "Once that's done, log in at " . site_origin() . rtrim(BASE_URL, '/') . "/admin/login.php with:\n"
-        . "Username or email: " . $admin['username'] . "\n\n"
-        . "If you weren't expecting this, you can safely ignore this email.";
-    return app_mail($admin['email'], 'Set up your ' . SITE_NAME . ' admin account', $body, ['Content-Type: text/plain; charset=UTF-8']);
+    $body = email_p('Hi ' . $admin['username'] . ',')
+        . email_p('An admin account has been created for you on the ' . SITE_NAME . ' website admin panel. Set your password to activate it - this link works for 48 hours.')
+        . email_p('Once that\'s done, sign in with your username or email: ' . $admin['username'], '#9a9089')
+        . '<p style="margin:0;font-size:12px;color:#9a9089;">If you weren\'t expecting this, you can safely ignore this email.</p>';
+    $html = email_layout('Set Up Your Admin Account', $body, ['label' => 'Set Your Password', 'url' => $link]);
+    return app_mail($admin['email'], 'Set up your ' . SITE_NAME . ' admin account', $html, ['Content-Type: text/html; charset=UTF-8']);
 }
 
 /**
@@ -171,11 +171,11 @@ function send_admin_reset_email(array $admin, string $token): bool
         return false;
     }
     $link = admin_set_password_url($token);
-    $body = "Hi " . $admin['username'] . ",\n\n"
-        . "We received a request to reset the password for your " . SITE_NAME . " admin account.\n\n"
-        . "Reset it here (link works for 48 hours):\n" . $link . "\n\n"
-        . "If you didn't request this, you can ignore this email - your password won't change.";
-    return app_mail($admin['email'], 'Reset your ' . SITE_NAME . ' admin password', $body, ['Content-Type: text/plain; charset=UTF-8']);
+    $body = email_p('Hi ' . $admin['username'] . ',')
+        . email_p('We received a request to reset the password for your ' . SITE_NAME . ' admin account. This link works for 48 hours.')
+        . '<p style="margin:0;font-size:12px;color:#9a9089;">If you didn\'t request this, you can ignore this email - your password won\'t change.</p>';
+    $html = email_layout('Reset Your Password', $body, ['label' => 'Reset Password', 'url' => $link]);
+    return app_mail($admin['email'], 'Reset your ' . SITE_NAME . ' admin password', $html, ['Content-Type: text/html; charset=UTF-8']);
 }
 
 function csrf_token(): string

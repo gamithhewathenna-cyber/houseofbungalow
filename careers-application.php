@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/mailer.php';
+require_once __DIR__ . '/includes/email-template.php';
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -97,28 +98,29 @@ function send_career_notification(array $d): void
     if ($to === '') {
         return;
     }
-    $lines = [
-        'A new Join Our Team application was submitted.',
-        '',
-        'Name: ' . $d['full_name'],
-        'Email: ' . $d['email'],
-        'Phone: ' . $d['phone'],
-        'Area of interest: ' . $d['area_of_interest'],
-    ];
-    if ($d['position'] !== '') { $lines[] = 'Position: ' . $d['position']; }
-    $lines[] = '';
-    $lines[] = 'CV: ' . career_absolute_url($d['cv_path']);
+    $body = email_p('A new Join Our Team application was submitted.')
+        . email_details_table([
+            'Name'             => $d['full_name'],
+            'Email'            => $d['email'],
+            'Phone'            => $d['phone'],
+            'Area of interest' => $d['area_of_interest'],
+            'Position'         => $d['position'],
+        ]);
+    $html = email_layout('New Join Our Team Application', $body, [
+        'label' => 'View CV',
+        'url'   => career_absolute_url($d['cv_path']),
+    ]);
 
     $headers = [
         'From: ' . SITE_NAME . ' <' . career_mail_from() . '>',
         'Reply-To: ' . career_header_safe($d['full_name']) . ' <' . career_header_safe($d['email']) . '>',
-        'Content-Type: text/plain; charset=UTF-8',
+        'Content-Type: text/html; charset=UTF-8',
     ];
     $cc = trim(setting('career_cc_email'));
     if ($cc !== '') {
         $headers[] = 'Cc: ' . $cc;
     }
-    app_mail($to, 'New Join Our Team Application - ' . career_header_safe($d['full_name']), implode("\n", $lines), $headers);
+    app_mail($to, 'New Join Our Team Application - ' . career_header_safe($d['full_name']), $html, $headers);
 }
 
 try {
