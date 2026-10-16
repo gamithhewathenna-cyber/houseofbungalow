@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_check() && ($_POST['action'] ?
 }
 
 $rows = db()->query('SELECT * FROM subscribers ORDER BY created_at DESC')->fetchAll();
+db()->exec('UPDATE subscribers SET is_read = 1 WHERE is_read = 0');
 $page_title = 'Subscribers';
 include __DIR__ . '/layout.php';
 ?>

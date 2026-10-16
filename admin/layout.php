@@ -48,6 +48,32 @@ $mainNav = array_values(array_filter($mainNav, fn($item) => $item['area'] === nu
 $leadNav = array_values(array_filter($leadNav, fn($item) => $item['area'] === null || admin_can($item['area'])));
 $systemNav = array_values(array_filter($systemNav, fn($item) => $item['area'] === null || admin_can($item['area'])));
 
+// Unread-lead counts, shown as a badge on each Lead Management nav item
+// (and a total next to the section label).
+$leadTableMap = [
+    'enquiries.php'                => 'enquiries',
+    'vip-bottle-enquiries.php'     => 'vip_bottle_enquiries',
+    'career-applications.php'      => 'career_applications',
+    'subscribers.php'              => 'subscribers',
+];
+$leadUnreadTotal = 0;
+try {
+    foreach ($leadNav as &$item) {
+        $table = $leadTableMap[$item['href']] ?? null;
+        if ($table === null) {
+            continue;
+        }
+        $count = (int) db()->query("SELECT COUNT(*) FROM `$table` WHERE is_read = 0")->fetchColumn();
+        if ($count > 0) {
+            $item['badge'] = $count;
+            $leadUnreadTotal += $count;
+        }
+    }
+    unset($item);
+} catch (Throwable $e) {
+    // is_read column may not exist yet (migration not run) - skip badges quietly.
+}
+
 function nav_icon(string $key): void
 {
     $icons = [
@@ -84,6 +110,7 @@ function nav_link(array $item, string $current): void
     <a href="<?= e($item['href']) ?>" class="nav-item<?= $active ? ' active' : '' ?>">
       <?php nav_icon($item['icon']); ?>
       <span><?= e($item['label']) ?></span>
+      <?php if (!empty($item['badge'])): ?><span class="nav-badge"><?= (int) $item['badge'] ?></span><?php endif; ?>
     </a>
     <?php
 }
@@ -104,7 +131,7 @@ function nav_link(array $item, string $current): void
     <?php foreach ($mainNav as $item): nav_link($item, $current); endforeach; ?>
 
     <?php if ($leadNav): ?>
-      <div class="nav-section-label">Lead Management</div>
+      <div class="nav-section-label">Lead Management<?php if ($leadUnreadTotal > 0): ?><span class="nav-badge nav-badge-total"><?= $leadUnreadTotal ?></span><?php endif; ?></div>
       <?php foreach ($leadNav as $item): nav_link($item, $current); endforeach; ?>
     <?php endif; ?>
 

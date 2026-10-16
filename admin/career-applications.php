@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_check() && ($_POST['action'] ?
 }
 
 $rows = db()->query('SELECT * FROM career_applications ORDER BY created_at DESC')->fetchAll();
+db()->exec('UPDATE career_applications SET is_read = 1 WHERE is_read = 0');
 $page_title = 'Applications';
 include __DIR__ . '/layout.php';
 ?>
