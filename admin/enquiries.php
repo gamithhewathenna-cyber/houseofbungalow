@@ -24,10 +24,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_check() && ($_POST['action'] ?
     header('Location: enquiries.php?saved=1'); exit;
 }
 
+// Notification email
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_check() && ($_POST['action'] ?? '') === 'save_notify') {
+    save_setting('pe_enquiry_to_email', trim($_POST['to_email'] ?? ''));
+    save_setting('pe_enquiry_cc_email', trim($_POST['cc_email'] ?? ''));
+    header('Location: enquiries.php?saved=1'); exit;
+}
+
 $rows = db()->query('SELECT * FROM enquiries ORDER BY created_at DESC')->fetchAll();
 $page_title = 'Enquiries';
 include __DIR__ . '/layout.php';
 ?>
+<div class="settings-group" style="margin-bottom:20px;">
+  <h3 style="font-size:14px;">Notification Email</h3>
+  <p class="group-help">Where new enquiries get emailed to.</p>
+  <form method="post">
+    <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+    <input type="hidden" name="action" value="save_notify">
+    <div class="field-grid">
+      <label>Send to
+        <input type="text" name="to_email" value="<?= e(setting('pe_enquiry_to_email')) ?>" placeholder="you@yourdomain.com">
+      </label>
+      <label>CC <span class="help">(optional)</span>
+        <input type="text" name="cc_email" value="<?= e(setting('pe_enquiry_cc_email')) ?>" placeholder="team@yourdomain.com">
+      </label>
+    </div>
+    <div class="form-actions"><button class="btn btn-sm">Save</button></div>
+  </form>
+</div>
+
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
   <p class="muted" style="margin:0;"><?= count($rows) ?> enquir<?= count($rows) === 1 ? 'y' : 'ies' ?> submitted from the Private Events ENQUIRE popup.</p>
   <?php if ($rows): ?><a class="btn btn-sm" href="enquiries.php?export=csv">Export CSV</a><?php endif; ?>

@@ -142,6 +142,11 @@ CREATE TABLE IF NOT EXISTS `subscribers` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) VALUES
+('subscribe_notify_to_email','','subscribers_page','Send to (email address) - optional, leave blank for no notification','text',1),
+('subscribe_notify_cc_email','','subscribers_page','CC email (optional - comma-separate for more than one)','text',2)
+ON DUPLICATE KEY UPDATE `skey` = `skey`;
+
 -- ---------------------------------------------------------------------
 -- Private Events enquiry form submissions (the "ENQUIRE" popup)
 -- ---------------------------------------------------------------------
