@@ -155,7 +155,7 @@ include __DIR__ . '/layout.php';
 <?php if ($error): ?><div class="alert err"><?= e($error) ?></div><?php endif; ?>
 <?php if ($ok): ?><div class="alert ok"><?= e($ok) ?></div><?php endif; ?>
 
-<p class="muted" style="margin-bottom:18px;">Everyone listed here can log into this admin panel. Tick as many access roles as an account needs - e.g. someone can be both "Content Editor" and "Enquiries" at once. "Admin" always includes full access regardless of what else is ticked. A brand-new account gets an email to set its own password - use "New Password" below only if you need to set one directly.</p>
+<p class="muted" style="margin-bottom:18px;">Everyone listed here can log into this admin panel. Tick as many access roles as an account needs - e.g. someone can be both "Content Editor" and "Lead Management" at once. "Admin" always includes full access regardless of what else is ticked. A brand-new account gets an email to set its own password - use "New Password" below only if you need to set one directly.</p>
 
 <form method="post">
   <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">

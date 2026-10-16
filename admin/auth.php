@@ -32,14 +32,16 @@ function require_login(): void
 
 /**
  * Admin roles (an account can hold more than one at once, stored as a
- * comma-separated list in admins.role, e.g. "content,enquiries"):
+ * comma-separated list in admins.role, e.g. "content,enquiries" - the
+ * stored key is still "enquiries" for backward compatibility, it's only
+ * the displayed label that reads "Lead Management"):
  *   admin     - full access to everything, including Admin Users and Website Settings
  *   content   - can edit page content across the site
- *   enquiries - can view/manage enquiries, VIP enquiries, applications and subscribers
+ *   enquiries - can view/manage the whole Lead Management section (Enquiries, VIP Enquiries, Applications, Subscribers)
  */
 function role_label(string $key): string
 {
-    $labels = ['admin' => 'Admin', 'content' => 'Content Editor', 'enquiries' => 'Enquiries'];
+    $labels = ['admin' => 'Admin', 'content' => 'Content Editor', 'enquiries' => 'Lead Management'];
     return $labels[$key] ?? ucfirst($key);
 }
 
