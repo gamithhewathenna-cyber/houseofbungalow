@@ -27,26 +27,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($action === 'add') {
             $username = trim($_POST['new_username'] ?? '');
-            $password = $_POST['new_password'] ?? '';
-            $confirm  = $_POST['new_password_confirm'] ?? '';
+            $email    = trim($_POST['new_email'] ?? '');
             $roleList = clean_roles((array) ($_POST['new_roles'] ?? []), $roles);
             if ($username === '') {
                 $error = 'Username cannot be empty.';
-            } elseif (strlen($password) < 6) {
-                $error = 'Password must be at least 6 characters.';
-            } elseif ($password !== $confirm) {
-                $error = 'Password and confirmation do not match.';
+            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $error = 'Enter a valid email address - it\'s used to send the account-setup link.';
             } else {
                 try {
-                    $hash = password_hash($password, PASSWORD_DEFAULT);
-                    $q = db()->prepare('INSERT INTO admins (username, password_hash, role) VALUES (?, ?, ?)');
-                    $q->execute([$username, $hash, implode(',', $roleList)]);
-                    header('Location: users.php?saved=1'); exit;
+                    $q = db()->prepare('INSERT INTO admins (username, email, password_hash, role) VALUES (?, ?, \'\', ?)');
+                    $q->execute([$username, $email, implode(',', $roleList)]);
+                    $newId = (int) db()->lastInsertId();
+                    $token = create_admin_reset_token($newId);
+                    $sent  = send_admin_invite_email(['username' => $username, 'email' => $email], $token);
+                    $ok = $sent
+                        ? 'Admin account created - an email was sent to ' . $email . ' so they can set their password.'
+                        : 'Admin account created, but the invite email could not be sent. Use "Resend Invite" below once email is set up, or set a password for them directly.';
                 } catch (PDOException $ex) {
                     $error = $ex->getCode() === '23000'
-                        ? 'That username is already taken.'
+                        ? 'That username or email is already in use.'
                         : 'Could not create the admin account.';
                 }
+            }
+        }
+
+        if ($action === 'resend_invite') {
+            $id = (int) ($_POST['id'] ?? 0);
+            $stmt = db()->prepare('SELECT * FROM admins WHERE id = ?');
+            $stmt->execute([$id]);
+            $target = $stmt->fetch();
+            if (!$target) {
+                $error = 'That account could not be found.';
+            } elseif (empty($target['email'])) {
+                $error = 'Add an email address for this account first, then resend the invite.';
+            } else {
+                $token = create_admin_reset_token($id);
+                $sent  = send_admin_invite_email($target, $token);
+                $ok = $sent
+                    ? 'Invite re-sent to ' . $target['email'] . '.'
+                    : 'Could not send the invite email. Check your email settings under Website Settings > Email.';
             }
         }
 
@@ -64,9 +83,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 foreach (($_POST['username'] ?? []) as $id => $username) {
                     $id       = (int) $id;
                     $username = trim($username);
+                    $email    = trim($_POST['email'][$id] ?? '');
                     $password = $_POST['password'][$id] ?? '';
                     $roleList = clean_roles((array) ($_POST['roles'][$id] ?? []), $roles);
                     if ($username === '') {
+                        continue;
+                    }
+                    if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                        $error = 'That doesn\'t look like a valid email address (skipped for "' . $username . '").';
                         continue;
                     }
                     try {
@@ -76,18 +100,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 continue;
                             }
                             $hash = password_hash($password, PASSWORD_DEFAULT);
-                            $q = db()->prepare('UPDATE admins SET username=?, password_hash=?, role=? WHERE id=?');
-                            $q->execute([$username, $hash, implode(',', $roleList), $id]);
+                            $q = db()->prepare('UPDATE admins SET username=?, email=?, password_hash=?, role=? WHERE id=?');
+                            $q->execute([$username, $email ?: null, $hash, implode(',', $roleList), $id]);
                         } else {
-                            $q = db()->prepare('UPDATE admins SET username=?, role=? WHERE id=?');
-                            $q->execute([$username, implode(',', $roleList), $id]);
+                            $q = db()->prepare('UPDATE admins SET username=?, email=?, role=? WHERE id=?');
+                            $q->execute([$username, $email ?: null, implode(',', $roleList), $id]);
                         }
                         if ($id === (int) $me['id']) {
                             $_SESSION['admin']['username'] = $username;
                             $_SESSION['admin']['role']     = implode(',', $roleList);
                         }
                     } catch (PDOException $ex) {
-                        $error = $ex->getCode() === '23000' ? 'Username already taken.' : 'Update failed.';
+                        $error = $ex->getCode() === '23000' ? 'Username or email already in use (skipped for "' . $username . '").' : 'Update failed.';
                     }
                 }
                 if ($error === '') {
@@ -131,23 +155,31 @@ include __DIR__ . '/layout.php';
 <?php if ($error): ?><div class="alert err"><?= e($error) ?></div><?php endif; ?>
 <?php if ($ok): ?><div class="alert ok"><?= e($ok) ?></div><?php endif; ?>
 
-<p class="muted" style="margin-bottom:18px;">Everyone listed here can log into this admin panel. Tick as many access roles as an account needs - e.g. someone can be both "Content Editor" and "Enquiries" at once. "Admin" always includes full access regardless of what else is ticked. Leave the password field blank to keep an account's current password.</p>
+<p class="muted" style="margin-bottom:18px;">Everyone listed here can log into this admin panel. Tick as many access roles as an account needs - e.g. someone can be both "Content Editor" and "Enquiries" at once. "Admin" always includes full access regardless of what else is ticked. A brand-new account gets an email to set its own password - use "New Password" below only if you need to set one directly.</p>
 
 <form method="post">
   <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
   <input type="hidden" name="action" value="update">
   <div class="dj-admin-list">
-    <?php foreach ($admins as $a): ?>
+    <?php foreach ($admins as $a): $pending = $a['password_hash'] === ''; ?>
       <div class="dj-admin-card no-media">
         <div class="dj-admin-fields">
           <div class="user-card-head">
             <span class="user-avatar"><?= e(strtoupper(substr($a['username'], 0, 1))) ?></span>
-            <div class="field-row">
+            <div class="field-grid" style="flex:1;">
               <label>Username
                 <input type="text" name="username[<?= $a['id'] ?>]" value="<?= e($a['username']) ?>">
               </label>
+              <label>Email
+                <input type="email" name="email[<?= $a['id'] ?>]" value="<?= e($a['email'] ?? '') ?>" placeholder="name@yourdomain.com">
+              </label>
             </div>
           </div>
+          <?php if ($pending): ?>
+            <p class="muted" style="font-size:12px;margin:0 0 10px;">⏳ Invited, hasn't set a password yet.
+              <button type="submit" form="resend<?= $a['id'] ?>" class="btn btn-sm btn-ghost" style="margin-left:6px;">Resend Invite</button>
+            </p>
+          <?php endif; ?>
           <div class="field-row">
             <span class="help" style="display:block;margin-bottom:6px;font-weight:600;color:#5a544e;">Access</span>
             <div class="role-checks">
@@ -185,6 +217,13 @@ include __DIR__ . '/layout.php';
     <input type="hidden" name="action" value="delete">
     <input type="hidden" name="id" value="<?= $a['id'] ?>">
   </form>
+  <?php if ($a['password_hash'] === ''): ?>
+    <form id="resend<?= $a['id'] ?>" method="post" class="inline-form">
+      <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+      <input type="hidden" name="action" value="resend_invite">
+      <input type="hidden" name="id" value="<?= $a['id'] ?>">
+    </form>
+  <?php endif; ?>
 <?php endforeach; ?>
 
 <h2 style="font-size:15px;margin:34px 0 12px;color:#5a544e;">Add an Admin</h2>
@@ -192,8 +231,12 @@ include __DIR__ . '/layout.php';
   <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
   <input type="hidden" name="action" value="add">
   <div class="dj-admin-fields">
-    <div class="field-row"><label>Username
-      <input type="text" name="new_username" required></label></div>
+    <div class="field-grid">
+      <label>Username
+        <input type="text" name="new_username" required></label>
+      <label>Email <span class="help">(the account-setup link is sent here)</span>
+        <input type="email" name="new_email" required></label>
+    </div>
     <div class="field-row">
       <span class="help" style="display:block;margin-bottom:6px;font-weight:600;color:#5a544e;">Access</span>
       <div class="role-checks">
@@ -205,15 +248,9 @@ include __DIR__ . '/layout.php';
         <?php endforeach; ?>
       </div>
     </div>
-    <div class="field-grid">
-      <label>Password
-        <input type="password" name="new_password" required></label>
-      <label>Confirm password
-        <input type="password" name="new_password_confirm" required></label>
-    </div>
   </div>
   <div class="dj-admin-actions">
-    <button class="btn btn-sm">Add Admin</button>
+    <button class="btn btn-sm">Add Admin &amp; Send Invite</button>
   </div>
 </form>
 <?php include __DIR__ . '/layout_end.php'; ?>

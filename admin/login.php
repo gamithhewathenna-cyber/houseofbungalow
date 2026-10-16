@@ -10,10 +10,10 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
-    $stmt = db()->prepare('SELECT * FROM admins WHERE username = ? LIMIT 1');
-    $stmt->execute([$username]);
+    $stmt = db()->prepare('SELECT * FROM admins WHERE username = ? OR email = ? LIMIT 1');
+    $stmt->execute([$username, $username]);
     $admin = $stmt->fetch();
-    if ($admin && password_verify($password, $admin['password_hash'])) {
+    if ($admin && $admin['password_hash'] !== '' && password_verify($password, $admin['password_hash'])) {
         session_regenerate_id(true);
         $_SESSION['admin'] = ['id' => $admin['id'], 'username' => $admin['username'], 'role' => $admin['role'] ?? 'admin'];
         log_activity('login');
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <p class="login-sub">Admin Panel</p>
     <?php if ($error): ?><div class="alert err"><?= e($error) ?></div><?php endif; ?>
     <form method="post">
-      <label>Username
+      <label>Username or email
         <input type="text" name="username" required autofocus>
       </label>
       <label>Password
@@ -45,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </label>
       <button type="submit" class="btn">Sign In</button>
     </form>
+    <p class="hint"><a href="forgot-password.php">Forgot password?</a></p>
   </div>
 </body>
 </html>

@@ -13,17 +13,28 @@ SET NAMES utf8mb4;
 CREATE TABLE IF NOT EXISTS `admins` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(60) NOT NULL,
-  `password_hash` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(190) NULL,
+  `password_hash` VARCHAR(255) NOT NULL DEFAULT '',
   `role` VARCHAR(60) NOT NULL DEFAULT 'admin',
+  `reset_token` VARCHAR(64) NULL,
+  `reset_token_expires` DATETIME NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`)
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `reset_token` (`reset_token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Default admin: username = admin / password = admin123
 -- (CHANGE THIS after first login from the admin panel)
 INSERT INTO `admins` (`username`, `password_hash`, `role`) VALUES
 ('admin', '$2y$10$hXTcgdCzP3.OCqEnPoQ/Ke4cDb/jWhcA/YlYHkMu/TJpFAloo3Y8W', 'admin');
+
+-- `email` is used for login (you can sign in with either username or
+-- email), password-reset links, and the "set your password" invite link
+-- sent to a brand-new admin account. `password_hash` is empty ('') for
+-- an invited account that hasn't set its password yet - that account
+-- simply can't log in until it does.
 
 -- `role` holds a comma-separated list of one or more of:
 --   admin     - full access, including Admin Users and Website Settings

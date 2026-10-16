@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/functions.php';
+require_once __DIR__ . '/../includes/mailer.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -118,6 +119,63 @@ function log_activity(string $action, string $details = ''): void
     } catch (Throwable $e) {
         // ignore - logging must never break the admin panel
     }
+}
+
+/**
+ * Creates a fresh, random "set/reset your password" token for an admin
+ * account, valid for 48 hours, and saves it on that account. Used both
+ * for a brand-new admin's first-time invite and for "forgot password".
+ */
+function create_admin_reset_token(int $adminId): string
+{
+    $token = bin2hex(random_bytes(32));
+    // Stored (and compared, in set-password.php) in UTC - the app's
+    // local timezone (config/config.php) shouldn't have to match
+    // whatever timezone the MySQL server happens to default to.
+    $expires = gmdate('Y-m-d H:i:s', time() + 48 * 3600);
+    $q = db()->prepare('UPDATE admins SET reset_token = ?, reset_token_expires = ? WHERE id = ?');
+    $q->execute([$token, $expires, $adminId]);
+    return $token;
+}
+
+function admin_set_password_url(string $token): string
+{
+    return site_origin() . rtrim(BASE_URL, '/') . '/admin/set-password.php?token=' . $token;
+}
+
+/**
+ * Emailed to a brand-new admin account so they can set their own password
+ * and log in - the admin who created the account never sees or sets it.
+ */
+function send_admin_invite_email(array $admin, string $token): bool
+{
+    if (empty($admin['email'])) {
+        return false;
+    }
+    $link = admin_set_password_url($token);
+    $body = "Hi " . $admin['username'] . ",\n\n"
+        . "An admin account has been created for you on the " . SITE_NAME . " website admin panel.\n\n"
+        . "Set your password here to activate it (link works for 48 hours):\n" . $link . "\n\n"
+        . "Once that's done, log in at " . site_origin() . rtrim(BASE_URL, '/') . "/admin/login.php with:\n"
+        . "Username or email: " . $admin['username'] . "\n\n"
+        . "If you weren't expecting this, you can safely ignore this email.";
+    return app_mail($admin['email'], 'Set up your ' . SITE_NAME . ' admin account', $body, ['Content-Type: text/plain; charset=UTF-8']);
+}
+
+/**
+ * Emailed when someone uses "Forgot password" on the login page.
+ */
+function send_admin_reset_email(array $admin, string $token): bool
+{
+    if (empty($admin['email'])) {
+        return false;
+    }
+    $link = admin_set_password_url($token);
+    $body = "Hi " . $admin['username'] . ",\n\n"
+        . "We received a request to reset the password for your " . SITE_NAME . " admin account.\n\n"
+        . "Reset it here (link works for 48 hours):\n" . $link . "\n\n"
+        . "If you didn't request this, you can ignore this email - your password won't change.";
+    return app_mail($admin['email'], 'Reset your ' . SITE_NAME . ' admin password', $body, ['Content-Type: text/plain; charset=UTF-8']);
 }
 
 function csrf_token(): string
