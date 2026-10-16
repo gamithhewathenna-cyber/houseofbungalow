@@ -19,6 +19,18 @@ $stmt = db()->prepare('SELECT * FROM settings WHERE section = ? ORDER BY sort AS
 $stmt->execute([$s]);
 $fields = $stmt->fetchAll();
 
+$website_tab_keys = [
+    'Logo Settings'            => 'logos',
+    'Colour Theme'             => 'colours',
+    'Search Engine Visibility' => 'seo',
+    'Email (SMTP)'             => 'email',
+    'Maintenance Mode'         => 'maintenance',
+];
+$activeWebsiteTab = $_POST['tab'] ?? $_GET['tab'] ?? 'logos';
+if (!in_array($activeWebsiteTab, $website_tab_keys, true)) {
+    $activeWebsiteTab = 'logos';
+}
+
 $error = '';
 $ok    = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -29,16 +41,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($testTo === '') {
             $error = 'Enter and save a Workspace email address below first.';
         } else {
+            $smtpError = null;
             $sent = app_mail(
                 $testTo,
                 'Test email from ' . SITE_NAME,
                 "This is a test email sent from your website's admin panel (Website Settings > Email) to confirm your email settings are working.\n\nIf you received this, everything is set up correctly.",
-                ['Content-Type: text/plain; charset=UTF-8']
+                ['Content-Type: text/plain; charset=UTF-8'],
+                $smtpError
             );
             if ($sent) {
                 $ok = 'Test email sent to ' . $testTo . ' - check that inbox (and its spam folder).';
             } else {
-                $error = 'Could not send a test email. Double-check the host, port, username and password below, then save and try again.';
+                $error = $smtpError ?: 'Could not send a test email. Double-check the host, port, username and password below, then save and try again.';
             }
         }
     } else {
@@ -61,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
             }
-            header('Location: section.php?s=' . urlencode($s) . '&saved=1');
+            header('Location: section.php?s=' . urlencode($s) . '&saved=1&tab=' . urlencode($activeWebsiteTab));
             exit;
         } catch (RuntimeException $ex) {
             $error = $ex->getMessage();
@@ -94,12 +108,19 @@ foreach ($fields as $f) {
 <?php if ($error): ?><div class="alert err"><?= e($error) ?></div><?php endif; ?>
 <?php if ($ok): ?><div class="alert ok"><?= e($ok) ?></div><?php endif; ?>
 
+<div class="tab-nav">
+  <?php foreach ($website_groups as $groupTitle => $keys): $tabKey = $website_tab_keys[$groupTitle]; ?>
+    <button type="button" class="tab-btn<?= $activeWebsiteTab === $tabKey ? ' active' : '' ?>" data-tab="<?= e($tabKey) ?>"><?= e($groupTitle) ?></button>
+  <?php endforeach; ?>
+</div>
+
 <form method="post" enctype="multipart/form-data">
   <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
   <input type="hidden" name="action" value="save">
+  <input type="hidden" name="tab" value="<?= e($activeWebsiteTab) ?>" class="active-tab-input">
 
-  <?php foreach ($website_groups as $groupTitle => $keys): ?>
-    <div class="settings-group">
+  <?php foreach ($website_groups as $groupTitle => $keys): $tabKey = $website_tab_keys[$groupTitle]; ?>
+    <div class="tab-panel settings-group<?= $activeWebsiteTab === $tabKey ? ' active' : '' ?>" data-tab="<?= e($tabKey) ?>">
       <h3><?= e($groupTitle) ?></h3>
 
       <?php if ($groupTitle === 'Logo Settings'): ?>
@@ -176,11 +197,16 @@ foreach ($fields as $f) {
           </div>
         <?php endif; ?>
         <div class="field-grid">
-          <?php foreach (['smtp_from_name' => SITE_NAME, 'smtp_from_email' => 'Same as the Workspace email above'] as $key => $ph): if (!isset($byKey[$key])) continue; $f = $byKey[$key]; ?>
+          <?php foreach (['smtp_from_name' => SITE_NAME] as $key => $ph): if (!isset($byKey[$key])) continue; $f = $byKey[$key]; ?>
             <label><?= e($f['label']) ?>
               <input type="text" name="<?= e($key) ?>" value="<?= e($f['svalue']) ?>" placeholder="<?= e($ph) ?>">
             </label>
           <?php endforeach; ?>
+          <?php if (isset($byKey['smtp_from_email'])): ?>
+            <label><?= e($byKey['smtp_from_email']['label']) ?> <span class="help">(leave blank to use the Workspace email above - Google only allows this to be a different address if it's added as a "Send mail as" alias in that Gmail account's Settings &gt; Accounts, otherwise the email will be rejected)</span>
+              <input type="text" name="smtp_from_email" value="<?= e($byKey['smtp_from_email']['svalue']) ?>" placeholder="Same as the Workspace email above">
+            </label>
+          <?php endif; ?>
         </div>
         <p class="help" style="margin-top:6px;">Save your changes below first, then use this to confirm they work - it sends a test email to the Workspace email address above.</p>
         <button type="submit" form="testSmtpForm" class="btn btn-sm btn-ghost">Send Test Email</button>
@@ -210,5 +236,22 @@ foreach ($fields as $f) {
 <form id="testSmtpForm" method="post" class="inline-form">
   <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
   <input type="hidden" name="action" value="test_smtp">
+  <input type="hidden" name="tab" value="<?= e($activeWebsiteTab) ?>" class="active-tab-input">
 </form>
+
+<script>
+document.querySelectorAll('.tab-btn').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+    document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
+    btn.classList.add('active');
+    var panel = document.querySelector('.tab-panel[data-tab="' + btn.dataset.tab + '"]');
+    if (panel) panel.classList.add('active');
+    document.querySelectorAll('.active-tab-input').forEach(function (input) { input.value = btn.dataset.tab; });
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState(null, '', '?s=website&tab=' + btn.dataset.tab);
+    }
+  });
+});
+</script>
 <?php include __DIR__ . '/layout_end.php'; ?>
