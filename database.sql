@@ -18,6 +18,9 @@ CREATE TABLE IF NOT EXISTS `admins` (
   `role` VARCHAR(60) NOT NULL DEFAULT 'admin',
   `reset_token` VARCHAR(64) NULL,
   `reset_token_expires` DATETIME NULL,
+  `otp_code` VARCHAR(10) NULL,
+  `otp_expires` DATETIME NULL,
+  `otp_attempts` TINYINT(3) NOT NULL DEFAULT 0,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
@@ -34,7 +37,9 @@ INSERT INTO `admins` (`username`, `password_hash`, `role`) VALUES
 -- email), password-reset links, and the "set your password" invite link
 -- sent to a brand-new admin account. `password_hash` is empty ('') for
 -- an invited account that hasn't set its password yet - that account
--- simply can't log in until it does.
+-- simply can't log in until it does. `otp_code`/`otp_expires`/
+-- `otp_attempts` hold the one-time email code required on every login
+-- that doesn't tick "Remember me" (see admin/login.php).
 
 -- `role` holds a comma-separated list of one or more of:
 --   admin     - full access, including Admin Users and Website Settings

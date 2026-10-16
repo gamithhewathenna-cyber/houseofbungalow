@@ -18,6 +18,17 @@ function require_login(): void
         header('Location: login.php');
         exit;
     }
+    // Absolute session cap: signed out after 30 days no matter what
+    // (including a "Remember me" session) - a session from before this
+    // check existed has no login_at yet, so it's left alone until its
+    // next fresh login re-stamps it.
+    $loginAt = $_SESSION['admin']['login_at'] ?? null;
+    if ($loginAt !== null && (time() - $loginAt) > 30 * 24 * 3600) {
+        $_SESSION = [];
+        session_destroy();
+        header('Location: login.php?expired=1');
+        exit;
+    }
     // Automatically record every successful admin form submission as work
     // history - every admin page calls require_login() (directly or via
     // require_role()) before it handles its POST, so this one hook covers
@@ -178,6 +189,59 @@ function send_admin_reset_email(array $admin, string $token): bool
         . '<p style="margin:0;font-size:12px;color:#9a9089;">If you didn\'t request this, you can ignore this email - your password won\'t change.</p>';
     $html = email_layout('Reset Your Password', $body, ['label' => 'Reset Password', 'url' => $link]);
     return app_mail($admin['email'], 'Reset your ' . SITE_NAME . ' admin password', $html, ['Content-Type: text/html; charset=UTF-8']);
+}
+
+/**
+ * Creates a fresh 6-digit sign-in code for an admin account, valid for
+ * 10 minutes, and resets its failed-attempt counter. Required on every
+ * login that doesn't tick "Remember me".
+ */
+function create_admin_otp(int $adminId): string
+{
+    $code    = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+    $expires = gmdate('Y-m-d H:i:s', time() + 10 * 60);
+    $q = db()->prepare('UPDATE admins SET otp_code = ?, otp_expires = ?, otp_attempts = 0 WHERE id = ?');
+    $q->execute([$code, $expires, $adminId]);
+    return $code;
+}
+
+function send_admin_otp_email(array $admin, string $code): bool
+{
+    if (empty($admin['email'])) {
+        return false;
+    }
+    $maroon = e(setting('theme_maroon', '#620E15'));
+    $body = email_p('Your one-time code to sign in to the ' . SITE_NAME . ' admin panel:')
+        . '<p style="margin:0 0 18px;text-align:center;"><span style="display:inline-block;background:#faf6f0;border:1px solid #efe8de;border-radius:8px;padding:14px 28px;font-size:28px;font-weight:bold;letter-spacing:6px;color:' . $maroon . ';">' . e($code) . '</span></p>'
+        . '<p style="margin:0;font-size:12px;color:#9a9089;">This code expires in 10 minutes. If you didn\'t try to sign in, you can ignore this email - your account is still safe.</p>';
+    $html = email_layout('Your Sign-In Code', $body);
+    return app_mail($admin['email'], SITE_NAME . ' sign-in code: ' . $code, $html, ['Content-Type: text/html; charset=UTF-8']);
+}
+
+/**
+ * Finishes a login: starts the real session, optionally extends the
+ * cookie for "Remember me", and clears any pending-OTP state. Call this
+ * (not a hand-rolled version) from login.php and set-password.php so
+ * every path stamps login_at consistently for the 30-day cap above.
+ */
+function complete_admin_login(array $admin, bool $remember): void
+{
+    session_regenerate_id(true);
+    $_SESSION['admin'] = [
+        'id'       => $admin['id'],
+        'username' => $admin['username'],
+        'role'     => $admin['role'] ?? 'admin',
+        'login_at' => time(),
+    ];
+    unset($_SESSION['pending_otp_admin_id'], $_SESSION['pending_otp_username']);
+    if ($remember) {
+        // Extend the session cookie to 30 days instead of the default
+        // "until the browser closes" - everything else about the
+        // session (path, domain, secure, httponly) stays the same.
+        $params = session_get_cookie_params();
+        setcookie(session_name(), session_id(), time() + 30 * 24 * 3600, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+    }
+    log_activity('login');
 }
 
 function csrf_token(): string

@@ -27,8 +27,7 @@ if (!$admin) {
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $q = db()->prepare('UPDATE admins SET password_hash = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ?');
             $q->execute([$hash, $admin['id']]);
-            session_regenerate_id(true);
-            $_SESSION['admin'] = ['id' => $admin['id'], 'username' => $admin['username'], 'role' => $admin['role'] ?? 'admin'];
+            complete_admin_login($admin, false);
             log_activity('set_password');
             header('Location: index.php');
             exit;
