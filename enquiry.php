@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/includes/mailer.php';
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -83,7 +84,7 @@ function send_enquiry_notification(array $d): void
     if ($cc !== '') {
         $headers[] = 'Cc: ' . $cc;
     }
-    @mail($to, 'New Private Events Enquiry - ' . header_safe($d['full_name']), implode("\n", $lines), implode("\r\n", $headers));
+    app_mail($to, 'New Private Events Enquiry - ' . header_safe($d['full_name']), implode("\n", $lines), $headers);
 }
 
 /**
@@ -102,7 +103,7 @@ function send_enquiry_thankyou(array $d): void
         'From: ' . SITE_NAME . ' <' . enquiry_mail_from() . '>',
         'Content-Type: text/plain; charset=UTF-8',
     ];
-    @mail($d['email'], $subject, $body, implode("\r\n", $headers));
+    app_mail($d['email'], $subject, $body, $headers);
 }
 
 try {

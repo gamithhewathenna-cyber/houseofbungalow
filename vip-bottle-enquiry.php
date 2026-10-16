@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/includes/mailer.php';
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -72,7 +73,7 @@ function send_vipbottle_notification(array $d): void
     if ($cc !== '') {
         $headers[] = 'Cc: ' . $cc;
     }
-    @mail($to, 'New VIP Bottle Service Enquiry - ' . vipbottle_header_safe($d['full_name']), implode("\n", $lines), implode("\r\n", $headers));
+    app_mail($to, 'New VIP Bottle Service Enquiry - ' . vipbottle_header_safe($d['full_name']), implode("\n", $lines), $headers);
 }
 
 try {

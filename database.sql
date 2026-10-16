@@ -254,7 +254,15 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('theme_maroon','#620E15','website','Maroon (accent)','color',7),
 ('theme_dark','#0d0b0a','website','Dark','color',8),
 ('seo_visible','1','website','Allow search engines to index this site','checkbox',9),
-('maintenance_mode','0','website','Enable maintenance mode','checkbox',10);
+('maintenance_mode','0','website','Enable maintenance mode','checkbox',10),
+('smtp_enabled','0','website','Send email through a Google Workspace / SMTP account','checkbox',11),
+('smtp_host','smtp.gmail.com','website','SMTP host','text',12),
+('smtp_port','587','website','SMTP port','text',13),
+('smtp_encryption','tls','website','SMTP encryption','text',14),
+('smtp_username','','website','Workspace email address','text',15),
+('smtp_password','','website','Workspace app password','text',16),
+('smtp_from_name','','website','"From" name on outgoing emails','text',17),
+('smtp_from_email','','website','"From" email address on outgoing emails','text',18);
 
 -- Three Spaces cards
 INSERT INTO `blocks` (`block_type`,`title`,`image`,`link_url`,`sort`,`active`) VALUES
