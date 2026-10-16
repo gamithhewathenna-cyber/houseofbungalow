@@ -30,11 +30,13 @@ $mainNav = [
     ['href' => 'contact.php',     'label' => 'Contact',            'icon' => 'pin',   'area' => 'content'],
     ['href' => 'careers.php',     'label' => 'Join Our Team',      'icon' => 'briefcase', 'area' => 'content'],
     ['href' => 'privacy.php',     'label' => 'Privacy & Terms',    'icon' => 'question', 'area' => 'content'],
-    ['href' => 'subscribers.php', 'label' => 'Subscribers',        'icon' => 'mail',  'area' => 'enquiries'],
+    ['href' => 'seo.php',         'label' => 'SEO',                'icon' => 'search', 'area' => 'content'],
+];
+$leadNav = [
     ['href' => 'enquiries.php',   'label' => 'Enquiries',          'icon' => 'inbox', 'area' => 'enquiries'],
     ['href' => 'vip-bottle-enquiries.php', 'label' => 'VIP Enquiries', 'icon' => 'inbox', 'area' => 'enquiries'],
     ['href' => 'career-applications.php', 'label' => 'Applications', 'icon' => 'inbox', 'area' => 'enquiries'],
-    ['href' => 'seo.php',         'label' => 'SEO',                'icon' => 'search', 'area' => 'content'],
+    ['href' => 'subscribers.php', 'label' => 'Subscribers',        'icon' => 'mail',  'area' => 'enquiries'],
 ];
 $systemNav = [
     ['href' => 'section.php?s=website', 'label' => 'Website Settings', 'icon' => 'gear', 'area' => 'admin'],
@@ -43,6 +45,7 @@ $systemNav = [
     ['href' => 'account.php',           'label' => 'Account',          'icon' => 'user', 'area' => null],
 ];
 $mainNav = array_values(array_filter($mainNav, fn($item) => $item['area'] === null || admin_can($item['area'])));
+$leadNav = array_values(array_filter($leadNav, fn($item) => $item['area'] === null || admin_can($item['area'])));
 $systemNav = array_values(array_filter($systemNav, fn($item) => $item['area'] === null || admin_can($item['area'])));
 
 function nav_icon(string $key): void
@@ -99,6 +102,11 @@ function nav_link(array $item, string $current): void
   <div class="sidebar-brand">House of Bungalow<span>Admin</span></div>
   <nav class="sidebar-nav">
     <?php foreach ($mainNav as $item): nav_link($item, $current); endforeach; ?>
+
+    <?php if ($leadNav): ?>
+      <div class="nav-section-label">Lead Management</div>
+      <?php foreach ($leadNav as $item): nav_link($item, $current); endforeach; ?>
+    <?php endif; ?>
 
     <div class="nav-section-label">System</div>
     <?php foreach ($systemNav as $item): nav_link($item, $current); endforeach; ?>

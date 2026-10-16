@@ -129,7 +129,7 @@ include __DIR__ . '/layout.php';
 <?php endif; ?>
 
 <?php if (admin_can('enquiries')): ?>
-<h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">Enquiries</h2>
+<h2 style="font-size:15px;margin:24px 0 12px;color:#5a544e;">Lead Management</h2>
 <div class="dash-links">
   <a href="enquiries.php">Private Event Enquiries</a>
   <a href="vip-bottle-enquiries.php">VIP Enquiries</a>
