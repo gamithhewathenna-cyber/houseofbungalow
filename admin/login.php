@@ -16,6 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($admin && $admin['password_hash'] !== '' && password_verify($password, $admin['password_hash'])) {
         session_regenerate_id(true);
         $_SESSION['admin'] = ['id' => $admin['id'], 'username' => $admin['username'], 'role' => $admin['role'] ?? 'admin'];
+        if (!empty($_POST['remember'])) {
+            // Extend the session cookie to 30 days instead of the default
+            // "until the browser closes" - everything else about the
+            // session (path, domain, secure, httponly) stays the same.
+            $params = session_get_cookie_params();
+            setcookie(session_name(), session_id(), time() + 30 * 24 * 3600, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        }
         log_activity('login');
         header('Location: index.php');
         exit;
@@ -42,6 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </label>
       <label>Password
         <input type="password" name="password" required>
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px;color:#5a544e;margin-bottom:18px;">
+        <input type="checkbox" name="remember" value="1" style="width:auto;margin:0;">
+        Remember me
       </label>
       <button type="submit" class="btn">Sign In</button>
     </form>
