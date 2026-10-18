@@ -29,6 +29,7 @@ $mainNav = [
     ['href' => 'faq.php',         'label' => 'FAQ',                'icon' => 'question', 'area' => 'content'],
     ['href' => 'contact.php',     'label' => 'Contact',            'icon' => 'pin',   'area' => 'content'],
     ['href' => 'careers.php',     'label' => 'Join Our Team',      'icon' => 'briefcase', 'area' => 'content'],
+    ['href' => 'press.php',       'label' => 'Press & Media',      'icon' => 'pin',   'area' => 'content'],
     ['href' => 'privacy.php',     'label' => 'Privacy & Terms',    'icon' => 'question', 'area' => 'content'],
     ['href' => 'seo.php',         'label' => 'SEO',                'icon' => 'search', 'area' => 'content'],
 ];
@@ -36,6 +37,7 @@ $leadNav = [
     ['href' => 'enquiries.php',   'label' => 'Enquiries',          'icon' => 'inbox', 'area' => 'enquiries'],
     ['href' => 'vip-bottle-enquiries.php', 'label' => 'VIP Enquiries', 'icon' => 'inbox', 'area' => 'enquiries'],
     ['href' => 'career-applications.php', 'label' => 'Applications', 'icon' => 'inbox', 'area' => 'enquiries'],
+    ['href' => 'press-enquiries.php', 'label' => 'Press Enquiries', 'icon' => 'inbox', 'area' => 'enquiries'],
     ['href' => 'subscribers.php', 'label' => 'Subscribers',        'icon' => 'mail',  'area' => 'enquiries'],
 ];
 $systemNav = [
@@ -54,6 +56,7 @@ $leadTableMap = [
     'enquiries.php'                => 'enquiries',
     'vip-bottle-enquiries.php'     => 'vip_bottle_enquiries',
     'career-applications.php'      => 'career_applications',
+    'press-enquiries.php'          => 'press_enquiries',
     'subscribers.php'              => 'subscribers',
 ];
 $leadUnreadTotal = 0;
