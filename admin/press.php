@@ -4,12 +4,13 @@ require_role('content');
 require_once __DIR__ . '/helpers.php';
 
 $fieldGroups = [
-    'intro' => ['press_heading', 'press_subheading', 'press_lede', 'press_p1', 'press_p2', 'press_p3', 'press_btn_label'],
-    'form'  => ['press_form_eyebrow', 'press_form_intro', 'press_success_message'],
+    'herovideo' => ['press_hero_image', 'press_hero_video'],
+    'intro'     => ['press_heading', 'press_subheading', 'press_lede', 'press_p1', 'press_p2', 'press_p3', 'press_btn_label'],
+    'popup'     => ['press_form_eyebrow', 'press_form_intro', 'press_success_message'],
 ];
 $visibilitySections = [
+    'press_hero'  => 'Hero',
     'press_intro' => 'Intro',
-    'press_form'  => 'Media Enquiry Form',
 ];
 
 $error = '';
@@ -35,9 +36,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $stmt = db()->prepare("SELECT * FROM settings WHERE skey IN ($placeholders)");
                     $stmt->execute($keys);
                     foreach ($stmt->fetchAll() as $f) {
-                        $key = $f['skey'];
-                        if (array_key_exists($key, $_POST)) {
-                            save_setting($key, $_POST[$key]);
+                        $key = $f['skey']; $type = $f['field_type'];
+                        if ($type === 'image') {
+                            $uploaded = handle_upload('file_' . $key);
+                            if ($uploaded !== null) {
+                                save_setting($key, $uploaded);
+                            }
+                        } elseif ($type === 'video') {
+                            $uploaded = handle_video_upload('file_' . $key);
+                            if ($uploaded !== null) {
+                                save_setting($key, $uploaded);
+                            } elseif (isset($_POST['remove_' . $key])) {
+                                save_setting($key, '');
+                            }
+                        } else {
+                            if (array_key_exists($key, $_POST)) {
+                                save_setting($key, $_POST[$key]);
+                            }
                         }
                     }
                 }
@@ -56,13 +71,14 @@ foreach ($allRows as $r) {
 }
 
 $tabs = [
+    'herovideo'  => 'Hero Image/Video',
     'intro'      => 'Intro',
-    'form'       => 'Media Enquiry Form',
+    'popup'      => 'Media Enquiry Popup',
     'visibility' => 'Section Visibility',
 ];
-$activeTab = $_GET['tab'] ?? 'intro';
+$activeTab = $_GET['tab'] ?? 'herovideo';
 if (!isset($tabs[$activeTab])) {
-    $activeTab = 'intro';
+    $activeTab = 'herovideo';
 }
 
 function render_press_field(array $f): void
@@ -74,6 +90,23 @@ function render_press_field(array $f): void
         <?= e($f['label'] ?: $key) ?>
         <?php if ($type === 'textarea'): ?>
           <textarea name="<?= e($key) ?>"><?= e($val) ?></textarea>
+        <?php elseif ($type === 'image'): ?>
+          <?php if ($val): ?>
+            <div class="thumb-preview"><img src="<?= e(asset($val)) ?>" alt=""></div>
+          <?php endif; ?>
+          <input type="file" name="file_<?= e($key) ?>" accept="image/*" data-crop-ratio="<?= e(crop_ratio_for_key($key)) ?>">
+          <span class="help">Current: <code><?= e($val ?: 'none') ?></code>. Leave empty to keep it.</span>
+        <?php elseif ($type === 'video'): ?>
+          <?php if ($val): ?>
+            <div class="thumb-preview">
+              <video src="<?= e(asset($val)) ?>" style="max-height:160px;max-width:100%;" controls muted></video>
+            </div>
+            <span class="help" style="display:block;margin:6px 0;">
+              <input type="checkbox" name="remove_<?= e($key) ?>" value="1"> Remove this video (revert to the static hero image)
+            </span>
+          <?php endif; ?>
+          <input type="file" name="file_<?= e($key) ?>" accept="video/mp4,video/webm,video/quicktime">
+          <span class="help"><strong>MP4 (H.264) recommended</strong> - WEBM will not play in Safari. Ideally 1280×720 (720p), short and compressed (max 60&nbsp;MB) so it loads quickly. Leave empty to keep the current video.</span>
         <?php else: ?>
           <input type="text" name="<?= e($key) ?>" value="<?= e($val) ?>">
         <?php endif; ?>
@@ -97,13 +130,16 @@ include __DIR__ . '/layout.php';
 <?php foreach ($fieldGroups as $group => $keys): ?>
   <div class="tab-panel settings-group<?= $activeTab === $group ? ' active' : '' ?>" data-tab="<?= e($group) ?>">
     <h3><?= e($tabs[$group]) ?></h3>
+    <?php if ($group === 'herovideo'): ?>
+      <p class="group-help">Shown full-bleed at the very top of the page, no text over it (just like Restaurant, Café, Below, etc). Upload a video to use that instead of the static image - it'll autoplay muted on loop.</p>
+    <?php endif; ?>
     <?php if ($group === 'intro'): ?>
-      <p class="group-help">The button scrolls down to the Media Enquiry Form on the same page - leave its label empty to hide it.</p>
+      <p class="group-help">Shown just below the hero image. The button opens the Media Enquiry popup form - leave its label empty to hide the button.</p>
     <?php endif; ?>
-    <?php if ($group === 'form'): ?>
-      <p class="group-help">The form fields themselves (Full Name, Publication/Organisation, Email, Phone, Nature of Enquiry, Your Enquiry) are fixed and not editable here. Where enquiries get emailed to is set under Press Enquiries in the sidebar.</p>
+    <?php if ($group === 'popup'): ?>
+      <p class="group-help">The popup's form fields themselves (Full Name, Publication/Organisation, Email, Phone, Nature of Enquiry, Your Enquiry) are fixed and not editable here. Where enquiries get emailed to is set under Press Enquiries in the sidebar.</p>
     <?php endif; ?>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
       <input type="hidden" name="action" value="save_section">
       <input type="hidden" name="group" value="<?= e($group) ?>">

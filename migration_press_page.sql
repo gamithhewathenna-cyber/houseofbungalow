@@ -1,8 +1,10 @@
 -- =====================================================================
--- Adds the new "Press & Media" page (press.php), its Media Enquiry
--- Form, and a "Press Enquiries" tab under Lead Management in the admin
--- (manage content: admin/press.php - view submitted enquiries:
--- admin/press-enquiries.php).
+-- Adds the new "Press & Media" page (press.php): a full-bleed hero
+-- image/video (no text, matching every other page), an intro section
+-- below it, and a "MEDIA ENQUIRIES" button that opens a popup enquiry
+-- form (same style as the VIP Bottle Service popup). Also adds a
+-- "Press Enquiries" tab under Lead Management in the admin to view
+-- submissions, and links the existing "PRESS" footer menu button to it.
 --
 -- Run this once via cPanel > phpMyAdmin > SQL tab.
 -- Safe to run more than once (ON DUPLICATE KEY UPDATE / IF NOT EXISTS
@@ -23,20 +25,29 @@ CREATE TABLE IF NOT EXISTS `press_enquiries` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) VALUES
-('press_heading','Press & Media','press_page','Heading','text',1),
-('press_subheading','STORIES FROM THE HOUSE.','press_page','Subheading','text',2),
-('press_lede','Every space has a story. Here''s ours.','press_page','Lede paragraph (italic)','textarea',3),
-('press_p1','House of Bungalow brings together food, design, music and hospitality across three distinct spaces in the heart of Surry Hills.','press_page','Paragraph 1','textarea',4),
-('press_p2','From the people behind the House to the experiences within it, there''s always a story worth sharing.','press_page','Paragraph 2','textarea',5),
-('press_p3','For press enquiries, interviews, features and media collaborations, get in touch with our team.','press_page','Paragraph 3','textarea',6),
-('press_btn_label','MEDIA ENQUIRIES','press_page','Button label (scrolls down to the form)','text',7),
-('press_form_eyebrow','Media Enquiry Form','press_page','Form - eyebrow label','text',8),
-('press_form_intro','','press_page','Form - intro text (optional)','textarea',9),
-('press_success_message','Thank you for getting in touch. Our team will be in contact shortly.','press_page','Form - thank-you message (shown after submitting)','textarea',10),
-('press_to_email','','press_page','Send enquiries to (email address)','text',11),
-('press_cc_email','','press_page','CC email (optional - comma-separate for more than one)','text',12)
+('press_hero_image','assets/img/restaurant.jpg','press_page','Hero image (poster/fallback)','image',1),
+('press_hero_video','','press_page','Hero video (mp4/webm, ideally 1280×720)','video',2),
+('press_heading','Press & Media','press_page','Heading','text',3),
+('press_subheading','STORIES FROM THE HOUSE.','press_page','Subheading','text',4),
+('press_lede','Every space has a story. Here''s ours.','press_page','Lede paragraph (italic)','textarea',5),
+('press_p1','House of Bungalow brings together food, design, music and hospitality across three distinct spaces in the heart of Surry Hills.','press_page','Paragraph 1','textarea',6),
+('press_p2','From the people behind the House to the experiences within it, there''s always a story worth sharing.','press_page','Paragraph 2','textarea',7),
+('press_p3','For press enquiries, interviews, features and media collaborations, get in touch with our team.','press_page','Paragraph 3','textarea',8),
+('press_btn_label','MEDIA ENQUIRIES','press_page','Button label (opens the Media Enquiry popup)','text',9),
+('press_form_eyebrow','Media Enquiry Form','press_page','Popup - eyebrow label','text',10),
+('press_form_intro','','press_page','Popup - intro text (optional)','textarea',11),
+('press_success_message','Thank you for getting in touch. Our team will be in contact shortly.','press_page','Popup - thank-you message (shown after submitting)','textarea',12),
+('press_to_email','','press_page','Send enquiries to (email address)','text',13),
+('press_cc_email','','press_page','CC email (optional - comma-separate for more than one)','text',14)
 ON DUPLICATE KEY UPDATE `skey` = `skey`;
 
 INSERT INTO `seo_meta` (`page_key`, `page_file`, `page_label`) VALUES
 ('press', 'press.php', 'Press & Media')
 ON DUPLICATE KEY UPDATE `page_key` = `page_key`;
+
+-- Points the existing "PRESS" footer menu button at the new page (it was
+-- seeded with a placeholder "#" link). Only touches it if it's still
+-- set to that placeholder, so a link you've already customised yourself
+-- is left alone.
+UPDATE `blocks` SET `link_url` = 'press.php'
+  WHERE `block_type` = 'footer_nav' AND `title` = 'PRESS' AND `link_url` = '#';
