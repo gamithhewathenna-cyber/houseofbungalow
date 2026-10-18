@@ -9,6 +9,8 @@ include __DIR__ . '/includes/header.php';
 $press_hero_image = asset(setting('press_hero_image', 'assets/img/restaurant.jpg'));
 $press_hero_video = setting('press_hero_video');
 $press_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'video/quicktime'][strtolower(pathinfo($press_hero_video, PATHINFO_EXTENSION))] ?? 'video/mp4';
+
+$pressFeatures = blocks('press_feature');
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
@@ -37,6 +39,22 @@ $press_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' =>
         <a class="link-underline js-press-popup-trigger" href="#"><?= e(setting('press_btn_label', 'MEDIA ENQUIRIES')) ?></a>
       </div>
     <?php endif; ?>
+  </div>
+</section>
+<?php endif; ?>
+
+<!-- As Featured In ------------------------------------------------------- -->
+<?php if ($pressFeatures && section_visible('press_features')): ?>
+<section class="press-feature-section reveal">
+  <div class="container">
+    <div class="press-feature-grid">
+      <?php foreach ($pressFeatures as $pf): ?>
+        <a class="press-feature-item" href="<?= e(url($pf['link_url'] ?: '#')) ?>" target="_blank" rel="noopener">
+          <img loading="lazy" decoding="async" src="<?= e(asset($pf['image'])) ?>" alt="<?= e($pf['title']) ?>">
+          <p class="press-feature-title"><?= e($pf['title']) ?></p>
+        </a>
+      <?php endforeach; ?>
+    </div>
   </div>
 </section>
 <?php endif; ?>

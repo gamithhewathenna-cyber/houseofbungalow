@@ -1246,6 +1246,13 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 /* ------------------------------------------------------------------ */
 /* Join Our Team - on-page application form (light theme, no popup)    */
 /* ------------------------------------------------------------------ */
+/* Press & Media - "Featured In" grid (4-across, wraps after every 4) */
+.press-feature-section{padding:10px 0 80px;}
+.press-feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:40px 28px;}
+.press-feature-item{display:block;text-decoration:none;}
+.press-feature-item img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;border-radius:2px;}
+.press-feature-title{margin:18px 0 0;text-align:center;font-family:var(--sans);font-size:14px;letter-spacing:.3px;color:var(--ink-soft);}
+
 .career-form-section{padding:60px 0 90px;}
 .career-form-card{
   max-width:760px;margin:0 auto;background:#ede1d2;border-radius:20px;
@@ -1333,6 +1340,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .chef-copy .chef-name{font-size:32px;}
   .night-row-3,.night-row-2{grid-template-columns:1fr 1fr;max-width:none;}
   .events-grid{grid-template-columns:1fr 1fr;}
+  .press-feature-grid{grid-template-columns:1fr 1fr;}
   .dj-carousel{padding:0 44px;}
   .dj-carousel::before,.dj-carousel::after{width:70px;}
   .dj-card{flex-basis:260px;}
@@ -1389,6 +1397,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .trio-grid{grid-template-columns:1fr;gap:12px;}
   .night-row-3,.night-row-2{grid-template-columns:1fr;}
   .events-grid{grid-template-columns:1fr;gap:14px;}
+  .press-feature-grid{grid-template-columns:1fr;gap:28px;}
   .booking-popup-inner h2{font-size:30px;}
   .booking-popup-sub{font-size:16px;margin-bottom:30px;}
   .booking-popup-actions{gap:18px;}

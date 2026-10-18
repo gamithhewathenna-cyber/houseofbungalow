@@ -972,6 +972,13 @@ INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) V
 ('press_to_email','','press_page','Send enquiries to (email address)','text',13),
 ('press_cc_email','','press_page','CC email (optional - comma-separate for more than one)','text',14);
 
+-- "Featured In" grid - placeholder content, replace via admin > Press & Media > Featured In
+INSERT INTO `blocks` (`block_type`,`title`,`link_url`,`image`,`sort`,`active`) VALUES
+('press_feature','Publication Name','#','assets/img/restaurant.jpg',1,1),
+('press_feature','Publication Name','#','assets/img/below.jpg',2,1),
+('press_feature','Publication Name','#','assets/img/cafe.jpg',3,1),
+('press_feature','Publication Name','#','assets/img/hero.jpg',4,1);
+
 -- ---------------------------------------------------------------------
 -- Melbourne Cup page (melbournecup.php) - dual Restaurant / Below Cup
 -- Day offers, each with its own fixed set menu, plus a beverage-package

@@ -9,8 +9,9 @@ $fieldGroups = [
     'popup'     => ['press_form_eyebrow', 'press_form_intro', 'press_success_message'],
 ];
 $visibilitySections = [
-    'press_hero'  => 'Hero',
-    'press_intro' => 'Intro',
+    'press_hero'     => 'Hero',
+    'press_intro'    => 'Intro',
+    'press_features' => 'Featured In',
 ];
 
 $error = '';
@@ -58,6 +59,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 header('Location: press.php?tab=' . urlencode($group) . '&saved=1'); exit;
             }
+
+            // ---- Featured In grid ----
+            if ($action === 'save_features') {
+                foreach (($_POST['title'] ?? []) as $id => $title) {
+                    $id  = (int) $id;
+                    $img = handle_upload('file_' . $id);
+                    $fields = ['title=?', 'link_url=?', 'sort=?'];
+                    $params = [trim($title), trim($_POST['link'][$id] ?? ''), (int) ($_POST['sort'][$id] ?? 0)];
+                    if ($img !== null) {
+                        $fields[] = 'image=?';
+                        $params[] = $img;
+                    }
+                    $params[] = $id;
+                    $q = db()->prepare('UPDATE blocks SET ' . implode(',', $fields) . ' WHERE id=? AND block_type="press_feature"');
+                    $q->execute($params);
+                }
+                header('Location: press.php?tab=features&saved=1'); exit;
+            }
+            if ($action === 'add_feature') {
+                $img = handle_upload('new_file');
+                $q = db()->prepare('INSERT INTO blocks (block_type,title,link_url,image,sort,active) VALUES ("press_feature",?,?,?,?,1)');
+                $q->execute([trim($_POST['new_title'] ?? 'New Feature'), trim($_POST['new_link'] ?? '#'), $img ?? '', (int) ($_POST['new_sort'] ?? 99)]);
+                header('Location: press.php?tab=features&saved=1'); exit;
+            }
+            if ($action === 'delete_feature') {
+                $q = db()->prepare('DELETE FROM blocks WHERE id=? AND block_type="press_feature"');
+                $q->execute([(int) ($_POST['id'] ?? 0)]);
+                header('Location: press.php?tab=features&saved=1'); exit;
+            }
         } catch (RuntimeException $ex) {
             $error = $ex->getMessage();
         }
@@ -69,10 +99,12 @@ $bySkey = [];
 foreach ($allRows as $r) {
     $bySkey[$r['skey']] = $r;
 }
+$pressFeatures = db()->query("SELECT * FROM blocks WHERE block_type='press_feature' ORDER BY sort ASC, id ASC")->fetchAll();
 
 $tabs = [
     'herovideo'  => 'Hero Image/Video',
     'intro'      => 'Intro',
+    'features'   => 'Featured In',
     'popup'      => 'Media Enquiry Popup',
     'visibility' => 'Section Visibility',
 ];
@@ -148,6 +180,83 @@ include __DIR__ . '/layout.php';
     </form>
   </div>
 <?php endforeach; ?>
+
+<!-- Featured In tab -->
+<div class="tab-panel settings-group<?= $activeTab === 'features' ? ' active' : '' ?>" data-tab="features">
+  <h3>Featured In</h3>
+  <p class="group-help">Shown as a grid after the intro section - 4 across, wrapping to a new row after every 4. Each image and title link out to the article, opening in a new tab.</p>
+
+  <form method="post" enctype="multipart/form-data">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="save_features">
+    <div class="dj-admin-list">
+      <?php foreach ($pressFeatures as $pf): ?>
+        <div class="dj-admin-card">
+          <div class="dj-admin-media">
+            <div class="thumb-preview<?= $pf['image'] ? '' : ' empty' ?>">
+              <?php if ($pf['image']): ?><img src="<?= e(asset($pf['image'])) ?>" alt=""><?php else: ?>No photo yet<?php endif; ?>
+            </div>
+            <input type="file" name="file_<?= $pf['id'] ?>" accept="image/*" data-crop-ratio="1:1">
+            <span class="help">Replace photo</span>
+          </div>
+          <div class="dj-admin-fields">
+            <div class="field-row">
+              <label>Title
+                <input type="text" name="title[<?= $pf['id'] ?>]" value="<?= e($pf['title']) ?>">
+              </label>
+            </div>
+            <div class="field-grid">
+              <label>Link URL <span class="help">(opens in a new tab)</span>
+                <input type="text" name="link[<?= $pf['id'] ?>]" value="<?= e($pf['link_url']) ?>" placeholder="https://...">
+              </label>
+              <label>Order
+                <input type="text" name="sort[<?= $pf['id'] ?>]" value="<?= (int)$pf['sort'] ?>" style="max-width:100px;">
+              </label>
+            </div>
+          </div>
+          <div class="dj-admin-actions">
+            <button form="delfeature<?= $pf['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this feature?')">Delete</button>
+          </div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+    <div class="form-actions"><button class="btn">Save Changes</button></div>
+  </form>
+  <?php foreach ($pressFeatures as $pf): ?>
+    <form id="delfeature<?= $pf['id'] ?>" method="post" class="inline-form">
+      <input type="hidden" name="csrf" value="<?= e($csrf) ?>"><input type="hidden" name="action" value="delete_feature"><input type="hidden" name="id" value="<?= $pf['id'] ?>">
+    </form>
+  <?php endforeach; ?>
+
+  <h3 style="margin-top:30px;">Add a Feature</h3>
+  <form method="post" enctype="multipart/form-data" class="dj-admin-card dj-admin-add">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="add_feature">
+    <div class="dj-admin-media">
+      <div class="thumb-preview empty">No photo yet</div>
+      <input type="file" name="new_file" accept="image/*" data-crop-ratio="1:1">
+      <span class="help">Upload photo</span>
+    </div>
+    <div class="dj-admin-fields">
+      <div class="field-row">
+        <label>Title
+          <input type="text" name="new_title" placeholder="e.g. The Leftovers Miami">
+        </label>
+      </div>
+      <div class="field-grid">
+        <label>Link URL <span class="help">(opens in a new tab)</span>
+          <input type="text" name="new_link" placeholder="https://...">
+        </label>
+        <label>Order
+          <input type="text" name="new_sort" value="99" style="max-width:100px;">
+        </label>
+      </div>
+    </div>
+    <div class="dj-admin-actions">
+      <button class="btn btn-sm">Add Feature</button>
+    </div>
+  </form>
+</div>
 
 <div class="tab-panel settings-group<?= $activeTab === 'visibility' ? ' active' : '' ?>" data-tab="visibility">
   <h3>Section Visibility</h3>
