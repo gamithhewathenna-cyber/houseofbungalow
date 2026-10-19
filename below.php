@@ -32,6 +32,9 @@ while ($i < count($nights)) {
       <source src="<?= e(asset($below_hero_video)) ?>" type="<?= e($below_hero_video_mime) ?>">
     </video>
   <?php endif; ?>
+  <?php if (setting('below_opentable_embed')): ?>
+    <div class="opentable-overlay"><?= setting('below_opentable_embed') ?></div>
+  <?php endif; ?>
 </section>
 <?php endif; ?>
 

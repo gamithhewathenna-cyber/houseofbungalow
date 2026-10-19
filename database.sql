@@ -517,6 +517,7 @@ INSERT INTO `blocks` (`block_type`,`title`,`subtitle`,`body`,`sort`,`active`) VA
 INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) VALUES
 ('below_hero_image','assets/img/below.jpg','below','Hero image (poster/fallback)','image',1),
 ('below_hero_video','','below','Hero video (mp4/webm, ideally 1280×720)','video',1),
+('below_opentable_embed','<script type=''text/javascript'' src=''//www.opentable.com.au/widget/reservation/loader?rid=331247&type=standard&theme=standard&color=8&dark=false&iframe=true&domain=comau&lang=en-AU&newtab=true&ot_source=Restaurant%20website&font=arial&ot_logo=standard&primary_color=401316&primary_font_color=ffffff&button_color=E63349&button_font_color=ffffff&logo_pid=97211862&background_pid=97211845&cfe=true''></script>','below','OpenTable reservation widget (embed code - overlaid on the hero; leave blank to hide)','textarea',1),
 ('below_heading','Below','below','Heading','text',2),
 ('below_subheading','The Basement. Where The Night Takes Over.','below','Subheading','text',3),
 ('below_lede','Below Foveaux Street is an intimate late-night room built around DJs, cocktails and the energy of being close to the music.','below','Lede paragraph (italic)','textarea',4),

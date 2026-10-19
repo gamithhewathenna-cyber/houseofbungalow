@@ -4,7 +4,7 @@ require_role('content');
 require_once __DIR__ . '/helpers.php';
 
 $fieldGroups = [
-    'herovideo' => ['below_hero_video'],
+    'herovideo' => ['below_hero_video', 'below_opentable_embed'],
     'intro'     => ['below_heading', 'below_subheading', 'below_lede', 'below_intro_p1', 'below_intro_p2', 'below_intro_btn1_label', 'below_intro_btn1_url', 'below_intro_btn2_label', 'below_intro_btn2_url'],
     'cocktails' => ['below_cocktails_heading', 'below_cocktails_p1', 'below_cocktails_p2', 'below_cocktails_p3', 'below_cocktails_hours', 'below_cocktails_image1', 'below_cocktails_image2', 'below_cocktails_image3'],
     'music'     => ['below_music_heading', 'below_music_lede', 'below_music_btn2_label', 'below_music_btn2_url'],
@@ -192,6 +192,9 @@ include __DIR__ . '/layout.php';
 <?php foreach ($fieldGroups as $group => $keys): if ($group === 'music') continue; ?>
   <div class="tab-panel settings-group<?= $activeTab === $group ? ' active' : '' ?>" data-tab="<?= e($group) ?>">
     <h3><?= e($tabs[$group]) ?></h3>
+    <?php if ($group === 'herovideo'): ?>
+      <p class="group-help">The OpenTable widget shows overlaid on the hero video/image. Paste a full replacement embed code from OpenTable to change it, or clear the field to hide it entirely.</p>
+    <?php endif; ?>
     <?php if ($group === 'vipbottle'): ?>
       <p class="group-help">Controls the popup form opened by the "VIP ENQUIRY" button in the VIP Tables section. No email server setup needed - this sends straight from the website. Leave "Send enquiries to" empty to only save enquiries here in the admin (under "VIP Enquiries") without emailing anyone.</p>
     <?php endif; ?>

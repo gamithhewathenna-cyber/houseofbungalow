@@ -39,7 +39,7 @@ while ($i < count($gallery)) {
     </video>
   <?php endif; ?>
   <?php if (setting('rest_opentable_embed')): ?>
-    <div class="rest-opentable-overlay"><?= setting('rest_opentable_embed') ?></div>
+    <div class="opentable-overlay"><?= setting('rest_opentable_embed') ?></div>
   <?php endif; ?>
 </section>
 <?php endif; ?>
