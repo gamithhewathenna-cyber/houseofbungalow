@@ -1246,6 +1246,9 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 /* ------------------------------------------------------------------ */
 /* Join Our Team - on-page application form (light theme, no popup)    */
 /* ------------------------------------------------------------------ */
+/* Restaurant - OpenTable reservation widget (shown above the hero) */
+.rest-opentable-embed{padding:24px 0;background:var(--cream);text-align:center;}
+
 /* Press & Media - "Featured In" grid (4-across, wraps after every 4) */
 .press-feature-section{padding:10px 0 80px;}
 .press-feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:40px 28px;}

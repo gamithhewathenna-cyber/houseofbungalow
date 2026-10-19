@@ -30,6 +30,13 @@ while ($i < count($gallery)) {
 }
 ?>
 
+<!-- OpenTable reservation widget ------------------------------------------ -->
+<?php if (setting('rest_opentable_embed')): ?>
+<div class="rest-opentable-embed">
+  <div class="container"><?= setting('rest_opentable_embed') ?></div>
+</div>
+<?php endif; ?>
+
 <!-- Hero ------------------------------------------------------------- -->
 <?php if (section_visible('rest_hero')): ?>
 <section class="hero"<?php if (!$rest_hero_video): ?> style="background-image:url('<?= e($rest_hero_image) ?>');"<?php endif; ?>>

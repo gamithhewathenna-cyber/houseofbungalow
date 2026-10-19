@@ -4,7 +4,7 @@ require_role('content');
 require_once __DIR__ . '/helpers.php';
 
 $fieldGroups = [
-    'herovideo' => ['rest_hero_video'],
+    'herovideo' => ['rest_hero_video', 'rest_opentable_embed'],
     'hero'      => ['rest_heading', 'rest_subheading', 'rest_lede', 'rest_intro_p1', 'rest_intro_p2', 'rest_intro_btn_label', 'rest_intro_btn_url'],
     'food'      => ['rest_food_eyebrow', 'rest_food_heading', 'rest_food_p1', 'rest_food_p2', 'rest_food_image'],
     'menu'      => ['rest_menu_heading', 'rest_menu_lede'],
@@ -274,6 +274,9 @@ include __DIR__ . '/layout.php';
 <?php foreach ($fieldGroups as $group => $keys): if ($group === 'menu') continue; ?>
   <div class="tab-panel settings-group<?= $activeTab === $group ? ' active' : '' ?>" data-tab="<?= e($group) ?>">
     <h3><?= e($tabs[$group]) ?></h3>
+    <?php if ($group === 'herovideo'): ?>
+      <p class="group-help">The OpenTable widget shows above the hero video/image, at the very top of the page. Paste a full replacement embed code from OpenTable to change it, or clear the field to hide it entirely.</p>
+    <?php endif; ?>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
       <input type="hidden" name="action" value="save_section">

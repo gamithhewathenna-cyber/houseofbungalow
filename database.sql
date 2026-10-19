@@ -340,6 +340,7 @@ INSERT INTO `blocks` (`block_type`,`title`,`image`,`sort`,`active`) VALUES
 INSERT INTO `settings` (`skey`,`svalue`,`section`,`label`,`field_type`,`sort`) VALUES
 ('rest_hero_image','assets/img/restaurant.jpg','restaurant','Hero image (poster/fallback)','image',1),
 ('rest_hero_video','','restaurant','Hero video (mp4/webm, ideally 1280×720)','video',1),
+('rest_opentable_embed','<script type=''text/javascript'' src=''//www.opentable.com.au/widget/reservation/loader?rid=302468&type=standard&theme=standard&color=8&dark=false&iframe=true&domain=comau&lang=en-AU&newtab=true&ot_source=Restaurant%20website&font=arial&ot_logo=subtle&primary_color=401316&primary_font_color=ffffff&button_color=E63349&button_font_color=ffffff&logo_pid=97211936&background_pid=97211889&cfe=true''></script>','restaurant','OpenTable reservation widget (embed code - shown above the hero video; leave blank to hide)','textarea',1),
 ('rest_heading','Restaurant','restaurant','Heading','text',2),
 ('rest_subheading','Spanish Inspired. Asian Influenced. Sydney Energy.','restaurant','Subheading','text',3),
 ('rest_lede','The ground-floor Restaurant is the dining heart of House of Bungalow - elevated without feeling formal, social without losing the detail.','restaurant','Lede paragraph (italic)','textarea',4),
