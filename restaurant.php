@@ -30,13 +30,6 @@ while ($i < count($gallery)) {
 }
 ?>
 
-<!-- OpenTable reservation widget ------------------------------------------ -->
-<?php if (setting('rest_opentable_embed')): ?>
-<div class="rest-opentable-embed">
-  <div class="container"><?= setting('rest_opentable_embed') ?></div>
-</div>
-<?php endif; ?>
-
 <!-- Hero ------------------------------------------------------------- -->
 <?php if (section_visible('rest_hero')): ?>
 <section class="hero"<?php if (!$rest_hero_video): ?> style="background-image:url('<?= e($rest_hero_image) ?>');"<?php endif; ?>>
@@ -44,6 +37,9 @@ while ($i < count($gallery)) {
     <video class="hero-video" autoplay muted loop playsinline preload="auto">
       <source src="<?= e(asset($rest_hero_video)) ?>" type="<?= e($rest_hero_video_mime) ?>">
     </video>
+  <?php endif; ?>
+  <?php if (setting('rest_opentable_embed')): ?>
+    <div class="rest-opentable-overlay"><?= setting('rest_opentable_embed') ?></div>
   <?php endif; ?>
 </section>
 <?php endif; ?>

@@ -1246,8 +1246,14 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 /* ------------------------------------------------------------------ */
 /* Join Our Team - on-page application form (light theme, no popup)    */
 /* ------------------------------------------------------------------ */
-/* Restaurant - OpenTable reservation widget (shown above the hero) */
-.rest-opentable-embed{padding:24px 0;background:var(--cream);text-align:center;}
+/* Restaurant - OpenTable reservation widget (overlaid top-right on the hero) */
+.rest-opentable-overlay{
+  position:absolute;top:28px;right:28px;z-index:2;
+  max-width:360px;width:90%;
+  background:rgba(242,232,222,.95);
+  border-radius:16px;
+  padding:18px;
+}
 
 /* Press & Media - "Featured In" grid (4-across, wraps after every 4) */
 .press-feature-section{padding:10px 0 80px;}
@@ -1401,6 +1407,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .night-row-3,.night-row-2{grid-template-columns:1fr;}
   .events-grid{grid-template-columns:1fr;gap:14px;}
   .press-feature-grid{grid-template-columns:1fr;gap:28px;}
+  .rest-opentable-overlay{top:16px;right:16px;left:16px;max-width:none;width:auto;padding:14px;}
   .booking-popup-inner h2{font-size:30px;}
   .booking-popup-sub{font-size:16px;margin-bottom:30px;}
   .booking-popup-actions{gap:18px;}
