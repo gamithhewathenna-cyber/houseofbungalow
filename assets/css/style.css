@@ -1248,7 +1248,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 /* ------------------------------------------------------------------ */
 /* OpenTable reservation widget (overlaid on a hero, vertically centred) - used on Restaurant and Below */
 .opentable-overlay{
-  position:absolute;top:50%;right:328px;transform:translateY(-50%);z-index:2;
+  position:absolute;top:50%;right:228px;transform:translateY(-50%);z-index:2;
   max-width:360px;width:90%;
 }
 
