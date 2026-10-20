@@ -1249,7 +1249,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 /* OpenTable reservation widget (overlaid on a hero, vertically centred, flush to the right edge) - used on Restaurant and Below */
 .opentable-overlay{
   position:absolute;top:50%;right:0;transform:translateY(-50%);z-index:2;
-  max-width:360px;width:90%;
+  width:max-content;max-width:90%;
 }
 
 /* Press & Media - "Featured In" grid (4-across, wraps after every 4) */
