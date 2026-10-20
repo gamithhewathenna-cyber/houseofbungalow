@@ -1,12 +1,33 @@
 # =====================================================================
-# Clean URLs for SEO - removes the ".php" from every public page's URL.
-# e.g. /whatson.php becomes /whatson (admin, assets, uploads, includes
-# and config are left untouched - they don't need clean URLs).
+# Security: block direct public access to folders/files that should
+# never be fetched over HTTP.
+#
+# config/ holds live database credentials (config.php); includes/ holds
+# PHP partials meant to be require()'d by the app, not requested
+# directly. Blocking these here doesn't affect the site at all - PHP's
+# require()/include() reads straight from disk and never goes through
+# the web server or this file.
 # =====================================================================
 RewriteEngine On
+RewriteRule ^(config|includes)($|/) - [F,L]
+
+# Sensitive file types, wherever they appear - SQL dumps, env/credential
+# files, editor backups. These extensions aren't routed through the PHP
+# handler, so if one is ever left in a public folder by mistake it would
+# otherwise be served as plain, readable text instead of being blocked.
+RewriteRule \.(sql|env|bak|backup|old|orig|log|swp|swo)$ - [F,L]
+RewriteRule (^|/)\.git(/|$) - [F,L]
+RewriteRule (^|/)\.(gitignore|gitattributes|htaccess)$ - [F,L]
+
+# =====================================================================
+# Clean URLs for SEO - removes the ".php" from every public page's URL.
+# e.g. /whatson.php becomes /whatson (admin and uploads are left
+# untouched - they don't need clean URLs; config/includes are already
+# blocked entirely above).
+# =====================================================================
 
 # Leave these folders exactly as they are - stop processing here.
-RewriteRule ^(admin|assets|uploads|includes|config)($|/) - [L]
+RewriteRule ^(admin|assets|uploads)($|/) - [L]
 
 # index.php or /index -> / (the homepage should only ever have one URL)
 RewriteCond %{REQUEST_METHOD} GET
