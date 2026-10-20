@@ -1,18 +1,17 @@
 <?php
 /**
- * House of Bungalow - Configuration TEMPLATE
+ * House of Bungalow - Configuration
  * ---------------------------------------------------------------
- * Copy this file to "config.php" (same folder) and fill in the real
- * values below. "config.php" holds live secrets and is intentionally
- * excluded from Git (see .gitignore) - it must never be committed.
+ * Edit the four DB_* values below to match the database you create
+ * in cPanel (MySQL Databases section). Everything else can stay.
  * ---------------------------------------------------------------
  */
 
 // ---- Database (from cPanel > MySQL Databases) ----
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'your_db_name');       // e.g. cpaneluser_hob
-define('DB_USER', 'your_db_user');       // e.g. cpaneluser_admin
-define('DB_PASS', 'your_db_password');
+define('DB_NAME', 'intujzmw_houseofbungalow26');
+define('DB_USER', 'intujzmw_houseofbungalow26admin');
+define('DB_PASS', 'e%yslF*~y;?![45?');
 
 // ---- Site ----
 define('SITE_NAME', 'House of Bungalow');
