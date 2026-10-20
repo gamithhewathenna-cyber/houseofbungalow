@@ -28,3 +28,14 @@
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
 </IfModule>
+
+# ---------------------------------------------------------------------
+# Defense-in-depth: this folder should only ever hold the image/video
+# types validated by admin/helpers.php (handle_upload / handle_video_
+# upload), but if a script file ever ended up in here some other way,
+# this stops it from being executed when requested directly.
+# ---------------------------------------------------------------------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule \.(php\d?|phtml|pht|cgi|pl|py|sh)$ - [F,L]
+</IfModule>
