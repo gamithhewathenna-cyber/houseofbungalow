@@ -801,7 +801,10 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 /* ------------------------------------------------------------------ */
 .cup-dark-menu{background:var(--cream);padding:80px 0;}
 .cup-dark-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;max-width:1200px;margin:0 auto;}
-.rest-menu-grid{grid-template-columns:repeat(3,1fr);gap:40px;max-width:1300px;}
+.rest-menu-grid{grid-template-columns:repeat(3,1fr);gap:40px;max-width:1300px;align-items:stretch;}
+.rest-menu-grid .cup-dark-offer{display:flex;flex-direction:column;height:100%;}
+.rest-menu-grid .cup-dark-offer-media{flex-shrink:0;}
+.rest-menu-grid .cup-dark-offer .cup-dark-expander{margin-top:auto;}
 .cup-dark-offer{max-width:none;margin:0;}
 .cup-dark-offer-btn-wrap{text-align:center;margin-top:30px;}
 .cup-dark-offer-media{aspect-ratio:16/9;overflow:hidden;border-radius:20px;margin:0 0 24px;}
