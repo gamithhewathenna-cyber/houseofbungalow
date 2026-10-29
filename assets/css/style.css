@@ -830,7 +830,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .cup-dark-expander-icon svg{width:18px;height:18px;display:block;}
 .cup-dark-expander.open .cup-dark-expander-icon{transform:rotate(45deg);}
 .cup-dark-expander-panel{max-height:0;overflow:hidden;transition:max-height .35s ease;}
-.cup-dark-expander.open .cup-dark-expander-panel{max-height:1000px;}
+.cup-dark-expander.open .cup-dark-expander-panel{max-height:20000px;}
 .cup-dark-expander-panel-inner{padding:0 26px 24px;}
 .cup-dark-dummy{
   font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.6;
