@@ -25,6 +25,43 @@ $menu_items_by_cat = [];
 foreach ($menu_cats as $cat) {
     $menu_items_by_cat[$cat['id']] = blocks('brunch_menu_item_' . $cat['id']);
 }
+
+/**
+ * Renders one menu category's rows, using each row's type (set via
+ * admin > Bottomless Brunch > Menu > Type column): a page title +
+ * subtitle, an uppercase section heading, a plain line, a small
+ * footnote, or a normal name + price + description.
+ */
+function render_brunch_menu_items(array $items): void
+{
+    if (!$items) {
+        ?><p class="cup-dark-dummy">Menu details coming soon.</p><?php
+        return;
+    }
+    foreach ($items as $item) {
+        $itemType = $item['link_url'];
+        if ($itemType === 'title') {
+            ?><h3 class="menu-page-title"><?= e($item['title']) ?></h3><?php
+            if ($item['body']) { ?><p class="menu-page-subtitle"><?= e($item['body']) ?></p><?php }
+        } elseif ($itemType === 'heading') {
+            ?><h4 class="menu-heading"><?= e($item['title']) ?></h4><?php
+        } elseif ($itemType === 'line') {
+            ?><p class="menu-line"><?= e($item['body']) ?></p><?php
+        } elseif ($itemType === 'note') {
+            ?><p class="menu-note"><?= e($item['body']) ?></p><?php
+        } else {
+            ?>
+            <div class="menu-item">
+              <div class="menu-item-title">
+                <span><?= e($item['title']) ?></span>
+                <?php if ($item['subtitle']): ?><span class="price">$<?= e($item['subtitle']) ?></span><?php endif; ?>
+              </div>
+              <?php if ($item['body']): ?><div class="menu-item-desc"><?= enl($item['body']) ?></div><?php endif; ?>
+            </div>
+            <?php
+        }
+    }
+}
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
@@ -81,38 +118,33 @@ foreach ($menu_cats as $cat) {
 
 <!-- Menu (own dataset - not shared with the Restaurant page) --------------- -->
 <?php if (section_visible('brunch_menu')): ?>
-<section class="menu-section reveal">
+<section class="menu-dark menu-light reveal">
   <div class="container">
-    <h2><?= e(setting('brunch_menu_heading', 'Discover Our Menus')) ?></h2>
+    <h2 class="menu-dark-heading"><?= e(setting('brunch_menu_heading', 'Discover Our Menus')) ?></h2>
     <?php if (setting('brunch_menu_lede')): ?>
-      <p class="menu-lede"><?= enl(setting('brunch_menu_lede')) ?></p>
+      <p class="menu-dark-lede"><?= enl(setting('brunch_menu_lede')) ?></p>
     <?php endif; ?>
 
-    <p class="menu-active-label" id="menuActiveLabel"><?= e($menu_cats ? $menu_cats[0]['title'] : '') ?> Specials</p>
-
-    <div class="menu-tabs">
-      <?php $first = true; foreach ($menu_cats as $cat): ?>
-        <button type="button" class="menu-tab-btn<?= $first ? ' active' : '' ?>" data-menu-tab="<?= (int) $cat['id'] ?>"><?= e($cat['title']) ?></button>
-      <?php $first = false; endforeach; ?>
-    </div>
-
-    <?php $first = true; foreach ($menu_cats as $cat): ?>
-      <div class="menu-panel<?= $first ? ' active' : '' ?>" data-menu-panel="<?= (int) $cat['id'] ?>">
-        <?php if ($menu_items_by_cat[$cat['id']]): ?>
-          <?php foreach ($menu_items_by_cat[$cat['id']] as $item): ?>
-            <div class="menu-item">
-              <div class="menu-item-title">
-                <span><?= e($item['title']) ?></span>
-                <?php if ($item['subtitle']): ?><span class="price">$<?= e($item['subtitle']) ?></span><?php endif; ?>
-              </div>
-              <?php if ($item['body']): ?><div class="menu-item-desc"><?= enl($item['body']) ?></div><?php endif; ?>
-            </div>
-          <?php endforeach; ?>
-        <?php else: ?>
-          <p class="menu-empty">More to come - this menu is being finalised.</p>
-        <?php endif; ?>
+    <?php if ($menu_cats): ?>
+      <div class="menu-dark-tabs">
+        <?php $first = true; foreach ($menu_cats as $cat): ?>
+          <button type="button" class="menu-dark-tab-btn<?= $first ? ' active' : '' ?>" data-brunch-menu-tab="<?= (int) $cat['id'] ?>"><?= e($cat['title']) ?></button>
+        <?php $first = false; endforeach; ?>
       </div>
-    <?php $first = false; endforeach; ?>
+
+      <div class="menu-dark-panel-wrap">
+        <?php $first = true; foreach ($menu_cats as $cat): ?>
+          <div class="menu-dark-panel<?= $first ? ' active' : '' ?>" data-brunch-menu-panel="<?= (int) $cat['id'] ?>">
+            <?php render_brunch_menu_items($menu_items_by_cat[$cat['id']]); ?>
+            <?php if ($cat['link_url']): ?>
+              <div class="menu-dark-download-wrap">
+                <a class="tag-btn" href="<?= e(asset($cat['link_url'])) ?>" target="_blank" rel="noopener" download>DOWNLOAD MENU</a>
+              </div>
+            <?php endif; ?>
+          </div>
+        <?php $first = false; endforeach; ?>
+      </div>
+    <?php endif; ?>
   </div>
 </section>
 <?php endif; ?>
@@ -143,18 +175,16 @@ foreach ($menu_cats as $cat) {
 
 <script>
 (function () {
-  var tabs = document.querySelectorAll('.menu-tab-btn');
-  var panels = document.querySelectorAll('.menu-panel');
-  var activeLabel = document.getElementById('menuActiveLabel');
+  var tabs = document.querySelectorAll('[data-brunch-menu-tab]');
+  var panels = document.querySelectorAll('[data-brunch-menu-panel]');
   if (!tabs.length) return;
   tabs.forEach(function (btn) {
     btn.addEventListener('click', function () {
       tabs.forEach(function (b) { b.classList.remove('active'); });
       panels.forEach(function (p) { p.classList.remove('active'); });
       btn.classList.add('active');
-      var panel = document.querySelector('.menu-panel[data-menu-panel="' + btn.dataset.menuTab + '"]');
+      var panel = document.querySelector('[data-brunch-menu-panel="' + btn.dataset.brunchMenuTab + '"]');
       if (panel) panel.classList.add('active');
-      if (activeLabel) activeLabel.textContent = btn.textContent.trim() + ' Specials';
     });
   });
 })();
