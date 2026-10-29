@@ -107,13 +107,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($action === 'save_menu_items') {
                 $catId = (int) ($_POST['cat'] ?? 0);
                 $blockType = 'rest_menu_item_' . $catId;
+                $allowedTypes = ['', 'title', 'heading', 'line', 'note'];
                 foreach (($_POST['title'] ?? []) as $id => $title) {
                     $id = (int) $id;
-                    $q = db()->prepare('UPDATE blocks SET title=?, subtitle=?, body=?, sort=? WHERE id=? AND block_type=?');
+                    $type = $_POST['type'][$id] ?? '';
+                    if (!in_array($type, $allowedTypes, true)) { $type = ''; }
+                    $q = db()->prepare('UPDATE blocks SET title=?, subtitle=?, body=?, link_url=?, sort=? WHERE id=? AND block_type=?');
                     $q->execute([
                         trim($title),
                         trim($_POST['price'][$id] ?? ''),
                         trim($_POST['desc'][$id] ?? ''),
+                        $type,
                         (int) ($_POST['sort'][$id] ?? 0),
                         $id,
                         $blockType,
@@ -123,8 +127,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             if ($action === 'add_menu_item') {
                 $catId = (int) ($_POST['cat'] ?? 0);
-                $q = db()->prepare('INSERT INTO blocks (block_type,title,subtitle,body,sort,active) VALUES (?,?,?,?,?,1)');
-                $q->execute(['rest_menu_item_' . $catId, trim($_POST['new_title'] ?? 'New Item'), trim($_POST['new_price'] ?? ''), trim($_POST['new_desc'] ?? ''), (int) ($_POST['new_sort'] ?? 99)]);
+                $allowedTypes = ['', 'title', 'heading', 'line', 'note'];
+                $newType = $_POST['new_type'] ?? '';
+                if (!in_array($newType, $allowedTypes, true)) { $newType = ''; }
+                $q = db()->prepare('INSERT INTO blocks (block_type,title,subtitle,body,link_url,sort,active) VALUES (?,?,?,?,?,?,1)');
+                $q->execute(['rest_menu_item_' . $catId, trim($_POST['new_title'] ?? 'New Item'), trim($_POST['new_price'] ?? ''), trim($_POST['new_desc'] ?? ''), $newType, (int) ($_POST['new_sort'] ?? 99)]);
                 header('Location: restaurant.php?tab=menu&cat=' . $catId . '&saved=1'); exit;
             }
             if ($action === 'delete_menu_item') {
@@ -344,6 +351,17 @@ include __DIR__ . '/layout.php';
       <?php endforeach; ?>
     </div>
 
+    <?php
+    $menuTypeLabels = [
+        ''        => 'Menu item (name + price + description)',
+        'title'   => 'Page title (big heading, e.g. "Cocktails") - description box becomes its subtitle',
+        'heading' => 'Section heading (e.g. "SNACKS", "TO START")',
+        'line'    => 'Plain line of text - put the text in the Description box',
+        'note'    => 'Small footnote at the end - put the text in the Description box',
+    ];
+    ?>
+    <p class="group-help">Most rows are a normal <strong>Menu item</strong> (name, price, description). To build a page like a set banquet or a multi-section drinks list, change a row's <strong>Type</strong>: use <strong>Page title</strong> for a big heading (put its subtitle in Description), <strong>Section heading</strong> for an uppercase label like "SNACKS" or "TO START", <strong>Plain line</strong> for a line with no price (put the text in Description), and <strong>Note</strong> for the small footnote at the end.</p>
+
     <?php foreach ($menuCats as $cat): $catId = (int) $cat['id']; ?>
       <div class="menu-cat-panel<?= $activeCat === $catId ? ' active' : '' ?>" data-menu-cat-panel="<?= $catId ?>" style="<?= $activeCat === $catId ? '' : 'display:none;' ?>">
         <form method="post">
@@ -351,9 +369,16 @@ include __DIR__ . '/layout.php';
           <input type="hidden" name="action" value="save_menu_items">
           <input type="hidden" name="cat" value="<?= $catId ?>">
           <table>
-            <tr><th>Item</th><th style="width:100px;">Price</th><th>Description</th><th style="width:90px;">Order</th><th style="width:90px;"></th></tr>
+            <tr><th style="width:150px;">Type</th><th>Item / Heading</th><th style="width:100px;">Price</th><th>Description</th><th style="width:70px;">Order</th><th style="width:90px;"></th></tr>
             <?php foreach ($menuItemsByCat[$catId] as $item): ?>
               <tr>
+                <td>
+                  <select name="type[<?= $item['id'] ?>]">
+                    <?php foreach ($menuTypeLabels as $tVal => $tLabel): ?>
+                      <option value="<?= e($tVal) ?>"<?= $item['link_url'] === $tVal ? ' selected' : '' ?>><?= e($tLabel) ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                </td>
                 <td><input type="text" name="title[<?= $item['id'] ?>]" value="<?= e($item['title']) ?>"></td>
                 <td><input type="text" name="price[<?= $item['id'] ?>]" value="<?= e($item['subtitle']) ?>"></td>
                 <td><textarea name="desc[<?= $item['id'] ?>]" rows="2" style="min-height:0;"><?= e($item['body']) ?></textarea></td>
@@ -373,17 +398,22 @@ include __DIR__ . '/layout.php';
           </form>
         <?php endforeach; ?>
 
-        <h3 style="margin-top:24px;font-size:14px;">Add an Item to <?= e($cat['title']) ?></h3>
+        <h3 style="margin-top:24px;font-size:14px;">Add a Row to <?= e($cat['title']) ?></h3>
         <form method="post">
           <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
           <input type="hidden" name="action" value="add_menu_item">
           <input type="hidden" name="cat" value="<?= $catId ?>">
           <div class="row-actions">
-            <input type="text" name="new_title" placeholder="Item name" style="max-width:200px;">
+            <select name="new_type">
+              <?php foreach ($menuTypeLabels as $tVal => $tLabel): ?>
+                <option value="<?= e($tVal) ?>"><?= e($tLabel) ?></option>
+              <?php endforeach; ?>
+            </select>
+            <input type="text" name="new_title" placeholder="Item / heading name" style="max-width:200px;">
             <input type="text" name="new_price" placeholder="Price" style="width:80px;">
             <input type="text" name="new_desc" placeholder="Description" style="max-width:260px;">
             <input type="text" name="new_sort" placeholder="Order" value="99" style="width:70px;">
-            <button class="btn btn-sm">+ Add Item</button>
+            <button class="btn btn-sm">+ Add Row</button>
           </div>
         </form>
       </div>

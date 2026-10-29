@@ -90,8 +90,6 @@ while ($i < count($gallery)) {
       <p class="menu-lede"><?= enl(setting('rest_menu_lede')) ?></p>
     <?php endif; ?>
 
-    <p class="menu-active-label" id="menuActiveLabel"><?= e($menu_cats ? $menu_cats[0]['title'] : '') ?> Specials</p>
-
     <div class="menu-tabs">
       <?php $first = true; foreach ($menu_cats as $cat): ?>
         <button type="button" class="menu-tab-btn<?= $first ? ' active' : '' ?>" data-menu-tab="<?= (int) $cat['id'] ?>"><?= e($cat['title']) ?></button>
@@ -101,14 +99,25 @@ while ($i < count($gallery)) {
     <?php $first = true; foreach ($menu_cats as $cat): ?>
       <div class="menu-panel<?= $first ? ' active' : '' ?>" data-menu-panel="<?= (int) $cat['id'] ?>">
         <?php if ($menu_items_by_cat[$cat['id']]): ?>
-          <?php foreach ($menu_items_by_cat[$cat['id']] as $item): ?>
-            <div class="menu-item">
-              <div class="menu-item-title">
-                <span><?= e($item['title']) ?></span>
-                <?php if ($item['subtitle']): ?><span class="price">$<?= e($item['subtitle']) ?></span><?php endif; ?>
+          <?php foreach ($menu_items_by_cat[$cat['id']] as $item): $itemType = $item['link_url']; ?>
+            <?php if ($itemType === 'title'): ?>
+              <h3 class="menu-page-title"><?= e($item['title']) ?></h3>
+              <?php if ($item['body']): ?><p class="menu-page-subtitle"><?= e($item['body']) ?></p><?php endif; ?>
+            <?php elseif ($itemType === 'heading'): ?>
+              <h4 class="menu-heading"><?= e($item['title']) ?></h4>
+            <?php elseif ($itemType === 'line'): ?>
+              <p class="menu-line"><?= e($item['body']) ?></p>
+            <?php elseif ($itemType === 'note'): ?>
+              <p class="menu-note"><?= e($item['body']) ?></p>
+            <?php else: ?>
+              <div class="menu-item">
+                <div class="menu-item-title">
+                  <span><?= e($item['title']) ?></span>
+                  <?php if ($item['subtitle']): ?><span class="price">$<?= e($item['subtitle']) ?></span><?php endif; ?>
+                </div>
+                <?php if ($item['body']): ?><div class="menu-item-desc"><?= enl($item['body']) ?></div><?php endif; ?>
               </div>
-              <?php if ($item['body']): ?><div class="menu-item-desc"><?= enl($item['body']) ?></div><?php endif; ?>
-            </div>
+            <?php endif; ?>
           <?php endforeach; ?>
         <?php else: ?>
           <p class="menu-empty">More to come - this menu is being finalised.</p>
@@ -285,7 +294,6 @@ while ($i < count($gallery)) {
 (function () {
   var tabs = document.querySelectorAll('.menu-tab-btn');
   var panels = document.querySelectorAll('.menu-panel');
-  var activeLabel = document.getElementById('menuActiveLabel');
   if (!tabs.length) return;
   tabs.forEach(function (btn) {
     btn.addEventListener('click', function () {
@@ -294,7 +302,6 @@ while ($i < count($gallery)) {
       btn.classList.add('active');
       var panel = document.querySelector('.menu-panel[data-menu-panel="' + btn.dataset.menuTab + '"]');
       if (panel) panel.classList.add('active');
-      if (activeLabel) activeLabel.textContent = btn.textContent.trim() + ' Specials';
     });
   });
 })();
