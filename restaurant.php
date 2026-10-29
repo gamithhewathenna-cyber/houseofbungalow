@@ -120,7 +120,7 @@ while ($i < count($gallery)) {
 
 <!-- Menu --------------------------------------------------------------- -->
 <?php if (section_visible('rest_menu')): ?>
-<section class="menu-dark reveal">
+<section class="menu-dark menu-light reveal">
   <div class="container">
     <h2 class="menu-dark-heading"><?= e(setting('rest_menu_heading', 'Discover Our Menus')) ?></h2>
     <?php if (setting('rest_menu_lede')): ?>

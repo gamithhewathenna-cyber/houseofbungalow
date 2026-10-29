@@ -881,6 +881,26 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .menu-dark-panel .menu-item-title .price{color:var(--maroon-bright);}
 .menu-dark-panel .menu-item-desc{color:rgba(243,236,228,.55);}
 
+/* Light variant (Restaurant page only) - same layout, flipped to a
+   cream background matching the rest of the site */
+.menu-dark.menu-light{background:var(--cream);}
+.menu-dark.menu-light .menu-dark-heading{color:var(--ink);}
+.menu-dark.menu-light .menu-dark-lede{color:var(--ink-soft);}
+.menu-dark.menu-light .menu-dark-tabs{border-bottom-color:#e0d3c4;}
+.menu-dark.menu-light .menu-dark-tab-btn{color:var(--ink-mute);}
+.menu-dark.menu-light .menu-dark-tab-btn:hover{color:var(--ink);}
+.menu-dark.menu-light .menu-dark-tab-btn.active{color:var(--maroon);border-bottom-color:var(--maroon);}
+.menu-dark.menu-light .menu-dark-panel-wrap{border-color:#e0d3c4;}
+.menu-dark.menu-light .menu-page-title{color:var(--ink);}
+.menu-dark.menu-light .menu-page-subtitle{color:var(--ink-soft);}
+.menu-dark.menu-light .menu-heading{color:var(--maroon);border-top-color:#e5dbcd;}
+.menu-dark.menu-light .menu-line{color:var(--ink-mute);}
+.menu-dark.menu-light .menu-note{color:var(--ink-mute);}
+.menu-dark.menu-light .menu-item{border-bottom-color:#e5dbcd;}
+.menu-dark.menu-light .menu-item-title{color:var(--ink);}
+.menu-dark.menu-light .menu-item-title .price{color:var(--maroon);}
+.menu-dark.menu-light .menu-item-desc{color:var(--ink-mute);}
+
 @media (max-width:640px){
   .menu-dark-heading{font-size:30px;}
   .menu-dark-tabs{gap:20px;}
