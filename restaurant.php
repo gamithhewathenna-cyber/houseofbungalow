@@ -16,6 +16,66 @@ foreach ($menu_cats as $cat) {
     $menu_items_by_cat[$cat['id']] = blocks('rest_menu_item_' . $cat['id']);
 }
 
+/**
+ * Renders one menu category's rows inside its "View ..." expander, using
+ * each row's type (set via admin > Restaurant > Menu > Type column):
+ * a page title + subtitle, an uppercase section heading, a plain line
+ * (set banquets), a small footnote, or a normal name + price + description.
+ */
+function render_rest_menu_items(array $items): void
+{
+    if (!$items) {
+        ?><p class="cup-dark-dummy">Menu details coming soon.</p><?php
+        return;
+    }
+    foreach ($items as $item) {
+        $itemType = $item['link_url'];
+        if ($itemType === 'title') {
+            ?><h3 class="menu-page-title"><?= e($item['title']) ?></h3><?php
+            if ($item['body']) { ?><p class="menu-page-subtitle"><?= e($item['body']) ?></p><?php }
+        } elseif ($itemType === 'heading') {
+            ?><h4 class="menu-heading"><?= e($item['title']) ?></h4><?php
+        } elseif ($itemType === 'line') {
+            ?><p class="menu-line"><?= e($item['body']) ?></p><?php
+        } elseif ($itemType === 'note') {
+            ?><p class="menu-note"><?= e($item['body']) ?></p><?php
+        } else {
+            ?>
+            <div class="menu-item">
+              <div class="menu-item-title">
+                <span><?= e($item['title']) ?></span>
+                <?php if ($item['subtitle']): ?><span class="price">$<?= e($item['subtitle']) ?></span><?php endif; ?>
+              </div>
+              <?php if ($item['body']): ?><div class="menu-item-desc"><?= enl($item['body']) ?></div><?php endif; ?>
+            </div>
+            <?php
+        }
+    }
+}
+
+/**
+ * One full-width bordered expander button (same style as the Melbourne Cup
+ * page's "View ... Menu" buttons) - click toggles the panel underneath it.
+ */
+function render_rest_dark_expander(string $label, callable $renderContent): void
+{
+    ?>
+    <div class="cup-dark-expander">
+      <button type="button" class="cup-dark-expander-toggle">
+        <span><?= e($label) ?></span>
+        <span class="cup-dark-expander-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </span>
+      </button>
+      <div class="cup-dark-expander-panel">
+        <div class="cup-dark-expander-panel-inner">
+          <?php $renderContent(); ?>
+        </div>
+      </div>
+    </div>
+    <?php
+}
+
 $gallery = blocks('rest_gallery');
 $faqs    = blocks('rest_faq');
 
@@ -83,47 +143,29 @@ while ($i < count($gallery)) {
 
 <!-- Menu --------------------------------------------------------------- -->
 <?php if (section_visible('rest_menu')): ?>
-<section class="menu-section reveal">
+<section class="cup-dark-menu reveal">
   <div class="container">
-    <h2><?= e(setting('rest_menu_heading', 'Discover Our Menus')) ?></h2>
+    <h2 style="text-align:center;font-family:var(--serif);font-weight:300;font-size:40px;color:var(--ink);margin:0 0 20px;"><?= e(setting('rest_menu_heading', 'Discover Our Menus')) ?></h2>
     <?php if (setting('rest_menu_lede')): ?>
-      <p class="menu-lede"><?= enl(setting('rest_menu_lede')) ?></p>
+      <p class="menu-lede" style="text-align:center;font-family:var(--serif);font-style:italic;font-weight:200;font-size:18px;line-height:1.5;color:var(--ink-soft);max-width:1000px;margin:0 auto 40px;"><?= enl(setting('rest_menu_lede')) ?></p>
     <?php endif; ?>
 
-    <div class="menu-tabs">
-      <?php $first = true; foreach ($menu_cats as $cat): ?>
-        <button type="button" class="menu-tab-btn<?= $first ? ' active' : '' ?>" data-menu-tab="<?= (int) $cat['id'] ?>"><?= e($cat['title']) ?></button>
-      <?php $first = false; endforeach; ?>
-    </div>
+    <div class="cup-dark-grid rest-menu-grid">
+      <?php foreach ($menu_cats as $cat): ?>
+        <div class="cup-dark-offer">
+          <?php if ($cat['image']): ?>
+            <div class="cup-dark-offer-media"><img loading="lazy" decoding="async" src="<?= e(asset($cat['image'])) ?>" alt="<?= e($cat['title']) ?>"></div>
+          <?php endif; ?>
+          <?php if ($cat['subtitle']): ?><p class="cup-dark-eyebrow"><?= e($cat['subtitle']) ?></p><?php endif; ?>
+          <h3 class="cup-dark-heading"><?= e($cat['title']) ?></h3>
+          <?php if ($cat['body']): ?><p class="cup-dark-subtext"><?= e($cat['body']) ?></p><?php endif; ?>
 
-    <?php $first = true; foreach ($menu_cats as $cat): ?>
-      <div class="menu-panel<?= $first ? ' active' : '' ?>" data-menu-panel="<?= (int) $cat['id'] ?>">
-        <?php if ($menu_items_by_cat[$cat['id']]): ?>
-          <?php foreach ($menu_items_by_cat[$cat['id']] as $item): $itemType = $item['link_url']; ?>
-            <?php if ($itemType === 'title'): ?>
-              <h3 class="menu-page-title"><?= e($item['title']) ?></h3>
-              <?php if ($item['body']): ?><p class="menu-page-subtitle"><?= e($item['body']) ?></p><?php endif; ?>
-            <?php elseif ($itemType === 'heading'): ?>
-              <h4 class="menu-heading"><?= e($item['title']) ?></h4>
-            <?php elseif ($itemType === 'line'): ?>
-              <p class="menu-line"><?= e($item['body']) ?></p>
-            <?php elseif ($itemType === 'note'): ?>
-              <p class="menu-note"><?= e($item['body']) ?></p>
-            <?php else: ?>
-              <div class="menu-item">
-                <div class="menu-item-title">
-                  <span><?= e($item['title']) ?></span>
-                  <?php if ($item['subtitle']): ?><span class="price">$<?= e($item['subtitle']) ?></span><?php endif; ?>
-                </div>
-                <?php if ($item['body']): ?><div class="menu-item-desc"><?= enl($item['body']) ?></div><?php endif; ?>
-              </div>
-            <?php endif; ?>
-          <?php endforeach; ?>
-        <?php else: ?>
-          <p class="menu-empty">More to come - this menu is being finalised.</p>
-        <?php endif; ?>
-      </div>
-    <?php $first = false; endforeach; ?>
+          <?php render_rest_dark_expander($cat['link_url2'] ?: 'View ' . $cat['title'], function () use ($menu_items_by_cat, $cat) {
+              render_rest_menu_items($menu_items_by_cat[$cat['id']]);
+          }); ?>
+        </div>
+      <?php endforeach; ?>
+    </div>
   </div>
 </section>
 <?php endif; ?>
@@ -292,16 +334,9 @@ while ($i < count($gallery)) {
 
 <script>
 (function () {
-  var tabs = document.querySelectorAll('.menu-tab-btn');
-  var panels = document.querySelectorAll('.menu-panel');
-  if (!tabs.length) return;
-  tabs.forEach(function (btn) {
+  document.querySelectorAll('.cup-dark-expander-toggle').forEach(function (btn) {
     btn.addEventListener('click', function () {
-      tabs.forEach(function (b) { b.classList.remove('active'); });
-      panels.forEach(function (p) { p.classList.remove('active'); });
-      btn.classList.add('active');
-      var panel = document.querySelector('.menu-panel[data-menu-panel="' + btn.dataset.menuTab + '"]');
-      if (panel) panel.classList.add('active');
+      btn.closest('.cup-dark-expander').classList.toggle('open');
     });
   });
 })();
