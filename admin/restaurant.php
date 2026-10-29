@@ -80,21 +80,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($action === 'save_categories') {
                 foreach (($_POST['cat_title'] ?? []) as $id => $title) {
                     $id = (int) $id;
-                    $catImg = handle_upload('cat_file_' . $id);
-                    if ($catImg !== null) {
-                        db()->prepare('UPDATE blocks SET image=? WHERE id=? AND block_type=?')->execute([$catImg, $id, $catBlockType]);
-                    }
                     $catPdf = handle_document_upload('cat_pdf_' . $id);
                     if ($catPdf !== null) {
                         db()->prepare('UPDATE blocks SET link_url=? WHERE id=? AND block_type=?')->execute([$catPdf, $id, $catBlockType]);
                     } elseif (isset($_POST['cat_pdf_remove'][$id])) {
                         db()->prepare('UPDATE blocks SET link_url=? WHERE id=? AND block_type=?')->execute(['', $id, $catBlockType]);
                     }
-                    $q = db()->prepare('UPDATE blocks SET title=?, subtitle=?, body=?, sort=? WHERE id=? AND block_type=?');
+                    $q = db()->prepare('UPDATE blocks SET title=?, sort=? WHERE id=? AND block_type=?');
                     $q->execute([
                         trim($title),
-                        trim($_POST['cat_eyebrow'][$id] ?? ''),
-                        trim($_POST['cat_subheading'][$id] ?? ''),
                         (int) ($_POST['cat_sort'][$id] ?? 0),
                         $id,
                         $catBlockType,
@@ -323,21 +317,15 @@ include __DIR__ . '/layout.php';
   </form>
 
   <h3 style="margin-top:30px;">Menu Categories</h3>
-  <p class="group-help">These show as cards in the "Discover Our Menus" section (e.g. "À La Carte", "Beverage Menu"), each with a photo, an optional small eyebrow label, the heading, a one-line subheading, and a "View [Name]" button that expands to show its menu items. An optional PDF adds a separate "Download Menu" button under that expander. Add, rename, reorder or remove categories here - deleting one also deletes its menu items.</p>
+  <p class="group-help">These become the tabs shown in the "Discover Our Menus" section (e.g. "À La Carte", "Beverage Menu"). Add, rename, reorder or remove them here - deleting one also deletes its menu items. An optional PDF adds a "Download Menu" button under that tab's content.</p>
   <form method="post" enctype="multipart/form-data">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
     <input type="hidden" name="action" value="save_categories">
     <table>
-      <tr><th style="width:90px;">Photo</th><th>Name (heading)</th><th>Eyebrow (optional)</th><th>Subheading</th><th style="width:150px;">Download Menu PDF</th><th style="width:70px;">Order</th><th style="width:90px;"></th></tr>
+      <tr><th>Tab Name</th><th style="width:150px;">Download Menu PDF</th><th style="width:70px;">Order</th><th style="width:90px;"></th></tr>
       <?php foreach ($menuCats as $cat): ?>
         <tr>
-          <td>
-            <?php if ($cat['image']): ?><img src="<?= e(asset($cat['image'])) ?>" alt="" style="width:70px;height:48px;object-fit:cover;border-radius:4px;display:block;margin-bottom:6px;"><?php endif; ?>
-            <input type="file" name="cat_file_<?= $cat['id'] ?>" accept="image/*" data-crop-ratio="16:9" style="width:90px;">
-          </td>
           <td><input type="text" name="cat_title[<?= $cat['id'] ?>]" value="<?= e($cat['title']) ?>"></td>
-          <td><input type="text" name="cat_eyebrow[<?= $cat['id'] ?>]" value="<?= e($cat['subtitle']) ?>" placeholder="Small label above heading"></td>
-          <td><input type="text" name="cat_subheading[<?= $cat['id'] ?>]" value="<?= e($cat['body']) ?>" placeholder="e.g. Designed to be shared"></td>
           <td>
             <?php if ($cat['link_url']): ?>
               <div style="margin-bottom:6px;"><a href="<?= e(asset($cat['link_url'])) ?>" target="_blank" rel="noopener">Current PDF</a></div>

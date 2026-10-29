@@ -801,10 +801,6 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 /* ------------------------------------------------------------------ */
 .cup-dark-menu{background:var(--cream);padding:80px 0;}
 .cup-dark-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;max-width:1200px;margin:0 auto;}
-.rest-menu-grid{grid-template-columns:repeat(3,1fr);gap:40px;max-width:1300px;align-items:stretch;}
-.rest-menu-grid .cup-dark-offer{display:flex;flex-direction:column;height:100%;}
-.rest-menu-grid .cup-dark-offer-media{flex-shrink:0;}
-.rest-menu-grid .cup-dark-offer .cup-dark-expander{margin-top:auto;}
 .cup-dark-offer{max-width:none;margin:0;}
 .cup-dark-offer-btn-wrap{text-align:center;margin-top:30px;}
 .cup-dark-offer-media{aspect-ratio:16/9;overflow:hidden;border-radius:20px;margin:0 0 24px;}
@@ -841,54 +837,54 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 }
 
 /* ------------------------------------------------------------------ */
-/* Below - dark tabbed menu (Food Menu / Beverage Menu / VIP Tables)  */
+/* Dark tabbed menu - shared by the Restaurant and Below pages        */
 /* ------------------------------------------------------------------ */
-.below-dark-menu{--maroon-bright:#b8323f;background:#15110f;padding:80px 0;}
-.below-dark-menu-heading{
+.menu-dark{--maroon-bright:#b8323f;background:#15110f;padding:80px 0;}
+.menu-dark-heading{
   text-align:center;font-family:var(--serif);font-weight:300;font-size:40px;
   color:#f3ece4;margin:0 0 20px;
 }
-.below-dark-menu-lede{
+.menu-dark-lede{
   text-align:center;font-family:var(--serif);font-style:italic;font-weight:200;font-size:18px;line-height:1.5;
   color:rgba(243,236,228,.65);max-width:1000px;margin:0 auto 40px;
 }
-.below-dark-tabs{
+.menu-dark-tabs{
   display:flex;justify-content:center;flex-wrap:wrap;gap:40px;
   border-bottom:1px solid rgba(255,255,255,.15);max-width:900px;margin:0 auto;
 }
-.below-dark-tab-btn{
+.menu-dark-tab-btn{
   background:none;border:0;cursor:pointer;
   font-family:var(--sans);font-weight:600;font-size:12px;letter-spacing:2px;
   text-transform:uppercase;color:rgba(255,255,255,.5);
   padding:0 0 18px;border-bottom:2px solid transparent;
   transition:color .2s ease,border-color .2s ease;
 }
-.below-dark-tab-btn:hover{color:rgba(255,255,255,.8);}
-.below-dark-tab-btn.active{color:#fff;border-bottom-color:var(--maroon-bright);}
-.below-dark-panel-wrap{
+.menu-dark-tab-btn:hover{color:rgba(255,255,255,.8);}
+.menu-dark-tab-btn.active{color:#fff;border-bottom-color:var(--maroon-bright);}
+.menu-dark-panel-wrap{
   border:1px solid rgba(255,255,255,.15);
   max-width:900px;margin:0 auto;padding:50px 60px;
 }
-.below-dark-panel{display:none;}
-.below-dark-panel.active{display:block;}
-.below-dark-download-wrap{text-align:center;margin-top:30px;}
+.menu-dark-panel{display:none;}
+.menu-dark-panel.active{display:block;}
+.menu-dark-download-wrap{text-align:center;margin-top:30px;}
 
 /* Dark-mode overrides for the shared menu-item styles (defined for a
    light background) when they're reused inside this dark panel */
-.below-dark-panel .menu-page-title{color:#f3ece4;}
-.below-dark-panel .menu-page-subtitle{color:rgba(243,236,228,.6);}
-.below-dark-panel .menu-heading{color:var(--maroon-bright);border-top-color:rgba(255,255,255,.15);}
-.below-dark-panel .menu-line{color:rgba(243,236,228,.6);}
-.below-dark-panel .menu-note{color:rgba(243,236,228,.5);}
-.below-dark-panel .menu-item{border-bottom-color:rgba(255,255,255,.12);}
-.below-dark-panel .menu-item-title{color:#f3ece4;}
-.below-dark-panel .menu-item-title .price{color:var(--maroon-bright);}
-.below-dark-panel .menu-item-desc{color:rgba(243,236,228,.55);}
+.menu-dark-panel .menu-page-title{color:#f3ece4;}
+.menu-dark-panel .menu-page-subtitle{color:rgba(243,236,228,.6);}
+.menu-dark-panel .menu-heading{color:var(--maroon-bright);border-top-color:rgba(255,255,255,.15);}
+.menu-dark-panel .menu-line{color:rgba(243,236,228,.6);}
+.menu-dark-panel .menu-note{color:rgba(243,236,228,.5);}
+.menu-dark-panel .menu-item{border-bottom-color:rgba(255,255,255,.12);}
+.menu-dark-panel .menu-item-title{color:#f3ece4;}
+.menu-dark-panel .menu-item-title .price{color:var(--maroon-bright);}
+.menu-dark-panel .menu-item-desc{color:rgba(243,236,228,.55);}
 
 @media (max-width:640px){
-  .below-dark-menu-heading{font-size:30px;}
-  .below-dark-tabs{gap:20px;}
-  .below-dark-panel-wrap{padding:36px 22px;}
+  .menu-dark-heading{font-size:30px;}
+  .menu-dark-tabs{gap:20px;}
+  .menu-dark-panel-wrap{padding:36px 22px;}
 }
 
 /* Set-menu content shown inside the "View Three-Course Menu" expander */
@@ -1433,7 +1429,6 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .maroon-band h1,.maroon-band h2{font-size:32px;}
   .lineup-section p{white-space:normal;max-width:600px;}
   .cup-dark-grid{grid-template-columns:1fr;max-width:600px;gap:50px;}
-  .rest-menu-grid{grid-template-columns:1fr 1fr;max-width:760px;}
 }
 @media (max-width:640px){
   body{font-size:21px;}
@@ -1510,7 +1505,6 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .lineup-section h2{font-size:26px;}
   .cup-dark-menu{padding:56px 0;}
   .cup-dark-grid{grid-template-columns:1fr;gap:50px;}
-  .rest-menu-grid{grid-template-columns:1fr;max-width:500px;}
   .cup-dark-heading{font-size:26px;}
   .cup-dark-expander-toggle{padding:16px 18px;font-size:12px;}
   .cup-dark-expander-panel-inner{padding:0 18px 20px;}

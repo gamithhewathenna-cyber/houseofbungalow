@@ -125,26 +125,26 @@ while ($i < count($nights)) {
 
 <!-- Menu --------------------------------------------------------------- -->
 <?php if (section_visible('below_menu')): ?>
-<section class="below-dark-menu reveal">
+<section class="menu-dark reveal">
   <div class="container">
-    <h2 class="below-dark-menu-heading"><?= e(setting('below_menu_heading', 'Discover Our Menus')) ?></h2>
+    <h2 class="menu-dark-heading"><?= e(setting('below_menu_heading', 'Discover Our Menus')) ?></h2>
     <?php if (setting('below_menu_lede')): ?>
-      <p class="below-dark-menu-lede"><?= enl(setting('below_menu_lede')) ?></p>
+      <p class="menu-dark-lede"><?= enl(setting('below_menu_lede')) ?></p>
     <?php endif; ?>
 
     <?php if ($below_menu_cats): ?>
-      <div class="below-dark-tabs">
+      <div class="menu-dark-tabs">
         <?php $first = true; foreach ($below_menu_cats as $cat): ?>
-          <button type="button" class="below-dark-tab-btn<?= $first ? ' active' : '' ?>" data-below-menu-tab="<?= (int) $cat['id'] ?>"><?= e($cat['title']) ?></button>
+          <button type="button" class="menu-dark-tab-btn<?= $first ? ' active' : '' ?>" data-below-menu-tab="<?= (int) $cat['id'] ?>"><?= e($cat['title']) ?></button>
         <?php $first = false; endforeach; ?>
       </div>
 
-      <div class="below-dark-panel-wrap">
+      <div class="menu-dark-panel-wrap">
         <?php $first = true; foreach ($below_menu_cats as $cat): ?>
-          <div class="below-dark-panel<?= $first ? ' active' : '' ?>" data-below-menu-panel="<?= (int) $cat['id'] ?>">
+          <div class="menu-dark-panel<?= $first ? ' active' : '' ?>" data-below-menu-panel="<?= (int) $cat['id'] ?>">
             <?php render_below_menu_items($below_menu_items_by_cat[$cat['id']]); ?>
             <?php if ($cat['link_url']): ?>
-              <div class="below-dark-download-wrap">
+              <div class="menu-dark-download-wrap">
                 <a class="tag-btn" href="<?= e(asset($cat['link_url'])) ?>" target="_blank" rel="noopener" download>DOWNLOAD MENU</a>
               </div>
             <?php endif; ?>
@@ -288,15 +288,15 @@ while ($i < count($nights)) {
 
 <script>
 (function () {
-  var tabs = document.querySelectorAll('.below-dark-tab-btn');
-  var panels = document.querySelectorAll('.below-dark-panel');
+  var tabs = document.querySelectorAll('.menu-dark-tab-btn');
+  var panels = document.querySelectorAll('.menu-dark-panel');
   if (!tabs.length) return;
   tabs.forEach(function (btn) {
     btn.addEventListener('click', function () {
       tabs.forEach(function (b) { b.classList.remove('active'); });
       panels.forEach(function (p) { p.classList.remove('active'); });
       btn.classList.add('active');
-      var panel = document.querySelector('.below-dark-panel[data-below-menu-panel="' + btn.dataset.belowMenuTab + '"]');
+      var panel = document.querySelector('.menu-dark-panel[data-below-menu-panel="' + btn.dataset.belowMenuTab + '"]');
       if (panel) panel.classList.add('active');
     });
   });
