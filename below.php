@@ -13,6 +13,72 @@ $below_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' =>
 $nights   = blocks('below_night');
 $faqs     = blocks('below_faq');
 
+$below_menu_cats = blocks('below_menu_cat');
+$below_menu_items_by_cat = [];
+foreach ($below_menu_cats as $cat) {
+    $below_menu_items_by_cat[$cat['id']] = blocks('below_menu_item_' . $cat['id']);
+}
+
+/**
+ * Renders one menu category's rows inside its "View ..." expander, using
+ * each row's type (set via admin > Below > Menu > Type column): a page
+ * title + subtitle, an uppercase section heading, a plain line, a small
+ * footnote, or a normal name + price + description.
+ */
+function render_below_menu_items(array $items): void
+{
+    if (!$items) {
+        ?><p class="cup-dark-dummy">Menu details coming soon.</p><?php
+        return;
+    }
+    foreach ($items as $item) {
+        $itemType = $item['link_url'];
+        if ($itemType === 'title') {
+            ?><h3 class="menu-page-title"><?= e($item['title']) ?></h3><?php
+            if ($item['body']) { ?><p class="menu-page-subtitle"><?= e($item['body']) ?></p><?php }
+        } elseif ($itemType === 'heading') {
+            ?><h4 class="menu-heading"><?= e($item['title']) ?></h4><?php
+        } elseif ($itemType === 'line') {
+            ?><p class="menu-line"><?= e($item['body']) ?></p><?php
+        } elseif ($itemType === 'note') {
+            ?><p class="menu-note"><?= e($item['body']) ?></p><?php
+        } else {
+            ?>
+            <div class="menu-item">
+              <div class="menu-item-title">
+                <span><?= e($item['title']) ?></span>
+                <?php if ($item['subtitle']): ?><span class="price">$<?= e($item['subtitle']) ?></span><?php endif; ?>
+              </div>
+              <?php if ($item['body']): ?><div class="menu-item-desc"><?= enl($item['body']) ?></div><?php endif; ?>
+            </div>
+            <?php
+        }
+    }
+}
+
+/**
+ * One full-width bordered expander button (same style as the Restaurant
+ * page's "View ... Menu" buttons) - click toggles the panel underneath it.
+ */
+function render_below_dark_expander(string $label, callable $renderContent): void
+{
+    ?>
+    <div class="cup-dark-expander">
+      <button type="button" class="cup-dark-expander-toggle">
+        <span><?= e($label) ?></span>
+        <span class="cup-dark-expander-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </span>
+      </button>
+      <div class="cup-dark-expander-panel">
+        <div class="cup-dark-expander-panel-inner">
+          <?php $renderContent(); ?>
+        </div>
+      </div>
+    </div>
+    <?php
+}
+
 // Group nights into rows of 3 then 2, same masonry-row pattern as the gallery.
 $night_rows = [];
 $i = 0; $take3 = true;
@@ -75,6 +141,41 @@ while ($i < count($nights)) {
       <div class="trio-item"><img loading="lazy" decoding="async" src="<?= e(asset(setting('below_cocktails_image1', 'assets/img/below.jpg'))) ?>" alt=""></div>
       <div class="trio-item"><img loading="lazy" decoding="async" src="<?= e(asset(setting('below_cocktails_image2', 'assets/img/below.jpg'))) ?>" alt=""></div>
       <div class="trio-item"><img loading="lazy" decoding="async" src="<?= e(asset(setting('below_cocktails_image3', 'assets/img/below.jpg'))) ?>" alt=""></div>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
+
+<!-- Menu --------------------------------------------------------------- -->
+<?php if (section_visible('below_menu')): ?>
+<section class="cup-dark-menu reveal">
+  <div class="container">
+    <h2 style="text-align:center;font-family:var(--serif);font-weight:300;font-size:40px;color:var(--ink);margin:0 0 20px;"><?= e(setting('below_menu_heading', 'Discover Our Menus')) ?></h2>
+    <?php if (setting('below_menu_lede')): ?>
+      <p class="menu-lede" style="text-align:center;font-family:var(--serif);font-style:italic;font-weight:200;font-size:18px;line-height:1.5;color:var(--ink-soft);max-width:1000px;margin:0 auto 40px;"><?= enl(setting('below_menu_lede')) ?></p>
+    <?php endif; ?>
+
+    <div class="cup-dark-grid rest-menu-grid">
+      <?php foreach ($below_menu_cats as $cat): ?>
+        <div class="cup-dark-offer">
+          <?php if ($cat['image']): ?>
+            <div class="cup-dark-offer-media"><img loading="lazy" decoding="async" src="<?= e(asset($cat['image'])) ?>" alt="<?= e($cat['title']) ?>"></div>
+          <?php endif; ?>
+          <?php if ($cat['subtitle']): ?><p class="cup-dark-eyebrow"><?= e($cat['subtitle']) ?></p><?php endif; ?>
+          <h3 class="cup-dark-heading"><?= e($cat['title']) ?></h3>
+          <?php if ($cat['body']): ?><p class="cup-dark-subtext"><?= e($cat['body']) ?></p><?php endif; ?>
+
+          <?php render_below_dark_expander('View ' . $cat['title'], function () use ($below_menu_items_by_cat, $cat) {
+              render_below_menu_items($below_menu_items_by_cat[$cat['id']]);
+          }); ?>
+
+          <?php if ($cat['link_url']): ?>
+            <div class="cup-dark-offer-btn-wrap">
+              <a class="tag-btn" href="<?= e(asset($cat['link_url'])) ?>" target="_blank" rel="noopener" download>DOWNLOAD MENU</a>
+            </div>
+          <?php endif; ?>
+        </div>
+      <?php endforeach; ?>
     </div>
   </div>
 </section>
@@ -205,6 +306,16 @@ while ($i < count($nights)) {
       var isOpen = item.classList.contains('open');
       document.querySelectorAll('.faq-item.open').forEach(function (el) { el.classList.remove('open'); });
       if (!isOpen) item.classList.add('open');
+    });
+  });
+})();
+</script>
+
+<script>
+(function () {
+  document.querySelectorAll('.cup-dark-expander-toggle').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      btn.closest('.cup-dark-expander').classList.toggle('open');
     });
   });
 })();
