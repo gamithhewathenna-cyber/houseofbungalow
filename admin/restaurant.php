@@ -371,10 +371,12 @@ include __DIR__ . '/layout.php';
     </div>
   </form>
 
-  <h3 style="margin-top:30px;">Menu Items</h3>
+  <hr style="margin:34px 0;border:0;border-top:1px solid #e0d3c4;">
+  <h3>Menu Items</h3>
   <?php if (!$menuCats): ?>
     <p class="group-help">Add a category above first - its items will appear here once it exists.</p>
   <?php else: ?>
+    <p class="group-help"><strong>This is where you edit the actual dishes, drinks and prices</strong> - click a category name below to open and edit everything inside it.</p>
     <div class="tab-nav" style="margin-bottom:18px;">
       <?php foreach ($menuCats as $cat): ?>
         <button type="button" class="tab-btn menu-cat-btn<?= $activeCat === (int)$cat['id'] ? ' active' : '' ?>" data-menu-cat="<?= $cat['id'] ?>"><?= e($cat['title']) ?></button>
