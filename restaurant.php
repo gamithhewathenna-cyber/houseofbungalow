@@ -160,13 +160,13 @@ while ($i < count($gallery)) {
           <h3 class="cup-dark-heading"><?= e($cat['title']) ?></h3>
           <?php if ($cat['body']): ?><p class="cup-dark-subtext"><?= e($cat['body']) ?></p><?php endif; ?>
 
-          <?php render_rest_dark_expander($cat['link_url2'] ?: 'View ' . $cat['title'], function () use ($menu_items_by_cat, $cat) {
+          <?php render_rest_dark_expander('View ' . $cat['title'], function () use ($menu_items_by_cat, $cat) {
               render_rest_menu_items($menu_items_by_cat[$cat['id']]);
           }); ?>
 
           <?php if ($cat['link_url']): ?>
             <div class="cup-dark-offer-btn-wrap">
-              <a class="link-underline" href="<?= e(asset($cat['link_url'])) ?>" target="_blank" rel="noopener" download>DOWNLOAD MENU</a>
+              <a class="tag-btn" href="<?= e(asset($cat['link_url'])) ?>" target="_blank" rel="noopener" download>DOWNLOAD MENU</a>
             </div>
           <?php endif; ?>
         </div>
