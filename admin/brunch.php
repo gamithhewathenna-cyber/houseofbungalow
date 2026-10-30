@@ -357,7 +357,7 @@ include __DIR__ . '/layout.php';
         ''        => 'Menu item (name + price + description)',
         'title'   => 'Page title (big heading) - description box becomes its subtitle',
         'heading' => 'Section heading (e.g. "MAINS", "SIDES")',
-        'line'    => 'Plain line of text - put the text in the Description box',
+        'line'    => 'Plain line of text - put it in the Description box (or the Item/Heading box to show it bold, or both for a bold lead-in)',
         'note'    => 'Small footnote at the end - put the text in the Description box',
     ];
     ?>
