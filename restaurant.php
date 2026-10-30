@@ -36,7 +36,7 @@ function render_rest_menu_items(array $items): void
         } elseif ($itemType === 'heading') {
             ?><h4 class="menu-heading"><?= e($item['title']) ?></h4><?php
         } elseif ($itemType === 'line') {
-            ?><p class="menu-line"><?= e($item['body']) ?><?php if ($item['subtitle']): ?> &middot; $<?= e($item['subtitle']) ?><?php endif; ?></p><?php
+            ?><p class="menu-line"><?= e($item['body']) ?><?php if ($item['subtitle']): ?> <span class="price">$<?= e($item['subtitle']) ?></span><?php endif; ?></p><?php
         } elseif ($itemType === 'note') {
             ?><p class="menu-note"><?= e($item['body']) ?></p><?php
         } else {
