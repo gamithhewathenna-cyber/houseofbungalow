@@ -707,7 +707,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .menu-page-title+.menu-page-subtitle+.menu-heading,
 .menu-page-title+.menu-heading{margin-top:0;padding-top:0;border-top:0;}
 .menu-line{
-  grid-column:1/-1;font-family:var(--sans);font-weight:300;font-size:12px;letter-spacing:.3px;
+  grid-column:1/-1;font-family:var(--sans);font-weight:300;font-size:14px;letter-spacing:.3px;
   color:var(--ink-mute);text-align:center;padding:3px 0;
 }
 .menu-line .price{font-weight:700;color:var(--maroon);margin-left:4px;}
