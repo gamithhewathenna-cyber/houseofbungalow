@@ -307,18 +307,20 @@ include __DIR__ . '/layout.php';
 
     <?php foreach ($menuCats as $cat): $catId = (int) $cat['id']; ?>
       <div class="menu-cat-panel<?= $activeCat === $catId ? ' active' : '' ?>" data-menu-cat-panel="<?= $catId ?>" style="<?= $activeCat === $catId ? '' : 'display:none;' ?>">
+        <p class="group-help">Drag the <strong>⠿</strong> handle to reorder rows - this updates the Order numbers automatically, so remember to click Save afterwards.</p>
         <form method="post">
           <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
           <input type="hidden" name="action" value="save_menu_items">
           <input type="hidden" name="cat" value="<?= $catId ?>">
-          <table>
-            <tr><th>Item</th><th style="width:140px;">Price</th><th>Description</th><th style="width:90px;">Order</th><th style="width:90px;"></th></tr>
+          <table class="menu-items-table">
+            <tr><th style="width:30px;"></th><th>Item</th><th style="width:140px;">Price</th><th>Description</th><th style="width:90px;">Order</th><th style="width:90px;"></th></tr>
             <?php foreach ($menuItemsByCat[$catId] as $item): ?>
               <tr>
+                <td class="drag-handle" title="Drag to reorder">⠿</td>
                 <td><input type="text" name="title[<?= $item['id'] ?>]" value="<?= e($item['title']) ?>"></td>
                 <td><input type="text" name="price[<?= $item['id'] ?>]" value="<?= e($item['subtitle']) ?>" placeholder="e.g. $5 / $6"></td>
                 <td><textarea name="desc[<?= $item['id'] ?>]" rows="2" style="min-height:0;"><?= e($item['body']) ?></textarea></td>
-                <td><input type="text" name="sort[<?= $item['id'] ?>]" value="<?= (int)$item['sort'] ?>"></td>
+                <td><input type="text" class="sort-input" name="sort[<?= $item['id'] ?>]" value="<?= (int)$item['sort'] ?>"></td>
                 <td><button form="delmenu<?= $item['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this item?')">Delete</button></td>
               </tr>
             <?php endforeach; ?>
@@ -433,6 +435,50 @@ document.querySelectorAll('.menu-cat-btn').forEach(function (btn) {
     if (window.history && window.history.replaceState) {
       window.history.replaceState(null, '', '?tab=menu&cat=' + btn.dataset.menuCat);
     }
+  });
+});
+
+// Drag-and-drop reordering of menu item rows (updates the Order boxes - click Save to keep it)
+document.querySelectorAll('.menu-items-table').forEach(function (table) {
+  var draggedRow = null;
+  var rows = Array.prototype.slice.call(table.rows);
+
+  function renumber() {
+    rows.forEach(function (row, i) {
+      if (i === 0) return; // header row
+      var input = row.querySelector('.sort-input');
+      if (input) input.value = i * 10;
+    });
+  }
+
+  rows.forEach(function (row) {
+    var handle = row.querySelector('.drag-handle');
+    if (!handle) return; // header row has no handle
+
+    handle.setAttribute('draggable', 'true');
+    handle.addEventListener('dragstart', function (e) {
+      draggedRow = row;
+      row.classList.add('dragging');
+      try { e.dataTransfer.setData('text/plain', ''); } catch (err) {}
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    handle.addEventListener('dragend', function () {
+      if (draggedRow) draggedRow.classList.remove('dragging');
+      draggedRow = null;
+      renumber();
+    });
+
+    row.addEventListener('dragover', function (e) {
+      if (!draggedRow || draggedRow === row) return;
+      e.preventDefault();
+      var rect = row.getBoundingClientRect();
+      var midpoint = rect.top + rect.height / 2;
+      if (e.clientY < midpoint) {
+        row.parentNode.insertBefore(draggedRow, row);
+      } else {
+        row.parentNode.insertBefore(draggedRow, row.nextSibling);
+      }
+    });
   });
 });
 </script>

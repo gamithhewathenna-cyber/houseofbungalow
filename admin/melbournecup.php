@@ -268,6 +268,7 @@ function render_menu_family(string $famKey, array $fam, array $data, ?int $activ
     <?php if (!$cats): ?>
       <p class="group-help">Add a category above first - its dishes will appear here once it exists.</p>
     <?php else: ?>
+      <p class="group-help">Drag the <strong>⠿</strong> handle to reorder rows - this updates the Order numbers automatically, so remember to click Save afterwards.</p>
       <div class="tab-nav" style="margin-bottom:18px;">
         <?php foreach ($cats as $cat): ?>
           <button type="button" class="tab-btn menu-cat-btn menu-cat-btn-<?= e($famKey) ?><?= $activeCat === (int)$cat['id'] ? ' active' : '' ?>" data-fam="<?= e($famKey) ?>" data-menu-cat="<?= $cat['id'] ?>"><?= e($cat['title']) ?></button>
@@ -281,13 +282,14 @@ function render_menu_family(string $famKey, array $fam, array $data, ?int $activ
             <input type="hidden" name="action" value="save_menu_items">
             <input type="hidden" name="fam" value="<?= e($famKey) ?>">
             <input type="hidden" name="cat" value="<?= $catId ?>">
-            <table>
-              <tr><th>Dish</th><th>Description</th><th style="width:90px;">Order</th><th style="width:90px;"></th></tr>
+            <table class="menu-items-table">
+              <tr><th style="width:30px;"></th><th>Dish</th><th>Description</th><th style="width:90px;">Order</th><th style="width:90px;"></th></tr>
               <?php foreach ($itemsByCat[$catId] as $item): ?>
                 <tr>
+                  <td class="drag-handle" title="Drag to reorder">⠿</td>
                   <td><input type="text" name="title[<?= $item['id'] ?>]" value="<?= e($item['title']) ?>"></td>
                   <td><textarea name="desc[<?= $item['id'] ?>]" rows="2" style="min-height:0;"><?= e($item['body']) ?></textarea></td>
-                  <td><input type="text" name="sort[<?= $item['id'] ?>]" value="<?= (int)$item['sort'] ?>"></td>
+                  <td><input type="text" class="sort-input" name="sort[<?= $item['id'] ?>]" value="<?= (int)$item['sort'] ?>"></td>
                   <td><button form="delmenu<?= e($famKey) ?><?= $item['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this dish?')">Delete</button></td>
                 </tr>
               <?php endforeach; ?>
@@ -407,6 +409,50 @@ document.querySelectorAll('.menu-cat-btn').forEach(function (btn) {
     if (window.history && window.history.replaceState) {
       window.history.replaceState(null, '', '?tab=' + fam + '&cat=' + btn.dataset.menuCat);
     }
+  });
+});
+
+// Drag-and-drop reordering of menu item rows (updates the Order boxes - click Save to keep it)
+document.querySelectorAll('.menu-items-table').forEach(function (table) {
+  var draggedRow = null;
+  var rows = Array.prototype.slice.call(table.rows);
+
+  function renumber() {
+    rows.forEach(function (row, i) {
+      if (i === 0) return; // header row
+      var input = row.querySelector('.sort-input');
+      if (input) input.value = i * 10;
+    });
+  }
+
+  rows.forEach(function (row) {
+    var handle = row.querySelector('.drag-handle');
+    if (!handle) return; // header row has no handle
+
+    handle.setAttribute('draggable', 'true');
+    handle.addEventListener('dragstart', function (e) {
+      draggedRow = row;
+      row.classList.add('dragging');
+      try { e.dataTransfer.setData('text/plain', ''); } catch (err) {}
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    handle.addEventListener('dragend', function () {
+      if (draggedRow) draggedRow.classList.remove('dragging');
+      draggedRow = null;
+      renumber();
+    });
+
+    row.addEventListener('dragover', function (e) {
+      if (!draggedRow || draggedRow === row) return;
+      e.preventDefault();
+      var rect = row.getBoundingClientRect();
+      var midpoint = rect.top + rect.height / 2;
+      if (e.clientY < midpoint) {
+        row.parentNode.insertBefore(draggedRow, row);
+      } else {
+        row.parentNode.insertBefore(draggedRow, row.nextSibling);
+      }
+    });
   });
 });
 </script>
