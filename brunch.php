@@ -46,7 +46,18 @@ function render_brunch_menu_items(array $items): void
         } elseif ($itemType === 'heading') {
             ?><h4 class="menu-heading"><?= e($item['title']) ?></h4><?php
         } elseif ($itemType === 'line') {
-            ?><p class="menu-line"><?= e($item['body']) ?><?php if ($item['subtitle']): ?> <span class="price">$<?= e($item['subtitle']) ?></span><?php endif; ?></p><?php
+            if ($item['subtitle']) {
+                ?>
+                <div class="menu-item">
+                  <div class="menu-item-title">
+                    <span><?= e($item['body']) ?></span>
+                    <span class="price">$<?= e($item['subtitle']) ?></span>
+                  </div>
+                </div>
+                <?php
+            } else {
+                ?><p class="menu-line"><?= e($item['body']) ?></p><?php
+            }
         } elseif ($itemType === 'note') {
             ?><p class="menu-note"><?= e($item['body']) ?></p><?php
         } else {

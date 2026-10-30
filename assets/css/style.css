@@ -710,7 +710,6 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   grid-column:1/-1;font-family:var(--sans);font-weight:300;font-size:12px;letter-spacing:.3px;
   color:var(--ink-mute);text-align:center;padding:3px 0;
 }
-.menu-line .price{font-weight:700;color:var(--maroon);margin-left:4px;}
 .menu-note{
   grid-column:1/-1;font-family:var(--sans);font-style:italic;font-weight:300;font-size:11px;
   color:var(--ink-mute);text-align:center;margin:30px 0 0;
@@ -876,7 +875,6 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .menu-dark-panel .menu-page-subtitle{color:rgba(243,236,228,.6);}
 .menu-dark-panel .menu-heading{color:var(--maroon-bright);border-top-color:rgba(255,255,255,.15);}
 .menu-dark-panel .menu-line{color:rgba(243,236,228,.6);}
-.menu-dark-panel .menu-line .price{color:var(--maroon-bright);}
 .menu-dark-panel .menu-note{color:rgba(243,236,228,.5);}
 .menu-dark-panel .menu-item{border-bottom-color:rgba(255,255,255,.12);}
 .menu-dark-panel .menu-item-title{color:#f3ece4;}
