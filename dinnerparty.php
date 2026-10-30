@@ -46,7 +46,12 @@ function render_dp_menu_items(array $items): void
         } elseif ($itemType === 'heading') {
             ?><h4 class="menu-heading"><?= e($item['title']) ?></h4><?php
         } elseif ($itemType === 'line') {
-            ?><p class="menu-line"><?php if ($item['title']): ?><strong><?= e($item['title']) ?></strong><?php if ($item['body']): ?> <?php endif; ?><?php endif; ?><?= e($item['body']) ?><?php if ($item['subtitle']): ?> <span class="price">$<?= e($item['subtitle']) ?></span><?php endif; ?></p><?php
+            if ($item['title']) {
+                ?><p class="menu-line menu-line-strong"><?= e($item['title']) ?></p><?php
+            }
+            if ($item['body'] || $item['subtitle']) {
+                ?><p class="menu-line"><?= e($item['body']) ?><?php if ($item['subtitle']): ?> <span class="price">$<?= e($item['subtitle']) ?></span><?php endif; ?></p><?php
+            }
         } elseif ($itemType === 'note') {
             ?><p class="menu-note"><?= e($item['body']) ?></p><?php
         } else {
