@@ -382,7 +382,7 @@ include __DIR__ . '/layout.php';
           <input type="hidden" name="action" value="save_menu_items">
           <input type="hidden" name="cat" value="<?= $catId ?>">
           <table class="menu-items-table">
-            <tr><th style="width:30px;"></th><th style="width:150px;">Type</th><th>Item / Heading</th><th style="width:100px;">Price</th><th>Description</th><th style="width:70px;">Order</th><th style="width:90px;"></th></tr>
+            <tr><th style="width:30px;"></th><th style="width:150px;">Type</th><th>Item / Heading</th><th style="width:100px;">Price</th><th>Description</th><th style="width:70px;">Order</th><th style="width:150px;"></th></tr>
             <?php foreach ($menuItemsByCat[$catId] as $item): ?>
               <tr>
                 <td class="drag-handle" title="Drag to reorder">⠿</td>
@@ -397,7 +397,7 @@ include __DIR__ . '/layout.php';
                 <td><input type="text" name="price[<?= $item['id'] ?>]" value="<?= e($item['subtitle']) ?>"></td>
                 <td><textarea name="desc[<?= $item['id'] ?>]" rows="2" style="min-height:0;"><?= e($item['body']) ?></textarea></td>
                 <td><input type="text" class="sort-input" name="sort[<?= $item['id'] ?>]" value="<?= (int)$item['sort'] ?>"></td>
-                <td><button form="delmenu<?= $item['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this item?')">Delete</button></td>
+                <td><div class="row-actions"><button type="submit" class="btn btn-sm">Save</button><button form="delmenu<?= $item['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this item?')">Delete</button></div></td>
               </tr>
             <?php endforeach; ?>
           </table>

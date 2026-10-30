@@ -283,14 +283,14 @@ function render_menu_family(string $famKey, array $fam, array $data, ?int $activ
             <input type="hidden" name="fam" value="<?= e($famKey) ?>">
             <input type="hidden" name="cat" value="<?= $catId ?>">
             <table class="menu-items-table">
-              <tr><th style="width:30px;"></th><th>Dish</th><th>Description</th><th style="width:90px;">Order</th><th style="width:90px;"></th></tr>
+              <tr><th style="width:30px;"></th><th>Dish</th><th>Description</th><th style="width:90px;">Order</th><th style="width:150px;"></th></tr>
               <?php foreach ($itemsByCat[$catId] as $item): ?>
                 <tr>
                   <td class="drag-handle" title="Drag to reorder">⠿</td>
                   <td><input type="text" name="title[<?= $item['id'] ?>]" value="<?= e($item['title']) ?>"></td>
                   <td><textarea name="desc[<?= $item['id'] ?>]" rows="2" style="min-height:0;"><?= e($item['body']) ?></textarea></td>
                   <td><input type="text" class="sort-input" name="sort[<?= $item['id'] ?>]" value="<?= (int)$item['sort'] ?>"></td>
-                  <td><button form="delmenu<?= e($famKey) ?><?= $item['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this dish?')">Delete</button></td>
+                  <td><div class="row-actions"><button type="submit" class="btn btn-sm">Save</button><button form="delmenu<?= e($famKey) ?><?= $item['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this dish?')">Delete</button></div></td>
                 </tr>
               <?php endforeach; ?>
             </table>
