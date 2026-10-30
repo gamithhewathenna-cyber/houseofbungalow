@@ -606,6 +606,19 @@ document.querySelectorAll('.menu-items-table').forEach(function (table) {
     });
   });
 });
+
+// Highlight rows by Type (section headings, page titles, etc.) so they're easy to spot among normal items
+document.querySelectorAll('.menu-items-table').forEach(function (table) {
+  function applyRowType(select) {
+    var row = select.closest('tr');
+    row.classList.remove('row-type-heading', 'row-type-title', 'row-type-line', 'row-type-note');
+    if (select.value) row.classList.add('row-type-' + select.value);
+  }
+  table.querySelectorAll('select[name^="type["]').forEach(function (select) {
+    applyRowType(select);
+    select.addEventListener('change', function () { applyRowType(select); });
+  });
+});
 </script>
 
 <?php include __DIR__ . '/layout_end.php'; ?>

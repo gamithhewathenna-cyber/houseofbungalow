@@ -125,6 +125,20 @@ td input[type=text]{margin-top:0;}
 .drag-handle{cursor:grab;text-align:center;font-size:16px;color:#9a8f85;user-select:none;}
 .drag-handle:active{cursor:grabbing;}
 .menu-items-table tr.dragging{opacity:.4;background:#faf3ea;}
+
+/* Highlight rows by Type so headings/titles stand out from normal items */
+.menu-items-table tr.row-type-heading{background:#f3e6d3;}
+.menu-items-table tr.row-type-heading input,
+.menu-items-table tr.row-type-heading textarea,
+.menu-items-table tr.row-type-heading select{font-weight:700;}
+.menu-items-table tr.row-type-title{background:#f0dde1;}
+.menu-items-table tr.row-type-title input,
+.menu-items-table tr.row-type-title textarea,
+.menu-items-table tr.row-type-title select{font-weight:700;}
+.menu-items-table tr.row-type-line,
+.menu-items-table tr.row-type-note{background:#f7f3ec;}
+.menu-items-table tr.row-type-note input,
+.menu-items-table tr.row-type-note textarea{font-style:italic;}
 .thumb-preview{margin-top:8px;}
 .thumb-preview img{max-height:90px;border:1px solid var(--line);border-radius:4px;background:#faf6f0;padding:4px;}
 .inline-form{display:inline;}
