@@ -14,7 +14,6 @@ $current    = basename($_SERVER['PHP_SELF']);
 
 $mainNav = [
     ['href' => 'index.php',       'label' => 'Dashboard',          'icon' => 'grid',  'area' => null],
-    ['href' => 'pages.php',       'label' => 'Main Pages',         'icon' => 'eye',   'area' => 'content'],
     ['href' => 'homepage.php',    'label' => 'Home Page',          'icon' => 'home',  'area' => 'content'],
     ['href' => 'reserve.php',     'label' => 'Reserve',            'icon' => 'reserve', 'area' => 'content'],
     ['href' => 'restaurant.php',  'label' => 'Restaurant & Menus', 'icon' => 'fork',  'area' => 'content'],
@@ -51,6 +50,19 @@ $systemNav = [
 $mainNav = array_values(array_filter($mainNav, fn($item) => $item['area'] === null || admin_can($item['area'])));
 $leadNav = array_values(array_filter($leadNav, fn($item) => $item['area'] === null || admin_can($item['area'])));
 $systemNav = array_values(array_filter($systemNav, fn($item) => $item['area'] === null || admin_can($item['area'])));
+
+// Show/Hide toggle shown next to each main page's sidebar link (skipped
+// for the homepage, which can't be hidden, and for nav items that aren't
+// a real public page, e.g. SEO, Week's Line-Up, Popup Booking).
+$pageVisibility = [];
+try {
+    $rows = db()->query("SELECT id, page_key, page_visible FROM seo_meta WHERE page_key != 'index'")->fetchAll();
+    foreach ($rows as $r) {
+        $pageVisibility[$r['page_key']] = ['id' => (int) $r['id'], 'visible' => (int) $r['page_visible'] === 1];
+    }
+} catch (Throwable $e) {
+    // seo_meta.page_visible may not exist yet (migration not run) - skip quietly.
+}
 
 // Unread-lead counts, shown as a badge on each Lead Management nav item
 // (and a total next to the section label).
@@ -103,21 +115,30 @@ function nav_icon(string $key): void
         'inbox' => '<path d="M3 13h5l1.5 3h5L16 13h5"/><path d="M5.5 6h13L21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6L5.5 6Z"/>',
         'pin'   => '<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 12 2a7 7 0 0 1 7 7.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/>',
         'search' => '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
-        'eye'    => '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
     ];
     echo '<svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' . ($icons[$key] ?? '') . '</svg>';
 }
 
-function nav_link(array $item, string $current): void
+function nav_link(array $item, string $current, array $pageVisibility = []): void
 {
     $base   = strtok($item['href'], '?');
     $active = $current === $base;
+    $key    = pathinfo($base, PATHINFO_FILENAME);
+    $toggle = $pageVisibility[$key] ?? null;
     ?>
-    <a href="<?= e($item['href']) ?>" class="nav-item<?= $active ? ' active' : '' ?>">
-      <?php nav_icon($item['icon']); ?>
-      <span><?= e($item['label']) ?></span>
-      <?php if (!empty($item['badge'])): ?><span class="nav-badge"><?= (int) $item['badge'] ?></span><?php endif; ?>
-    </a>
+    <div class="nav-item-row">
+      <a href="<?= e($item['href']) ?>" class="nav-item<?= $active ? ' active' : '' ?><?= $toggle ? ' has-toggle' : '' ?>">
+        <?php nav_icon($item['icon']); ?>
+        <span><?= e($item['label']) ?></span>
+        <?php if (!empty($item['badge'])): ?><span class="nav-badge"><?= (int) $item['badge'] ?></span><?php endif; ?>
+      </a>
+      <?php if ($toggle): ?>
+        <label class="nav-page-toggle" title="<?= $toggle['visible'] ? 'Visible on site - click to hide' : 'Hidden from site - click to show' ?>">
+          <input type="checkbox" data-page-id="<?= $toggle['id'] ?>" <?= $toggle['visible'] ? 'checked' : '' ?>>
+          <span class="nav-page-toggle-slider"></span>
+        </label>
+      <?php endif; ?>
+    </div>
     <?php
 }
 ?>
@@ -134,7 +155,7 @@ function nav_link(array $item, string $current): void
 <aside class="sidebar">
   <div class="sidebar-brand">House of Bungalow<span>Admin</span></div>
   <nav class="sidebar-nav">
-    <?php foreach ($mainNav as $item): nav_link($item, $current); endforeach; ?>
+    <?php foreach ($mainNav as $item): nav_link($item, $current, $pageVisibility); endforeach; ?>
 
     <?php if ($leadNav): ?>
       <div class="nav-section-label">Lead Management<?php if ($leadUnreadTotal > 0): ?><span class="nav-badge nav-badge-total"><?= $leadUnreadTotal ?></span><?php endif; ?></div>
@@ -146,6 +167,31 @@ function nav_link(array $item, string $current): void
   </nav>
   <a class="sidebar-logout" href="logout.php">Log out</a>
 </aside>
+<script>
+(function () {
+  var csrf = <?= json_encode(csrf_token()) ?>;
+  document.querySelectorAll('.nav-page-toggle input').forEach(function (cb) {
+    cb.addEventListener('change', function () {
+      var id = this.dataset.pageId;
+      var visible = this.checked;
+      var box = this;
+      fetch('ajax-toggle-page.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'csrf=' + encodeURIComponent(csrf) + '&id=' + encodeURIComponent(id) + '&page_visible=' + (visible ? '1' : '0')
+      }).then(function (r) { return r.json(); }).then(function (data) {
+        if (!data.ok) {
+          box.checked = !visible;
+          alert(data.error || 'Could not update. Please try again.');
+        }
+      }).catch(function () {
+        box.checked = !visible;
+        alert('Could not update. Please try again.');
+      });
+    });
+  });
+})();
+</script>
 <main class="content">
   <div class="topbar">
     <h1><?= e($page_title) ?></h1>

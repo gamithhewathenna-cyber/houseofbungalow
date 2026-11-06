@@ -81,10 +81,18 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .sidebar-brand{padding:22px 22px 18px;font-family:Georgia,serif;font-size:17px;color:#fff;border-bottom:1px solid #3a332e;line-height:1.2;}
 .sidebar-brand span{display:block;font-family:inherit;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#9a8f84;margin-top:4px;}
 .sidebar-nav{flex:1;padding:14px;overflow-y:auto;}
-.nav-item{display:flex;align-items:center;gap:11px;padding:10px 14px;margin-bottom:4px;color:#c9c1b9;font-size:13px;font-weight:500;border-radius:10px;}
+.nav-item-row{display:flex;align-items:center;gap:2px;margin-bottom:4px;}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 14px;color:#c9c1b9;font-size:13px;font-weight:500;border-radius:10px;flex:1;min-width:0;}
+.nav-item.has-toggle{padding-right:8px;}
 .nav-icon{width:18px;height:18px;flex-shrink:0;}
 .nav-item:hover{background:var(--sidebar-hi);color:#fff;}
 .nav-item.active{background:var(--maroon);color:#fff;}
+.nav-page-toggle{position:relative;display:inline-block;width:32px;height:18px;flex-shrink:0;margin-right:6px;}
+.nav-page-toggle input{position:absolute;opacity:0;width:0;height:0;}
+.nav-page-toggle-slider{position:absolute;inset:0;background:#53493f;border-radius:999px;transition:background .18s;cursor:pointer;}
+.nav-page-toggle-slider::before{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;background:#d9d2ca;border-radius:50%;transition:transform .18s;}
+.nav-page-toggle input:checked + .nav-page-toggle-slider{background:var(--maroon);}
+.nav-page-toggle input:checked + .nav-page-toggle-slider::before{background:#fff;transform:translateX(14px);}
 .nav-section-label{margin:18px 10px 8px;padding-top:14px;border-top:1px solid #3a332e;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#8a7f74;display:flex;align-items:center;gap:8px;}
 .nav-badge{margin-left:auto;background:rgba(255,255,255,.16);color:#fff;font-size:11px;font-weight:700;line-height:1;padding:3px 7px;border-radius:999px;min-width:18px;text-align:center;}
 .nav-item.active .nav-badge,.nav-item:hover .nav-badge{background:rgba(255,255,255,.3);}
