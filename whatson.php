@@ -41,7 +41,7 @@ $features = blocks('wo_feature');
 </section>
 <?php endif; ?>
 
-<!-- Melbourne Cup / Featured Sections (repeatable) ------------------------ -->
+<!-- Featured Sections (repeatable) ------------------------------------ -->
 <?php if (section_visible('wo_features')): ?>
 <?php foreach ($features as $i => $feature): ?>
 <section class="split-section reveal">

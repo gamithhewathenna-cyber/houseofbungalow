@@ -22,7 +22,6 @@ $mainNav = [
     ['href' => 'whatson.php',     'label' => "What's On",          'icon' => 'ticket', 'area' => 'content'],
     ['href' => 'brunch.php',      'label' => 'Bottomless Brunch',  'icon' => 'coffee', 'area' => 'content'],
     ['href' => 'dinnerparty.php', 'label' => 'Dinner Party',       'icon' => 'glass', 'area' => 'content'],
-    ['href' => 'melbournecup.php', 'label' => 'Melbourne Cup',    'icon' => 'ticket', 'area' => 'content'],
     ['href' => 'privateevents.php', 'label' => 'Private Events',  'icon' => 'gift',  'area' => 'content'],
     ['href' => 'lineup.php',      'label' => "Week's Line-Up",     'icon' => 'calendar', 'area' => 'content'],
     ['href' => 'popup.php',       'label' => 'Popup Booking',      'icon' => 'popup', 'area' => 'content'],
