@@ -51,17 +51,20 @@ $mainNav = array_values(array_filter($mainNav, fn($item) => $item['area'] === nu
 $leadNav = array_values(array_filter($leadNav, fn($item) => $item['area'] === null || admin_can($item['area'])));
 $systemNav = array_values(array_filter($systemNav, fn($item) => $item['area'] === null || admin_can($item['area'])));
 
-// Show/Hide toggle shown next to each main page's sidebar link (skipped
-// for the homepage, which can't be hidden, and for nav items that aren't
-// a real public page, e.g. SEO, Week's Line-Up, Popup Booking).
+// Show/Hide toggle shown next to each main page's sidebar link - admins
+// only, not Content Editors. Skipped for the homepage, which can't be
+// hidden, and for nav items that aren't a real public page (e.g. SEO,
+// Week's Line-Up, Popup Booking).
 $pageVisibility = [];
-try {
-    $rows = db()->query("SELECT id, page_key, page_visible FROM seo_meta WHERE page_key != 'index'")->fetchAll();
-    foreach ($rows as $r) {
-        $pageVisibility[$r['page_key']] = ['id' => (int) $r['id'], 'visible' => (int) $r['page_visible'] === 1];
+if (admin_can('admin')) {
+    try {
+        $rows = db()->query("SELECT id, page_key, page_visible FROM seo_meta WHERE page_key != 'index'")->fetchAll();
+        foreach ($rows as $r) {
+            $pageVisibility[$r['page_key']] = ['id' => (int) $r['id'], 'visible' => (int) $r['page_visible'] === 1];
+        }
+    } catch (Throwable $e) {
+        // seo_meta.page_visible may not exist yet (migration not run) - skip quietly.
     }
-} catch (Throwable $e) {
-    // seo_meta.page_visible may not exist yet (migration not run) - skip quietly.
 }
 
 // Unread-lead counts, shown as a badge on each Lead Management nav item

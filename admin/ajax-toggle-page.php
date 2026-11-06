@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/auth.php';
-require_role('content');
+require_role('admin');
 header('Content-Type: application/json');
 
 if (!csrf_check()) {
