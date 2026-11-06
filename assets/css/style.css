@@ -684,6 +684,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   font-family:var(--serif);font-weight:500;font-size:15px;color:var(--ink);
 }
 .menu-item-title .price{color:var(--maroon);font-size:13px;white-space:nowrap;}
+.menu-items-centered .menu-item-title{justify-content:center;text-align:center;}
 .menu-item-desc{
   font-family:var(--sans);font-weight:300;font-size:11px;letter-spacing:.3px;
   color:var(--ink-mute);margin-top:4px;

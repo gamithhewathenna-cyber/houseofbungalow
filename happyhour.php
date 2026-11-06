@@ -123,7 +123,7 @@ function render_hh_menu_items(array $items): void
 
 <!-- Menu (own dataset - not shared with the Restaurant page) --------------- -->
 <?php if (section_visible('hh_menu')): ?>
-<section class="menu-dark menu-light reveal">
+<section class="menu-dark menu-light menu-items-centered reveal">
   <div class="container">
     <h2 class="menu-dark-heading"><?= e(setting('hh_menu_heading', 'Discover Our Menus')) ?></h2>
     <?php if (setting('hh_menu_lede')): ?>
