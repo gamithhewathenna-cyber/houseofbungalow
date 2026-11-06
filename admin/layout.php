@@ -21,6 +21,7 @@ $mainNav = [
     ['href' => 'below.php',       'label' => 'Below',              'icon' => 'moon',  'area' => 'content'],
     ['href' => 'whatson.php',     'label' => "What's On",          'icon' => 'ticket', 'area' => 'content'],
     ['href' => 'expresslunch.php', 'label' => 'Express Lunch',    'icon' => 'cup',   'area' => 'content'],
+    ['href' => 'happyhour.php',   'label' => 'Happy Hour',         'icon' => 'glass', 'area' => 'content'],
     ['href' => 'brunch.php',      'label' => 'Bottomless Brunch',  'icon' => 'coffee', 'area' => 'content'],
     ['href' => 'dinnerparty.php', 'label' => 'Dinner Party',       'icon' => 'glass', 'area' => 'content'],
     ['href' => 'privateevents.php', 'label' => 'Private Events',  'icon' => 'gift',  'area' => 'content'],

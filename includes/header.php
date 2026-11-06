@@ -151,6 +151,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a href="<?= e(url('below.php')) ?>">BELOW</a>
     <a href="<?= e(url('whatson.php')) ?>">WHAT'S ON</a>
     <a href="<?= e(url('expresslunch.php')) ?>">EXPRESS LUNCH</a>
+    <a href="<?= e(url('happyhour.php')) ?>">HAPPY HOUR</a>
     <a href="<?= e(url('brunch.php')) ?>">BOTTOMLESS BRUNCH</a>
     <a href="<?= e(url('dinnerparty.php')) ?>">DINNER PARTY</a>
     <a href="<?= e(url('privateevents.php')) ?>">PRIVATE EVENTS</a>
