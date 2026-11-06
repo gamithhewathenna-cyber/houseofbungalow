@@ -81,6 +81,32 @@ function enl(?string $v): string
 }
 
 /**
+ * Whether a given page should be shown on the live site (admin > Main
+ * Pages). The homepage is always visible. Falls back to visible if the
+ * page has no seo_meta row yet, or the column doesn't exist (migration
+ * not run).
+ */
+function page_visible(string $pageKey): bool
+{
+    static $cache = [];
+    if ($pageKey === 'index') {
+        return true;
+    }
+    if (isset($cache[$pageKey])) {
+        return $cache[$pageKey];
+    }
+    try {
+        $stmt = db()->prepare('SELECT page_visible FROM seo_meta WHERE page_key = ? LIMIT 1');
+        $stmt->execute([$pageKey]);
+        $v = $stmt->fetchColumn();
+        $cache[$pageKey] = $v === false ? true : ((int) $v === 1);
+    } catch (Throwable $e) {
+        $cache[$pageKey] = true;
+    }
+    return $cache[$pageKey];
+}
+
+/**
  * Every page.php file that has a custom SEO slug set (admin > SEO),
  * loaded once per request. Pages with no custom slug are left out, so
  * url() falls back to its default filename-based clean URL for them.

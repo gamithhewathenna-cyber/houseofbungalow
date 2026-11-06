@@ -14,6 +14,7 @@ $current    = basename($_SERVER['PHP_SELF']);
 
 $mainNav = [
     ['href' => 'index.php',       'label' => 'Dashboard',          'icon' => 'grid',  'area' => null],
+    ['href' => 'pages.php',       'label' => 'Main Pages',         'icon' => 'eye',   'area' => 'content'],
     ['href' => 'homepage.php',    'label' => 'Home Page',          'icon' => 'home',  'area' => 'content'],
     ['href' => 'reserve.php',     'label' => 'Reserve',            'icon' => 'reserve', 'area' => 'content'],
     ['href' => 'restaurant.php',  'label' => 'Restaurant & Menus', 'icon' => 'fork',  'area' => 'content'],
@@ -102,6 +103,7 @@ function nav_icon(string $key): void
         'inbox' => '<path d="M3 13h5l1.5 3h5L16 13h5"/><path d="M5.5 6h13L21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6L5.5 6Z"/>',
         'pin'   => '<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 12 2a7 7 0 0 1 7 7.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/>',
         'search' => '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+        'eye'    => '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
     ];
     echo '<svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' . ($icons[$key] ?? '') . '</svg>';
 }

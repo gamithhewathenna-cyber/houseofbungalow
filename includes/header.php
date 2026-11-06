@@ -147,15 +147,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <nav class="mobile-menu" id="mobileMenu" aria-hidden="true">
   <div class="mobile-menu-links">
     <a href="<?= e(url('index.php')) ?>">HOME</a>
-    <a href="<?= e(url('restaurant.php')) ?>">RESTAURANT &amp; MENUS</a>
-    <a href="<?= e(url('below.php')) ?>">BELOW</a>
-    <a href="<?= e(url('whatson.php')) ?>">WHAT'S ON</a>
-    <a href="<?= e(url('expresslunch.php')) ?>">EXPRESS LUNCH</a>
-    <a href="<?= e(url('brunch.php')) ?>">BOTTOMLESS BRUNCH</a>
-    <a href="<?= e(url('dinnerparty.php')) ?>">DINNER PARTY</a>
-    <a href="<?= e(url('privateevents.php')) ?>">PRIVATE EVENTS</a>
-    <a href="<?= e(url('cafe.php')) ?>">CAFÉ</a>
-    <a href="<?= e(url('faq.php')) ?>">FAQs</a>
+    <?php if (page_visible('restaurant')): ?><a href="<?= e(url('restaurant.php')) ?>">RESTAURANT &amp; MENUS</a><?php endif; ?>
+    <?php if (page_visible('below')): ?><a href="<?= e(url('below.php')) ?>">BELOW</a><?php endif; ?>
+    <?php if (page_visible('whatson')): ?><a href="<?= e(url('whatson.php')) ?>">WHAT'S ON</a><?php endif; ?>
+    <?php if (page_visible('expresslunch')): ?><a href="<?= e(url('expresslunch.php')) ?>">EXPRESS LUNCH</a><?php endif; ?>
+    <?php if (page_visible('brunch')): ?><a href="<?= e(url('brunch.php')) ?>">BOTTOMLESS BRUNCH</a><?php endif; ?>
+    <?php if (page_visible('dinnerparty')): ?><a href="<?= e(url('dinnerparty.php')) ?>">DINNER PARTY</a><?php endif; ?>
+    <?php if (page_visible('privateevents')): ?><a href="<?= e(url('privateevents.php')) ?>">PRIVATE EVENTS</a><?php endif; ?>
+    <?php if (page_visible('cafe')): ?><a href="<?= e(url('cafe.php')) ?>">CAFÉ</a><?php endif; ?>
+    <?php if (page_visible('faq')): ?><a href="<?= e(url('faq.php')) ?>">FAQs</a><?php endif; ?>
   </div>
 </nav>
 
@@ -191,3 +191,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   });
 })();
 </script>
+
+<?php
+// Page Show/Hide (admin > Main Pages). A hidden page shows "Page not
+// found" to visitors; a logged-in admin can still preview it, with a
+// banner reminding them it's hidden.
+if (!page_visible($__seo_page_key)) {
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (empty($_SESSION['admin'])) {
+        http_response_code(404);
+        ?>
+        <section class="page-hero-intro reveal">
+          <div class="container">
+            <h1>Page not found</h1>
+            <p class="lede">The page you're looking for doesn't exist or may have moved.</p>
+          </div>
+        </section>
+        <?php
+        include __DIR__ . '/footer.php';
+        exit;
+    }
+    ?>
+    <div style="background:#620E15;color:#fff;text-align:center;padding:10px 16px;font-family:'Hanken Grotesk',sans-serif;font-size:13px;">
+      This page is hidden from visitors (admin &gt; Main Pages). Only you can see it while logged in. <a href="<?= e(rtrim(BASE_URL, '/')) ?>/admin/pages.php" style="color:#fff;text-decoration:underline;">Manage page visibility</a>
+    </div>
+    <?php
+}
+?>

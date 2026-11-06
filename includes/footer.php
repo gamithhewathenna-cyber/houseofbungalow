@@ -23,7 +23,12 @@ $msg        = $_GET['sub'] ?? '';
     <?php if ($footer_nav): ?>
     <nav class="footer-nav">
       <?php foreach ($footer_nav as $n): ?>
-        <a href="<?= e(url($n['link_url'] ?: '#')) ?>"><?= e($n['title']) ?></a>
+        <?php
+          $__fn_url = $n['link_url'] ?: '#';
+          $__fn_key = str_ends_with($__fn_url, '.php') ? basename($__fn_url, '.php') : null;
+          if ($__fn_key !== null && !page_visible($__fn_key)) continue;
+        ?>
+        <a href="<?= e(url($__fn_url)) ?>"><?= e($n['title']) ?></a>
       <?php endforeach; ?>
     </nav>
     <?php endif; ?>
