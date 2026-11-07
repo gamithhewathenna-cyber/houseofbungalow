@@ -5,6 +5,7 @@ require_once __DIR__ . '/helpers.php';
 
 $fieldGroups = [
     'hero'    => ['rr_hero_image', 'rr_heading', 'rr_subheading', 'rr_body'],
+    'widget'  => ['rest_opentable_embed'],
     'content' => ['rr_section_heading', 'rr_below_heading', 'rr_below_btn_label', 'rr_below_btn_url'],
 ];
 $visibilitySections = [
@@ -56,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$allRows = db()->query("SELECT * FROM settings WHERE section='restaurantreservations_page'")->fetchAll();
+$allRows = db()->query("SELECT * FROM settings WHERE section='restaurantreservations_page' OR skey='rest_opentable_embed'")->fetchAll();
 $bySkey = [];
 foreach ($allRows as $r) {
     $bySkey[$r['skey']] = $r;
@@ -64,6 +65,7 @@ foreach ($allRows as $r) {
 
 $tabs = [
     'hero'       => 'Hero',
+    'widget'     => 'Reservation Widget',
     'content'    => 'Content',
     'visibility' => 'Section Visibility',
 ];
@@ -101,7 +103,7 @@ include __DIR__ . '/layout.php';
 ?>
 <?php if ($error): ?><div class="alert err"><?= e($error) ?></div><?php endif; ?>
 
-<p class="muted" style="margin-bottom:18px;">This page is not linked anywhere on the live site's menu - it's only reachable by its direct URL, for sharing separately (e.g. in an email, QR code or social link). It reuses the same OpenTable reservation widget set up on the Restaurant page (admin &gt; Restaurant &amp; Menus &gt; Hero Video tab) - updating that widget there also updates it here.</p>
+<p class="muted" style="margin-bottom:18px;">This page is not linked anywhere on the live site's menu - it's only reachable by its direct URL, for sharing separately (e.g. in an email, QR code or social link). The Reservation Widget tab below shares the same embed code as the Restaurant page, so changing it in either place updates both.</p>
 
 <div class="tab-nav">
   <?php foreach ($tabs as $key => $label): ?>
@@ -116,6 +118,18 @@ include __DIR__ . '/layout.php';
     <input type="hidden" name="action" value="save_section">
     <input type="hidden" name="group" value="hero">
     <?php foreach ($fieldGroups['hero'] as $key): if (!isset($bySkey[$key])) continue; render_rr_field($bySkey[$key]); endforeach; ?>
+    <div class="form-actions"><button type="submit" class="btn">Save Changes</button></div>
+  </form>
+</div>
+
+<div class="tab-panel settings-group<?= $activeTab === 'widget' ? ' active' : '' ?>" data-tab="widget">
+  <h3>Reservation Widget</h3>
+  <p class="group-help">This is the same OpenTable embed code used on the Restaurant page (admin &gt; Restaurant &amp; Menus &gt; Hero Video tab) - changing it here also updates it there, since they share the same widget.</p>
+  <form method="post">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="save_section">
+    <input type="hidden" name="group" value="widget">
+    <?php foreach ($fieldGroups['widget'] as $key): if (!isset($bySkey[$key])) continue; render_rr_field($bySkey[$key]); endforeach; ?>
     <div class="form-actions"><button type="submit" class="btn">Save Changes</button></div>
   </form>
 </div>
