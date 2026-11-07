@@ -20,6 +20,7 @@ $mainNav = [
     ['href' => 'restaurantreservations.php', 'label' => 'Restaurant Reservations', 'icon' => 'reserve', 'area' => 'content'],
     ['href' => 'cafe.php',        'label' => 'Café',               'icon' => 'cup',   'area' => 'content'],
     ['href' => 'below.php',       'label' => 'Below',              'icon' => 'moon',  'area' => 'content'],
+    ['href' => 'belowreservations.php', 'label' => 'Below Reservations', 'icon' => 'reserve', 'area' => 'content'],
     ['href' => 'whatson.php',     'label' => "What's On",          'icon' => 'ticket', 'area' => 'content'],
     ['href' => 'expresslunch.php', 'label' => 'Express Lunch',    'icon' => 'cup',   'area' => 'content'],
     ['href' => 'happyhour.php',   'label' => 'Happy Hour',         'icon' => 'glass', 'area' => 'content'],

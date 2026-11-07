@@ -157,6 +157,7 @@ function crop_ratio_for_key(string $key): string
         'hh_hero_image'           => '16:9',
         'dp_hero_image'           => '16:9',
         'rr_hero_image'           => '16:9',
+        'br_hero_image'           => '16:9',
         'pe_hero_image'           => '16:9',
         'cafe_hero_image'         => '16:9',
         'faq_hero_image'          => '16:9',
