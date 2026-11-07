@@ -81,7 +81,8 @@ while ($i < count($gallery)) {
     </video>
   <?php endif; ?>
   <?php if (setting('rest_opentable_embed')): ?>
-    <div class="opentable-overlay"><?= setting('rest_opentable_embed') ?></div>
+    <div class="opentable-overlay" id="rest-reserve-widget"><?= setting('rest_opentable_embed') ?></div>
+    <a class="hero-book-btn" href="#rest-reserve-widget">Book Now</a>
   <?php endif; ?>
 </section>
 <?php endif; ?>
