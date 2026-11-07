@@ -1358,9 +1358,9 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 /* Same OpenTable widget, centered inline on its own section (Restaurant Reservations page) */
 .opentable-center{display:flex;justify-content:center;margin-top:36px;}
 
-/* "Book Now" hero button (Restaurant page) - jumps down to the OpenTable widget above */
+/* "Book Now" hero button (Restaurant / Below pages) - vertically centred on the hero, any screen size */
 .hero-book-btn{
-  position:absolute;left:50%;bottom:90px;transform:translateX(-50%);z-index:2;
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
   display:inline-block;border:1.5px solid #fff;color:#fff;background:transparent;
   font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:2px;
   text-transform:uppercase;padding:16px 36px;
@@ -1521,7 +1521,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .events-grid{grid-template-columns:1fr;gap:14px;}
   .press-feature-grid{grid-template-columns:1fr;gap:28px;}
   .opentable-overlay{top:260px;right:12px;width:max-content;max-width:80%;}
-  .hero-book-btn{bottom:110px;padding:13px 26px;font-size:12px;}
+  .hero-book-btn{padding:13px 26px;font-size:12px;}
   .booking-popup-inner h2{font-size:30px;}
   .booking-popup-sub{font-size:16px;margin-bottom:30px;}
   .booking-popup-actions{gap:18px;}
