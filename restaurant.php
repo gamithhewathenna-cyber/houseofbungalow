@@ -82,7 +82,7 @@ while ($i < count($gallery)) {
   <?php endif; ?>
   <?php if (setting('rest_opentable_embed')): ?>
     <div class="opentable-overlay" id="rest-reserve-widget"><?= setting('rest_opentable_embed') ?></div>
-    <a class="hero-book-btn" href="#rest-reserve-widget">Book Now</a>
+    <a class="hero-book-btn" href="<?= e(url('restaurantreservations.php')) ?>">Book Now</a>
   <?php endif; ?>
 </section>
 <?php endif; ?>
