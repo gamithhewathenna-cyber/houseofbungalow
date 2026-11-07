@@ -80,9 +80,7 @@ while ($i < count($nights)) {
       <source src="<?= e(asset($below_hero_video)) ?>" type="<?= e($below_hero_video_mime) ?>">
     </video>
   <?php endif; ?>
-  <?php if (setting('below_opentable_embed')): ?>
-    <div class="opentable-overlay"><?= setting('below_opentable_embed') ?></div>
-  <?php endif; ?>
+  <a class="hero-book-btn" href="<?= e(url('belowreservations.php')) ?>">Book Now</a>
 </section>
 <?php endif; ?>
 
