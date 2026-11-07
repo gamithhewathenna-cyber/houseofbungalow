@@ -156,7 +156,7 @@ $features = blocks('wo_feature');
         <img loading="lazy" decoding="async" src="<?= e(asset(setting('wo_livelate_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('wo_livelate_heading')) ?>">
       </div>
       <div class="split-copy">
-        <h2><?= e(setting('wo_livelate_heading', 'Live & Late')) ?></h2>
+        <p class="eyebrow"><?= e(setting('wo_livelate_heading', 'Live & Late')) ?></p>
         <p><?= enl(setting('wo_livelate_p1')) ?></p>
         <?php if (setting('wo_livelate_btn_label')): ?>
           <div class="btn-wrap">
