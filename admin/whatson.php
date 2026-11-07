@@ -9,6 +9,7 @@ $fieldGroups = [
     'happyhour' => ['wo_happyhour_eyebrow', 'wo_happyhour_heading', 'wo_happyhour_p1', 'wo_happyhour_p2', 'wo_happyhour_btn_label', 'wo_happyhour_btn_url', 'wo_happyhour_image'],
     'friday'    => ['wo_friday_eyebrow', 'wo_friday_heading', 'wo_friday_p1', 'wo_friday_p2', 'wo_friday_btn_label', 'wo_friday_btn_url', 'wo_friday_image'],
     'brunch'    => ['wo_brunch_eyebrow', 'wo_brunch_heading', 'wo_brunch_hours', 'wo_brunch_p1', 'wo_brunch_btn_label', 'wo_brunch_btn_url', 'wo_brunch_image'],
+    'livelate'  => ['wo_livelate_heading', 'wo_livelate_p1', 'wo_livelate_btn_label', 'wo_livelate_btn_url', 'wo_livelate_image'],
 ];
 $visibilitySections = [
     'wo_hero'      => 'Hero',
@@ -17,6 +18,7 @@ $visibilitySections = [
     'wo_happyhour' => 'Happy Hour',
     'wo_friday'    => 'Friday & Saturday Dinner Party',
     'wo_brunch'    => 'Weekend Bottomless Brunch',
+    'wo_livelate'  => 'Live & Late',
     'wo_lineup'    => "See This Week's Line-Up",
     'wo_faq'       => 'FAQs',
 ];
@@ -134,6 +136,7 @@ $tabs = [
     'happyhour' => 'Happy Hour',
     'friday'    => 'Friday & Saturday Dinner Party',
     'brunch'    => 'Weekend Bottomless Brunch',
+    'livelate'  => 'Live & Late',
     'faqs'      => 'FAQs',
     'visibility' => 'Section Visibility',
 ];

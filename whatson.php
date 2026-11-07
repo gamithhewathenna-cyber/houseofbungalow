@@ -147,6 +147,28 @@ $features = blocks('wo_feature');
 </section>
 <?php endif; ?>
 
+<!-- Live & Late ------------------------------------------------------------ -->
+<?php if (section_visible('wo_livelate')): ?>
+<section class="split-section reveal">
+  <div class="container">
+    <div class="split-grid">
+      <div class="split-media">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('wo_livelate_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('wo_livelate_heading')) ?>">
+      </div>
+      <div class="split-copy">
+        <h2><?= e(setting('wo_livelate_heading', 'Live & Late')) ?></h2>
+        <p><?= enl(setting('wo_livelate_p1')) ?></p>
+        <?php if (setting('wo_livelate_btn_label')): ?>
+          <div class="btn-wrap">
+            <a class="link-underline" href="<?= e(url(setting('wo_livelate_btn_url', '#lineup-section'))) ?>"><?= e(setting('wo_livelate_btn_label')) ?></a>
+          </div>
+        <?php endif; ?>
+      </div>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
+
 <!-- See This Week's Line-Up (shared with the Below page) ------------------ -->
 <?php if (section_visible('wo_lineup')): ?>
 <?php include __DIR__ . '/includes/lineup-section.php'; ?>
