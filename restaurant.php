@@ -80,10 +80,7 @@ while ($i < count($gallery)) {
       <source src="<?= e(asset($rest_hero_video)) ?>" type="<?= e($rest_hero_video_mime) ?>">
     </video>
   <?php endif; ?>
-  <?php if (setting('rest_opentable_embed')): ?>
-    <div class="opentable-overlay" id="rest-reserve-widget"><?= setting('rest_opentable_embed') ?></div>
-    <a class="hero-book-btn" href="<?= e(url('restaurantreservations.php')) ?>">Book Now</a>
-  <?php endif; ?>
+  <a class="hero-book-btn" href="<?= e(url('restaurantreservations.php')) ?>">Book Now</a>
 </section>
 <?php endif; ?>
 
