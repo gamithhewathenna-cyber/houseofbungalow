@@ -41,9 +41,16 @@ $features = blocks('wo_feature');
 </section>
 <?php endif; ?>
 
-<!-- Featured Sections (repeatable) ------------------------------------ -->
-<?php if (section_visible('wo_features')): ?>
-<?php foreach ($features as $i => $feature): ?>
+<?php
+/**
+ * Content sections below the Intro, in their admin-configurable order
+ * (admin > What's On > Section Order, admins only - Hero and Intro
+ * always stay fixed at the top).
+ */
+$wo_sections = [
+    'wo_features' => function () use ($features): void {
+        if (!section_visible('wo_features')) return;
+        foreach ($features as $i => $feature): ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -72,11 +79,12 @@ $features = blocks('wo_feature');
     </div>
   </div>
 </section>
-<?php endforeach; ?>
-<?php endif; ?>
-
-<!-- Happy Hour ----------------------------------------------------------- -->
-<?php if (section_visible('wo_happyhour')): ?>
+<?php
+        endforeach;
+    },
+    'wo_happyhour' => function (): void {
+        if (!section_visible('wo_happyhour')) return;
+        ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -97,10 +105,11 @@ $features = blocks('wo_feature');
     </div>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- Friday & Saturday Dinner Party ----------------------------------------- -->
-<?php if (section_visible('wo_friday')): ?>
+<?php
+    },
+    'wo_friday' => function (): void {
+        if (!section_visible('wo_friday')) return;
+        ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -121,10 +130,11 @@ $features = blocks('wo_feature');
     </div>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- Weekend Bottomless Brunch --------------------------------------------- -->
-<?php if (section_visible('wo_brunch')): ?>
+<?php
+    },
+    'wo_brunch' => function (): void {
+        if (!section_visible('wo_brunch')) return;
+        ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -145,10 +155,11 @@ $features = blocks('wo_feature');
     </div>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- Live & Late ------------------------------------------------------------ -->
-<?php if (section_visible('wo_livelate')): ?>
+<?php
+    },
+    'wo_livelate' => function (): void {
+        if (!section_visible('wo_livelate')) return;
+        ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -167,15 +178,15 @@ $features = blocks('wo_feature');
     </div>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- See This Week's Line-Up (shared with the Below page) ------------------ -->
-<?php if (section_visible('wo_lineup')): ?>
-<?php include __DIR__ . '/includes/lineup-section.php'; ?>
-<?php endif; ?>
-
-<!-- FAQs -------------------------------------------------------------------- -->
-<?php if ($faqs && section_visible('wo_faq')): ?>
+<?php
+    },
+    'wo_lineup' => function (): void {
+        if (!section_visible('wo_lineup')) return;
+        include __DIR__ . '/includes/lineup-section.php';
+    },
+    'wo_faq' => function () use ($faqs): void {
+        if (!$faqs || !section_visible('wo_faq')) return;
+        ?>
 <section class="faq-section reveal">
   <div class="container">
     <h2>FAQs</h2>
@@ -192,7 +203,13 @@ $features = blocks('wo_feature');
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php
+    },
+];
+foreach (section_order('whatson', array_keys($wo_sections)) as $wo_key) {
+    $wo_sections[$wo_key]();
+}
+?>
 
 <script>
 (function () {

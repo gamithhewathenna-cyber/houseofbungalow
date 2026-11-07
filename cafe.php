@@ -51,8 +51,16 @@ foreach ($menu_cats as $cat) {
 </section>
 <?php endif; ?>
 
-<!-- Menu --------------------------------------------------------------- -->
-<?php if (section_visible('cafe_menu')): ?>
+<?php
+/**
+ * Content sections below the Intro, in their admin-configurable order
+ * (admin > Café > Section Order, admins only - Hero and Intro always
+ * stay fixed at the top).
+ */
+$cafe_sections = [
+    'cafe_menu' => function () use ($menu_cats, $menu_items_by_cat): void {
+        if (!section_visible('cafe_menu')) return;
+        ?>
 <section class="menu-section reveal">
   <div class="container">
     <h2><?= e(setting('cafe_menu_heading', 'Café Menu')) ?></h2>
@@ -110,10 +118,11 @@ foreach ($menu_cats as $cat) {
   });
 })();
 </script>
-<?php endif; ?>
-
-<!-- Gallery ------------------------------------------------------------------ -->
-<?php if ($gallery && section_visible('cafe_gallery')): ?>
+<?php
+    },
+    'cafe_gallery' => function () use ($gallery, $gallery_rows): void {
+        if (!$gallery || !section_visible('cafe_gallery')) return;
+        ?>
 <section class="rest-gallery reveal">
   <div class="container">
     <div class="gallery-grid">
@@ -131,10 +140,11 @@ foreach ($menu_cats as $cat) {
 </section>
 
 <hr class="section-divider">
-<?php endif; ?>
-
-<!-- Hours ---------------------------------------------------------------- -->
-<?php if (section_visible('cafe_hours')): ?>
+<?php
+    },
+    'cafe_hours' => function (): void {
+        if (!section_visible('cafe_hours')) return;
+        ?>
 <section class="hours-block reveal">
   <div class="container">
     <h2><?= e(setting('cafe_hours_heading', 'Coffee. Food. Foveaux Street.')) ?></h2>
@@ -152,10 +162,11 @@ foreach ($menu_cats as $cat) {
     </div>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- More Of The House ----------------------------------------------------- -->
-<?php if (section_visible('cafe_final')): ?>
+<?php
+    },
+    'cafe_final' => function (): void {
+        if (!section_visible('cafe_final')) return;
+        ?>
 <section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('cafe_final_heading', 'More Of The House')) ?></h2>
@@ -171,6 +182,12 @@ foreach ($menu_cats as $cat) {
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php
+    },
+];
+foreach (section_order('cafe', array_keys($cafe_sections)) as $cafe_key) {
+    $cafe_sections[$cafe_key]();
+}
+?>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>

@@ -102,8 +102,16 @@ function render_brunch_menu_items(array $items): void
 </section>
 <?php endif; ?>
 
-<!-- Gallery ------------------------------------------------------------------ -->
-<?php if ($gallery_rows && section_visible('brunch_gallery')): ?>
+<?php
+/**
+ * Content sections below the Intro, in their admin-configurable order
+ * (admin > Bottomless Brunch > Section Order, admins only - Hero and Intro
+ * always stay fixed at the top).
+ */
+$brunch_sections = [
+    'brunch_gallery' => function () use ($gallery_rows): void {
+        if (!$gallery_rows || !section_visible('brunch_gallery')) return;
+        ?>
 <section class="rest-gallery reveal">
   <div class="container">
     <div class="gallery-grid">
@@ -119,10 +127,11 @@ function render_brunch_menu_items(array $items): void
 </section>
 
 <hr class="section-divider">
-<?php endif; ?>
-
-<!-- Menu (own dataset - not shared with the Restaurant page) --------------- -->
-<?php if (section_visible('brunch_menu')): ?>
+<?php
+    },
+    'brunch_menu' => function () use ($menu_cats, $menu_items_by_cat): void {
+        if (!section_visible('brunch_menu')) return;
+        ?>
 <section class="menu-dark menu-light reveal">
   <div class="container">
     <h2 class="menu-dark-heading"><?= e(setting('brunch_menu_heading', 'Discover Our Menus')) ?></h2>
@@ -152,10 +161,11 @@ function render_brunch_menu_items(array $items): void
     <?php endif; ?>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- Guest Artists -------------------------------------------------------- -->
-<?php if (section_visible('brunch_guest')): ?>
+<?php
+    },
+    'brunch_guest' => function (): void {
+        if (!section_visible('brunch_guest')) return;
+        ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -176,7 +186,13 @@ function render_brunch_menu_items(array $items): void
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php
+    },
+];
+foreach (section_order('brunch', array_keys($brunch_sections)) as $brunch_key) {
+    $brunch_sections[$brunch_key]();
+}
+?>
 
 <script>
 (function () {

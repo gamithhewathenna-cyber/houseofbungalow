@@ -102,8 +102,16 @@ while ($i < count($gallery)) {
 </section>
 <?php endif; ?>
 
-<!-- The Food ----------------------------------------------------------- -->
-<?php if (section_visible('rest_food')): ?>
+<?php
+/**
+ * Content sections below the Intro, in their admin-configurable order
+ * (admin > Restaurant & Menus > Section Order, admins only - Hero and
+ * Intro always stay fixed at the top).
+ */
+$rest_sections = [
+    'rest_food' => function (): void {
+        if (!section_visible('rest_food')) return;
+        ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -119,10 +127,11 @@ while ($i < count($gallery)) {
     </div>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- Menu --------------------------------------------------------------- -->
-<?php if (section_visible('rest_menu')): ?>
+<?php
+    },
+    'rest_menu' => function () use ($menu_cats, $menu_items_by_cat): void {
+        if (!section_visible('rest_menu')) return;
+        ?>
 <section class="menu-dark menu-light reveal">
   <div class="container">
     <h2 class="menu-dark-heading"><?= e(setting('rest_menu_heading', 'Discover Our Menus')) ?></h2>
@@ -152,10 +161,11 @@ while ($i < count($gallery)) {
     <?php endif; ?>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- The Room ------------------------------------------------------------ -->
-<?php if (section_visible('rest_room')): ?>
+<?php
+    },
+    'rest_room' => function (): void {
+        if (!section_visible('rest_room')) return;
+        ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -171,10 +181,11 @@ while ($i < count($gallery)) {
     </div>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- Friday & Saturday ----------------------------------------------------- -->
-<?php if (section_visible('rest_fridaysat')): ?>
+<?php
+    },
+    'rest_fridaysat' => function (): void {
+        if (!section_visible('rest_fridaysat')) return;
+        ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -195,10 +206,11 @@ while ($i < count($gallery)) {
     </div>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- Happy Hour -------------------------------------------------------------- -->
-<?php if (section_visible('rest_happyhour')): ?>
+<?php
+    },
+    'rest_happyhour' => function (): void {
+        if (!section_visible('rest_happyhour')) return;
+        ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -220,10 +232,11 @@ while ($i < count($gallery)) {
     </div>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- The Chef ------------------------------------------------------------------ -->
-<?php if (section_visible('rest_chef')): ?>
+<?php
+    },
+    'rest_chef' => function (): void {
+        if (!section_visible('rest_chef')) return;
+        ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -240,10 +253,11 @@ while ($i < count($gallery)) {
     </div>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- Restaurant Hours ------------------------------------------------------------ -->
-<?php if (section_visible('rest_hours')): ?>
+<?php
+    },
+    'rest_hours' => function (): void {
+        if (!section_visible('rest_hours')) return;
+        ?>
 <section class="hours-block reveal">
   <div class="container">
     <h2><?= e(setting('rest_hours_heading', 'Restaurant Hours')) ?></h2>
@@ -262,10 +276,11 @@ while ($i < count($gallery)) {
     <?php if (setting('rest_hours_footnote')): ?><p class="hours-footnote"><?= e(setting('rest_hours_footnote')) ?></p><?php endif; ?>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- Gallery ------------------------------------------------------------------ -->
-<?php if ($gallery && section_visible('rest_gallery')): ?>
+<?php
+    },
+    'rest_gallery' => function () use ($gallery, $gallery_rows): void {
+        if (!$gallery || !section_visible('rest_gallery')) return;
+        ?>
 <section class="rest-gallery reveal">
   <div class="container">
     <div class="gallery-grid">
@@ -281,10 +296,11 @@ while ($i < count($gallery)) {
     </div>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- FAQs ------------------------------------------------------------------------ -->
-<?php if ($faqs && section_visible('rest_faq')): ?>
+<?php
+    },
+    'rest_faq' => function () use ($faqs): void {
+        if (!$faqs || !section_visible('rest_faq')) return;
+        ?>
 <section class="faq-section reveal">
   <div class="container">
     <h2>FAQs</h2>
@@ -301,7 +317,13 @@ while ($i < count($gallery)) {
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php
+    },
+];
+foreach (section_order('restaurant', array_keys($rest_sections)) as $rest_key) {
+    $rest_sections[$rest_key]();
+}
+?>
 
 <script>
 (function () {

@@ -27,6 +27,9 @@ $visibilitySections = [
     'below_hours'     => 'Below Hours',
     'below_faq'       => 'FAQs',
 ];
+// Reorderable content sections (admin > Section Order, admins only) - Hero
+// and Intro always stay fixed at the top, so they're left out of this list.
+$sectionOrderKeys = ['below_cocktails', 'below_menu', 'below_music', 'below_lineup', 'below_guest', 'below_vip', 'below_hours', 'below_faq'];
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -41,6 +44,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     save_setting($vkey . '_visible', isset($_POST['vis_' . $vkey]) ? '1' : '0');
                 }
                 header('Location: below.php?tab=visibility&saved=1'); exit;
+            }
+
+            // ---- Section order (admins only) ----
+            if ($action === 'save_section_order') {
+                if (!admin_can('admin')) {
+                    $error = 'Only full Admins can reorder sections.';
+                } else {
+                    $order = array_values(array_intersect(array_filter(array_map('trim', explode(',', $_POST['order'] ?? ''))), $sectionOrderKeys));
+                    save_setting('below_section_order', implode(',', $order));
+                    header('Location: below.php?tab=order&saved=1'); exit;
+                }
             }
 
             // ---- Generic settings groups ----
@@ -224,11 +238,15 @@ $tabs = [
     'faqs'      => 'FAQs',
     'visibility' => 'Section Visibility',
 ];
+if (admin_can('admin')) {
+    $tabs['order'] = 'Section Order';
+}
 $activeTab = $_GET['tab'] ?? 'herovideo';
 if (!isset($tabs[$activeTab])) {
     $activeTab = 'herovideo';
 }
 $activeCat = isset($_GET['cat']) ? (int) $_GET['cat'] : ($menuCats[0]['id'] ?? 0);
+$currentSectionOrder = section_order('below', $sectionOrderKeys);
 
 function render_below_field(array $f): void
 {
@@ -533,6 +551,75 @@ include __DIR__ . '/layout.php';
     <div class="form-actions"><button class="btn">Save Visibility</button></div>
   </form>
 </div>
+
+<?php if (admin_can('admin')): ?>
+<!-- Section Order tab (admins only) -->
+<div class="tab-panel settings-group<?= $activeTab === 'order' ? ' active' : '' ?>" data-tab="order">
+  <h3>Section Order</h3>
+  <p class="group-help">Drag sections up or down to change where they appear on the live page, below the Hero and Intro (which always stay at the top). Changes apply as soon as you save.</p>
+  <form method="post">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="save_section_order">
+    <input type="hidden" name="order" id="sectionOrderInput" value="<?= e(implode(',', $currentSectionOrder)) ?>">
+    <ul class="section-order-list" id="sectionOrderList">
+      <?php foreach ($currentSectionOrder as $key): ?>
+        <li class="section-order-row" draggable="true" data-key="<?= e($key) ?>">
+          <span class="drag-handle">⠿</span>
+          <span><?= e($visibilitySections[$key] ?? $key) ?></span>
+        </li>
+      <?php endforeach; ?>
+    </ul>
+    <div class="form-actions"><button class="btn">Save Order</button></div>
+  </form>
+</div>
+<script>
+(function () {
+  var list = document.getElementById('sectionOrderList');
+  var input = document.getElementById('sectionOrderInput');
+  if (!list || !input) return;
+  var dragEl = null;
+
+  function updateInput() {
+    var keys = Array.prototype.map.call(list.querySelectorAll('.section-order-row'), function (r) { return r.dataset.key; });
+    input.value = keys.join(',');
+  }
+  function afterElement(y) {
+    var rows = Array.prototype.slice.call(list.querySelectorAll('.section-order-row:not(.dragging)'));
+    return rows.reduce(function (closest, child) {
+      var box = child.getBoundingClientRect();
+      var offset = y - box.top - box.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset: offset, element: child };
+      }
+      return closest;
+    }, { offset: -Infinity, element: null }).element;
+  }
+
+  list.querySelectorAll('.section-order-row').forEach(function (row) {
+    row.addEventListener('dragstart', function (e) {
+      dragEl = row;
+      row.classList.add('dragging');
+      e.dataTransfer.setData('text/plain', '');
+    });
+    row.addEventListener('dragend', function () {
+      row.classList.remove('dragging');
+      dragEl = null;
+      updateInput();
+    });
+  });
+  list.addEventListener('dragover', function (e) {
+    e.preventDefault();
+    if (!dragEl) return;
+    var after = afterElement(e.clientY);
+    if (after == null) {
+      list.appendChild(dragEl);
+    } else {
+      list.insertBefore(dragEl, after);
+    }
+  });
+})();
+</script>
+<?php endif; ?>
 
 <script>
 document.querySelectorAll('.tab-btn:not(.menu-cat-btn)').forEach(function (btn) {

@@ -43,8 +43,16 @@ $cards = blocks('pe_event_card');
 </section>
 <?php endif; ?>
 
-<!-- Event Cards (Restaurant Events / Below Events) --------------------- -->
-<?php if ($cards && section_visible('pe_cards')): ?>
+<?php
+/**
+ * Content sections below the Intro, in their admin-configurable order
+ * (admin > Private Events > Section Order, admins only - Hero and Intro
+ * always stay fixed at the top).
+ */
+$pe_sections = [
+    'pe_cards' => function () use ($cards): void {
+        if (!$cards || !section_visible('pe_cards')) return;
+        ?>
 <section class="events-cards reveal">
   <div class="events-grid">
     <?php foreach ($cards as $c): ?>
@@ -66,10 +74,11 @@ $cards = blocks('pe_event_card');
 </section>
 
 <hr class="footer-rule">
-<?php endif; ?>
-
-<!-- Make The House Yours ------------------------------------------------ -->
-<?php if (section_visible('pe_final')): ?>
+<?php
+    },
+    'pe_final' => function (): void {
+        if (!section_visible('pe_final')) return;
+        ?>
 <section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('pe_final_heading', 'Make The House Yours')) ?></h2>
@@ -81,6 +90,12 @@ $cards = blocks('pe_event_card');
     <?php endif; ?>
   </div>
 </section>
-<?php endif; ?>
+<?php
+    },
+];
+foreach (section_order('privateevents', array_keys($pe_sections)) as $pe_key) {
+    $pe_sections[$pe_key]();
+}
+?>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>

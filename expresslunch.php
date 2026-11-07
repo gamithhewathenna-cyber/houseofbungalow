@@ -102,8 +102,16 @@ function render_el_menu_items(array $items): void
 </section>
 <?php endif; ?>
 
-<!-- Gallery ------------------------------------------------------------------ -->
-<?php if ($gallery_rows && section_visible('el_gallery')): ?>
+<?php
+/**
+ * Content sections below the Intro, in their admin-configurable order
+ * (admin > Express Lunch > Section Order, admins only - Hero and Intro
+ * always stay fixed at the top).
+ */
+$el_sections = [
+    'el_gallery' => function () use ($gallery_rows): void {
+        if (!$gallery_rows || !section_visible('el_gallery')) return;
+        ?>
 <section class="rest-gallery reveal">
   <div class="container">
     <div class="gallery-grid">
@@ -119,10 +127,11 @@ function render_el_menu_items(array $items): void
 </section>
 
 <hr class="section-divider">
-<?php endif; ?>
-
-<!-- Menu (own dataset - not shared with the Restaurant page) ------------- -->
-<?php if (section_visible('el_menu')): ?>
+<?php
+    },
+    'el_menu' => function () use ($menu_cats, $menu_items_by_cat): void {
+        if (!section_visible('el_menu')) return;
+        ?>
 <section class="menu-dark menu-light menu-items-centered reveal">
   <div class="container">
     <h2 class="menu-dark-heading"><?= e(setting('el_menu_heading', 'Discover Our Menus')) ?></h2>
@@ -152,10 +161,11 @@ function render_el_menu_items(array $items): void
     <?php endif; ?>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- Closing Section ------------------------------------------------------- -->
-<?php if (section_visible('el_guest')): ?>
+<?php
+    },
+    'el_guest' => function (): void {
+        if (!section_visible('el_guest')) return;
+        ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -176,7 +186,13 @@ function render_el_menu_items(array $items): void
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php
+    },
+];
+foreach (section_order('expresslunch', array_keys($el_sections)) as $el_key) {
+    $el_sections[$el_key]();
+}
+?>
 
 <script>
 (function () {

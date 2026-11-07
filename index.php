@@ -42,17 +42,26 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
 </section>
 <?php endif; ?>
 
-<!-- Building illustration ------------------------------------------ -->
-<?php if (section_visible('building')): ?>
+<?php
+/**
+ * Content sections below the Intro, in their admin-configurable order
+ * (admin > Home Page > Section Order, admins only - Hero and Intro
+ * always stay fixed at the top).
+ */
+$home_sections = [
+    'building' => function (): void {
+        if (!section_visible('building')) return;
+        ?>
 <section class="building reveal">
   <div class="container">
     <img loading="lazy" decoding="async" src="<?= e(asset(setting('building_image','assets/img/building.png'))) ?>" alt="House of Bungalow storefront illustration">
   </div>
 </section>
-<?php endif; ?>
-
-<!-- Three Spaces --------------------------------------------------- -->
-<?php if (section_visible('spaces')): ?>
+<?php
+    },
+    'spaces' => function () use ($spaces): void {
+        if (!section_visible('spaces')) return;
+        ?>
 <section class="spaces reveal">
   <div class="container">
     <h2><?= e(setting('spaces_heading')) ?></h2>
@@ -67,10 +76,11 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
     </div>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- The House Starts At The Door ----------------------------------- -->
-<?php if (section_visible('door')): ?>
+<?php
+    },
+    'door' => function (): void {
+        if (!section_visible('door')) return;
+        ?>
 <section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('door_heading')) ?></h2>
@@ -81,10 +91,11 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
     </div>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- One Address. Every Mood ---------------------------------------- -->
-<?php if (section_visible('mood')): ?>
+<?php
+    },
+    'mood' => function (): void {
+        if (!section_visible('mood')) return;
+        ?>
 <section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('mood_heading')) ?></h2>
@@ -92,10 +103,11 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
     <p><?= enl(setting('mood_p2')) ?></p>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- What's On ------------------------------------------------------- -->
-<?php if (section_visible('whatson')): ?>
+<?php
+    },
+    'whatson' => function (): void {
+        if (!section_visible('whatson')) return;
+        ?>
 <section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('whatson_heading')) ?></h2>
@@ -107,10 +119,11 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
     </div>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- Private Events -------------------------------------------------- -->
-<?php if (section_visible('events')): ?>
+<?php
+    },
+    'events' => function (): void {
+        if (!section_visible('events')) return;
+        ?>
 <section class="textblock reveal">
   <div class="container">
     <h2><?= e(setting('events_heading')) ?></h2>
@@ -122,6 +135,12 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php
+    },
+];
+foreach (section_order('home', array_keys($home_sections)) as $home_key) {
+    $home_sections[$home_key]();
+}
+?>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>

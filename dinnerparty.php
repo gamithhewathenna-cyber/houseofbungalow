@@ -103,8 +103,16 @@ function render_dp_menu_items(array $items): void
 </section>
 <?php endif; ?>
 
-<!-- Gallery ------------------------------------------------------------------ -->
-<?php if ($gallery_rows && section_visible('dp_gallery')): ?>
+<?php
+/**
+ * Content sections below the Intro, in their admin-configurable order
+ * (admin > Dinner Party > Section Order, admins only - Hero and Intro
+ * always stay fixed at the top).
+ */
+$dp_sections = [
+    'dp_gallery' => function () use ($gallery_rows): void {
+        if (!$gallery_rows || !section_visible('dp_gallery')) return;
+        ?>
 <section class="rest-gallery reveal">
   <div class="container">
     <div class="gallery-grid">
@@ -120,10 +128,11 @@ function render_dp_menu_items(array $items): void
 </section>
 
 <hr class="section-divider">
-<?php endif; ?>
-
-<!-- Menu (own dataset - not shared with the Restaurant or Brunch pages) --- -->
-<?php if (section_visible('dp_menu')): ?>
+<?php
+    },
+    'dp_menu' => function () use ($menu_cats, $menu_items_by_cat): void {
+        if (!section_visible('dp_menu')) return;
+        ?>
 <section class="menu-dark menu-light reveal">
   <div class="container">
     <h2 class="menu-dark-heading"><?= e(setting('dp_menu_heading', 'Discover Our Menus')) ?></h2>
@@ -153,10 +162,11 @@ function render_dp_menu_items(array $items): void
     <?php endif; ?>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- Guest Artists -------------------------------------------------------- -->
-<?php if (section_visible('dp_guest')): ?>
+<?php
+    },
+    'dp_guest' => function (): void {
+        if (!section_visible('dp_guest')) return;
+        ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -177,7 +187,13 @@ function render_dp_menu_items(array $items): void
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php
+    },
+];
+foreach (section_order('dinnerparty', array_keys($dp_sections)) as $dp_key) {
+    $dp_sections[$dp_key]();
+}
+?>
 
 <script>
 (function () {

@@ -105,8 +105,16 @@ while ($i < count($nights)) {
 </section>
 <?php endif; ?>
 
-<!-- From Cocktails To Late Night --------------------------------------- -->
-<?php if (section_visible('below_cocktails')): ?>
+<?php
+/**
+ * Content sections below the Intro, in their admin-configurable order
+ * (admin > Below > Section Order, admins only - Hero and Intro always
+ * stay fixed at the top).
+ */
+$below_sections = [
+    'below_cocktails' => function (): void {
+        if (!section_visible('below_cocktails')) return;
+        ?>
 <section class="section reveal">
   <div class="container">
     <h2><?= e(setting('below_cocktails_heading', 'From Cocktails To Late Night')) ?></h2>
@@ -124,10 +132,11 @@ while ($i < count($nights)) {
     </div>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- Menu --------------------------------------------------------------- -->
-<?php if (section_visible('below_menu')): ?>
+<?php
+    },
+    'below_menu' => function () use ($below_menu_cats, $below_menu_items_by_cat): void {
+        if (!section_visible('below_menu')) return;
+        ?>
 <section class="menu-dark reveal">
   <div class="container">
     <h2 class="menu-dark-heading"><?= e(setting('below_menu_heading', 'Discover Our Menus')) ?></h2>
@@ -157,10 +166,11 @@ while ($i < count($nights)) {
     <?php endif; ?>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- Music (maroon band) ------------------------------------------------ -->
-<?php if (section_visible('below_music')): ?>
+<?php
+    },
+    'below_music' => function () use ($night_rows): void {
+        if (!section_visible('below_music')) return;
+        ?>
 <section class="maroon-band reveal">
   <div class="container">
     <h2><?= e(setting('below_music_heading', 'Music')) ?></h2>
@@ -188,15 +198,15 @@ while ($i < count($nights)) {
     </div>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- See This Week's Line-Up (shared with the What's On page) ----------- -->
-<?php if (section_visible('below_lineup')): ?>
-<?php include __DIR__ . '/includes/lineup-section.php'; ?>
-<?php endif; ?>
-
-<!-- Guest Artists -------------------------------------------------------- -->
-<?php if (section_visible('below_guest')): ?>
+<?php
+    },
+    'below_lineup' => function (): void {
+        if (!section_visible('below_lineup')) return;
+        include __DIR__ . '/includes/lineup-section.php';
+    },
+    'below_guest' => function (): void {
+        if (!section_visible('below_guest')) return;
+        ?>
 <section class="split-section guest-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -217,10 +227,11 @@ while ($i < count($nights)) {
     </div>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- VIP Tables ------------------------------------------------------------- -->
-<?php if (section_visible('below_vip')): ?>
+<?php
+    },
+    'below_vip' => function (): void {
+        if (!section_visible('below_vip')) return;
+        ?>
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
@@ -241,10 +252,11 @@ while ($i < count($nights)) {
     </div>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- Below Hours -------------------------------------------------------------- -->
-<?php if (section_visible('below_hours')): ?>
+<?php
+    },
+    'below_hours' => function (): void {
+        if (!section_visible('below_hours')) return;
+        ?>
 <section class="hours-block reveal">
   <div class="container">
     <h2><?= e(setting('below_hours_heading', 'Below Hours')) ?></h2>
@@ -254,10 +266,11 @@ while ($i < count($nights)) {
     <?php if (setting('below_hours_note')): ?><p class="hours-footnote" style="margin-top:14px;"><?= e(setting('below_hours_note')) ?></p><?php endif; ?>
   </div>
 </section>
-<?php endif; ?>
-
-<!-- FAQs ------------------------------------------------------------------------ -->
-<?php if ($faqs && section_visible('below_faq')): ?>
+<?php
+    },
+    'below_faq' => function () use ($faqs): void {
+        if (!$faqs || !section_visible('below_faq')) return;
+        ?>
 <section class="faq-section reveal">
   <div class="container">
     <h2>FAQs</h2>
@@ -274,7 +287,13 @@ while ($i < count($nights)) {
     </div>
   </div>
 </section>
-<?php endif; ?>
+<?php
+    },
+];
+foreach (section_order('below', array_keys($below_sections)) as $below_key) {
+    $below_sections[$below_key]();
+}
+?>
 
 <script>
 (function () {

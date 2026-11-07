@@ -39,6 +39,30 @@ function section_visible(string $key): bool
 }
 
 /**
+ * The display order for a page's reorderable content sections (admin >
+ * [page] > Section Order, admins only), as a list of section keys.
+ * Stored as a single comma-separated setting named "<pageKey>_section_order".
+ * Falls back to $defaultOrder if nothing has been saved yet. Any stored
+ * key no longer in $defaultOrder is dropped, and any key in $defaultOrder
+ * missing from storage (e.g. a newly added section) is appended at the
+ * end - so reordering stays safe even as pages change over time.
+ */
+function section_order(string $pageKey, array $defaultOrder): array
+{
+    $stored = setting($pageKey . '_section_order');
+    if ($stored === '') {
+        return $defaultOrder;
+    }
+    $order = array_values(array_intersect(array_filter(array_map('trim', explode(',', $stored))), $defaultOrder));
+    foreach ($defaultOrder as $key) {
+        if (!in_array($key, $order, true)) {
+            $order[] = $key;
+        }
+    }
+    return $order;
+}
+
+/**
  * Fetch active blocks of a given type, ordered.
  */
 function blocks(string $type): array
