@@ -17,6 +17,7 @@ $mainNav = [
     ['href' => 'homepage.php',    'label' => 'Home Page',          'icon' => 'home',  'area' => 'content'],
     ['href' => 'reserve.php',     'label' => 'Reserve',            'icon' => 'reserve', 'area' => 'content'],
     ['href' => 'restaurant.php',  'label' => 'Restaurant & Menus', 'icon' => 'fork',  'area' => 'content'],
+    ['href' => 'restaurantreservations.php', 'label' => 'Restaurant Reservations', 'icon' => 'reserve', 'area' => 'content'],
     ['href' => 'cafe.php',        'label' => 'Café',               'icon' => 'cup',   'area' => 'content'],
     ['href' => 'below.php',       'label' => 'Below',              'icon' => 'moon',  'area' => 'content'],
     ['href' => 'whatson.php',     'label' => "What's On",          'icon' => 'ticket', 'area' => 'content'],
