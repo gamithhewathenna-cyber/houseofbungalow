@@ -5,12 +5,21 @@ $page_meta_title       = setting('br_heading', 'Reserve Your Night At The House.
 $page_meta_description = setting('br_subheading');
 
 include __DIR__ . '/includes/header.php';
+
+$br_hero_video = setting('br_hero_video');
+$br_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'video/quicktime'][strtolower(pathinfo($br_hero_video, PATHINFO_EXTENSION))] ?? 'video/mp4';
 ?>
 
 <!-- Hero (single static slide, reusing the same overlay-card look as Reserve) -->
 <?php if (section_visible('br_hero')): ?>
 <section class="hero hero-slider">
-  <div class="hero-slide active" style="background-image:url('<?= e(asset(setting('br_hero_image', 'assets/img/below.jpg'))) ?>');"></div>
+  <?php if ($br_hero_video): ?>
+    <video class="hero-video" autoplay muted loop playsinline preload="auto">
+      <source src="<?= e(asset($br_hero_video)) ?>" type="<?= e($br_hero_video_mime) ?>">
+    </video>
+  <?php else: ?>
+    <div class="hero-slide active" style="background-image:url('<?= e(asset(setting('br_hero_image', 'assets/img/below.jpg'))) ?>');"></div>
+  <?php endif; ?>
   <div class="hero-overlay-card active">
     <?php if (setting('br_heading')): ?><h1><?= e(setting('br_heading', 'Reserve Your Night At The House.')) ?></h1><?php endif; ?>
     <?php if (setting('br_subheading')): ?><p class="subheading"><?= e(setting('br_subheading')) ?></p><?php endif; ?>
