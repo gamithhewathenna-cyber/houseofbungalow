@@ -1493,7 +1493,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .intro .address{font-size:23px;margin-bottom:30px;}
   .intro p{font-size:22px;margin-bottom:20px;}
   .intro-actions{gap:34px;flex-wrap:wrap;}
-  .section h2,.spaces h2,.textblock h2{font-size:33px;}
+  .section h2,.spaces h2,.textblock h2,.menu-section h2,.hours-block h2{font-size:33px;}
   .building img{max-width:100%;}
   .footer-nav{font-size:13px;}
   .footer-nav a{padding:0 6px;}
