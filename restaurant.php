@@ -194,6 +194,9 @@ $rest_sections = [
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
+      <div class="split-media">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('rest_brunch_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('rest_brunch_heading')) ?>">
+      </div>
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('rest_brunch_eyebrow', 'Saturday & Sunday · 11:30 AM - 3:00 PM')) ?></p>
         <h2><?= e(setting('rest_brunch_heading', 'Brunch With Nowhere Else To Be.')) ?></h2>
@@ -204,9 +207,6 @@ $rest_sections = [
             <a class="link-underline" href="<?= e(url(setting('rest_brunch_btn_url', '#'))) ?>"><?= e(setting('rest_brunch_btn_label')) ?></a>
           </div>
         <?php endif; ?>
-      </div>
-      <div class="split-media">
-        <img loading="lazy" decoding="async" src="<?= e(asset(setting('rest_brunch_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('rest_brunch_heading')) ?>">
       </div>
     </div>
   </div>
@@ -244,9 +244,6 @@ $rest_sections = [
 <section class="split-section reveal">
   <div class="container">
     <div class="split-grid">
-      <div class="split-media">
-        <img loading="lazy" decoding="async" src="<?= e(asset(setting('rest_happyhour_image', 'assets/img/restaurant.jpg'))) ?>" alt="<?= e(setting('rest_happyhour_heading')) ?>">
-      </div>
       <div class="split-copy">
         <p class="eyebrow"><?= e(setting('rest_happyhour_eyebrow', 'Happy Hour')) ?></p>
         <h2><?= e(setting('rest_happyhour_heading')) ?></h2>
@@ -258,6 +255,9 @@ $rest_sections = [
             <a class="link-underline" href="<?= e(url(setting('rest_happyhour_btn_url', '#'))) ?>"><?= e(setting('rest_happyhour_btn_label')) ?></a>
           </div>
         <?php endif; ?>
+      </div>
+      <div class="split-media">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('rest_happyhour_image', 'assets/img/restaurant.jpg'))) ?>" alt="<?= e(setting('rest_happyhour_heading')) ?>">
       </div>
     </div>
   </div>
