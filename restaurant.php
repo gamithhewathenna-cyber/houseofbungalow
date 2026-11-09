@@ -177,6 +177,11 @@ $rest_sections = [
         <h2><?= e(setting('rest_room_heading')) ?></h2>
         <p><?= enl(setting('rest_room_p1')) ?></p>
         <p><?= enl(setting('rest_room_p2')) ?></p>
+        <?php if (setting('rest_room_btn_label')): ?>
+          <div class="btn-wrap">
+            <a class="link-underline" href="<?= e(url(setting('rest_room_btn_url', '#'))) ?>"><?= e(setting('rest_room_btn_label')) ?></a>
+          </div>
+        <?php endif; ?>
       </div>
     </div>
   </div>
