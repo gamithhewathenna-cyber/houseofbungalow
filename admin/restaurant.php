@@ -9,6 +9,7 @@ $fieldGroups = [
     'food'      => ['rest_food_eyebrow', 'rest_food_heading', 'rest_food_p1', 'rest_food_p2', 'rest_food_image'],
     'menu'      => ['rest_menu_heading', 'rest_menu_lede'],
     'room'      => ['rest_room_eyebrow', 'rest_room_heading', 'rest_room_p1', 'rest_room_p2', 'rest_room_btn_label', 'rest_room_btn_url', 'rest_room_image'],
+    'brunch'    => ['rest_brunch_eyebrow', 'rest_brunch_heading', 'rest_brunch_p1', 'rest_brunch_p2', 'rest_brunch_btn_label', 'rest_brunch_btn_url', 'rest_brunch_image'],
     'fridaysat' => ['rest_fridaysat_eyebrow', 'rest_fridaysat_heading', 'rest_fridaysat_p1', 'rest_fridaysat_p2', 'rest_fridaysat_btn_label', 'rest_fridaysat_btn_url', 'rest_fridaysat_image'],
     'happyhour' => ['rest_happyhour_eyebrow', 'rest_happyhour_heading', 'rest_happyhour_p1', 'rest_happyhour_hours1', 'rest_happyhour_hours2', 'rest_happyhour_btn_label', 'rest_happyhour_btn_url', 'rest_happyhour_image'],
     'chef'      => ['rest_chef_eyebrow', 'rest_chef_name', 'rest_chef_p1', 'rest_chef_p2', 'rest_chef_p3', 'rest_chef_image'],
@@ -21,6 +22,7 @@ $visibilitySections = [
     'rest_food'      => 'The Food',
     'rest_menu'      => 'Menu',
     'rest_room'      => 'Express Lunch',
+    'rest_brunch'    => 'Bottomless Brunch',
     'rest_fridaysat' => 'Friday & Saturday',
     'rest_happyhour' => 'Happy Hour',
     'rest_chef'      => 'The Chef',
@@ -30,7 +32,7 @@ $visibilitySections = [
 ];
 // Reorderable content sections (admin > Section Order, admins only) - Hero
 // and Intro always stay fixed at the top, so they're left out of this list.
-$sectionOrderKeys = ['rest_food', 'rest_menu', 'rest_room', 'rest_fridaysat', 'rest_happyhour', 'rest_chef', 'rest_hours', 'rest_gallery', 'rest_faq'];
+$sectionOrderKeys = ['rest_food', 'rest_menu', 'rest_room', 'rest_brunch', 'rest_fridaysat', 'rest_happyhour', 'rest_chef', 'rest_hours', 'rest_gallery', 'rest_faq'];
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -243,6 +245,7 @@ $tabs = [
     'food'      => 'The Food',
     'menu'      => 'Menu',
     'room'      => 'Express Lunch',
+    'brunch'    => 'Bottomless Brunch',
     'fridaysat' => 'Friday & Saturday',
     'happyhour' => 'Happy Hour',
     'chef'      => 'The Chef',

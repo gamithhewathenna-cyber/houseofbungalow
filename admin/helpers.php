@@ -167,6 +167,7 @@ function crop_ratio_for_key(string $key): string
         // Split-section images (.split-media, aspect-ratio 3:2)
         'rest_food_image'         => '3:2',
         'rest_room_image'         => '3:2',
+        'rest_brunch_image'       => '3:2',
         'rest_fridaysat_image'    => '3:2',
         'rest_happyhour_image'    => '3:2',
         'rest_chef_image'         => '3:2',

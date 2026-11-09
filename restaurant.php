@@ -188,6 +188,31 @@ $rest_sections = [
 </section>
 <?php
     },
+    'rest_brunch' => function (): void {
+        if (!section_visible('rest_brunch')) return;
+        ?>
+<section class="split-section reveal">
+  <div class="container">
+    <div class="split-grid">
+      <div class="split-copy">
+        <p class="eyebrow"><?= e(setting('rest_brunch_eyebrow', 'Saturday & Sunday · 11:30 AM - 3:00 PM')) ?></p>
+        <h2><?= e(setting('rest_brunch_heading', 'Brunch With Nowhere Else To Be.')) ?></h2>
+        <p><?= enl(setting('rest_brunch_p1')) ?></p>
+        <p><?= enl(setting('rest_brunch_p2')) ?></p>
+        <?php if (setting('rest_brunch_btn_label')): ?>
+          <div class="btn-wrap">
+            <a class="link-underline" href="<?= e(url(setting('rest_brunch_btn_url', '#'))) ?>"><?= e(setting('rest_brunch_btn_label')) ?></a>
+          </div>
+        <?php endif; ?>
+      </div>
+      <div class="split-media">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('rest_brunch_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('rest_brunch_heading')) ?>">
+      </div>
+    </div>
+  </div>
+</section>
+<?php
+    },
     'rest_fridaysat' => function (): void {
         if (!section_visible('rest_fridaysat')) return;
         ?>
