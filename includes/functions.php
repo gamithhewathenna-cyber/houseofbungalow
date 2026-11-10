@@ -28,6 +28,73 @@ function setting(string $key, string $default = ''): string
 }
 
 /**
+ * Sends one event + profile to Klaviyo's Events API. Returns
+ * [success, message] - message is the real error detail on failure
+ * (connection error, or Klaviyo's own HTTP status/response), or a
+ * short confirmation on success. Used by both the live Private Events
+ * enquiry form and the admin "Send Test Event" button, so a bad key
+ * or payload is actually visible instead of failing silently.
+ */
+function klaviyo_send_event(string $apiKey, string $eventName, array $properties, array $profile): array
+{
+    if ($apiKey === '') {
+        return [false, 'No Klaviyo API key is set.'];
+    }
+    if (!function_exists('curl_init')) {
+        return [false, 'cURL is not available on this server.'];
+    }
+
+    $payload = [
+        'data' => [
+            'type' => 'event',
+            'attributes' => [
+                'properties' => $properties,
+                'metric' => [
+                    'data' => [
+                        'type' => 'metric',
+                        'attributes' => ['name' => $eventName],
+                    ],
+                ],
+                'profile' => [
+                    'data' => [
+                        'type' => 'profile',
+                        'attributes' => $profile,
+                    ],
+                ],
+                'time' => gmdate('c'),
+            ],
+        ],
+    ];
+
+    $ch = curl_init('https://a.klaviyo.com/api/events/');
+    curl_setopt_array($ch, [
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => json_encode($payload),
+        CURLOPT_HTTPHEADER     => [
+            'Authorization: Klaviyo-API-Key ' . $apiKey,
+            'Content-Type: application/json',
+            'Accept: application/json',
+            'revision: 2024-10-15',
+        ],
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT        => 8,
+    ]);
+    $response  = curl_exec($ch);
+    $httpCode  = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch);
+    curl_close($ch);
+
+    if ($curlError) {
+        return [false, 'Connection error: ' . $curlError];
+    }
+    if ($httpCode >= 200 && $httpCode < 300) {
+        return [true, 'Sent successfully (HTTP ' . $httpCode . ').'];
+    }
+    $bodyExcerpt = $response !== false && $response !== '' ? substr($response, 0, 400) : '(no response body)';
+    return [false, 'Klaviyo responded with HTTP ' . $httpCode . ': ' . $bodyExcerpt];
+}
+
+/**
  * Whether a given section should be shown on the live site. Section
  * visibility is stored as a plain setting named "<key>_visible" (admin
  * tab: Section Visibility) — '0' hides it, anything else (including no

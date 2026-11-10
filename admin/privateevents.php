@@ -21,6 +21,7 @@ $visibilitySections = [
 $sectionOrderKeys = ['pe_cards', 'pe_final'];
 
 $error = '';
+$ok = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!csrf_check()) {
         $error = 'Session expired. Please try again.';
@@ -33,6 +34,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     save_setting($vkey . '_visible', isset($_POST['vis_' . $vkey]) ? '1' : '0');
                 }
                 header('Location: privateevents.php?tab=visibility&saved=1'); exit;
+            }
+
+            // ---- Klaviyo test event ----
+            if ($action === 'test_klaviyo') {
+                $apiKey = trim(setting('klaviyo_private_api_key'));
+                if ($apiKey === '') {
+                    $error = 'Save a Klaviyo API key below first, then test it.';
+                } else {
+                    [$sent, $resultMessage] = klaviyo_send_event(
+                        $apiKey,
+                        'Private Events Enquiry',
+                        ['Type of Event' => 'Test Event', 'Source' => 'Admin test button'],
+                        ['email' => setting('pe_enquiry_to_email') ?: 'test@example.com', 'first_name' => 'Test', 'last_name' => 'Event']
+                    );
+                    if ($sent) {
+                        $ok = 'Test event sent - ' . $resultMessage . ' Check Klaviyo under Analytics > Metrics > "Private Events Enquiry" (it can take a minute to appear).';
+                    } else {
+                        $error = 'Klaviyo test failed: ' . $resultMessage;
+                    }
+                }
             }
 
             // ---- Section order (admins only) ----
@@ -175,6 +196,7 @@ $page_title = 'Private Events';
 include __DIR__ . '/layout.php';
 ?>
 <?php if ($error): ?><div class="alert err"><?= e($error) ?></div><?php endif; ?>
+<?php if ($ok): ?><div class="alert ok"><?= e($ok) ?></div><?php endif; ?>
 
 <div class="tab-nav">
   <?php foreach ($tabs as $key => $label): ?>
@@ -192,17 +214,27 @@ include __DIR__ . '/layout.php';
       <p class="group-help">The button below now opens the enquiry popup form instead of linking anywhere, so there's no URL field to set.</p>
     <?php endif; ?>
     <?php if ($group === 'klaviyo'): ?>
-      <p class="group-help">When a Private Events enquiry is submitted, it's sent to Klaviyo as a profile + a "Private Events Enquiry" event, so it can trigger flows/automations there. Paste your Klaviyo <strong>Private API Key</strong> (starts with <code>pk_</code>, found in Klaviyo under Settings &gt; API Keys &gt; Private API Keys). Leave empty to turn this off - enquiries will still be saved here and emailed as normal either way.</p>
+      <p class="group-help">When a Private Events enquiry is submitted, it's sent to Klaviyo as a profile + a "Private Events Enquiry" event, so it can trigger flows/automations there. Paste your Klaviyo <strong>Private API Key</strong> (starts with <code>pk_</code>, found in Klaviyo under Settings &gt; API Keys &gt; Private API Keys). Leave empty to turn this off - enquiries will still be saved here and emailed as normal either way. Save your key below first, then use "Send Test Event" to confirm it actually works - it shows Klaviyo's real response if something's wrong.</p>
     <?php endif; ?>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
       <input type="hidden" name="action" value="save_section">
       <input type="hidden" name="group" value="<?= e($group) ?>">
       <?php foreach ($keys as $key): if (!isset($bySkey[$key])) continue; render_pe_field($bySkey[$key]); endforeach; ?>
-      <div class="form-actions"><button type="submit" class="btn">Save Changes</button></div>
+      <div class="form-actions">
+        <button type="submit" class="btn">Save Changes</button>
+        <?php if ($group === 'klaviyo'): ?>
+          <button type="submit" form="testKlaviyoForm" class="btn btn-ghost">Send Test Event</button>
+        <?php endif; ?>
+      </div>
     </form>
   </div>
 <?php endforeach; ?>
+
+<form id="testKlaviyoForm" method="post" class="inline-form">
+  <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+  <input type="hidden" name="action" value="test_klaviyo">
+</form>
 
 <!-- Event Cards tab -->
 <div class="tab-panel settings-group<?= $activeTab === 'cards' ? ' active' : '' ?>" data-tab="cards">

@@ -117,74 +117,42 @@ function send_enquiry_thankyou(array $d): void
  * Send the enquiry to Klaviyo as a profile + a "Private Events Enquiry"
  * event (admin > Private Events > Klaviyo Integration), so it can be
  * used to trigger flows/automations there. Skipped entirely if no API
- * key is set, or if cURL isn't available. Failures are logged, never
- * surfaced to the visitor and never block saving/emailing the enquiry.
+ * key is set. Failures are logged (check your host's PHP error log),
+ * never surfaced to the visitor and never block saving/emailing the
+ * enquiry.
  */
 function send_to_klaviyo(array $d): void
 {
     $apiKey = trim(setting('klaviyo_private_api_key'));
-    if ($apiKey === '' || !function_exists('curl_init')) {
+    if ($apiKey === '') {
         return;
     }
 
     $nameParts = preg_split('/\s+/', trim($d['full_name']), 2);
-    $firstName = $nameParts[0] ?? '';
-    $lastName  = $nameParts[1] ?? '';
 
-    $payload = [
-        'data' => [
-            'type' => 'event',
-            'attributes' => [
-                'properties' => [
-                    'Company'         => $d['company'],
-                    'Type of Event'   => $d['event_type'],
-                    'Preferred Space' => $d['preferred_space'],
-                    'Preferred Date'  => $d['preferred_date'],
-                    'Preferred Time'  => $d['preferred_time'],
-                    'Guests'          => $d['guests'],
-                    'Message'         => $d['message'],
-                    'Source'          => $d['source'],
-                ],
-                'metric' => [
-                    'data' => [
-                        'type' => 'metric',
-                        'attributes' => ['name' => 'Private Events Enquiry'],
-                    ],
-                ],
-                'profile' => [
-                    'data' => [
-                        'type' => 'profile',
-                        'attributes' => [
-                            'email'        => $d['email'],
-                            'phone_number' => $d['phone'],
-                            'first_name'   => $firstName,
-                            'last_name'    => $lastName,
-                        ],
-                    ],
-                ],
-                'time' => gmdate('c'),
-            ],
+    [$ok, $message] = klaviyo_send_event(
+        $apiKey,
+        'Private Events Enquiry',
+        [
+            'Company'         => $d['company'],
+            'Type of Event'   => $d['event_type'],
+            'Preferred Space' => $d['preferred_space'],
+            'Preferred Date'  => $d['preferred_date'],
+            'Preferred Time'  => $d['preferred_time'],
+            'Guests'          => $d['guests'],
+            'Message'         => $d['message'],
+            'Source'          => $d['source'],
         ],
-    ];
-
-    $ch = curl_init('https://a.klaviyo.com/api/events/');
-    curl_setopt_array($ch, [
-        CURLOPT_POST           => true,
-        CURLOPT_POSTFIELDS     => json_encode($payload),
-        CURLOPT_HTTPHEADER     => [
-            'Authorization: Klaviyo-API-Key ' . $apiKey,
-            'Content-Type: application/json',
-            'Accept: application/json',
-            'revision: 2024-10-15',
-        ],
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT        => 8,
-    ]);
-    curl_exec($ch);
-    if (curl_errno($ch)) {
-        error_log('Klaviyo enquiry sync failed: ' . curl_error($ch));
+        [
+            'email'        => $d['email'],
+            'phone_number' => $d['phone'],
+            'first_name'   => $nameParts[0] ?? '',
+            'last_name'    => $nameParts[1] ?? '',
+        ]
+    );
+    if (!$ok) {
+        error_log('Klaviyo enquiry sync failed: ' . $message);
     }
-    curl_close($ch);
 }
 
 try {
