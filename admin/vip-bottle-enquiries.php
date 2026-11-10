@@ -1,4 +1,5 @@
 <?php
+// rebuild: 2026-11-10 - forces this file to be treated as new on upload
 require_once __DIR__ . '/auth.php';
 require_role('enquiries');
 
