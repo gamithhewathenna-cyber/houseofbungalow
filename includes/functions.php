@@ -28,45 +28,21 @@ function setting(string $key, string $default = ''): string
 }
 
 /**
- * Sends one event + profile to Klaviyo's Events API. Returns
- * [success, message] - message is the real error detail on failure
- * (connection error, or Klaviyo's own HTTP status/response), or a
- * short confirmation on success. Used by both the live Private Events
- * enquiry form and the admin "Send Test Event" button, so a bad key
- * or payload is actually visible instead of failing silently.
+ * Low-level: POST one JSON:API payload to a Klaviyo endpoint. Returns
+ * [success, message, decodedBody] - message is the real error detail
+ * on failure (connection error, or Klaviyo's own HTTP status/response
+ * body), or a short confirmation on success. Never throws.
  */
-function klaviyo_send_event(string $apiKey, string $eventName, array $properties, array $profile): array
+function klaviyo_api_request(string $apiKey, string $path, array $payload): array
 {
     if ($apiKey === '') {
-        return [false, 'No Klaviyo API key is set.'];
+        return [false, 'No Klaviyo API key is set.', null];
     }
     if (!function_exists('curl_init')) {
-        return [false, 'cURL is not available on this server.'];
+        return [false, 'cURL is not available on this server.', null];
     }
 
-    $payload = [
-        'data' => [
-            'type' => 'event',
-            'attributes' => [
-                'properties' => $properties,
-                'metric' => [
-                    'data' => [
-                        'type' => 'metric',
-                        'attributes' => ['name' => $eventName],
-                    ],
-                ],
-                'profile' => [
-                    'data' => [
-                        'type' => 'profile',
-                        'attributes' => $profile,
-                    ],
-                ],
-                'time' => gmdate('c'),
-            ],
-        ],
-    ];
-
-    $ch = curl_init('https://a.klaviyo.com/api/events/');
+    $ch = curl_init('https://a.klaviyo.com' . $path);
     curl_setopt_array($ch, [
         CURLOPT_POST           => true,
         CURLOPT_POSTFIELDS     => json_encode($payload),
@@ -85,13 +61,135 @@ function klaviyo_send_event(string $apiKey, string $eventName, array $properties
     curl_close($ch);
 
     if ($curlError) {
-        return [false, 'Connection error: ' . $curlError];
+        return [false, 'Connection error: ' . $curlError, null];
     }
+    $decoded = $response !== false && $response !== '' ? json_decode($response, true) : null;
     if ($httpCode >= 200 && $httpCode < 300) {
-        return [true, 'Sent successfully (HTTP ' . $httpCode . ').'];
+        return [true, 'Sent successfully (HTTP ' . $httpCode . ').', $decoded];
     }
     $bodyExcerpt = $response !== false && $response !== '' ? substr($response, 0, 400) : '(no response body)';
-    return [false, 'Klaviyo responded with HTTP ' . $httpCode . ': ' . $bodyExcerpt];
+    return [false, 'Klaviyo responded with HTTP ' . $httpCode . ': ' . $bodyExcerpt, $decoded];
+}
+
+/**
+ * Sends one event + profile to Klaviyo's Events API. Returns
+ * [success, message] in the same shape klaviyo_api_request() does.
+ * $uniqueId (optional) makes Klaviyo treat repeat calls with the same
+ * value + event name as the same event instead of creating duplicates
+ * - pass the database row's own id (e.g. "private-events-42") so a
+ * retried request can never double up in Klaviyo. Used by both every
+ * live form on the site and the admin "Send Test Event" button.
+ */
+function klaviyo_send_event(string $apiKey, string $eventName, array $properties, array $profile, string $uniqueId = ''): array
+{
+    $attributes = [
+        'properties' => $properties,
+        'metric' => [
+            'data' => [
+                'type' => 'metric',
+                'attributes' => ['name' => $eventName],
+            ],
+        ],
+        'profile' => [
+            'data' => [
+                'type' => 'profile',
+                'attributes' => $profile,
+            ],
+        ],
+        'time' => gmdate('c'),
+    ];
+    if ($uniqueId !== '') {
+        $attributes['unique_id'] = $uniqueId;
+    }
+    [$ok, $message] = klaviyo_api_request($apiKey, '/api/events/', [
+        'data' => ['type' => 'event', 'attributes' => $attributes],
+    ]);
+    return [$ok, $message];
+}
+
+/**
+ * Subscribes a profile to a Klaviyo list with marketing consent
+ * (admin > Private Events > Klaviyo Integration > List ID). Requires
+ * an email address - Klaviyo list subscriptions are email-consent
+ * based, so profiles identified only by phone are skipped safely.
+ */
+function klaviyo_subscribe_profile_to_list(string $apiKey, string $listId, array $profile): array
+{
+    if (empty($profile['email'])) {
+        return [false, 'No email address on this profile - skipped list subscription.'];
+    }
+    $profileAttrs = ['email' => $profile['email']];
+    if (!empty($profile['first_name'])) $profileAttrs['first_name'] = $profile['first_name'];
+    if (!empty($profile['last_name']))  $profileAttrs['last_name']  = $profile['last_name'];
+    if (!empty($profile['phone_number'])) $profileAttrs['phone_number'] = $profile['phone_number'];
+    $profileAttrs['subscriptions'] = [
+        'email' => ['marketing' => ['consent' => 'SUBSCRIBED']],
+    ];
+
+    [$ok, $message] = klaviyo_api_request($apiKey, '/api/profile-subscription-bulk-create-jobs/', [
+        'data' => [
+            'type' => 'profile-subscription-bulk-create-job',
+            'attributes' => [
+                'profiles' => [
+                    'data' => [[
+                        'type' => 'profile',
+                        'attributes' => $profileAttrs,
+                    ]],
+                ],
+                'historical_import' => false,
+            ],
+            'relationships' => [
+                'list' => [
+                    'data' => ['type' => 'list', 'id' => $listId],
+                ],
+            ],
+        ],
+    ]);
+    return [$ok, $message];
+}
+
+/**
+ * High-level: call this once per successful website form submission.
+ * Sends a single unified "Website Enquiry Submitted" event (so every
+ * form's enquiries show up the same way in Klaviyo, distinguished by
+ * the "Form Name" property) and, if a List ID is configured, also
+ * subscribes the profile to that list. $dbId is the row's own id in
+ * our database, used to build a stable Klaviyo unique_id so a retried
+ * request never creates a duplicate event. Does nothing if no API key
+ * is set. Never throws; logs failures (never the enquiry message
+ * itself) and always returns quietly either way.
+ */
+function klaviyo_track_enquiry(string $formName, int $dbId, array $profile, array $extraProperties, string $message): void
+{
+    $apiKey = trim(setting('klaviyo_private_api_key'));
+    if ($apiKey === '') {
+        return;
+    }
+
+    $customerName = trim(($profile['first_name'] ?? '') . ' ' . ($profile['last_name'] ?? ''));
+    $properties = array_merge([
+        'Form Name'      => $formName,
+        'Customer Name'  => $customerName,
+        'Email'          => $profile['email'] ?? '',
+        'Phone'          => $profile['phone_number'] ?? '',
+        'Message'        => $message,
+        'Submitted At'   => gmdate('Y-m-d H:i:s') . ' UTC',
+        'Website URL'    => site_origin(),
+    ], $extraProperties);
+
+    $uniqueId = strtolower(preg_replace('/[^a-z0-9]+/i', '-', $formName)) . '-' . $dbId;
+    [$sent, $resultMessage] = klaviyo_send_event($apiKey, 'Website Enquiry Submitted', $properties, $profile, $uniqueId);
+    if (!$sent) {
+        error_log('Klaviyo event sync failed (' . $formName . ', id ' . $dbId . '): ' . $resultMessage);
+    }
+
+    $listId = trim(setting('klaviyo_list_id'));
+    if ($listId !== '') {
+        [$subscribed, $subMessage] = klaviyo_subscribe_profile_to_list($apiKey, $listId, $profile);
+        if (!$subscribed) {
+            error_log('Klaviyo list subscribe failed (' . $formName . ', id ' . $dbId . '): ' . $subMessage);
+        }
+    }
 }
 
 /**

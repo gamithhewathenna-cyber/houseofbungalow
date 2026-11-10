@@ -114,25 +114,26 @@ function send_enquiry_thankyou(array $d): void
 }
 
 /**
- * Send the enquiry to Klaviyo as a profile + a "Private Events Enquiry"
- * event (admin > Private Events > Klaviyo Integration), so it can be
- * used to trigger flows/automations there. Skipped entirely if no API
- * key is set. Failures are logged (check your host's PHP error log),
- * never surfaced to the visitor and never block saving/emailing the
- * enquiry.
+ * Send the enquiry to Klaviyo as a profile + a "Website Enquiry
+ * Submitted" event (Form Name: "Private Events"), plus a list
+ * subscription if one is configured (admin > Private Events > Klaviyo
+ * Integration). $dbId is this enquiry's own row id, used so Klaviyo
+ * never records the same submission twice. Skipped entirely if no API
+ * key is set; failures are logged, never surfaced to the visitor and
+ * never block saving/emailing the enquiry.
  */
-function send_to_klaviyo(array $d): void
+function send_to_klaviyo(array $d, int $dbId): void
 {
-    $apiKey = trim(setting('klaviyo_private_api_key'));
-    if ($apiKey === '') {
-        return;
-    }
-
     $nameParts = preg_split('/\s+/', trim($d['full_name']), 2);
-
-    [$ok, $message] = klaviyo_send_event(
-        $apiKey,
-        'Private Events Enquiry',
+    klaviyo_track_enquiry(
+        'Private Events',
+        $dbId,
+        [
+            'email'        => $d['email'],
+            'phone_number' => $d['phone'],
+            'first_name'   => $nameParts[0] ?? '',
+            'last_name'    => $nameParts[1] ?? '',
+        ],
         [
             'Company'         => $d['company'],
             'Type of Event'   => $d['event_type'],
@@ -140,19 +141,10 @@ function send_to_klaviyo(array $d): void
             'Preferred Date'  => $d['preferred_date'],
             'Preferred Time'  => $d['preferred_time'],
             'Guests'          => $d['guests'],
-            'Message'         => $d['message'],
             'Source'          => $d['source'],
         ],
-        [
-            'email'        => $d['email'],
-            'phone_number' => $d['phone'],
-            'first_name'   => $nameParts[0] ?? '',
-            'last_name'    => $nameParts[1] ?? '',
-        ]
+        $d['message']
     );
-    if (!$ok) {
-        error_log('Klaviyo enquiry sync failed: ' . $message);
-    }
 }
 
 try {
@@ -161,6 +153,7 @@ try {
          VALUES (?,?,?,?,?,?,?,?,?,?,?)'
     );
     $stmt->execute([$fullName, $phone, $email, $company, $eventType, $space, $date, $time, $guests, $message, $source]);
+    $newId = (int) db()->lastInsertId();
 
     $data = [
         'full_name' => $fullName, 'phone' => $phone, 'email' => $email, 'company' => $company,
@@ -169,7 +162,7 @@ try {
     ];
     send_enquiry_notification($data);
     send_enquiry_thankyou($data);
-    send_to_klaviyo($data);
+    send_to_klaviyo($data, $newId);
 
     echo json_encode(['ok' => true]);
 } catch (PDOException $e) {

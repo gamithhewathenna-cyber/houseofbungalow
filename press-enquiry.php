@@ -86,25 +86,21 @@ try {
          VALUES (?,?,?,?,?,?)'
     );
     $stmt->execute([$fullName, $organisation, $email, $phone, $enquiryType, $message]);
+    $newId = (int) db()->lastInsertId();
 
     send_press_notification([
         'full_name' => $fullName, 'organisation' => $organisation, 'email' => $email,
         'phone' => $phone, 'enquiry_type' => $enquiryType, 'message' => $message,
     ]);
 
-    $klaviyoKey = trim(setting('klaviyo_private_api_key'));
-    if ($klaviyoKey !== '') {
-        $nameParts = preg_split('/\s+/', $fullName, 2);
-        [$sent, $resultMessage] = klaviyo_send_event(
-            $klaviyoKey,
-            'Press Enquiry',
-            ['Organisation' => $organisation, 'Nature of Enquiry' => $enquiryType, 'Message' => $message],
-            ['email' => $email, 'phone_number' => $phone, 'first_name' => $nameParts[0] ?? '', 'last_name' => $nameParts[1] ?? '']
-        );
-        if (!$sent) {
-            error_log('Klaviyo press enquiry sync failed: ' . $resultMessage);
-        }
-    }
+    $nameParts = preg_split('/\s+/', trim($fullName), 2);
+    klaviyo_track_enquiry(
+        'Press & Media',
+        $newId,
+        ['email' => $email, 'phone_number' => $phone, 'first_name' => $nameParts[0] ?? '', 'last_name' => $nameParts[1] ?? ''],
+        ['Organisation' => $organisation, 'Nature of Enquiry' => $enquiryType],
+        $message
+    );
 
     echo json_encode(['ok' => true]);
 } catch (PDOException $e) {

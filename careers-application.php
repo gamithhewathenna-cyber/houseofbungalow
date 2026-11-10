@@ -131,25 +131,21 @@ try {
          VALUES (?,?,?,?,?,?)'
     );
     $stmt->execute([$fullName, $email, $phone, $area, $position, $cvPath]);
+    $newId = (int) db()->lastInsertId();
 
     send_career_notification([
         'full_name' => $fullName, 'email' => $email, 'phone' => $phone,
         'area_of_interest' => $area, 'position' => $position, 'cv_path' => $cvPath,
     ]);
 
-    $klaviyoKey = trim(setting('klaviyo_private_api_key'));
-    if ($klaviyoKey !== '') {
-        $nameParts = preg_split('/\s+/', $fullName, 2);
-        [$sent, $resultMessage] = klaviyo_send_event(
-            $klaviyoKey,
-            'Career Application',
-            ['Area of Interest' => $area, 'Position' => $position, 'CV' => career_absolute_url($cvPath)],
-            ['email' => $email, 'phone_number' => $phone, 'first_name' => $nameParts[0] ?? '', 'last_name' => $nameParts[1] ?? '']
-        );
-        if (!$sent) {
-            error_log('Klaviyo career application sync failed: ' . $resultMessage);
-        }
-    }
+    $nameParts = preg_split('/\s+/', trim($fullName), 2);
+    klaviyo_track_enquiry(
+        'Join Our Team',
+        $newId,
+        ['email' => $email, 'phone_number' => $phone, 'first_name' => $nameParts[0] ?? '', 'last_name' => $nameParts[1] ?? ''],
+        ['Area of Interest' => $area, 'Position' => $position, 'CV' => career_absolute_url($cvPath)],
+        'Applied for: ' . ($position ?: $area)
+    );
 
     echo json_encode(['ok' => true]);
 } catch (RuntimeException $e) {

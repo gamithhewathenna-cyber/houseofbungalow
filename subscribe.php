@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $stmt = db()->prepare('INSERT INTO subscribers (email) VALUES (?)');
         $stmt->execute([$email]);
+        $newId = (int) db()->lastInsertId();
         send_subscribe_notification($email);
 
         $klaviyoKey = trim(setting('klaviyo_private_api_key'));
@@ -41,11 +42,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             [$sent, $resultMessage] = klaviyo_send_event(
                 $klaviyoKey,
                 'Newsletter Signup',
-                [],
-                ['email' => $email]
+                ['Form Name' => 'Footer Newsletter', 'Website URL' => site_origin()],
+                ['email' => $email],
+                'newsletter-signup-' . $newId
             );
             if (!$sent) {
                 error_log('Klaviyo newsletter signup sync failed: ' . $resultMessage);
+            }
+            $listId = trim(setting('klaviyo_list_id'));
+            if ($listId !== '') {
+                [$subscribed, $subMessage] = klaviyo_subscribe_profile_to_list($klaviyoKey, $listId, ['email' => $email]);
+                if (!$subscribed) {
+                    error_log('Klaviyo list subscribe failed (Newsletter Signup, id ' . $newId . '): ' . $subMessage);
+                }
             }
         }
 

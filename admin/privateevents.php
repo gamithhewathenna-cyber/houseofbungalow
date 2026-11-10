@@ -8,7 +8,7 @@ $fieldGroups = [
     'intro'     => ['pe_heading', 'pe_subheading', 'pe_lede', 'pe_p1', 'pe_p2', 'pe_p3', 'pe_btn_label'],
     'final'     => ['pe_final_heading', 'pe_final_p1', 'pe_final_btn_label'],
     'emails'    => ['pe_enquiry_to_email', 'pe_enquiry_cc_email', 'pe_enquiry_thankyou_subject', 'pe_enquiry_thankyou_message'],
-    'klaviyo'   => ['klaviyo_private_api_key'],
+    'klaviyo'   => ['klaviyo_private_api_key', 'klaviyo_list_id'],
 ];
 $visibilitySections = [
     'pe_hero'  => 'Hero',
@@ -42,16 +42,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($apiKey === '') {
                     $error = 'Save a Klaviyo API key below first, then test it.';
                 } else {
+                    $testEmail = setting('pe_enquiry_to_email') ?: 'test@example.com';
                     [$sent, $resultMessage] = klaviyo_send_event(
                         $apiKey,
-                        'Private Events Enquiry',
-                        ['Type of Event' => 'Test Event', 'Source' => 'Admin test button'],
-                        ['email' => setting('pe_enquiry_to_email') ?: 'test@example.com', 'first_name' => 'Test', 'last_name' => 'Event']
+                        'Website Enquiry Submitted',
+                        ['Form Name' => 'Admin Test', 'Customer Name' => 'Test Event', 'Message' => 'Sent from the Send Test Event button.', 'Website URL' => site_origin()],
+                        ['email' => $testEmail, 'first_name' => 'Test', 'last_name' => 'Event'],
+                        'admin-test-' . time()
                     );
-                    if ($sent) {
-                        $ok = 'Test event sent - ' . $resultMessage . ' Check Klaviyo under Analytics > Metrics > "Private Events Enquiry" (it can take a minute to appear).';
+                    if (!$sent) {
+                        $error = 'Klaviyo event test failed: ' . $resultMessage;
                     } else {
-                        $error = 'Klaviyo test failed: ' . $resultMessage;
+                        $ok = 'Test event sent - ' . $resultMessage . ' Check Klaviyo under Analytics > Metrics > "Website Enquiry Submitted" (it can take a minute to appear).';
+                        $listId = trim(setting('klaviyo_list_id'));
+                        if ($listId !== '') {
+                            [$subscribed, $subMessage] = klaviyo_subscribe_profile_to_list($apiKey, $listId, ['email' => $testEmail]);
+                            if ($subscribed) {
+                                $ok .= ' List subscription also succeeded - check Audience > Lists & Segments.';
+                            } else {
+                                $ok .= ' But list subscription failed: ' . $subMessage;
+                            }
+                        }
                     }
                 }
             }
@@ -214,7 +225,10 @@ include __DIR__ . '/layout.php';
       <p class="group-help">The button below now opens the enquiry popup form instead of linking anywhere, so there's no URL field to set.</p>
     <?php endif; ?>
     <?php if ($group === 'klaviyo'): ?>
-      <p class="group-help">This key connects every form on the site to Klaviyo, not just Private Events - each submission (Private Events enquiry, VIP Bottle Service, Join Our Team application, Press enquiry, and the footer newsletter signup) is sent to Klaviyo as a profile + its own named event, so any of them can trigger flows/automations there. Paste your Klaviyo <strong>Private API Key</strong> (starts with <code>pk_</code>, found in Klaviyo under Settings &gt; API Keys &gt; Private API Keys). Leave empty to turn it off everywhere - every form keeps saving here and emailing as normal either way. Save your key below first, then use "Send Test Event" to confirm it actually works - it shows Klaviyo's real response if something's wrong.</p>
+      <p class="group-help">This connects every form on the site to Klaviyo - each submission (Private Events enquiry, VIP Bottle Service, Join Our Team application, Press enquiry) creates/updates a Klaviyo profile and a <strong>"Website Enquiry Submitted"</strong> event (with a <code>Form Name</code> property so you can tell them apart), while the footer newsletter signup fires its own <strong>"Newsletter Signup"</strong> event. All five also subscribe the person to the List below, if one is set.</p>
+      <p class="group-help"><strong>API Key:</strong> paste your Klaviyo Private API Key (starts with <code>pk_</code>, found in Klaviyo under Settings &gt; API Keys &gt; Private API Keys). It needs the <strong>Events</strong>, <strong>Profiles</strong> and <strong>Lists</strong> scopes set to Full Access, or requests will fail even though the key still shows as "used". Leave empty to turn this off everywhere - every form keeps saving here and emailing as normal either way.</p>
+      <p class="group-help"><strong>List ID</strong> (optional): in Klaviyo go to Audience &gt; Lists &amp; Segments, open the list, and copy its ID from the page URL. Leave empty to skip list subscription - profiles and events are still created either way.</p>
+      <p class="group-help">Save your changes below first, then use "Send Test Event" to confirm it actually works - it shows Klaviyo's real response if something's wrong.</p>
     <?php endif; ?>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
