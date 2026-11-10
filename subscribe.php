@@ -35,6 +35,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = db()->prepare('INSERT INTO subscribers (email) VALUES (?)');
         $stmt->execute([$email]);
         send_subscribe_notification($email);
+
+        $klaviyoKey = trim(setting('klaviyo_private_api_key'));
+        if ($klaviyoKey !== '') {
+            [$sent, $resultMessage] = klaviyo_send_event(
+                $klaviyoKey,
+                'Newsletter Signup',
+                [],
+                ['email' => $email]
+            );
+            if (!$sent) {
+                error_log('Klaviyo newsletter signup sync failed: ' . $resultMessage);
+            }
+        }
+
         header('Location: ' . url('index.php') . '?sub=ok#stay');
     } catch (PDOException $e) {
         // Duplicate email (unique key) or other error

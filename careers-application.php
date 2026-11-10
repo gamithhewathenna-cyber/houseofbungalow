@@ -137,6 +137,20 @@ try {
         'area_of_interest' => $area, 'position' => $position, 'cv_path' => $cvPath,
     ]);
 
+    $klaviyoKey = trim(setting('klaviyo_private_api_key'));
+    if ($klaviyoKey !== '') {
+        $nameParts = preg_split('/\s+/', $fullName, 2);
+        [$sent, $resultMessage] = klaviyo_send_event(
+            $klaviyoKey,
+            'Career Application',
+            ['Area of Interest' => $area, 'Position' => $position, 'CV' => career_absolute_url($cvPath)],
+            ['email' => $email, 'phone_number' => $phone, 'first_name' => $nameParts[0] ?? '', 'last_name' => $nameParts[1] ?? '']
+        );
+        if (!$sent) {
+            error_log('Klaviyo career application sync failed: ' . $resultMessage);
+        }
+    }
+
     echo json_encode(['ok' => true]);
 } catch (RuntimeException $e) {
     echo json_encode(['ok' => false, 'error' => $e->getMessage()]);

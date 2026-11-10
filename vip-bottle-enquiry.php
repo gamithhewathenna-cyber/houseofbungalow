@@ -92,6 +92,20 @@ try {
         'occasion' => $occasion, 'guests' => $guests, 'preferred_date' => $date,
     ]);
 
+    $klaviyoKey = trim(setting('klaviyo_private_api_key'));
+    if ($klaviyoKey !== '') {
+        $nameParts = preg_split('/\s+/', $fullName, 2);
+        [$sent, $resultMessage] = klaviyo_send_event(
+            $klaviyoKey,
+            'VIP Bottle Service Enquiry',
+            ['Company' => $company, 'Occasion' => $occasion, 'Guests' => $guests, 'Preferred Date' => $date],
+            ['phone_number' => $phone, 'first_name' => $nameParts[0] ?? '', 'last_name' => $nameParts[1] ?? '']
+        );
+        if (!$sent) {
+            error_log('Klaviyo VIP bottle sync failed: ' . $resultMessage);
+        }
+    }
+
     echo json_encode(['ok' => true]);
 } catch (PDOException $e) {
     echo json_encode(['ok' => false, 'error' => 'Something went wrong. Please try again.']);
