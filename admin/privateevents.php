@@ -8,6 +8,7 @@ $fieldGroups = [
     'intro'     => ['pe_heading', 'pe_subheading', 'pe_lede', 'pe_p1', 'pe_p2', 'pe_p3', 'pe_btn_label'],
     'final'     => ['pe_final_heading', 'pe_final_p1', 'pe_final_btn_label'],
     'emails'    => ['pe_enquiry_to_email', 'pe_enquiry_cc_email', 'pe_enquiry_thankyou_subject', 'pe_enquiry_thankyou_message'],
+    'klaviyo'   => ['klaviyo_private_api_key'],
 ];
 $visibilitySections = [
     'pe_hero'  => 'Hero',
@@ -123,6 +124,7 @@ $tabs = [
     'cards'     => 'Event Cards',
     'final'     => 'Make The House Yours',
     'emails'    => 'Enquiry Emails',
+    'klaviyo'   => 'Klaviyo Integration',
     'visibility' => 'Section Visibility',
 ];
 if (admin_can('admin')) {
@@ -188,6 +190,9 @@ include __DIR__ . '/layout.php';
     <?php endif; ?>
     <?php if ($group === 'intro' || $group === 'final'): ?>
       <p class="group-help">The button below now opens the enquiry popup form instead of linking anywhere, so there's no URL field to set.</p>
+    <?php endif; ?>
+    <?php if ($group === 'klaviyo'): ?>
+      <p class="group-help">When a Private Events enquiry is submitted, it's sent to Klaviyo as a profile + a "Private Events Enquiry" event, so it can trigger flows/automations there. Paste your Klaviyo <strong>Private API Key</strong> (starts with <code>pk_</code>, found in Klaviyo under Settings &gt; API Keys &gt; Private API Keys). Leave empty to turn this off - enquiries will still be saved here and emailed as normal either way.</p>
     <?php endif; ?>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
