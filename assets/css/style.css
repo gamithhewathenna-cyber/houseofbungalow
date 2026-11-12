@@ -1181,7 +1181,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 /* ------------------------------------------------------------------ */
 .livelate-cards{
   display:grid;grid-template-columns:repeat(2,1fr);gap:28px;
-  max-width:900px;margin:36px auto 0;text-align:left;
+  margin:36px 0 0;text-align:left;
 }
 .livelate-card{
   background:var(--cream);border:1px solid #e0d3c4;border-radius:14px;overflow:hidden;
