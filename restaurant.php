@@ -340,6 +340,31 @@ $rest_sections = [
 </section>
 <?php
     },
+    'rest_livelate' => function (): void {
+        if (!section_visible('rest_livelate')) return;
+        ?>
+<section class="split-section reveal">
+  <div class="container">
+    <div class="split-grid">
+      <div class="split-media">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('rest_livelate_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('rest_livelate_heading')) ?>">
+      </div>
+      <div class="split-copy">
+        <p class="eyebrow"><?= e(setting('rest_livelate_eyebrow', 'Live & Late')) ?></p>
+        <h2><?= e(setting('rest_livelate_heading', 'The Night Doesn\'t Stop At Dinner.')) ?></h2>
+        <p><?= enl(setting('rest_livelate_p1')) ?></p>
+        <p><?= enl(setting('rest_livelate_p2')) ?></p>
+        <?php if (setting('rest_livelate_btn_label')): ?>
+          <div class="btn-wrap">
+            <a class="link-underline" href="<?= e(url(setting('rest_livelate_btn_url', '#'))) ?>"><?= e(setting('rest_livelate_btn_label')) ?></a>
+          </div>
+        <?php endif; ?>
+      </div>
+    </div>
+  </div>
+</section>
+<?php
+    },
     'rest_hours' => function (): void {
         if (!section_visible('rest_hours')) return;
         ?>

@@ -13,6 +13,7 @@ $fieldGroups = [
     'fridaysat' => ['rest_fridaysat_eyebrow', 'rest_fridaysat_heading', 'rest_fridaysat_p1', 'rest_fridaysat_p2', 'rest_fridaysat_btn_label', 'rest_fridaysat_btn_url', 'rest_fridaysat_image'],
     'happyhour' => ['rest_happyhour_eyebrow', 'rest_happyhour_heading', 'rest_happyhour_p1', 'rest_happyhour_hours1', 'rest_happyhour_hours2', 'rest_happyhour_btn_label', 'rest_happyhour_btn_url', 'rest_happyhour_image'],
     'chef'      => ['rest_chef_eyebrow', 'rest_chef_name', 'rest_chef_p1', 'rest_chef_p2', 'rest_chef_p3', 'rest_chef_image'],
+    'livelate'  => ['rest_livelate_eyebrow', 'rest_livelate_heading', 'rest_livelate_p1', 'rest_livelate_p2', 'rest_livelate_btn_label', 'rest_livelate_btn_url', 'rest_livelate_image'],
     'hours'     => ['rest_hours_heading', 'rest_hours_lunch_label', 'rest_hours_lunch', 'rest_hours_dinner_label', 'rest_hours_dinner', 'rest_hours_fridaysat_label', 'rest_hours_fridaysat', 'rest_hours_note', 'rest_hours_btn_label', 'rest_hours_btn_url', 'rest_hours_footnote'],
 ];
 $catBlockType = 'rest_menu_cat';
@@ -26,13 +27,14 @@ $visibilitySections = [
     'rest_fridaysat' => 'Friday & Saturday',
     'rest_happyhour' => 'Happy Hour',
     'rest_chef'      => 'The Chef',
+    'rest_livelate'  => 'Live & Late',
     'rest_hours'     => 'Restaurant Hours',
     'rest_gallery'   => 'Gallery',
     'rest_faq'       => 'FAQs',
 ];
 // Reorderable content sections (admin > Section Order, admins only) - Hero
 // and Intro always stay fixed at the top, so they're left out of this list.
-$sectionOrderKeys = ['rest_food', 'rest_menu', 'rest_room', 'rest_brunch', 'rest_fridaysat', 'rest_happyhour', 'rest_chef', 'rest_hours', 'rest_gallery', 'rest_faq'];
+$sectionOrderKeys = ['rest_food', 'rest_menu', 'rest_room', 'rest_brunch', 'rest_fridaysat', 'rest_happyhour', 'rest_chef', 'rest_livelate', 'rest_hours', 'rest_gallery', 'rest_faq'];
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -249,6 +251,7 @@ $tabs = [
     'fridaysat' => 'Friday & Saturday',
     'happyhour' => 'Happy Hour',
     'chef'      => 'The Chef',
+    'livelate'  => 'Live & Late',
     'hours'     => 'Restaurant Hours',
     'gallery'   => 'Gallery',
     'faqs'      => 'FAQs',

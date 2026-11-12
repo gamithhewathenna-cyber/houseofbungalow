@@ -9,7 +9,7 @@ $fieldGroups = [
     'happyhour' => ['wo_happyhour_eyebrow', 'wo_happyhour_heading', 'wo_happyhour_p1', 'wo_happyhour_p2', 'wo_happyhour_btn_label', 'wo_happyhour_btn_url', 'wo_happyhour_image'],
     'friday'    => ['wo_friday_eyebrow', 'wo_friday_heading', 'wo_friday_p1', 'wo_friday_p2', 'wo_friday_btn_label', 'wo_friday_btn_url', 'wo_friday_image'],
     'brunch'    => ['wo_brunch_eyebrow', 'wo_brunch_heading', 'wo_brunch_hours', 'wo_brunch_p1', 'wo_brunch_btn_label', 'wo_brunch_btn_url', 'wo_brunch_image'],
-    'livelate'  => ['wo_livelate_heading', 'wo_livelate_p1', 'wo_livelate_btn_label', 'wo_livelate_btn_url', 'wo_livelate_image'],
+    'livelate'  => ['wo_livelate_heading', 'wo_livelate_p1', 'wo_livelate_btn_label', 'wo_livelate_btn_url'],
 ];
 // Reorderable content sections (admin > Section Order, admins only) - Hero
 // and Intro always stay fixed at the top, so they're left out of this list.
@@ -111,6 +111,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Location: whatson.php?tab=features&saved=1'); exit;
             }
 
+            // ---- Live & Late cards ----
+            if ($action === 'save_livelate_cards') {
+                foreach (($_POST['title'] ?? []) as $id => $title) {
+                    $id  = (int) $id;
+                    $img = handle_upload('file_' . $id);
+                    $fields = ['title=?', 'subtitle=?', 'body=?', 'link_url=?', 'sort=?'];
+                    $params = [trim($title), trim($_POST['day'][$id] ?? ''), trim($_POST['time'][$id] ?? ''), trim($_POST['artist'][$id] ?? ''), (int) ($_POST['sort'][$id] ?? 0)];
+                    if ($img !== null) {
+                        $fields[] = 'image=?';
+                        $params[] = $img;
+                    }
+                    $params[] = $id;
+                    $q = db()->prepare('UPDATE blocks SET ' . implode(',', $fields) . ' WHERE id=? AND block_type="wo_livelate_card"');
+                    $q->execute($params);
+                }
+                header('Location: whatson.php?tab=livelatecards&saved=1'); exit;
+            }
+            if ($action === 'add_livelate_card') {
+                $img = handle_upload('new_file');
+                $q = db()->prepare('INSERT INTO blocks (block_type,title,subtitle,body,link_url,image,sort,active) VALUES ("wo_livelate_card",?,?,?,?,?,?,1)');
+                $q->execute([trim($_POST['new_title'] ?? 'New Session'), trim($_POST['new_day'] ?? ''), trim($_POST['new_time'] ?? ''), trim($_POST['new_artist'] ?? ''), $img ?? '', (int) ($_POST['new_sort'] ?? 99)]);
+                header('Location: whatson.php?tab=livelatecards&saved=1'); exit;
+            }
+            if ($action === 'delete_livelate_card') {
+                $q = db()->prepare('DELETE FROM blocks WHERE id=? AND block_type="wo_livelate_card"');
+                $q->execute([(int) ($_POST['id'] ?? 0)]);
+                header('Location: whatson.php?tab=livelatecards&saved=1'); exit;
+            }
+
             if ($action === 'save_faqs') {
                 foreach (($_POST['title'] ?? []) as $id => $title) {
                     $id = (int) $id;
@@ -142,6 +171,7 @@ foreach ($allRows as $r) {
 }
 $faqs = db()->query("SELECT * FROM blocks WHERE block_type='whatson_faq' ORDER BY sort ASC, id ASC")->fetchAll();
 $features = db()->query("SELECT * FROM blocks WHERE block_type='wo_feature' ORDER BY sort ASC, id ASC")->fetchAll();
+$livelateCards = db()->query("SELECT * FROM blocks WHERE block_type='wo_livelate_card' ORDER BY sort ASC, id ASC")->fetchAll();
 
 $tabs = [
     'herovideo' => 'Hero Video',
@@ -151,6 +181,7 @@ $tabs = [
     'friday'    => 'Friday & Saturday Dinner Party',
     'brunch'    => 'Weekend Bottomless Brunch',
     'livelate'  => 'Live & Late',
+    'livelatecards' => 'Live & Late Cards',
     'faqs'      => 'FAQs',
     'visibility' => 'Section Visibility',
 ];
@@ -324,6 +355,99 @@ include __DIR__ . '/layout.php';
     </div>
     <div class="dj-admin-actions">
       <button class="btn btn-sm">Add Section</button>
+    </div>
+  </form>
+</div>
+
+<!-- Live & Late Cards tab -->
+<div class="tab-panel settings-group<?= $activeTab === 'livelatecards' ? ' active' : '' ?>" data-tab="livelatecards">
+  <h3>Live & Late Cards</h3>
+  <p class="group-help">The session cards shown in the "Live & Late" section (e.g. Saturday "DJ Sessions" / Sunday "Sunday Sessions"). This is its own separate list - not connected to "Week's Line-Up" in the sidebar. Leave the photo empty to show an "Artist Photo" placeholder.</p>
+
+  <form method="post" enctype="multipart/form-data">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="save_livelate_cards">
+    <div class="dj-admin-list">
+      <?php foreach ($livelateCards as $card): ?>
+        <div class="dj-admin-card">
+          <div class="dj-admin-media">
+            <div class="thumb-preview<?= $card['image'] ? '' : ' empty' ?>">
+              <?php if ($card['image']): ?><img src="<?= e(asset($card['image'])) ?>" alt=""><?php else: ?>No photo yet<?php endif; ?>
+            </div>
+            <input type="file" name="file_<?= $card['id'] ?>" accept="image/*" data-crop-ratio="4:3">
+            <span class="help">Replace photo</span>
+          </div>
+          <div class="dj-admin-fields">
+            <div class="field-grid">
+              <label>Day (e.g. SATURDAY)
+                <input type="text" name="day[<?= $card['id'] ?>]" value="<?= e($card['subtitle']) ?>">
+              </label>
+              <label>Session Title (e.g. DJ Sessions)
+                <input type="text" name="title[<?= $card['id'] ?>]" value="<?= e($card['title']) ?>">
+              </label>
+            </div>
+            <div class="field-grid">
+              <label>Time (e.g. 12:00 - 3:00 PM)
+                <input type="text" name="time[<?= $card['id'] ?>]" value="<?= e($card['body']) ?>">
+              </label>
+              <label>Artist Name
+                <input type="text" name="artist[<?= $card['id'] ?>]" value="<?= e($card['link_url']) ?>">
+              </label>
+            </div>
+            <div class="field-row">
+              <label>Order
+                <input type="text" name="sort[<?= $card['id'] ?>]" value="<?= (int)$card['sort'] ?>" style="max-width:100px;">
+              </label>
+            </div>
+          </div>
+          <div class="dj-admin-actions">
+            <button form="dellivelatecard<?= $card['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this card?')">Delete</button>
+          </div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+    <div class="form-actions"><button class="btn">Save Changes</button></div>
+  </form>
+  <?php foreach ($livelateCards as $card): ?>
+    <form id="dellivelatecard<?= $card['id'] ?>" method="post" class="inline-form">
+      <input type="hidden" name="csrf" value="<?= e($csrf) ?>"><input type="hidden" name="action" value="delete_livelate_card"><input type="hidden" name="id" value="<?= $card['id'] ?>">
+    </form>
+  <?php endforeach; ?>
+
+  <h3 style="margin-top:30px;">Add a Card</h3>
+  <form method="post" enctype="multipart/form-data" class="dj-admin-card dj-admin-add">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="add_livelate_card">
+    <div class="dj-admin-media">
+      <div class="thumb-preview empty">No photo yet</div>
+      <input type="file" name="new_file" accept="image/*" data-crop-ratio="4:3">
+      <span class="help">Upload photo</span>
+    </div>
+    <div class="dj-admin-fields">
+      <div class="field-grid">
+        <label>Day (e.g. SATURDAY)
+          <input type="text" name="new_day" placeholder="e.g. SATURDAY">
+        </label>
+        <label>Session Title (e.g. DJ Sessions)
+          <input type="text" name="new_title" placeholder="e.g. DJ Sessions">
+        </label>
+      </div>
+      <div class="field-grid">
+        <label>Time (e.g. 12:00 - 3:00 PM)
+          <input type="text" name="new_time" placeholder="e.g. 12:00 - 3:00 PM">
+        </label>
+        <label>Artist Name
+          <input type="text" name="new_artist" placeholder="Artist Name">
+        </label>
+      </div>
+      <div class="field-row">
+        <label>Order
+          <input type="text" name="new_sort" value="99" style="max-width:100px;">
+        </label>
+      </div>
+    </div>
+    <div class="dj-admin-actions">
+      <button class="btn btn-sm">Add Card</button>
     </div>
   </form>
 </div>

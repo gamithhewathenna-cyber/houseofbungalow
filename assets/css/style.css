@@ -1176,6 +1176,37 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .dj-card-link.link-underline:hover{background:#fff;color:var(--maroon);}
 
 /* ------------------------------------------------------------------ */
+/* Live & Late cards (What's On page) - simple two-up card grid, own   */
+/* dataset (admin > What's On > Live & Late)                           */
+/* ------------------------------------------------------------------ */
+.livelate-cards{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:28px;
+  max-width:900px;margin:36px auto 0;text-align:left;
+}
+.livelate-card{
+  background:var(--cream);border:1px solid #e0d3c4;border-radius:14px;overflow:hidden;
+}
+.livelate-card-media{aspect-ratio:4/3;background:#d9c3a8;}
+.livelate-card-media img{width:100%;height:100%;object-fit:cover;display:block;}
+.livelate-card-placeholder{
+  width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  color:rgba(84,83,85,.55);
+}
+.livelate-card-placeholder svg{width:34px;height:34px;}
+.livelate-card-placeholder span{font-family:var(--sans);font-weight:600;font-size:10px;letter-spacing:1.5px;}
+.livelate-card-info{padding:22px 26px 26px;}
+.livelate-card-day{
+  font-family:var(--sans);font-weight:700;font-size:11px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--maroon);margin:0 0 6px;
+}
+.livelate-card-title{
+  font-family:var(--serif);font-weight:500;font-size:22px;color:var(--ink);margin:0 0 6px;
+}
+.livelate-card-time{font-family:var(--sans);font-weight:300;font-size:14px;color:var(--ink-soft);margin:0;}
+.livelate-card-divider{border:0;border-top:1px solid #e0d3c4;margin:16px 0;}
+.livelate-card-artist{font-family:var(--sans);font-weight:400;font-size:14px;color:var(--ink);margin:0;}
+
+/* ------------------------------------------------------------------ */
 /* FAQ accordion (Below page)                                         */
 /* ------------------------------------------------------------------ */
 .faq-section{padding:60px 0 80px;text-align:center;}
@@ -1542,6 +1573,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   .trio-grid{grid-template-columns:1fr;gap:12px;}
   .night-row-3,.night-row-2{grid-template-columns:1fr;}
   .events-grid{grid-template-columns:1fr;gap:14px;}
+  .livelate-cards{grid-template-columns:1fr;gap:18px;}
   .press-feature-grid{grid-template-columns:1fr;gap:28px;}
   .opentable-overlay{top:260px;right:12px;width:max-content;max-width:80%;}
   .hero-book-btn{padding:13px 26px;font-size:12px;}

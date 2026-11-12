@@ -12,6 +12,7 @@ $wo_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'v
 
 $faqs = blocks('whatson_faq');
 $features = blocks('wo_feature');
+$livelateCards = blocks('wo_livelate_card');
 ?>
 
 <!-- Hero ------------------------------------------------------------- -->
@@ -157,25 +158,47 @@ $wo_sections = [
 </section>
 <?php
     },
-    'wo_livelate' => function (): void {
+    'wo_livelate' => function () use ($livelateCards): void {
         if (!section_visible('wo_livelate')) return;
         ?>
-<section class="split-section reveal">
+<section class="section reveal">
   <div class="container">
-    <div class="split-grid">
-      <div class="split-media">
-        <img loading="lazy" decoding="async" src="<?= e(asset(setting('wo_livelate_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('wo_livelate_heading')) ?>">
-      </div>
-      <div class="split-copy">
-        <p class="eyebrow"><?= e(setting('wo_livelate_heading', 'Live & Late')) ?></p>
-        <p><?= enl(setting('wo_livelate_p1')) ?></p>
-        <?php if (setting('wo_livelate_btn_label')): ?>
-          <div class="btn-wrap">
-            <a class="link-underline" href="<?= e(url(setting('wo_livelate_btn_url', '#lineup-section'))) ?>"><?= e(setting('wo_livelate_btn_label')) ?></a>
+    <h2><?= e(setting('wo_livelate_heading', 'Live & Late')) ?></h2>
+    <?php if (setting('wo_livelate_p1')): ?><p><?= enl(setting('wo_livelate_p1')) ?></p><?php endif; ?>
+
+    <?php if ($livelateCards): ?>
+      <div class="livelate-cards">
+        <?php foreach ($livelateCards as $card): ?>
+          <div class="livelate-card">
+            <div class="livelate-card-media">
+              <?php if ($card['image']): ?>
+                <img loading="lazy" decoding="async" src="<?= e(asset($card['image'])) ?>" alt="<?= e($card['title']) ?>">
+              <?php else: ?>
+                <div class="livelate-card-placeholder">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M9 9l-2-1M17 10l-2 1M9 15l-2 1M17 14l-2-1"/></svg>
+                  <span>ARTIST PHOTO</span>
+                </div>
+              <?php endif; ?>
+            </div>
+            <div class="livelate-card-info">
+              <?php if ($card['subtitle']): ?><p class="livelate-card-day"><?= e($card['subtitle']) ?></p><?php endif; ?>
+              <h3 class="livelate-card-title"><?= e($card['title']) ?></h3>
+              <?php if ($card['body']): ?><p class="livelate-card-time"><?= e($card['body']) ?></p><?php endif; ?>
+              <?php if ($card['link_url']): ?>
+                <hr class="livelate-card-divider">
+                <p class="livelate-card-artist"><?= e($card['link_url']) ?></p>
+              <?php endif; ?>
+            </div>
           </div>
-        <?php endif; ?>
+        <?php endforeach; ?>
       </div>
-    </div>
+    <?php endif; ?>
+
+    <?php if (setting('wo_livelate_btn_label')): ?>
+      <div class="btn-wrap">
+        <a class="link-underline" href="<?= e(url(setting('wo_livelate_btn_url', '#lineup-section'))) ?>"><?= e(setting('wo_livelate_btn_label')) ?></a>
+      </div>
+    <?php endif; ?>
   </div>
 </section>
 <?php
