@@ -200,13 +200,13 @@ $brunch_sections = [
           <div class="livelate-card-media">
             <?php if ($card['image']): ?>
               <img loading="lazy" decoding="async" src="<?= e(asset($card['image'])) ?>" alt="<?= e($card['title']) ?>">
-              <span class="livelate-card-tint"></span>
             <?php else: ?>
               <div class="livelate-card-placeholder">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M9 9l-2-1M17 10l-2 1M9 15l-2 1M17 14l-2-1"/></svg>
                 <span>ARTIST PHOTO</span>
               </div>
             <?php endif; ?>
+            <span class="livelate-card-tint"></span>
           </div>
           <div class="livelate-card-info">
             <h3 class="livelate-card-title"><?= e($card['title']) ?></h3>
