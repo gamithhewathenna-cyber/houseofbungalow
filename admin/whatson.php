@@ -21,7 +21,7 @@ $visibilitySections = [
     'wo_happyhour' => 'Happy Hour',
     'wo_friday'    => 'Friday & Saturday Dinner Party',
     'wo_brunch'    => 'Weekend Bottomless Brunch',
-    'wo_livelate'  => 'Live & Late',
+    'wo_livelate'  => 'Guest Artists',
     'wo_lineup'    => "See This Week's Line-Up",
     'wo_faq'       => 'FAQs',
 ];
