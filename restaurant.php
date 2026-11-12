@@ -17,24 +17,20 @@ foreach ($menu_cats as $cat) {
 }
 
 /**
- * Renders one menu category's rows inside its "View ..." expander, using
- * each row's type (set via admin > Restaurant > Menu > Type column):
- * a page title + subtitle, an uppercase section heading, a plain line
- * (set banquets), a small footnote, or a normal name + price + description.
+ * Renders a flat list of menu rows (no headings expected inside it),
+ * using each row's type (set via admin > Restaurant > Menu > Type
+ * column): a page title + subtitle, a plain line (set banquets), a
+ * small footnote, or a normal name + price + description. 'heading'
+ * rows are handled separately by render_rest_menu_items() below, which
+ * turns them into sub-tabs instead of inline dividers.
  */
-function render_rest_menu_items(array $items): void
+function render_rest_menu_item_list(array $items): void
 {
-    if (!$items) {
-        ?><p class="cup-dark-dummy">Menu details coming soon.</p><?php
-        return;
-    }
     foreach ($items as $item) {
         $itemType = $item['link_url'];
         if ($itemType === 'title') {
             ?><h3 class="menu-page-title"><?= e($item['title']) ?></h3><?php
             if ($item['body']) { ?><p class="menu-page-subtitle"><?= e($item['body']) ?></p><?php }
-        } elseif ($itemType === 'heading') {
-            ?><h4 class="menu-heading"><?= e($item['title']) ?></h4><?php
         } elseif ($itemType === 'line') {
             if ($item['title']) {
                 ?><p class="menu-line menu-line-strong"><?= e($item['title']) ?></p><?php
@@ -56,6 +52,65 @@ function render_rest_menu_items(array $items): void
             <?php
         }
     }
+}
+
+/**
+ * Splits one category's rows into a leading "preamble" (anything
+ * before the first 'heading' row - e.g. a title/intro line) and a
+ * list of groups, one per 'heading' row, each collecting the rows
+ * that follow it up to the next 'heading'. Used to turn section
+ * headings (admin > Restaurant > Menu > Type column) into sub-tabs.
+ */
+function rest_menu_group_by_heading(array $items): array
+{
+    $preamble = [];
+    $groups = [];
+    $current = -1;
+    foreach ($items as $item) {
+        if ($item['link_url'] === 'heading') {
+            $groups[] = ['name' => $item['title'], 'items' => []];
+            $current++;
+        } elseif ($current === -1) {
+            $preamble[] = $item;
+        } else {
+            $groups[$current]['items'][] = $item;
+        }
+    }
+    return [$preamble, $groups];
+}
+
+/**
+ * Renders one menu category: a leading preamble (if any), then, if
+ * the category has section headings, a row of sub-tabs (one per
+ * heading) each showing just that section's items - or, if it has no
+ * headings at all, every item in one continuous list as before.
+ */
+function render_rest_menu_items(array $items): void
+{
+    if (!$items) {
+        ?><p class="cup-dark-dummy">Menu details coming soon.</p><?php
+        return;
+    }
+    [$preamble, $groups] = rest_menu_group_by_heading($items);
+    render_rest_menu_item_list($preamble);
+
+    if (!$groups) {
+        return;
+    }
+    ?>
+    <div class="menu-dark-subtabs">
+      <?php foreach ($groups as $gi => $g): ?>
+        <button type="button" class="menu-dark-subtab-btn<?= $gi === 0 ? ' active' : '' ?>"><?= e($g['name']) ?></button>
+      <?php endforeach; ?>
+    </div>
+    <div class="menu-dark-subpanel-wrap">
+      <?php foreach ($groups as $gi => $g): ?>
+        <div class="menu-dark-subpanel<?= $gi === 0 ? ' active' : '' ?>">
+          <?php render_rest_menu_item_list($g['items']); ?>
+        </div>
+      <?php endforeach; ?>
+    </div>
+    <?php
 }
 
 $gallery = blocks('rest_gallery');
@@ -380,6 +435,29 @@ foreach (section_order('restaurant', array_keys($rest_sections)) as $rest_key) {
       btn.classList.add('active');
       var panel = document.querySelector('.menu-dark-panel[data-rest-menu-panel="' + btn.dataset.restMenuTab + '"]');
       if (panel) panel.classList.add('active');
+    });
+  });
+})();
+</script>
+
+<script>
+(function () {
+  // Sub-tabs within a category (one per section heading, e.g. SNACKS /
+  // ENTRÉES / MAINS) - each row's buttons map 1:1 by position to the
+  // panels in the sub-panel-wrap right after it, so this works for any
+  // number of categories/sub-tabs without needing matching IDs.
+  document.querySelectorAll('.menu-dark-subtabs').forEach(function (row) {
+    var buttons = Array.prototype.slice.call(row.querySelectorAll('.menu-dark-subtab-btn'));
+    var panelWrap = row.nextElementSibling;
+    if (!panelWrap) return;
+    var panels = Array.prototype.slice.call(panelWrap.querySelectorAll('.menu-dark-subpanel'));
+    buttons.forEach(function (btn, i) {
+      btn.addEventListener('click', function () {
+        buttons.forEach(function (b) { b.classList.remove('active'); });
+        panels.forEach(function (p) { p.classList.remove('active'); });
+        btn.classList.add('active');
+        if (panels[i]) panels[i].classList.add('active');
+      });
     });
   });
 })();

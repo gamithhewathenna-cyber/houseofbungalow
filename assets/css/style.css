@@ -874,6 +874,24 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .menu-dark-panel.active{display:block;}
 .menu-dark-download-wrap{text-align:center;margin-top:30px;}
 
+/* Sub-tabs within a category (one per section heading) - same idea as
+   the main category tabs above, one size down */
+.menu-dark-subtabs{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:22px;
+  margin:0 0 26px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.12);
+}
+.menu-dark-subtab-btn{
+  background:none;border:0;cursor:pointer;
+  font-family:var(--sans);font-weight:600;font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;color:rgba(255,255,255,.4);
+  padding:0 0 10px;border-bottom:2px solid transparent;
+  transition:color .2s ease,border-color .2s ease;
+}
+.menu-dark-subtab-btn:hover{color:rgba(255,255,255,.7);}
+.menu-dark-subtab-btn.active{color:#fff;border-bottom-color:rgba(255,255,255,.6);}
+.menu-dark-subpanel{display:none;}
+.menu-dark-subpanel.active{display:block;}
+
 /* Dark-mode overrides for the shared menu-item styles (defined for a
    light background) when they're reused inside this dark panel */
 .menu-dark-panel .menu-page-title{color:#f3ece4;}
@@ -898,6 +916,10 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .menu-dark.menu-light .menu-dark-tab-btn:hover{color:var(--ink);}
 .menu-dark.menu-light .menu-dark-tab-btn.active{color:var(--maroon);border-bottom-color:var(--maroon);}
 .menu-dark.menu-light .menu-dark-panel-wrap{border-color:#e0d3c4;}
+.menu-dark.menu-light .menu-dark-subtabs{border-bottom-color:#e5dbcd;}
+.menu-dark.menu-light .menu-dark-subtab-btn{color:var(--ink-mute);}
+.menu-dark.menu-light .menu-dark-subtab-btn:hover{color:var(--ink);}
+.menu-dark.menu-light .menu-dark-subtab-btn.active{color:var(--maroon);border-bottom-color:var(--maroon);}
 .menu-dark.menu-light .menu-page-title{color:var(--ink);}
 .menu-dark.menu-light .menu-page-subtitle{color:var(--ink-soft);}
 .menu-dark.menu-light .menu-heading{color:var(--maroon);border-top-color:#e5dbcd;}
@@ -912,6 +934,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 @media (max-width:640px){
   .menu-dark-heading{font-size:30px;}
   .menu-dark-tabs{gap:20px;}
+  .menu-dark-subtabs{gap:14px;}
   .menu-dark-panel-wrap{padding:36px 22px;}
 }
 
