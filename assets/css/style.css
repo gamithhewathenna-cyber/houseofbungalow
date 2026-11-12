@@ -138,6 +138,38 @@ a{color:inherit;text-decoration:none;}
 .site-header.menu-open .nav-toggle span:nth-child(2){opacity:0;}
 .site-header.menu-open .nav-toggle span:nth-child(3){transform:translateY(-10px) rotate(-45deg);}
 
+/* ------------------------------------------------------------------ */
+/* Notification Ticker (sitewide bar, admin > Notification Ticker)    */
+/* ------------------------------------------------------------------ */
+.notice-ticker{
+  position:relative;z-index:60;
+  background:var(--ticker-bg,var(--maroon));color:var(--ticker-fg,#fff);
+  padding:12px 56px;text-align:center;
+}
+.notice-ticker-track{text-align:center;}
+.notice-ticker-msg{display:none;}
+.notice-ticker-msg.active{display:block;}
+.notice-ticker-msg a,.notice-ticker-msg span{
+  font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:.3px;line-height:1.5;
+  color:inherit;text-decoration:none;
+}
+.notice-ticker-msg a:hover{text-decoration:underline;}
+.notice-ticker-close{
+  position:absolute;top:50%;right:16px;transform:translateY(-50%);
+  width:26px;height:26px;display:flex;align-items:center;justify-content:center;
+  background:transparent;border:0;color:inherit;cursor:pointer;opacity:.85;padding:0;
+}
+.notice-ticker-close:hover{opacity:1;}
+.notice-ticker-close svg{width:16px;height:16px;}
+
+body.has-ticker .site-header{top:var(--ticker-h,0px);}
+
+@media (max-width:640px){
+  .notice-ticker{padding:10px 40px;}
+  .notice-ticker-msg a,.notice-ticker-msg span{font-size:12px;}
+  .notice-ticker-close{right:10px;}
+}
+
 /* ---- Full-screen slide-in menu ---- */
 .mobile-menu{
   position:fixed;

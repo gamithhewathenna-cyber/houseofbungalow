@@ -131,6 +131,7 @@ src="https://www.facebook.com/tr?id=29213263994937695&ev=PageView&noscript=1"
 <?php endif; ?>
 </head>
 <body>
+<?php include __DIR__ . '/ticker-bar.php'; ?>
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KN72P64W"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
