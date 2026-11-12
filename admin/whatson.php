@@ -181,7 +181,7 @@ $tabs = [
     'friday'    => 'Friday & Saturday Dinner Party',
     'brunch'    => 'Weekend Bottomless Brunch',
     'livelate'  => 'Live & Late',
-    'livelatecards' => 'Live & Late Cards',
+    'livelatecards' => 'Guest Artists',
     'faqs'      => 'FAQs',
     'visibility' => 'Section Visibility',
 ];
@@ -359,9 +359,9 @@ include __DIR__ . '/layout.php';
   </form>
 </div>
 
-<!-- Live & Late Cards tab -->
+<!-- Live & Late Cards tab (labeled "Guest Artists" in the sidebar) -->
 <div class="tab-panel settings-group<?= $activeTab === 'livelatecards' ? ' active' : '' ?>" data-tab="livelatecards">
-  <h3>Live & Late Cards</h3>
+  <h3>Guest Artists</h3>
   <p class="group-help">The session cards shown in the "Live & Late" section (e.g. Saturday "DJ Sessions" / Sunday "Sunday Sessions"). This is its own separate list - not connected to "Week's Line-Up" in the sidebar. Leave the photo empty to show an "Artist Photo" placeholder.</p>
 
   <form method="post" enctype="multipart/form-data">
