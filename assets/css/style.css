@@ -1191,7 +1191,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .livelate-card-media img{width:100%;height:100%;object-fit:cover;display:block;}
 .livelate-card-tint{
   position:absolute;inset:0;
-  background:linear-gradient(to bottom, rgba(13,11,10,0) 20%, rgba(13,11,10,.98) 100%);
+  background:linear-gradient(to bottom, rgba(13,11,10,0) 20%, rgba(13,11,10,1) 100%);
 }
 .livelate-card-placeholder{
   width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
