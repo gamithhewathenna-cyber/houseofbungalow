@@ -1176,35 +1176,39 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .dj-card-link.link-underline:hover{background:#fff;color:var(--maroon);}
 
 /* ------------------------------------------------------------------ */
-/* Live & Late cards (What's On page) - simple two-up card grid, own   */
-/* dataset (admin > What's On > Live & Late)                           */
+/* Guest artist cards (What's On / Restaurant / Dinner Party / Brunch) */
+/* - portrait photo with the name overlaid at the bottom, same dark    */
+/* card language as the "This Week's Line-Up" DJ cards                 */
 /* ------------------------------------------------------------------ */
 .livelate-cards{
   display:grid;grid-template-columns:repeat(2,1fr);gap:28px;
   margin:36px 0 0;text-align:left;
 }
 .livelate-card{
-  background:var(--cream);border:1px solid #e0d3c4;border-radius:14px;overflow:hidden;
+  position:relative;border-radius:18px;overflow:hidden;background:#0d0b0a;
 }
-.livelate-card-media{aspect-ratio:4/3;background:#d9c3a8;}
+.livelate-card-media{position:relative;aspect-ratio:3/4;overflow:hidden;background:#241d1a;}
 .livelate-card-media img{width:100%;height:100%;object-fit:cover;display:block;}
+.livelate-card-tint{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom, rgba(13,11,10,0) 45%, rgba(13,11,10,.96) 100%);
+}
 .livelate-card-placeholder{
   width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
-  color:rgba(84,83,85,.55);
+  color:rgba(255,255,255,.35);
 }
 .livelate-card-placeholder svg{width:34px;height:34px;}
 .livelate-card-placeholder span{font-family:var(--sans);font-weight:600;font-size:10px;letter-spacing:1.5px;}
-.livelate-card-info{padding:22px 26px 26px;}
-.livelate-card-day{
-  font-family:var(--sans);font-weight:700;font-size:11px;letter-spacing:1.5px;
-  text-transform:uppercase;color:var(--maroon);margin:0 0 6px;
-}
+.livelate-card-info{padding:0 22px 24px;margin-top:-54px;position:relative;z-index:1;}
 .livelate-card-title{
-  font-family:var(--serif);font-weight:500;font-size:22px;color:var(--ink);margin:0 0 6px;
+  font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:.3px;
+  text-transform:uppercase;color:#fff;margin:0 0 10px;line-height:1.2;
 }
-.livelate-card-time{font-family:var(--sans);font-weight:300;font-size:14px;color:var(--ink-soft);margin:0;}
-.livelate-card-divider{border:0;border-top:1px solid #e0d3c4;margin:16px 0;}
-.livelate-card-artist{font-family:var(--sans);font-weight:400;font-size:14px;color:var(--ink);margin:0;}
+.livelate-card-day{
+  font-family:var(--sans);font-weight:600;font-size:14px;color:#c9495e;margin:0 0 2px;
+}
+.livelate-card-time{font-family:var(--sans);font-weight:400;font-size:14px;color:#c9495e;margin:0;}
+.livelate-card-artist{font-family:var(--sans);font-weight:300;font-size:13px;color:rgba(255,255,255,.6);margin:8px 0 0;}
 
 /* ------------------------------------------------------------------ */
 /* FAQ accordion (Below page)                                         */
