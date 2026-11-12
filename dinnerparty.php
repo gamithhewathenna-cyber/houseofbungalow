@@ -11,6 +11,7 @@ $dp_hero_video = setting('dp_hero_video');
 $dp_hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'video/quicktime'][strtolower(pathinfo($dp_hero_video, PATHINFO_EXTENSION))] ?? 'video/mp4';
 
 $gallery = blocks('dp_gallery');
+$guestCards = blocks('dp_guest_card');
 $gallery_rows = [];
 $i = 0; $take3 = true;
 while ($i < count($gallery)) {
@@ -184,6 +185,40 @@ $dp_sections = [
           </div>
         <?php endif; ?>
       </div>
+    </div>
+  </div>
+</section>
+<?php
+    },
+    'dp_guest_cards' => function () use ($guestCards): void {
+        if (!$guestCards || !section_visible('dp_guest_cards')) return;
+        ?>
+<section class="section reveal">
+  <div class="container">
+    <div class="livelate-cards">
+      <?php foreach ($guestCards as $card): ?>
+        <div class="livelate-card">
+          <div class="livelate-card-media">
+            <?php if ($card['image']): ?>
+              <img loading="lazy" decoding="async" src="<?= e(asset($card['image'])) ?>" alt="<?= e($card['title']) ?>">
+            <?php else: ?>
+              <div class="livelate-card-placeholder">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M9 9l-2-1M17 10l-2 1M9 15l-2 1M17 14l-2-1"/></svg>
+                <span>ARTIST PHOTO</span>
+              </div>
+            <?php endif; ?>
+          </div>
+          <div class="livelate-card-info">
+            <?php if ($card['subtitle']): ?><p class="livelate-card-day"><?= e($card['subtitle']) ?></p><?php endif; ?>
+            <h3 class="livelate-card-title"><?= e($card['title']) ?></h3>
+            <?php if ($card['body']): ?><p class="livelate-card-time"><?= e($card['body']) ?></p><?php endif; ?>
+            <?php if ($card['link_url']): ?>
+              <hr class="livelate-card-divider">
+              <p class="livelate-card-artist"><?= e($card['link_url']) ?></p>
+            <?php endif; ?>
+          </div>
+        </div>
+      <?php endforeach; ?>
     </div>
   </div>
 </section>

@@ -16,10 +16,11 @@ $visibilitySections = [
     'brunch_gallery' => 'Gallery',
     'brunch_menu'    => 'Menu',
     'brunch_guest'   => 'Guest Artists',
+    'brunch_guest_cards' => 'Guest Artist Cards',
 ];
 // Reorderable content sections (admin > Section Order, admins only) - Hero
 // and Intro always stay fixed at the top, so they're left out of this list.
-$sectionOrderKeys = ['brunch_gallery', 'brunch_menu', 'brunch_guest'];
+$sectionOrderKeys = ['brunch_gallery', 'brunch_menu', 'brunch_guest', 'brunch_guest_cards'];
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -171,6 +172,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $q->execute([(int) ($_POST['id'] ?? 0)]);
                 header('Location: brunch.php?tab=gallery&saved=1'); exit;
             }
+
+            // ---- Guest Artist Cards ----
+            if ($action === 'save_guest_cards') {
+                foreach (($_POST['title'] ?? []) as $id => $title) {
+                    $id  = (int) $id;
+                    $img = handle_upload('file_' . $id);
+                    $fields = ['title=?', 'subtitle=?', 'body=?', 'link_url=?', 'sort=?'];
+                    $params = [trim($title), trim($_POST['day'][$id] ?? ''), trim($_POST['time'][$id] ?? ''), trim($_POST['artist'][$id] ?? ''), (int) ($_POST['sort'][$id] ?? 0)];
+                    if ($img !== null) {
+                        $fields[] = 'image=?';
+                        $params[] = $img;
+                    }
+                    $params[] = $id;
+                    $q = db()->prepare('UPDATE blocks SET ' . implode(',', $fields) . ' WHERE id=? AND block_type="brunch_guest_card"');
+                    $q->execute($params);
+                }
+                header('Location: brunch.php?tab=guestcards&saved=1'); exit;
+            }
+            if ($action === 'add_guest_card') {
+                $img = handle_upload('new_file');
+                $q = db()->prepare('INSERT INTO blocks (block_type,title,subtitle,body,link_url,image,sort,active) VALUES ("brunch_guest_card",?,?,?,?,?,?,1)');
+                $q->execute([trim($_POST['new_title'] ?? 'New Session'), trim($_POST['new_day'] ?? ''), trim($_POST['new_time'] ?? ''), trim($_POST['new_artist'] ?? ''), $img ?? '', (int) ($_POST['new_sort'] ?? 99)]);
+                header('Location: brunch.php?tab=guestcards&saved=1'); exit;
+            }
+            if ($action === 'delete_guest_card') {
+                $q = db()->prepare('DELETE FROM blocks WHERE id=? AND block_type="brunch_guest_card"');
+                $q->execute([(int) ($_POST['id'] ?? 0)]);
+                header('Location: brunch.php?tab=guestcards&saved=1'); exit;
+            }
         } catch (RuntimeException $ex) {
             $error = $ex->getMessage();
         }
@@ -189,6 +219,7 @@ foreach ($menuCats as $cat) {
     $menuItemsByCat[$catId] = db()->query("SELECT * FROM blocks WHERE block_type='brunch_menu_item_$catId' ORDER BY sort ASC, id ASC")->fetchAll();
 }
 $gallery = db()->query("SELECT * FROM blocks WHERE block_type='brunch_gallery' ORDER BY sort ASC, id ASC")->fetchAll();
+$guestCards = db()->query("SELECT * FROM blocks WHERE block_type='brunch_guest_card' ORDER BY sort ASC, id ASC")->fetchAll();
 
 $tabs = [
     'herovideo' => 'Hero Video',
@@ -196,6 +227,7 @@ $tabs = [
     'gallery'   => 'Gallery',
     'menu'      => 'Menu',
     'guest'     => 'Guest Artists',
+    'guestcards' => 'Guest Artist Cards',
     'visibility' => 'Section Visibility',
 ];
 if (admin_can('admin')) {
@@ -439,6 +471,99 @@ include __DIR__ . '/layout.php';
       </div>
     <?php endforeach; ?>
   <?php endif; ?>
+</div>
+
+<!-- Guest Artist Cards tab -->
+<div class="tab-panel settings-group<?= $activeTab === 'guestcards' ? ' active' : '' ?>" data-tab="guestcards">
+  <h3>Guest Artist Cards</h3>
+  <p class="group-help">The session cards shown below the Guest Artists section (day, session title, time, artist photo + name). Its own separate list - not connected to the same cards on other pages. Leave the photo empty to show an "Artist Photo" placeholder.</p>
+
+  <form method="post" enctype="multipart/form-data">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="save_guest_cards">
+    <div class="dj-admin-list">
+      <?php foreach ($guestCards as $card): ?>
+        <div class="dj-admin-card">
+          <div class="dj-admin-media">
+            <div class="thumb-preview<?= $card['image'] ? '' : ' empty' ?>">
+              <?php if ($card['image']): ?><img src="<?= e(asset($card['image'])) ?>" alt=""><?php else: ?>No photo yet<?php endif; ?>
+            </div>
+            <input type="file" name="file_<?= $card['id'] ?>" accept="image/*" data-crop-ratio="4:3">
+            <span class="help">Replace photo</span>
+          </div>
+          <div class="dj-admin-fields">
+            <div class="field-grid">
+              <label>Day (e.g. SATURDAY)
+                <input type="text" name="day[<?= $card['id'] ?>]" value="<?= e($card['subtitle']) ?>">
+              </label>
+              <label>Session Title (e.g. DJ Sessions)
+                <input type="text" name="title[<?= $card['id'] ?>]" value="<?= e($card['title']) ?>">
+              </label>
+            </div>
+            <div class="field-grid">
+              <label>Time (e.g. 12:00 - 3:00 PM)
+                <input type="text" name="time[<?= $card['id'] ?>]" value="<?= e($card['body']) ?>">
+              </label>
+              <label>Artist Name
+                <input type="text" name="artist[<?= $card['id'] ?>]" value="<?= e($card['link_url']) ?>">
+              </label>
+            </div>
+            <div class="field-row">
+              <label>Order
+                <input type="text" name="sort[<?= $card['id'] ?>]" value="<?= (int)$card['sort'] ?>" style="max-width:100px;">
+              </label>
+            </div>
+          </div>
+          <div class="dj-admin-actions">
+            <button form="delguestcard<?= $card['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this card?')">Delete</button>
+          </div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+    <div class="form-actions"><button class="btn">Save Changes</button></div>
+  </form>
+  <?php foreach ($guestCards as $card): ?>
+    <form id="delguestcard<?= $card['id'] ?>" method="post" class="inline-form">
+      <input type="hidden" name="csrf" value="<?= e($csrf) ?>"><input type="hidden" name="action" value="delete_guest_card"><input type="hidden" name="id" value="<?= $card['id'] ?>">
+    </form>
+  <?php endforeach; ?>
+
+  <h3 style="margin-top:30px;">Add a Card</h3>
+  <form method="post" enctype="multipart/form-data" class="dj-admin-card dj-admin-add">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <input type="hidden" name="action" value="add_guest_card">
+    <div class="dj-admin-media">
+      <div class="thumb-preview empty">No photo yet</div>
+      <input type="file" name="new_file" accept="image/*" data-crop-ratio="4:3">
+      <span class="help">Upload photo</span>
+    </div>
+    <div class="dj-admin-fields">
+      <div class="field-grid">
+        <label>Day (e.g. SATURDAY)
+          <input type="text" name="new_day" placeholder="e.g. SATURDAY">
+        </label>
+        <label>Session Title (e.g. DJ Sessions)
+          <input type="text" name="new_title" placeholder="e.g. DJ Sessions">
+        </label>
+      </div>
+      <div class="field-grid">
+        <label>Time (e.g. 12:00 - 3:00 PM)
+          <input type="text" name="new_time" placeholder="e.g. 12:00 - 3:00 PM">
+        </label>
+        <label>Artist Name
+          <input type="text" name="new_artist" placeholder="Artist Name">
+        </label>
+      </div>
+      <div class="field-row">
+        <label>Order
+          <input type="text" name="new_sort" value="99" style="max-width:100px;">
+        </label>
+      </div>
+    </div>
+    <div class="dj-admin-actions">
+      <button class="btn btn-sm">Add Card</button>
+    </div>
+  </form>
 </div>
 
 <!-- Section Visibility tab -->
