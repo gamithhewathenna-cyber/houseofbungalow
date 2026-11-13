@@ -6,19 +6,21 @@ require_once __DIR__ . '/helpers.php';
 $fieldGroups = [
     'herovideo' => ['pe_hero_video'],
     'intro'     => ['pe_heading', 'pe_subheading', 'pe_lede', 'pe_p1', 'pe_p2', 'pe_p3', 'pe_btn_label'],
+    'banner'    => ['pe_banner_image', 'pe_banner_heading', 'pe_banner_body', 'pe_banner_btn_label', 'pe_banner_btn_url'],
     'final'     => ['pe_final_heading', 'pe_final_p1', 'pe_final_btn_label'],
     'emails'    => ['pe_enquiry_to_email', 'pe_enquiry_cc_email', 'pe_enquiry_thankyou_subject', 'pe_enquiry_thankyou_message'],
     'klaviyo'   => ['klaviyo_private_api_key', 'klaviyo_list_id'],
 ];
 $visibilitySections = [
-    'pe_hero'  => 'Hero',
-    'pe_intro' => 'Intro',
-    'pe_cards' => 'Event Cards',
-    'pe_final' => 'Make The House Yours',
+    'pe_hero'   => 'Hero',
+    'pe_intro'  => 'Intro',
+    'pe_banner' => 'Promo Banner',
+    'pe_cards'  => 'Event Cards',
+    'pe_final'  => 'Make The House Yours',
 ];
 // Reorderable content sections (admin > Section Order, admins only) - Hero
 // and Intro always stay fixed at the top, so they're left out of this list.
-$sectionOrderKeys = ['pe_cards', 'pe_final'];
+$sectionOrderKeys = ['pe_banner', 'pe_cards', 'pe_final'];
 
 $error = '';
 $ok = '';
@@ -153,6 +155,7 @@ $cards = db()->query("SELECT * FROM blocks WHERE block_type='pe_event_card' ORDE
 $tabs = [
     'herovideo' => 'Hero Video',
     'intro'     => 'Intro',
+    'banner'    => 'Promo Banner',
     'cards'     => 'Event Cards',
     'final'     => 'Make The House Yours',
     'emails'    => 'Enquiry Emails',
@@ -223,6 +226,9 @@ include __DIR__ . '/layout.php';
     <?php endif; ?>
     <?php if ($group === 'intro' || $group === 'final'): ?>
       <p class="group-help">The button below now opens the enquiry popup form instead of linking anywhere, so there's no URL field to set.</p>
+    <?php endif; ?>
+    <?php if ($group === 'banner'): ?>
+      <p class="group-help">The promo banner shown near the top of the page - photo on the left, dark message panel with a button on the right. Great for seasonal campaigns (e.g. Christmas parties) - just update the text, photo and button any time, or hide it entirely from "Section Visibility" when not needed.</p>
     <?php endif; ?>
     <?php if ($group === 'klaviyo'): ?>
       <p class="group-help">This connects every form on the site to Klaviyo - each submission (Private Events enquiry, VIP Bottle Service, Join Our Team application, Press enquiry) creates/updates a Klaviyo profile and a <strong>"Website Enquiry Submitted"</strong> event (with a <code>Form Name</code> property so you can tell them apart), while the footer newsletter signup fires its own <strong>"Newsletter Signup"</strong> event. All five also subscribe the person to the List below, if one is set.</p>
