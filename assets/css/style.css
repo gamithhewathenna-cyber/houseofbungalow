@@ -674,7 +674,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 /* ------------------------------------------------------------------ */
 .hero-wrap{position:relative;}
 .promo-banner-float-wrap{
-  position:absolute;left:0;right:0;bottom:-80px;z-index:5;
+  position:absolute;left:0;right:0;bottom:20px;z-index:5;
   pointer-events:none;
 }
 .promo-banner-float{pointer-events:auto;margin-left:auto;width:100%;max-width:840px;}
