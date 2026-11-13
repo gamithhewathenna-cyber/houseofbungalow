@@ -257,7 +257,7 @@ include __DIR__ . '/layout.php';
   <div class="tab-panel settings-group<?= $activeTab === $key ? ' active' : '' ?>" data-tab="<?= e($key) ?>">
     <h3><?= e($label) ?></h3>
     <?php if ($key === 'banner'): ?>
-      <p class="group-help">A small card that floats over the bottom-right corner of the Hero video/image, spilling slightly into the section below - photo on the left, dark message panel with a button on the right. Great for seasonal campaigns (e.g. Christmas parties). Its position is fixed (not in Section Order) since it's tied to the Hero; use Section Visibility to hide it when not needed.</p>
+      <p class="group-help">Pops up automatically once a visitor has scrolled 20% down the Home Page (and only once per visit - it won't show again if they've already closed it this session) - photo on the left, dark message panel with a button on the right. Great for seasonal campaigns (e.g. Christmas parties). Its position is fixed (not in Section Order) since it's a popup, not a page section; use Section Visibility to turn it off when not needed.</p>
     <?php endif; ?>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
