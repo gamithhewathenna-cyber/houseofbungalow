@@ -681,7 +681,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   transition:opacity .3s ease;
 }
 .promo-banner-popup.open{opacity:1;visibility:visible;pointer-events:auto;}
-.promo-banner-popup-backdrop{position:absolute;inset:0;background:rgba(13,11,10,.72);}
+.promo-banner-popup-backdrop{position:absolute;inset:0;background:rgba(13,11,10,.4);}
 .promo-banner-popup-card{
   position:relative;z-index:1;width:100%;max-width:840px;
   transform:translateY(16px);transition:transform .3s ease;
@@ -697,8 +697,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .promo-banner-popup-close:hover{background:rgba(13,11,10,.8);}
 .promo-banner-card{
   display:flex;align-items:stretch;
-  border-radius:20px;overflow:hidden;min-height:340px;
-  box-shadow:0 24px 50px rgba(0,0,0,.35);
+  overflow:hidden;min-height:340px;
 }
 /* Image side: flex-basis fixes its share of the width regardless of the  */
 /* uploaded photo's own size - min-width:0 stops it stretching past that  */
@@ -730,7 +729,7 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .promo-banner-btn:hover{background:var(--ink);color:#fff;}
 @media (max-width:640px){
   .promo-banner-popup{padding:16px;}
-  .promo-banner-card{flex-direction:column;min-height:0;border-radius:14px;}
+  .promo-banner-card{flex-direction:column;min-height:0;}
   .promo-banner-media{flex-basis:auto;aspect-ratio:16/10;}
   .promo-banner-copy{padding:22px 20px;}
   .promo-banner-btn{width:100%;}
