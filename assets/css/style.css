@@ -677,10 +677,10 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
   position:absolute;left:0;right:0;bottom:-80px;z-index:5;
   pointer-events:none;
 }
-.promo-banner-float{pointer-events:auto;margin-left:auto;width:100%;max-width:620px;}
+.promo-banner-float{pointer-events:auto;margin-left:auto;width:100%;max-width:840px;}
 .promo-banner-card{
   display:grid;grid-template-columns:1fr 1.05fr;align-items:stretch;
-  border-radius:18px;overflow:hidden;
+  border-radius:20px;overflow:hidden;
   box-shadow:0 24px 50px rgba(0,0,0,.35);
 }
 .promo-banner-media{position:relative;aspect-ratio:4/3;}
@@ -688,27 +688,27 @@ body.scroll-locked{overflow:hidden;position:fixed;width:100%;}
 .promo-banner-copy{
   background:var(--maroon);color:#fff;
   display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
-  padding:32px 34px;
+  padding:44px 46px;
 }
 .promo-banner-copy h2{
-  font-family:var(--sans);font-weight:800;font-size:23px;line-height:1.22;
-  text-transform:uppercase;letter-spacing:.2px;color:#fff;margin:0 0 14px;
+  font-family:var(--sans);font-weight:800;font-size:31px;line-height:1.2;
+  text-transform:uppercase;letter-spacing:.2px;color:#fff;margin:0 0 18px;
 }
 .promo-banner-copy p{
-  font-family:var(--sans);font-weight:600;font-size:13.5px;line-height:1.6;
-  color:rgba(255,255,255,.92);margin:0 0 20px;
+  font-family:var(--sans);font-weight:600;font-size:15px;line-height:1.62;
+  color:rgba(255,255,255,.92);margin:0 0 24px;
 }
 .promo-banner-btn{
   display:inline-flex;align-items:center;justify-content:center;
   background:#fff;color:var(--maroon);
-  font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:.8px;
-  text-transform:uppercase;padding:13px 26px;border-radius:999px;
+  font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:1px;
+  text-transform:uppercase;padding:15px 30px;border-radius:999px;
   transition:background-color .2s ease,color .2s ease;
 }
 .promo-banner-btn:hover{background:var(--ink);color:#fff;}
 @media (max-width:900px){
   .promo-banner-float-wrap{position:static;margin-top:-40px;}
-  .promo-banner-float{max-width:520px;margin:0 auto;}
+  .promo-banner-float{max-width:620px;margin:0 auto;}
 }
 @media (max-width:640px){
   .promo-banner-float-wrap{margin-top:-28px;}
