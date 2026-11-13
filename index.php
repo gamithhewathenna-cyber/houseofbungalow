@@ -49,6 +49,27 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
  * always stay fixed at the top).
  */
 $home_sections = [
+    'banner' => function (): void {
+        if (!section_visible('banner')) return;
+        ?>
+<section class="promo-banner reveal">
+  <div class="container">
+    <div class="promo-banner-card">
+      <div class="promo-banner-media">
+        <img loading="lazy" decoding="async" src="<?= e(asset(setting('banner_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('banner_heading')) ?>">
+      </div>
+      <div class="promo-banner-copy">
+        <h2><?= enl(setting('banner_heading')) ?></h2>
+        <?php if (setting('banner_body')): ?><p><?= enl(setting('banner_body')) ?></p><?php endif; ?>
+        <?php if (setting('banner_btn_label')): ?>
+          <a class="promo-banner-btn" href="<?= e(url(setting('banner_btn_url', '#'))) ?>"><?= e(setting('banner_btn_label')) ?></a>
+        <?php endif; ?>
+      </div>
+    </div>
+  </div>
+</section>
+<?php
+    },
     'building' => function (): void {
         if (!section_visible('building')) return;
         ?>

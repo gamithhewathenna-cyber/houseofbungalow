@@ -50,27 +50,6 @@ $cards = blocks('pe_event_card');
  * always stay fixed at the top).
  */
 $pe_sections = [
-    'pe_banner' => function (): void {
-        if (!section_visible('pe_banner')) return;
-        ?>
-<section class="promo-banner reveal">
-  <div class="container">
-    <div class="promo-banner-card">
-      <div class="promo-banner-media">
-        <img loading="lazy" decoding="async" src="<?= e(asset(setting('pe_banner_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('pe_banner_heading')) ?>">
-      </div>
-      <div class="promo-banner-copy">
-        <h2><?= enl(setting('pe_banner_heading')) ?></h2>
-        <?php if (setting('pe_banner_body')): ?><p><?= enl(setting('pe_banner_body')) ?></p><?php endif; ?>
-        <?php if (setting('pe_banner_btn_label')): ?>
-          <a class="promo-banner-btn" href="<?= e(url(setting('pe_banner_btn_url', '#'))) ?>"><?= e(setting('pe_banner_btn_label')) ?></a>
-        <?php endif; ?>
-      </div>
-    </div>
-  </div>
-</section>
-<?php
-    },
     'pe_cards' => function () use ($cards): void {
         if (!$cards || !section_visible('pe_cards')) return;
         ?>

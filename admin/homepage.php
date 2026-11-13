@@ -7,6 +7,7 @@ $settingTabs = [
     'header'  => 'Header & Nav',
     'hero'    => 'Hero',
     'intro'   => 'Intro',
+    'banner'  => 'Promo Banner',
     'door'    => 'The Door',
     'mood'    => 'Every Mood',
     'whatson' => "What's On",
@@ -16,6 +17,7 @@ $visibilitySections = [
     'header_vip' => 'Header - VIP Button',
     'hero'     => 'Hero',
     'intro'    => 'Intro',
+    'banner'   => 'Promo Banner',
     'building' => 'Building Illustration',
     'spaces'   => 'Three Spaces',
     'door'     => 'The House Starts At The Door',
@@ -28,7 +30,7 @@ $visibilitySections = [
 // and Intro always stay fixed at the top, so they're left out of this list.
 // "Brand Logos" is excluded too - it's shared footer content, not a
 // section on this page's own body.
-$sectionOrderKeys = ['building', 'spaces', 'door', 'mood', 'whatson', 'events'];
+$sectionOrderKeys = ['banner', 'building', 'spaces', 'door', 'mood', 'whatson', 'events'];
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -169,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // ---- Load data for every tab up front ----
 $allRows = db()->query(
-    "SELECT * FROM settings WHERE section IN ('header','hero','intro','door','mood','whatson','events') ORDER BY sort ASC, id ASC"
+    "SELECT * FROM settings WHERE section IN ('header','hero','intro','banner','door','mood','whatson','events') ORDER BY sort ASC, id ASC"
 )->fetchAll();
 $fieldsBySection = [];
 foreach ($allRows as $r) {
@@ -184,6 +186,7 @@ $tabs = [
     'header'     => 'Header & Nav',
     'hero'       => 'Hero',
     'intro'      => 'Intro',
+    'banner'     => 'Promo Banner',
     'spaces'     => 'Three Spaces',
     'door'       => 'The Door',
     'mood'       => 'Every Mood',
