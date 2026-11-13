@@ -3,6 +3,33 @@ require_once __DIR__ . '/auth.php';
 require_role('content');
 require_once __DIR__ . '/helpers.php';
 
+/**
+ * Maps a CSV "Type" cell to the internal type code, accepting the plain
+ * internal word (heading/title/line/note) as well as friendlier labels
+ * (e.g. "Section Header", "Page Title", "Footnote", "Menu Item"). Anything
+ * unrecognised - or a blank cell - is treated as a normal menu item.
+ */
+function rest_menu_type_from_label(string $label): string
+{
+    $key = strtolower(trim($label));
+    $map = [
+        ''                => '',
+        'item'            => '',
+        'menu item'       => '',
+        'dish'            => '',
+        'heading'         => 'heading',
+        'section header'  => 'heading',
+        'section heading' => 'heading',
+        'title'           => 'title',
+        'page title'      => 'title',
+        'line'            => 'line',
+        'plain line'      => 'line',
+        'note'            => 'note',
+        'footnote'        => 'note',
+    ];
+    return $map[$key] ?? '';
+}
+
 $fieldGroups = [
     'herovideo' => ['rest_hero_video'],
     'hero'      => ['rest_heading', 'rest_subheading', 'rest_lede', 'rest_intro_p1', 'rest_intro_p2', 'rest_intro_btn_label', 'rest_intro_btn_url'],
@@ -210,20 +237,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $error = 'That file looks empty.';
                             fclose($handle);
                         } else {
-                            $header = array_map(fn($h) => strtolower(trim((string) $h)), $header);
+                            // A few friendlier header spellings are accepted for the
+                            // "Title" column, to match the example spreadsheets.
+                            $headerAliases = ['item / heading' => 'title', 'item/heading' => 'title', 'item' => 'title', 'name' => 'title', 'desc' => 'description'];
+                            $header = array_map(function ($h) use ($headerAliases) {
+                                $h = strtolower(trim((string) $h));
+                                return $headerAliases[$h] ?? $h;
+                            }, $header);
                             $col = array_flip($header);
                             $need = ['type', 'title', 'price', 'description', 'order'];
                             $missing = array_values(array_diff($need, array_keys($col)));
                             if ($missing) {
-                                $error = 'That CSV is missing column(s): ' . implode(', ', $missing) . '. The header row must read exactly: Type, Title, Price, Description, Order.';
+                                $error = 'That CSV is missing column(s): ' . implode(', ', $missing) . '. The header row must read: Type, Title (or "Item / Heading"), Price, Description, Order.';
                                 fclose($handle);
                             } else {
-                                $allowedRowTypes = ['heading', 'title', 'line', 'note'];
                                 $items = [];
                                 while (($row = fgetcsv($handle)) !== false) {
                                     if (!array_filter($row, fn($v) => trim((string) $v) !== '')) continue;
-                                    $type = strtolower(trim($row[$col['type']] ?? ''));
-                                    if (!in_array($type, $allowedRowTypes, true)) { $type = ''; }
+                                    $type = rest_menu_type_from_label((string) ($row[$col['type']] ?? ''));
                                     $items[] = [
                                         'type'  => $type,
                                         'title' => trim($row[$col['title']] ?? ''),
@@ -573,7 +604,7 @@ include __DIR__ . '/layout.php';
 
         <div class="panel-callout" style="margin-top:24px;background:#faf6f0;border:1px solid #e0d3c4;border-radius:10px;padding:16px 18px;">
           <h3 style="margin-top:0;font-size:14px;">Import CSV for <?= e($cat['title']) ?></h3>
-          <p class="group-help">Upload a CSV just for this one category - it <strong>replaces every row above</strong> with the rows in the file. Header row must read exactly: <strong>Type, Title, Price, Description, Order</strong> (no Category column needed - every row goes into <?= e($cat['title']) ?>). Upload a separate file per category, one at a time.</p>
+          <p class="group-help">Upload a CSV just for this one category - it <strong>replaces every row above</strong> with the rows in the file. Header row must read exactly: <strong>Type, Title, Price, Description, Order</strong> (no Category column needed - every row goes into <?= e($cat['title']) ?>). Upload a separate file per category, one at a time. The Type column accepts: <strong>Menu Item</strong> (or leave blank), <strong>Section Header</strong>, <strong>Page Title</strong>, <strong>Plain Line</strong>, or <strong>Footnote</strong>.</p>
           <form method="post" enctype="multipart/form-data">
             <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
             <input type="hidden" name="action" value="import_category_csv">
