@@ -137,6 +137,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($action === 'save_menu_items') {
                 $catId = (int) ($_POST['cat'] ?? 0);
                 $blockType = 'rest_menu_item_' . $catId;
+
+                // The "Delete Selected" button submits this same form - handle
+                // that first instead of saving/overwriting the checked rows.
+                if (isset($_POST['bulk_delete'])) {
+                    $ids = array_map('intval', $_POST['del'] ?? []);
+                    if ($ids) {
+                        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+                        $q = db()->prepare("DELETE FROM blocks WHERE block_type=? AND id IN ($placeholders)");
+                        $q->execute(array_merge([$blockType], $ids));
+                    }
+                    header('Location: restaurant.php?tab=menu&cat=' . $catId . '&saved=1'); exit;
+                }
+
                 $allowedTypes = ['', 'title', 'heading', 'line', 'note'];
                 foreach (($_POST['title'] ?? []) as $id => $title) {
                     $id = (int) $id;
@@ -168,6 +181,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $catId = (int) ($_POST['cat'] ?? 0);
                 $q = db()->prepare('DELETE FROM blocks WHERE id=? AND block_type=?');
                 $q->execute([(int) ($_POST['id'] ?? 0), 'rest_menu_item_' . $catId]);
+                header('Location: restaurant.php?tab=menu&cat=' . $catId . '&saved=1'); exit;
+            }
+            if ($action === 'delete_all_menu_items') {
+                $catId = (int) ($_POST['cat'] ?? 0);
+                db()->prepare('DELETE FROM blocks WHERE block_type=?')->execute(['rest_menu_item_' . $catId]);
                 header('Location: restaurant.php?tab=menu&cat=' . $catId . '&saved=1'); exit;
             }
 
@@ -506,9 +524,13 @@ include __DIR__ . '/layout.php';
           <input type="hidden" name="action" value="save_menu_items">
           <input type="hidden" name="cat" value="<?= $catId ?>">
           <table class="menu-items-table">
-            <tr><th style="width:30px;"></th><th style="width:150px;">Type</th><th>Item / Heading</th><th style="width:100px;">Price</th><th>Description</th><th style="width:70px;">Order</th><th style="width:150px;"></th></tr>
+            <tr>
+              <th style="width:26px;"><input type="checkbox" class="menu-select-all" data-menu-cat-select-all="<?= $catId ?>" title="Select all"></th>
+              <th style="width:30px;"></th><th style="width:150px;">Type</th><th>Item / Heading</th><th style="width:100px;">Price</th><th>Description</th><th style="width:70px;">Order</th><th style="width:150px;"></th>
+            </tr>
             <?php foreach ($menuItemsByCat[$catId] as $item): ?>
               <tr>
+                <td><input type="checkbox" name="del[]" value="<?= $item['id'] ?>" class="menu-row-check" data-menu-cat-check="<?= $catId ?>"></td>
                 <td class="drag-handle" title="Drag to reorder">⠿</td>
                 <td>
                   <select name="type[<?= $item['id'] ?>]">
@@ -525,8 +547,21 @@ include __DIR__ . '/layout.php';
               </tr>
             <?php endforeach; ?>
           </table>
-          <div class="form-actions"><button class="btn">Save <?= e($cat['title']) ?> Items</button></div>
+          <div class="form-actions">
+            <button class="btn">Save <?= e($cat['title']) ?> Items</button>
+            <?php if ($menuItemsByCat[$catId]): ?>
+              <button type="submit" name="bulk_delete" value="1" class="btn btn-sm btn-danger menu-bulk-delete" data-menu-cat-check="<?= $catId ?>">Delete Selected</button>
+            <?php endif; ?>
+          </div>
         </form>
+        <?php if ($menuItemsByCat[$catId]): ?>
+          <form id="delallmenu<?= $catId ?>" method="post" class="inline-form">
+            <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+            <input type="hidden" name="action" value="delete_all_menu_items">
+            <input type="hidden" name="cat" value="<?= $catId ?>">
+          </form>
+          <button form="delallmenu<?= $catId ?>" class="btn btn-sm btn-danger" style="margin-top:8px;" onclick="return confirm('Delete ALL menu items in &quot;<?= e(addslashes($cat['title'])) ?>&quot;? This cannot be undone.')">Delete All Items in <?= e($cat['title']) ?></button>
+        <?php endif; ?>
         <?php foreach ($menuItemsByCat[$catId] as $item): ?>
           <form id="delmenu<?= $item['id'] ?>" method="post" class="inline-form">
             <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
@@ -910,6 +945,35 @@ document.querySelectorAll('.menu-items-table').forEach(function (table) {
   table.querySelectorAll('select[name^="type["]').forEach(function (select) {
     applyRowType(select);
     select.addEventListener('change', function () { applyRowType(select); });
+  });
+});
+
+// "Select all" checkbox per category, for the "Delete Selected" button
+document.querySelectorAll('.menu-select-all').forEach(function (selectAll) {
+  var catId = selectAll.dataset.menuCatSelectAll;
+  var boxes = document.querySelectorAll('.menu-row-check[data-menu-cat-check="' + catId + '"]');
+  selectAll.addEventListener('change', function () {
+    boxes.forEach(function (box) { box.checked = selectAll.checked; });
+  });
+  boxes.forEach(function (box) {
+    box.addEventListener('change', function () {
+      selectAll.checked = Array.prototype.every.call(boxes, function (b) { return b.checked; });
+    });
+  });
+});
+
+document.querySelectorAll('.menu-bulk-delete').forEach(function (btn) {
+  btn.addEventListener('click', function (e) {
+    var catId = btn.dataset.menuCatCheck;
+    var checked = document.querySelectorAll('.menu-row-check[data-menu-cat-check="' + catId + '"]:checked');
+    if (!checked.length) {
+      e.preventDefault();
+      alert('Select at least one row first.');
+      return;
+    }
+    if (!confirm('Delete the ' + checked.length + ' selected row(s)? This cannot be undone.')) {
+      e.preventDefault();
+    }
   });
 });
 </script>
