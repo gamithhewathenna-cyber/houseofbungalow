@@ -172,7 +172,7 @@ function crop_ratio_for_key(string $key): string
         'rest_happyhour_image'    => '3:2',
         'rest_chef_image'         => '3:2',
         'rest_livelate_image'     => '3:2',
-        'banner_image'            => '3:2',
+        'banner_image'            => '4:3',
         'below_guest_image'       => '3:2',
         'below_vip_image'         => '3:2',
         'wo_happyhour_image'      => '3:2',
