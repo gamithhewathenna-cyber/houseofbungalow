@@ -7,6 +7,7 @@ $hero_image_path = asset(setting('hero_image', 'assets/img/hero.jpg'));
 $hero_video_path = setting('hero_video');
 $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'video/quicktime'][strtolower(pathinfo($hero_video_path, PATHINFO_EXTENSION))] ?? 'video/mp4';
 ?>
+<div class="hero-wrap">
 <?php if (section_visible('hero')): ?>
 <section class="hero"<?php if (!$hero_video_path): ?> style="background-image:url('<?= e($hero_image_path) ?>');"<?php endif; ?>>
   <?php if ($hero_video_path): ?>
@@ -16,6 +17,28 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
   <?php endif; ?>
 </section>
 <?php endif; ?>
+
+<!-- Promo banner - floats over the bottom-right of the hero, spilling   -->
+<!-- slightly into the section below (admin > Home Page > Promo Banner)  -->
+<?php if (section_visible('banner')): ?>
+  <div class="promo-banner-float-wrap container">
+    <div class="promo-banner-float reveal">
+      <div class="promo-banner-card">
+        <div class="promo-banner-media">
+          <img loading="lazy" decoding="async" src="<?= e(asset(setting('banner_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('banner_heading')) ?>">
+        </div>
+        <div class="promo-banner-copy">
+          <h2><?= enl(setting('banner_heading')) ?></h2>
+          <?php if (setting('banner_body')): ?><p><?= enl(setting('banner_body')) ?></p><?php endif; ?>
+          <?php if (setting('banner_btn_label')): ?>
+            <a class="promo-banner-btn" href="<?= e(url(setting('banner_btn_url', '#'))) ?>"><?= e(setting('banner_btn_label')) ?></a>
+          <?php endif; ?>
+        </div>
+      </div>
+    </div>
+  </div>
+<?php endif; ?>
+</div>
 
 <!-- Intro ---------------------------------------------------------- -->
 <?php if (section_visible('intro')): ?>
@@ -49,27 +72,6 @@ $hero_video_mime = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'vide
  * always stay fixed at the top).
  */
 $home_sections = [
-    'banner' => function (): void {
-        if (!section_visible('banner')) return;
-        ?>
-<section class="promo-banner reveal">
-  <div class="container">
-    <div class="promo-banner-card">
-      <div class="promo-banner-media">
-        <img loading="lazy" decoding="async" src="<?= e(asset(setting('banner_image', 'assets/img/below.jpg'))) ?>" alt="<?= e(setting('banner_heading')) ?>">
-      </div>
-      <div class="promo-banner-copy">
-        <h2><?= enl(setting('banner_heading')) ?></h2>
-        <?php if (setting('banner_body')): ?><p><?= enl(setting('banner_body')) ?></p><?php endif; ?>
-        <?php if (setting('banner_btn_label')): ?>
-          <a class="promo-banner-btn" href="<?= e(url(setting('banner_btn_url', '#'))) ?>"><?= e(setting('banner_btn_label')) ?></a>
-        <?php endif; ?>
-      </div>
-    </div>
-  </div>
-</section>
-<?php
-    },
     'building' => function (): void {
         if (!section_visible('building')) return;
         ?>

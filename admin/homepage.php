@@ -30,7 +30,7 @@ $visibilitySections = [
 // and Intro always stay fixed at the top, so they're left out of this list.
 // "Brand Logos" is excluded too - it's shared footer content, not a
 // section on this page's own body.
-$sectionOrderKeys = ['banner', 'building', 'spaces', 'door', 'mood', 'whatson', 'events'];
+$sectionOrderKeys = ['building', 'spaces', 'door', 'mood', 'whatson', 'events'];
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -256,6 +256,9 @@ include __DIR__ . '/layout.php';
 <?php foreach ($settingTabs as $key => $label): ?>
   <div class="tab-panel settings-group<?= $activeTab === $key ? ' active' : '' ?>" data-tab="<?= e($key) ?>">
     <h3><?= e($label) ?></h3>
+    <?php if ($key === 'banner'): ?>
+      <p class="group-help">A small card that floats over the bottom-right corner of the Hero video/image, spilling slightly into the section below - photo on the left, dark message panel with a button on the right. Great for seasonal campaigns (e.g. Christmas parties). Its position is fixed (not in Section Order) since it's tied to the Hero; use Section Visibility to hide it when not needed.</p>
+    <?php endif; ?>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
       <input type="hidden" name="action" value="save_section">
