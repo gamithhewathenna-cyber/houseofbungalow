@@ -3,6 +3,33 @@ require_once __DIR__ . '/auth.php';
 require_role('content');
 require_once __DIR__ . '/helpers.php';
 
+/**
+ * Maps a CSV "Type" cell to the internal type code, accepting the plain
+ * internal word (heading/title/line/note) as well as friendlier labels
+ * (e.g. "Section Header", "Page Title", "Footnote", "Menu Item"). Anything
+ * unrecognised - or a blank cell - is treated as a normal menu item.
+ */
+function brunch_menu_type_from_label(string $label): string
+{
+    $key = strtolower(trim($label));
+    $map = [
+        ''                => '',
+        'item'            => '',
+        'menu item'       => '',
+        'dish'            => '',
+        'heading'         => 'heading',
+        'section header'  => 'heading',
+        'section heading' => 'heading',
+        'title'           => 'title',
+        'page title'      => 'title',
+        'line'            => 'line',
+        'plain line'      => 'line',
+        'note'            => 'note',
+        'footnote'        => 'note',
+    ];
+    return $map[$key] ?? '';
+}
+
 $fieldGroups = [
     'herovideo' => ['brunch_hero_video'],
     'intro'     => ['brunch_heading', 'brunch_subheading', 'brunch_lede1', 'brunch_lede2', 'brunch_p1', 'brunch_hours', 'brunch_btn1_label', 'brunch_btn1_url', 'brunch_btn2_label', 'brunch_btn2_url'],
@@ -116,6 +143,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($action === 'save_menu_items') {
                 $catId = (int) ($_POST['cat'] ?? 0);
                 $blockType = 'brunch_menu_item_' . $catId;
+
+                // The "Delete Selected" button submits this same form - handle
+                // that first instead of saving/overwriting the checked rows.
+                if (isset($_POST['bulk_delete'])) {
+                    $ids = array_map('intval', $_POST['del'] ?? []);
+                    if ($ids) {
+                        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+                        $q = db()->prepare("DELETE FROM blocks WHERE block_type=? AND id IN ($placeholders)");
+                        $q->execute(array_merge([$blockType], $ids));
+                    }
+                    header('Location: brunch.php?tab=menu&cat=' . $catId . '&saved=1'); exit;
+                }
+
                 $allowedTypes = ['', 'title', 'heading', 'line', 'note'];
                 foreach (($_POST['title'] ?? []) as $id => $title) {
                     $id = (int) $id;
@@ -140,6 +180,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $q = db()->prepare('DELETE FROM blocks WHERE id=? AND block_type=?');
                 $q->execute([(int) ($_POST['id'] ?? 0), 'brunch_menu_item_' . $catId]);
                 header('Location: brunch.php?tab=menu&cat=' . $catId . '&saved=1'); exit;
+            }
+            if ($action === 'delete_all_menu_items') {
+                $catId = (int) ($_POST['cat'] ?? 0);
+                db()->prepare('DELETE FROM blocks WHERE block_type=?')->execute(['brunch_menu_item_' . $catId]);
+                header('Location: brunch.php?tab=menu&cat=' . $catId . '&saved=1'); exit;
+            }
+
+            // ---- Import one category's menu items from a CSV ----
+            // Fully replaces every row currently in this category with the
+            // rows from the file - no Category column needed, since the
+            // category is whichever one this upload form was submitted from.
+            if ($action === 'import_category_csv') {
+                $catId = (int) ($_POST['cat'] ?? 0);
+                if (empty($_FILES['menu_csv']['tmp_name']) || $_FILES['menu_csv']['error'] !== UPLOAD_ERR_OK) {
+                    $error = 'Choose a CSV file to upload first.';
+                } else {
+                    $handle = fopen($_FILES['menu_csv']['tmp_name'], 'r');
+                    if ($handle === false) {
+                        $error = 'Could not read that file.';
+                    } else {
+                        // Skip a UTF-8 BOM if Excel added one when saving as CSV.
+                        if (fread($handle, 3) !== "\xEF\xBB\xBF") { rewind($handle); }
+
+                        $header = fgetcsv($handle);
+                        if ($header === false) {
+                            $error = 'That file looks empty.';
+                            fclose($handle);
+                        } else {
+                            // A few friendlier header spellings are accepted for the
+                            // "Title" column, to match the example spreadsheets.
+                            $headerAliases = ['item / heading' => 'title', 'item/heading' => 'title', 'item' => 'title', 'name' => 'title', 'desc' => 'description'];
+                            $header = array_map(function ($h) use ($headerAliases) {
+                                $h = strtolower(trim((string) $h));
+                                return $headerAliases[$h] ?? $h;
+                            }, $header);
+                            $col = array_flip($header);
+                            $need = ['type', 'title', 'price', 'description', 'order'];
+                            $missing = array_values(array_diff($need, array_keys($col)));
+                            if ($missing) {
+                                $error = 'That CSV is missing column(s): ' . implode(', ', $missing) . '. The header row must read: Type, Title (or "Item / Heading"), Price, Description, Order.';
+                                fclose($handle);
+                            } else {
+                                $items = [];
+                                while (($row = fgetcsv($handle)) !== false) {
+                                    if (!array_filter($row, fn($v) => trim((string) $v) !== '')) continue;
+                                    $type = brunch_menu_type_from_label((string) ($row[$col['type']] ?? ''));
+                                    $items[] = [
+                                        'type'  => $type,
+                                        'title' => trim($row[$col['title']] ?? ''),
+                                        'price' => ltrim(trim((string) ($row[$col['price']] ?? '')), '$'),
+                                        'desc'  => trim($row[$col['description']] ?? ''),
+                                        'sort'  => (int) ($row[$col['order']] ?? 0),
+                                    ];
+                                }
+                                fclose($handle);
+
+                                if (!$items) {
+                                    $error = 'No usable rows found in that file.';
+                                } else {
+                                    $blockType = 'brunch_menu_item_' . $catId;
+                                    db()->prepare('DELETE FROM blocks WHERE block_type=?')->execute([$blockType]);
+                                    $ins = db()->prepare('INSERT INTO blocks (block_type,title,subtitle,body,link_url,sort,active) VALUES (?,?,?,?,?,?,1)');
+                                    foreach ($items as $i => $item) {
+                                        $sort = $item['sort'] ?: (($i + 1) * 10);
+                                        $ins->execute([$blockType, $item['title'], $item['price'], $item['desc'], $item['type'], $sort]);
+                                    }
+                                    header('Location: brunch.php?tab=menu&cat=' . $catId . '&imported=' . count($items)); exit;
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             // ---- Gallery ----
@@ -279,6 +391,7 @@ $page_title = 'Bottomless Brunch';
 include __DIR__ . '/layout.php';
 ?>
 <?php if ($error): ?><div class="alert err"><?= e($error) ?></div><?php endif; ?>
+<?php if (isset($_GET['imported'])): ?><div class="alert ok">Imported <?= (int) $_GET['imported'] ?> menu row(s) from the CSV.</div><?php endif; ?>
 
 <div class="tab-nav">
   <?php foreach ($tabs as $key => $label): ?>
@@ -420,9 +533,13 @@ include __DIR__ . '/layout.php';
           <input type="hidden" name="action" value="save_menu_items">
           <input type="hidden" name="cat" value="<?= $catId ?>">
           <table class="menu-items-table">
-            <tr><th style="width:30px;"></th><th style="width:150px;">Type</th><th>Item / Heading</th><th style="width:100px;">Price</th><th>Description</th><th style="width:70px;">Order</th><th style="width:150px;"></th></tr>
+            <tr>
+              <th style="width:26px;"><input type="checkbox" class="menu-select-all" data-menu-cat-select-all="<?= $catId ?>" title="Select all"></th>
+              <th style="width:30px;"></th><th style="width:150px;">Type</th><th>Item / Heading</th><th style="width:100px;">Price</th><th>Description</th><th style="width:70px;">Order</th><th style="width:150px;"></th>
+            </tr>
             <?php foreach ($menuItemsByCat[$catId] as $item): ?>
               <tr>
+                <td><input type="checkbox" name="del[]" value="<?= $item['id'] ?>" class="menu-row-check" data-menu-cat-check="<?= $catId ?>"></td>
                 <td class="drag-handle" title="Drag to reorder">⠿</td>
                 <td>
                   <select name="type[<?= $item['id'] ?>]">
@@ -439,8 +556,21 @@ include __DIR__ . '/layout.php';
               </tr>
             <?php endforeach; ?>
           </table>
-          <div class="form-actions"><button class="btn">Save <?= e($cat['title']) ?> Items</button></div>
+          <div class="form-actions">
+            <button class="btn">Save <?= e($cat['title']) ?> Items</button>
+            <?php if ($menuItemsByCat[$catId]): ?>
+              <button type="submit" name="bulk_delete" value="1" class="btn btn-sm btn-danger menu-bulk-delete" data-menu-cat-check="<?= $catId ?>">Delete Selected</button>
+            <?php endif; ?>
+          </div>
         </form>
+        <?php if ($menuItemsByCat[$catId]): ?>
+          <form id="delallmenu<?= $catId ?>" method="post" class="inline-form">
+            <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+            <input type="hidden" name="action" value="delete_all_menu_items">
+            <input type="hidden" name="cat" value="<?= $catId ?>">
+          </form>
+          <button form="delallmenu<?= $catId ?>" class="btn btn-sm btn-danger" style="margin-top:8px;" onclick="return confirm('Delete ALL menu items in &quot;<?= e(addslashes($cat['title'])) ?>&quot;? This cannot be undone.')">Delete All Items in <?= e($cat['title']) ?></button>
+        <?php endif; ?>
         <?php foreach ($menuItemsByCat[$catId] as $item): ?>
           <form id="delmenu<?= $item['id'] ?>" method="post" class="inline-form">
             <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
@@ -449,6 +579,20 @@ include __DIR__ . '/layout.php';
             <input type="hidden" name="id" value="<?= $item['id'] ?>">
           </form>
         <?php endforeach; ?>
+
+        <div class="panel-callout" style="margin-top:24px;background:#faf6f0;border:1px solid #e0d3c4;border-radius:10px;padding:16px 18px;">
+          <h3 style="margin-top:0;font-size:14px;">Import CSV for <?= e($cat['title']) ?></h3>
+          <p class="group-help">Upload a CSV just for this one category - it <strong>replaces every row above</strong> with the rows in the file. Header row must read exactly: <strong>Type, Title, Price, Description, Order</strong> (no Category column needed - every row goes into <?= e($cat['title']) ?>). Upload a separate file per category, one at a time. The Type column accepts: <strong>Menu Item</strong> (or leave blank), <strong>Section Header</strong>, <strong>Page Title</strong>, <strong>Plain Line</strong>, or <strong>Footnote</strong>.</p>
+          <form method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+            <input type="hidden" name="action" value="import_category_csv">
+            <input type="hidden" name="cat" value="<?= $catId ?>">
+            <div class="row-actions">
+              <input type="file" name="menu_csv" accept=".csv,text/csv">
+              <button class="btn btn-sm" onclick="return confirm('This will REPLACE all menu items in &quot;<?= e(addslashes($cat['title'])) ?>&quot; with the rows in this file. Continue?')">Import CSV</button>
+            </div>
+          </form>
+        </div>
 
         <h3 style="margin-top:24px;font-size:14px;">Add a Row to <?= e($cat['title']) ?></h3>
         <form method="post">
@@ -734,6 +878,35 @@ document.querySelectorAll('.menu-items-table').forEach(function (table) {
   table.querySelectorAll('select[name^="type["]').forEach(function (select) {
     applyRowType(select);
     select.addEventListener('change', function () { applyRowType(select); });
+  });
+});
+
+// "Select all" checkbox per category, for the "Delete Selected" button
+document.querySelectorAll('.menu-select-all').forEach(function (selectAll) {
+  var catId = selectAll.dataset.menuCatSelectAll;
+  var boxes = document.querySelectorAll('.menu-row-check[data-menu-cat-check="' + catId + '"]');
+  selectAll.addEventListener('change', function () {
+    boxes.forEach(function (box) { box.checked = selectAll.checked; });
+  });
+  boxes.forEach(function (box) {
+    box.addEventListener('change', function () {
+      selectAll.checked = Array.prototype.every.call(boxes, function (b) { return b.checked; });
+    });
+  });
+});
+
+document.querySelectorAll('.menu-bulk-delete').forEach(function (btn) {
+  btn.addEventListener('click', function (e) {
+    var catId = btn.dataset.menuCatCheck;
+    var checked = document.querySelectorAll('.menu-row-check[data-menu-cat-check="' + catId + '"]:checked');
+    if (!checked.length) {
+      e.preventDefault();
+      alert('Select at least one row first.');
+      return;
+    }
+    if (!confirm('Delete the ' + checked.length + ' selected row(s)? This cannot be undone.')) {
+      e.preventDefault();
+    }
   });
 });
 </script>
