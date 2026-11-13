@@ -171,11 +171,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Location: restaurant.php?tab=menu&cat=' . $catId . '&saved=1'); exit;
             }
 
-            // ---- Import the whole menu (or just some categories) from a CSV ----
-            // Replaces all items in every category named in the file - any
-            // category not mentioned in the file is left untouched. A
-            // category name not found yet is created automatically.
-            if ($action === 'import_menu_csv') {
+            // ---- Import one category's menu items from a CSV ----
+            // Fully replaces every row currently in this category with the
+            // rows from the file - no Category column needed, since the
+            // category is whichever one this upload form was submitted from.
+            if ($action === 'import_category_csv') {
+                $catId = (int) ($_POST['cat'] ?? 0);
                 if (empty($_FILES['menu_csv']['tmp_name']) || $_FILES['menu_csv']['error'] !== UPLOAD_ERR_OK) {
                     $error = 'Choose a CSV file to upload first.';
                 } else {
@@ -193,21 +194,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         } else {
                             $header = array_map(fn($h) => strtolower(trim((string) $h)), $header);
                             $col = array_flip($header);
-                            $need = ['category', 'type', 'title', 'price', 'description', 'order'];
+                            $need = ['type', 'title', 'price', 'description', 'order'];
                             $missing = array_values(array_diff($need, array_keys($col)));
                             if ($missing) {
-                                $error = 'That CSV is missing column(s): ' . implode(', ', $missing) . '. The header row must read exactly: Category, Type, Title, Price, Description, Order.';
+                                $error = 'That CSV is missing column(s): ' . implode(', ', $missing) . '. The header row must read exactly: Type, Title, Price, Description, Order.';
                                 fclose($handle);
                             } else {
                                 $allowedRowTypes = ['heading', 'title', 'line', 'note'];
-                                $rowsByCategory = [];
+                                $items = [];
                                 while (($row = fgetcsv($handle)) !== false) {
                                     if (!array_filter($row, fn($v) => trim((string) $v) !== '')) continue;
-                                    $catName = trim($row[$col['category']] ?? '');
-                                    if ($catName === '') continue;
                                     $type = strtolower(trim($row[$col['type']] ?? ''));
                                     if (!in_array($type, $allowedRowTypes, true)) { $type = ''; }
-                                    $rowsByCategory[$catName][] = [
+                                    $items[] = [
                                         'type'  => $type,
                                         'title' => trim($row[$col['title']] ?? ''),
                                         'price' => ltrim(trim((string) ($row[$col['price']] ?? '')), '$'),
@@ -217,42 +216,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 }
                                 fclose($handle);
 
-                                if (!$rowsByCategory) {
-                                    $error = 'No usable rows found - make sure the Category column is filled in on every row.';
+                                if (!$items) {
+                                    $error = 'No usable rows found in that file.';
                                 } else {
-                                    $catIdByName = [];
-                                    $existingCats = db()->prepare('SELECT id, title FROM blocks WHERE block_type=?');
-                                    $existingCats->execute([$catBlockType]);
-                                    foreach ($existingCats->fetchAll() as $c) {
-                                        $catIdByName[mb_strtolower(trim($c['title']))] = (int) $c['id'];
+                                    $blockType = 'rest_menu_item_' . $catId;
+                                    db()->prepare('DELETE FROM blocks WHERE block_type=?')->execute([$blockType]);
+                                    $ins = db()->prepare('INSERT INTO blocks (block_type,title,subtitle,body,link_url,sort,active) VALUES (?,?,?,?,?,?,1)');
+                                    foreach ($items as $i => $item) {
+                                        $sort = $item['sort'] ?: (($i + 1) * 10);
+                                        $ins->execute([$blockType, $item['title'], $item['price'], $item['desc'], $item['type'], $sort]);
                                     }
-                                    $sortStmt = db()->prepare('SELECT COALESCE(MAX(sort),0) FROM blocks WHERE block_type=?');
-                                    $sortStmt->execute([$catBlockType]);
-                                    $maxCatSort = (int) $sortStmt->fetchColumn();
-
-                                    $catCount = 0; $itemCount = 0;
-                                    foreach ($rowsByCategory as $catName => $items) {
-                                        $key = mb_strtolower(trim($catName));
-                                        if (isset($catIdByName[$key])) {
-                                            $catId = $catIdByName[$key];
-                                        } else {
-                                            $maxCatSort += 1;
-                                            $newCat = db()->prepare('INSERT INTO blocks (block_type,title,sort,active) VALUES (?,?,?,1)');
-                                            $newCat->execute([$catBlockType, $catName, $maxCatSort]);
-                                            $catId = (int) db()->lastInsertId();
-                                            $catIdByName[$key] = $catId;
-                                        }
-                                        $blockType = 'rest_menu_item_' . $catId;
-                                        db()->prepare('DELETE FROM blocks WHERE block_type=?')->execute([$blockType]);
-                                        $ins = db()->prepare('INSERT INTO blocks (block_type,title,subtitle,body,link_url,sort,active) VALUES (?,?,?,?,?,?,1)');
-                                        foreach (array_values($items) as $i => $item) {
-                                            $sort = $item['sort'] ?: (($i + 1) * 10);
-                                            $ins->execute([$blockType, $item['title'], $item['price'], $item['desc'], $item['type'], $sort]);
-                                            $itemCount++;
-                                        }
-                                        $catCount++;
-                                    }
-                                    header('Location: restaurant.php?tab=menu&imported=' . $itemCount . '&importedcats=' . $catCount); exit;
+                                    header('Location: restaurant.php?tab=menu&cat=' . $catId . '&imported=' . count($items)); exit;
                                 }
                             }
                         }
@@ -427,7 +401,7 @@ $page_title = 'Restaurant & Menus';
 include __DIR__ . '/layout.php';
 ?>
 <?php if ($error): ?><div class="alert err"><?= e($error) ?></div><?php endif; ?>
-<?php if (isset($_GET['imported'])): ?><div class="alert ok">Imported <?= (int) $_GET['imported'] ?> menu row(s) across <?= (int) ($_GET['importedcats'] ?? 0) ?> categor<?= ((int) ($_GET['importedcats'] ?? 0)) === 1 ? 'y' : 'ies' ?> from the CSV.</div><?php endif; ?>
+<?php if (isset($_GET['imported'])): ?><div class="alert ok">Imported <?= (int) $_GET['imported'] ?> menu row(s) from the CSV.</div><?php endif; ?>
 
 <div class="tab-nav">
   <?php foreach ($tabs as $key => $label): ?>
@@ -458,19 +432,6 @@ include __DIR__ . '/layout.php';
     <?php foreach ($fieldGroups['menu'] as $key): if (!isset($bySkey[$key])) continue; render_rest_field($bySkey[$key]); endforeach; ?>
     <div class="form-actions"><button type="submit" class="btn">Save Changes</button></div>
   </form>
-
-  <div class="panel-callout" style="margin-top:30px;background:#faf6f0;border:1px solid #e0d3c4;border-radius:10px;padding:18px 20px;">
-    <h3 style="margin-top:0;">Import Menu From a Spreadsheet</h3>
-    <p class="group-help">Update the whole menu (or just a few categories) in one go from a CSV file exported from Excel or Google Sheets. The header row must read exactly: <strong>Category, Type, Title, Price, Description, Order</strong>. Any category named in the file is <strong>completely replaced</strong> with the rows for it in the file - categories left out of the file are not touched. A category name that doesn't exist yet is created automatically. Ask in chat for an example spreadsheet with sample rows filled in if you'd like one to start from.</p>
-    <form method="post" enctype="multipart/form-data">
-      <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
-      <input type="hidden" name="action" value="import_menu_csv">
-      <div class="row-actions">
-        <input type="file" name="menu_csv" accept=".csv,text/csv">
-        <button class="btn btn-sm" onclick="return confirm('This will REPLACE all menu items in every category named in the file. Continue?')">Import CSV</button>
-      </div>
-    </form>
-  </div>
 
   <h3 style="margin-top:30px;">Menu Categories</h3>
   <p class="group-help">These become the tabs shown in the "Discover Our Menus" section (e.g. "À La Carte", "Beverage Menu"). Add, rename, reorder or remove them here - deleting one also deletes its menu items. An optional PDF adds a "Download Menu" button under that tab's content.</p>
@@ -574,6 +535,20 @@ include __DIR__ . '/layout.php';
             <input type="hidden" name="id" value="<?= $item['id'] ?>">
           </form>
         <?php endforeach; ?>
+
+        <div class="panel-callout" style="margin-top:24px;background:#faf6f0;border:1px solid #e0d3c4;border-radius:10px;padding:16px 18px;">
+          <h3 style="margin-top:0;font-size:14px;">Import CSV for <?= e($cat['title']) ?></h3>
+          <p class="group-help">Upload a CSV just for this one category - it <strong>replaces every row above</strong> with the rows in the file. Header row must read exactly: <strong>Type, Title, Price, Description, Order</strong> (no Category column needed - every row goes into <?= e($cat['title']) ?>). Upload a separate file per category, one at a time.</p>
+          <form method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+            <input type="hidden" name="action" value="import_category_csv">
+            <input type="hidden" name="cat" value="<?= $catId ?>">
+            <div class="row-actions">
+              <input type="file" name="menu_csv" accept=".csv,text/csv">
+              <button class="btn btn-sm" onclick="return confirm('This will REPLACE all menu items in &quot;<?= e(addslashes($cat['title'])) ?>&quot; with the rows in this file. Continue?')">Import CSV</button>
+            </div>
+          </form>
+        </div>
 
         <h3 style="margin-top:24px;font-size:14px;">Add a Row to <?= e($cat['title']) ?></h3>
         <form method="post">
