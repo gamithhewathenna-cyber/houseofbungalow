@@ -44,6 +44,37 @@ $fieldGroups = [
     'hours'     => ['rest_hours_heading', 'rest_hours_lunch_label', 'rest_hours_lunch', 'rest_hours_dinner_label', 'rest_hours_dinner', 'rest_hours_fridaysat_label', 'rest_hours_fridaysat', 'rest_hours_note', 'rest_hours_btn_label', 'rest_hours_btn_url', 'rest_hours_footnote'],
 ];
 $catBlockType = 'rest_menu_cat';
+
+// ---- Export one category's menu items as a CSV (admin > Restaurant > Menu) ----
+if (($_GET['export_menu_csv'] ?? '') === '1' && isset($_GET['cat'])) {
+    $exportCatId = (int) $_GET['cat'];
+    $exportCatStmt = db()->prepare('SELECT * FROM blocks WHERE id=? AND block_type=?');
+    $exportCatStmt->execute([$exportCatId, $catBlockType]);
+    $exportCat = $exportCatStmt->fetch();
+    if ($exportCat) {
+        $exportItemsStmt = db()->prepare('SELECT * FROM blocks WHERE block_type=? ORDER BY sort ASC, id ASC');
+        $exportItemsStmt->execute(['rest_menu_item_' . $exportCatId]);
+        $exportTypeLabels = ['' => 'Menu Item', 'heading' => 'Section Header', 'title' => 'Page Title', 'line' => 'Plain Line', 'note' => 'Footnote'];
+        $exportSlug = trim(preg_replace('/[^a-z0-9]+/', '-', strtolower($exportCat['title'])), '-') ?: 'menu';
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $exportSlug . '-menu.csv"');
+        $out = fopen('php://output', 'w');
+        fwrite($out, "\xEF\xBB\xBF");
+        fputcsv($out, ['Type', 'Title', 'Price', 'Description', 'Order']);
+        foreach ($exportItemsStmt->fetchAll() as $exportItem) {
+            fputcsv($out, [
+                $exportTypeLabels[$exportItem['link_url']] ?? 'Menu Item',
+                $exportItem['title'],
+                $exportItem['subtitle'],
+                $exportItem['body'],
+                (int) $exportItem['sort'],
+            ]);
+        }
+        fclose($out);
+        exit;
+    }
+}
+
 $visibilitySections = [
     'rest_hero'      => 'Hero',
     'rest_intro'     => 'Hero & Intro Text',
@@ -603,7 +634,11 @@ include __DIR__ . '/layout.php';
         <?php endforeach; ?>
 
         <div class="panel-callout" style="margin-top:24px;background:#faf6f0;border:1px solid #e0d3c4;border-radius:10px;padding:16px 18px;">
-          <h3 style="margin-top:0;font-size:14px;">Import CSV for <?= e($cat['title']) ?></h3>
+          <h3 style="margin-top:0;font-size:14px;">Import / Export CSV for <?= e($cat['title']) ?></h3>
+          <p class="group-help">
+            <a class="btn btn-sm btn-ghost" href="restaurant.php?export_menu_csv=1&amp;cat=<?= $catId ?>">Export <?= e($cat['title']) ?> as CSV</a>
+            - downloads every row above exactly as it is now, ready to edit and re-upload below (or just as a backup).
+          </p>
           <p class="group-help">Upload a CSV just for this one category - it <strong>replaces every row above</strong> with the rows in the file. Header row must read exactly: <strong>Type, Title, Price, Description, Order</strong> (no Category column needed - every row goes into <?= e($cat['title']) ?>). Upload a separate file per category, one at a time. The Type column accepts: <strong>Menu Item</strong> (or leave blank), <strong>Section Header</strong>, <strong>Page Title</strong>, <strong>Plain Line</strong>, or <strong>Footnote</strong>.</p>
           <form method="post" enctype="multipart/form-data">
             <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
