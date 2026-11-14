@@ -63,7 +63,7 @@ if (!section_visible('banner')) {
     var scrollable = document.documentElement.scrollHeight - window.innerHeight;
     if (scrollable <= 0) return;
     var pct = (window.scrollY || window.pageYOffset || 0) / scrollable;
-    if (pct >= 0.2) {
+    if (pct >= 0.15) {
       openPopup();
       window.removeEventListener('scroll', checkScroll);
     }
