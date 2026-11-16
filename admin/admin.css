@@ -157,6 +157,69 @@ td input[type=text]{margin-top:0;}
 .menu-items-table tr.row-type-note{background:#f7f3ec;}
 .menu-items-table tr.row-type-note input,
 .menu-items-table tr.row-type-note textarea{font-style:italic;}
+
+/* ------------------------------------------------------------------ */
+/* Menu Items UI - clearer Type field, modern inputs/buttons           */
+/* (scoped to .menu-cat-panel so nothing else in admin is affected)    */
+/* ------------------------------------------------------------------ */
+.menu-cat-panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px 24px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.menu-items-table{border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+.menu-items-table th{background:#faf6f0;padding:11px 14px;}
+.menu-items-table th:nth-child(3){width:210px !important;}
+.menu-items-table td{padding:10px 10px;vertical-align:top;}
+.menu-items-table tbody tr{transition:background-color .12s ease;}
+.menu-items-table tbody tr:not(.row-type-heading):not(.row-type-title):not(.row-type-line):not(.row-type-note):hover{background:#faf8f4;}
+.menu-items-table tbody tr td:first-child{border-left:4px solid transparent;}
+.menu-items-table tr.row-type-heading td:first-child{border-left-color:#c7902e;}
+.menu-items-table tr.row-type-title td:first-child{border-left-color:var(--maroon);}
+.menu-items-table tr.row-type-line td:first-child,
+.menu-items-table tr.row-type-note td:first-child{border-left-color:#9a8f85;}
+
+.menu-items-table input[type=checkbox],
+.menu-select-all{width:17px;height:17px;accent-color:var(--maroon);cursor:pointer;margin-top:2px;}
+
+.menu-items-table input[type=text],
+.menu-items-table textarea{
+  width:100%;padding:9px 11px;border:1.5px solid #e2d8cb;border-radius:7px;
+  font-size:13.5px;font-family:inherit;color:var(--ink);background:#fff;
+  transition:border-color .15s ease, box-shadow .15s ease;
+}
+.menu-items-table textarea{min-height:0;line-height:1.45;resize:vertical;}
+.menu-items-table input[type=text]:hover,
+.menu-items-table textarea:hover{border-color:#cdbfaf;}
+.menu-items-table input[type=text]:focus,
+.menu-items-table textarea:focus{
+  outline:none;border-color:var(--maroon);box-shadow:0 0 0 3px rgba(98,14,21,.1);
+}
+.menu-items-table .sort-input{text-align:center;font-weight:600;}
+
+.menu-items-table select{
+  width:100%;padding:9px 30px 9px 11px;border:1.5px solid #e2d8cb;border-radius:7px;
+  font-size:12.5px;font-weight:600;font-family:inherit;color:var(--ink);background-color:#fff;
+  cursor:pointer;appearance:none;-webkit-appearance:none;-moz-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23746a5f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 7.5l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 9px center;background-size:14px;
+  transition:border-color .15s ease, box-shadow .15s ease;
+}
+.menu-items-table select:hover{border-color:#cdbfaf;}
+.menu-items-table select:focus{outline:none;border-color:var(--maroon);box-shadow:0 0 0 3px rgba(98,14,21,.1);}
+
+.menu-items-table .row-actions{gap:6px;flex-wrap:wrap;}
+.menu-cat-panel .btn{
+  border-radius:8px;transition:background-color .15s ease, transform .1s ease, box-shadow .15s ease;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.menu-cat-panel .btn:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,.1);}
+.menu-cat-panel .btn:active{transform:translateY(0);box-shadow:0 1px 2px rgba(0,0,0,.08);}
+.menu-cat-panel .btn-sm{border-radius:7px;font-weight:600;}
+.menu-cat-panel .btn-ghost{background:#fff;border:1.5px solid var(--maroon);color:var(--maroon);}
+.menu-cat-panel .btn-ghost:hover{background:var(--maroon);color:#fff;}
+.menu-cat-panel .btn-danger{background:#a13636;}
+.menu-cat-panel .btn-danger:hover{background:#8a2b2b;}
+.menu-cat-panel .form-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-top:0;padding-top:4px;}
+.menu-cat-panel .panel-callout .row-actions{align-items:center;}
+.menu-cat-panel .panel-callout input[type=file]{font-size:12.5px;}
+
 .thumb-preview{margin-top:8px;}
 .thumb-preview img{max-height:90px;border:1px solid var(--line);border-radius:4px;background:#faf6f0;padding:4px;}
 .inline-form{display:inline;}
